@@ -6,7 +6,9 @@ import SentenceComponent from './SentenceComponent'
 function App() {
   return (
     <div className="App">
-      <SentenceComponent sentence="Hello, world!" onSubmit={() => {}} />
+      <SentenceComponent sentence="(Hello|blah|baz), (world|foo)(!|.)" onSubmit={(selectedIndices) => { 
+          alert(selectedIndices);
+      }} />
     </div>
   );
 }
