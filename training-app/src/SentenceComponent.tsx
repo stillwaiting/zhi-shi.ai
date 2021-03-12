@@ -35,7 +35,7 @@ export default ({ onSubmit, sentence }: SentenceComponentProps) => {
                                     className="select"
                                     onChange={e => {
                                         const newIndices = [...selectedDropdownIndices];
-                                        newIndices[countDropdowns(splitSentence.slice(0, subSentenceIdx))] = parseInt(e.currentTarget.value);
+                                        newIndices[countDropdowns(splitSentence.slice(0, subSentenceIdx))] = parseInt(e.target.value);
                                         setSelectedDropdownIndices(newIndices);
                                     }}
                                 >
