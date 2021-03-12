@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './SentenceComponent.css';
 
-// Searches for "(blah|foo)" dropdown strings
+// Searches for "(blah|foo)" dropdown representative strings
 const DROPDOWN_REGEXP = /(\(.+?\|.*?\))/g;
 
 const parseDropdownString = (dropdownString: string) => 
@@ -20,7 +20,7 @@ export default ({ onSubmit, sentence }: SentenceComponentProps) => {
         Array((sentence.match(DROPDOWN_REGEXP) || []).length).fill(0)
     );
 
-    // Each item is either an arbitrary string or a "dropdown" string "(blah|foo)"
+    // Each item is either an arbitrary string or a "dropdown" string like "(blah|foo)"
     const splitSentence = sentence.split(DROPDOWN_REGEXP) || [];
 
     return (
@@ -39,14 +39,11 @@ export default ({ onSubmit, sentence }: SentenceComponentProps) => {
                                         setSelectedDropdownIndices(newIndices);
                                     }}
                                 >
-                                {options.map((option, idx) => {
-                                    if (option)
-                                    return (
-                                        <option key={idx} value={idx}>
+                                {options.map((option, idx) => (
+                                    <option key={idx} value={idx}>
                                         {option}
-                                        </option>
-                                    );
-                                })}
+                                    </option>
+                                ))}
                                 </select>
                             </span>
                         );
