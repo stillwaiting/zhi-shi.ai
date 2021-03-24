@@ -24,7 +24,7 @@ export default ( {sentence, answers}: SentenceWithAnswers) => {
     const [dropdownIndices, setSubmittedDropdownIndices] = useState<Array<number>>([])
 
     return <div>
-        <div><SentenceComponent sentence={sentence} onSubmit={(indices) => setSubmittedDropdownIndices(indices)} isAnswerMode={dropdownIndices.length > 0} /></div>
+        <div><SentenceComponent sentence={sentence} onSubmit={(indices) => setSubmittedDropdownIndices(indices)} /></div>
         {dropdownIndices.length > 0 ? renderAnswers(answers, dropdownIndices) : null}
         <div style={{visibility: 'hidden'}}>
             {RED_CROSS}
