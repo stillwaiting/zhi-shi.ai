@@ -26,8 +26,8 @@ Each task has format
 
 This section is split onto "sentences", where each "sentence" is a single study unit displayed to the user at the time.
 
-The lines with "-" at the beginning represent the beginning of the sentences. All `(foo|bar|...)` substrings are replaced with dropdown with options taken from the content of this substring ("|" acts as a delimeter). The first option should always be the correct answer.
+The lines with `"-"` at the beginning represent the beginning of the sentences. All `(foo|bar|...)` substrings are replaced with dropdowns (questions) with options taken from the content of this substring (`"|"` acts as a delimeter between the options). The first option should always be the correct answer.
 
-The lines with "::" at the beginning represent the description to the relevant dropboxes (answers).
+The lines with `"::"` at the beginning represent the description to the relevant dropboxes (answers).
 
 
