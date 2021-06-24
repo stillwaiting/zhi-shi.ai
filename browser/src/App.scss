@@ -3,10 +3,15 @@
   display: flex;
   flex-wrap: wrap;
 
+  textarea {
+    width: 300px;
+    height: 200px;
+  }
+
   .topics {
+    text-align: left;
     background-color: #eeeeee;
-    width:300px;
-    padding:20px;
+    padding:10px;
     max-height: 600px;
     overflow-y: scroll;
   }

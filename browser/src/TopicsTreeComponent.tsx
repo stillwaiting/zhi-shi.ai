@@ -15,7 +15,7 @@ const renderNodes = (nodes: MarkdownNode[]) => {
     return <ul>
         {nodes.map((node, nodeIdx) => {
             return <li key={`node${nodeIdx}`}>
-                {node.title} <br />
+                <a href='#'>{node.title}</a> <br />
                 {renderNodes(node.children)}
             </li>;
         })}
