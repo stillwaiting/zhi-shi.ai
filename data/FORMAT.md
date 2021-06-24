@@ -1,5 +1,13 @@
 # Format of the data files
 
+## References
+
+To reference a particular section, use (link text)[section_title_without_spaces_or_quotes_or_any_other_symbols] link.
+
+If you want to reference a particular place inside the section:
+1. make it with the following syntax: [#my_section]some important information[/].
+2. use the following link (link text)[section_title_without_spaces_or_quotes_or_any_other_symbols#my_section].
+
 
 ## Tasks section
 
