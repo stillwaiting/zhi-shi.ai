@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.scss';
 import SentenceComponent from './SentenceComponent'
@@ -10,6 +10,16 @@ function App() {
   const [unsubmittedData, setUnsubmittedData] = useState<string>("");
   const [nodes, setNodes] = useState<MarkdownNode[]>([]);
   const [topicsWidth, setTopicsWidth] = useState<number>(300);
+
+  useEffect(() => {
+      fetch('https://stoic-swirles-1788c6.netlify.app/RU.md').then(response => {
+        // console.log(response);
+        return response.text();
+      }).then(text => {
+        setNodes(parse(text));
+      });
+    },
+  []);
 
   const onDataChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setUnsubmittedData(e.currentTarget.value);
