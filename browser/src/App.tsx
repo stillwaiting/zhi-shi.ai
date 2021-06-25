@@ -5,11 +5,14 @@ import SentenceComponent from './SentenceComponent'
 import QuestionAnswerComponent from './QuestionAnswerComponent';
 import TopicsTreeComponent from './TopicsTreeComponent';
 import parse, { MarkdownNode } from './MarkdownParser';
+import { BrowserRouter as Router, Route, Link, useHistory } from "react-router-dom";
+
 
 function App() {
   const [unsubmittedData, setUnsubmittedData] = useState<string>("");
   const [nodes, setNodes] = useState<MarkdownNode[]>([]);
   const [topicsWidth, setTopicsWidth] = useState<number>(300);
+  const history = useHistory();
 
   useEffect(() => {
       fetch('https://stoic-swirles-1788c6.netlify.app/RU.md').then(response => {
@@ -40,9 +43,20 @@ function App() {
   return (
     <div className="App">
       <div className="topics" style={{width: topicsWidth + 'px' }} data-testid='menu-container'>
-        <a href='#' onClick={onIncreseWidthClick} data-testid='plus'>+ width</a> |
-        <a href='#' onClick={onDecreaseWidthClick} data-testid='minus'>- width</a> <br />
-        <TopicsTreeComponent nodes={nodes} />
+
+        <a href='#' onClick={(e) => {
+          e.preventDefault();
+          onIncreseWidthClick();
+        }} data-testid='plus'>+ width</a> |
+
+        <a href='#' onClick={(e) => {
+          e.preventDefault();
+          onDecreaseWidthClick();
+        }} data-testid='minus'>- width</a> <br />
+
+        <TopicsTreeComponent nodes={nodes} onNodeClicked={(node) => {
+          history.push("/" + node.title);
+        }} />
       </div>
 
       <div className="content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus consequat molestie nibh ac venenatis. Sed vel vestibulum ante, viverra suscipit elit. Duis nec dapibus sem. Donec id neque feugiat, efficitur nisl vel, ornare sem. Aenean venenatis augue tellus, vitae congue neque vestibulum eu. Sed a iaculis neque. Curabitur tincidunt cursus sollicitudin. Duis finibus vulputate luctus. Nunc ut malesuada nulla. Donec feugiat ante eget viverra rhoncus. Integer cursus enim vitae aliquet suscipit. Cras nisi urna, maximus eget leo at, ornare pharetra purus. Curabitur iaculis orci sit amet lacus bibendum, sit amet ultrices justo lobortis. Vivamus tempor mattis eros, vitae gravida nisi finibus vitae. Phasellus in leo luctus, faucibus risus ut, pulvinar massa. Nulla vel ex fringilla, hendrerit tellus nec, tempor est.
