@@ -4,10 +4,6 @@ export interface MarkdownBody {
     content: string;
 }
 
-function isTwoOrMoreNodesHaveSameTitleError(obj: any): obj is TwoOrMoreNodesHaveSameTitleError {
-    return !!obj.title && !!obj.childrenIndices;
-}
-
 export interface MarkdownNode {
     title: string;
     body: MarkdownBody;
