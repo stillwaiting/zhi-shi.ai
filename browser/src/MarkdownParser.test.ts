@@ -24,7 +24,8 @@ describe('mdParse', () => {
             body: {
                 content: '',
             },
-            children: []
+            children: [],
+            childrenByTitleIndex: {}
         }]);
     });
 
@@ -35,7 +36,8 @@ describe('mdParse', () => {
             body: {
                 content: '',
             },
-            children: []
+            children: [],
+            childrenByTitleIndex: {}
         }]);
     });
 
@@ -50,7 +52,8 @@ this is my shiny body
             body: {
                 content: 'this is my shiny body',
             },
-            children: []
+            children: [],
+            childrenByTitleIndex: {}
         }]);
     });
 
@@ -66,7 +69,8 @@ multiline!
             body: {
                 content: "this is my shiny body\nmultiline!",
             },
-            children: []
+            children: [],
+            childrenByTitleIndex: {}
         }]);
     });
 
@@ -81,14 +85,16 @@ multiline!
             body: {
                 content: "",
             },
-            children: []
+            children: [],
+            childrenByTitleIndex: {}
         }, {
             title: 'and the second one',
             path: ['and the second one'],
             body: {
                 content: "",
             },
-            children: []
+            children: [],
+            childrenByTitleIndex: {}
         }]);
     });
 
@@ -110,21 +116,24 @@ multiline
             body: {
                 content: "first body",
             },
-            children: []
+            children: [],
+            childrenByTitleIndex: {}
         }, {
             title: 'and the second one',
             path: ['and the second one'],
             body: {
                 content: "second body\nmultiline",
             },
-            children: []
+            children: [],
+            childrenByTitleIndex: {}
         }, {
             title: 'and the third one without body',
             path: ['and the third one without body'],
             body: {
                 content: "",
             },
-            children: []
+            children: [],
+            childrenByTitleIndex: {}
         }]);
     });
 
@@ -152,27 +161,35 @@ multiline
             body: {
                 content: "first body",
             },
+            childrenByTitleIndex: {
+                'first child': 0,
+                'second child': 1,
+                'third child without body': 2
+            },
             children: [{
                 title: 'first child',
                 path: ['hello world!', 'first child'],
                 body: {
                     content: 'first child\'s body',
                 },
-                children: []
+                children: [],
+                childrenByTitleIndex: {}
             }, {
                 title: 'second child',
                 path: ['hello world!', 'second child'],
                 body: {
                     content: 'second child\'s body\nmultiline'
                 },
-                children: []
+                children: [],
+                childrenByTitleIndex: {}
             }, {
                 title: 'third child without body',
                 path: ['hello world!', 'third child without body'],
                 body: {
                     content: ''
                 },
-                children: []
+                children: [],
+                childrenByTitleIndex: {}
             }]
         }, {
             title: 'another top level item',
@@ -180,7 +197,8 @@ multiline
             body: {
                 content: "",
             },
-            children: []
+            children: [],
+            childrenByTitleIndex: {}
         }]);
     });
 });

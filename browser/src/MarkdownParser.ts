@@ -1,12 +1,28 @@
+import internal from "node:stream";
+
 export interface MarkdownBody {
     content: string;
+}
+
+export interface MarkdownNodeError {
+}
+
+export interface TwoOrMoreNodesHaveSameTitleError extends MarkdownNode {
+    title: string,
+    paths: Array<Array<string>>
+}
+
+function isTwoOrMoreNodesHaveSameTitleError(obj: any): obj is TwoOrMoreNodesHaveSameTitleError {
+    return !!obj.title && !!obj.childrenIndices;
 }
 
 export interface MarkdownNode {
     title: string;
     body: MarkdownBody;
     path: Array<string>;
+
     children: Array<MarkdownNode>;
+    childrenByTitleIndex:  { [key: string]: number };
 }
 
 function readAllSharpsFromStart(s: string) {
@@ -23,6 +39,7 @@ function parseChunk(chunk: string, parentPath: Array<String>): MarkdownNode {
     const split = (chunk.trim() + "\n").split("\n");
     const title = split[0];
     const body = split.slice(1).join("\n").trim();
+
     const path = Object.assign([], parentPath);
     path.push(title.trim());
 
@@ -32,14 +49,20 @@ function parseChunk(chunk: string, parentPath: Array<String>): MarkdownNode {
         const childrenSharps = readAllSharpsFromStart(childrenStr);
         const childChunks = ("\n" + childrenStr).split("\n" + childrenSharps + " ");
         childChunks.shift();
-        return {
+        const newNode = {
             title: title.trim(),
             path: path,
             body: {
                 content: body.substr(0, childrenStartAt).trim()
             },
-            children: childChunks.map(chunk => parseChunk(chunk, path))
-        }
+            children: childChunks.map(chunk => parseChunk(chunk, path)),
+            childrenByTitleIndex: {},
+        };
+        newNode.childrenByTitleIndex = newNode.children.reduce((index: { [key:string]: number }, childNode, idx) => {
+            index[childNode.title] = idx;
+            return index;
+        }, {});
+        return newNode;
     } else {
         return {
             title: title.trim(),
@@ -47,8 +70,9 @@ function parseChunk(chunk: string, parentPath: Array<String>): MarkdownNode {
             body: {
                 content: body.trim()
             },
-            children: []
-        }
+            children: [],
+            childrenByTitleIndex: {}
+        };
     }
 }
 
