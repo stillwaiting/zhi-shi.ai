@@ -66,6 +66,6 @@ describe('App', () => {
         let component = await createApp();
         fireEvent.click(component!.getByText('default data'));
         expect(reactDom.useHistory().push).toBeCalled();
-        expect((mocked(reactDom.useHistory().push).mock.calls[0][0])).toBe("/default data");
+        expect((mocked(reactDom.useHistory().push).mock.calls[0][0])).toBe("/default%20data");
     });
 });

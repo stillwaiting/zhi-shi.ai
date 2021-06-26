@@ -7,6 +7,9 @@ import TopicsTreeComponent from './TopicsTreeComponent';
 import parse, { MarkdownNode } from './MarkdownParser';
 import { BrowserRouter as Router, Route, Link, useHistory } from "react-router-dom";
 
+function generateNodePath(path: Array<string>) {
+  return '/' + path.map(item => encodeURI(item)).join('/');
+}
 
 function App() {
   const [unsubmittedData, setUnsubmittedData] = useState<string>("");
@@ -19,7 +22,7 @@ function App() {
         // console.log(response);
         return response.text();
       }).then(text => {
-        setNodes(parse(text));
+        setNodes(parse(text, []));
       });
     },
   []);
@@ -29,7 +32,7 @@ function App() {
   }
 
   const onSubmitClicked = () => {
-    setNodes(parse(unsubmittedData));
+    setNodes(parse(unsubmittedData, []));
   }
 
   const onIncreseWidthClick = () => {
@@ -55,7 +58,7 @@ function App() {
         }} data-testid='minus'>- width</a> <br />
 
         <TopicsTreeComponent nodes={nodes} onNodeClicked={(node) => {
-          history.push("/" + node.title);
+          history.push(generateNodePath(node.path));
         }} />
       </div>
 

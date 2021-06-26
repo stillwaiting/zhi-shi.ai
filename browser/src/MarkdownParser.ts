@@ -5,6 +5,7 @@ export interface MarkdownBody {
 export interface MarkdownNode {
     title: string;
     body: MarkdownBody;
+    path: Array<string>;
     children: Array<MarkdownNode>;
 }
 
@@ -18,13 +19,14 @@ function readAllSharpsFromStart(s: string) {
     return sharps;
 }
 
-function parseChunk(chunk: string): MarkdownNode {
+function parseChunk(chunk: string, parentPath: Array<String>): MarkdownNode {
     const split = (chunk.trim() + "\n").split("\n");
     const title = split[0];
     const body = split.slice(1).join("\n").trim();
+    const path = Object.assign([], parentPath);
+    path.push(title.trim());
 
     if (body.indexOf("\n#") >= 0 || body.startsWith("#")) {
-        // has children, TODO
         const childrenStartAt = body.indexOf("\n#");
         const childrenStr = body.substr(childrenStartAt+1);
         const childrenSharps = readAllSharpsFromStart(childrenStr);
@@ -32,14 +34,16 @@ function parseChunk(chunk: string): MarkdownNode {
         childChunks.shift();
         return {
             title: title.trim(),
+            path: path,
             body: {
                 content: body.substr(0, childrenStartAt).trim()
             },
-            children: childChunks.map(parseChunk)
+            children: childChunks.map(chunk => parseChunk(chunk, path))
         }
     } else {
         return {
             title: title.trim(),
+            path: path,
             body: {
                 content: body.trim()
             },
@@ -49,7 +53,7 @@ function parseChunk(chunk: string): MarkdownNode {
 }
 
 
-export default (mdString: string): Array<MarkdownNode> => {
+export default (mdString: string, parentPath: Array<String>): Array<MarkdownNode> => {
     mdString = mdString.trim();
 
     if (mdString.length == 0) {
@@ -65,5 +69,5 @@ export default (mdString: string): Array<MarkdownNode> => {
     const chunks = ("\n" + mdString).split("\n" + separator + " ");
     chunks.shift();
 
-    return chunks.map(chunk => parseChunk(chunk))
+    return chunks.map(chunk => parseChunk(chunk, parentPath))
 }
