@@ -13,6 +13,7 @@ jest.mock('react-router-dom', () => {
     };
     return {
         useHistory: () => history,
+        useLocation: jest.fn()
     };
 });
 
@@ -35,6 +36,9 @@ describe('App', () => {
         // https://github.com/jefflau/jest-fetch-mock/issues/184
         fetchMock.resetMocks();
         fetchMock.mockResponse('# default data');
+        (reactDom.useLocation as jest.Mock).mockReturnValue({
+            pathname: '/'
+        });
     });
 
     test('should load data from web', async () => {
@@ -68,4 +72,16 @@ describe('App', () => {
         expect(reactDom.useHistory().push).toBeCalled();
         expect((mocked(reactDom.useHistory().push).mock.calls[0][0])).toBe("/default%20data");
     });
+
+    test('location should be parsed and node must be selected', async () => {
+        (reactDom.useLocation as jest.Mock).mockReturnValue({
+            pathname: '/Hello%2Ftesting/another one'
+        });
+        let component = await createApp();
+        fireEvent.change(component.getByTestId('textarea'), { target: { value: '# Hello/testing\n ## another one' } });
+        fireEvent.click(component.getByTestId('submit'));
+
+        const lookupNodes = await component.findAllByText('another one');
+        expect(lookupNodes.find(item => item.className === 'selectedNode')).toBeTruthy();
+    })
 });

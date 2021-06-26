@@ -5,10 +5,10 @@ import SentenceComponent from './SentenceComponent'
 import QuestionAnswerComponent from './QuestionAnswerComponent';
 import TopicsTreeComponent from './TopicsTreeComponent';
 import parse, { MarkdownNode } from './MarkdownParser';
-import { BrowserRouter as Router, Route, Link, useHistory } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, useHistory, useLocation } from "react-router-dom";
 
 function generateNodePath(path: Array<string>) {
-  return '/' + path.map(item => encodeURI(item)).join('/');
+  return '/' + path.map(item => encodeURI(item).replace('/', '%2F') ).join('/');
 }
 
 function App() {
@@ -16,6 +16,8 @@ function App() {
   const [nodes, setNodes] = useState<MarkdownNode[]>([]);
   const [topicsWidth, setTopicsWidth] = useState<number>(300);
   const history = useHistory();
+  const location = useLocation();
+  const currentPath = location.pathname.split('/').slice(1).map(item => item.replace('%2F', '/'));
 
   useEffect(() => {
       fetch('https://stoic-swirles-1788c6.netlify.app/RU.md').then(response => {
@@ -57,7 +59,7 @@ function App() {
           onDecreaseWidthClick();
         }} data-testid='minus'>- width</a> <br />
 
-        <TopicsTreeComponent nodes={nodes} onNodeClicked={(node) => {
+        <TopicsTreeComponent nodes={nodes} currentNodePath={currentPath} onNodeClicked={(node) => {
           history.push(generateNodePath(node.path));
         }} />
       </div>
