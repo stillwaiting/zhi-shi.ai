@@ -1,7 +1,7 @@
 import { getNodeText } from '@testing-library/dom';
 import React, { useState } from 'react';
 
-import parse, { MarkdownNode } from './MarkdownParser';
+import parse, { MarkdownNode } from './md/MarkdownParser';
 import './TopicsTreeComponent.scss';
 
 type TopicsTreeComponent = {

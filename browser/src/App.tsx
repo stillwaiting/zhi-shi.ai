@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.scss';
-import BodyComponent from './BodyComponent';
-import SentenceComponent from './SentenceComponent'
-import QuestionAnswerComponent from './QuestionAnswerComponent';
+import BodyComponent from './body/BodyComponent';
 import TopicsTreeComponent from './TopicsTreeComponent';
-import parse, { MarkdownNode } from './MarkdownParser';
+import parse, { MarkdownNode } from './md/MarkdownParser';
 import NodeHeaderComponent from './NodeHeaderComponent';
 import { BrowserRouter as Router, Route, Link, useHistory, useLocation } from "react-router-dom";
 
