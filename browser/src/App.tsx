@@ -6,6 +6,7 @@ import SentenceComponent from './SentenceComponent'
 import QuestionAnswerComponent from './QuestionAnswerComponent';
 import TopicsTreeComponent from './TopicsTreeComponent';
 import parse, { MarkdownNode } from './MarkdownParser';
+import NodeHeaderComponent from './NodeHeaderComponent';
 import { BrowserRouter as Router, Route, Link, useHistory, useLocation } from "react-router-dom";
 
 function generateNodePath(path: Array<string>) {
@@ -91,7 +92,10 @@ function App() {
 
       <div className="content">
           {currentNode 
-            ? <BodyComponent body={currentNode.body} />
+            ? <div>
+                  <NodeHeaderComponent path={currentNode.path} onPathClicked={(path) => { history.push(generateNodePath(path)) }} />
+                  <BodyComponent body={currentNode.body} />
+              </div>
             : 'Not selected'
           }
       </div>

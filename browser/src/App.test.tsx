@@ -114,4 +114,18 @@ describe('App', () => {
         const lookupNodes = (await component.findAllByText(/.*blah content.*/)).filter(item => item.tagName != 'TEXTAREA');
         expect(lookupNodes).toHaveLength(1);
     });
+
+    test('redirects on NodeHeader clicks', async() => {
+        (reactDom.useLocation as jest.Mock).mockReturnValue({
+            pathname: '/Hello%2Ftesting/another one'
+        });
+        let component = await createApp();
+        fireEvent.change(component.getByTestId('textarea'), { target: { value: '# Hello/testing\nblah content \n## another one\n' } });
+        fireEvent.click(component.getByTestId('submit'));
+
+        const lookupNodes = (await component.findAllByTestId('NodeHeaderComponent'))[0];
+        fireEvent.click(lookupNodes.children[0].children[1]);
+
+        expect((mocked(reactDom.useHistory().push).mock.calls[0][0])).toBe("/Hello%2Ftesting");
+    });
 });
