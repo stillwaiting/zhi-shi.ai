@@ -1,7 +1,7 @@
 import { getNodeText } from '@testing-library/dom';
 import React, { useState } from 'react';
 
-import parse, { MarkdownBody, MarkdownNode } from './md/MarkdownParser';
+import { MarkdownBody, MarkdownNode } from './md/types';
 
 import './NodeHeaderComponent.scss';
 

@@ -1,5 +1,36 @@
 import mdParse from './MarkdownParser';
 
+const EMPTY_BODY = {
+    content: [
+        {
+            chunks: [],
+            rawLines: [""]
+        }
+    ],
+};
+
+function generateSingleLineBody(line) {
+    return {
+        content: [
+            {
+                chunks: [],
+                rawLines: [line]
+            }
+        ],
+    }
+}
+
+function generateTwoLineBody(line1, line2) {
+    return {
+        content: [
+            {
+                chunks: [],
+                rawLines: [line1, line2]
+            }
+        ],
+    }
+}
+
 describe('mdParse', () => {
     test('parses empty string', () => {
         expect(mdParse("", [])).toHaveLength(0);
@@ -21,9 +52,7 @@ describe('mdParse', () => {
         expect(mdParse('# hello world!', [])).toStrictEqual([{
             title: 'hello world!',
             path: ['hello world!'],
-            body: {
-                content: '',
-            },
+            body: EMPTY_BODY,
             children: [],
             childrenByTitleIndex: {}
         }]);
@@ -33,9 +62,7 @@ describe('mdParse', () => {
         expect(mdParse('# hello world!', ['parent'])).toStrictEqual([{
             title: 'hello world!',
             path: ['parent', 'hello world!'],
-            body: {
-                content: '',
-            },
+            body: EMPTY_BODY,
             children: [],
             childrenByTitleIndex: {}
         }]);
@@ -49,9 +76,7 @@ this is my shiny body
 `, [])).toStrictEqual([{
             title: 'hello world!',
             path: ['hello world!'],
-            body: {
-                content: 'this is my shiny body',
-            },
+            body: generateSingleLineBody('this is my shiny body'),
             children: [],
             childrenByTitleIndex: {}
         }]);
@@ -66,9 +91,7 @@ multiline!
 `, [])).toStrictEqual([{
             title: 'hello world!',
             path: ['hello world!'],
-            body: {
-                content: "this is my shiny body\nmultiline!",
-            },
+            body: generateTwoLineBody("this is my shiny body", "multiline!"),
             children: [],
             childrenByTitleIndex: {}
         }]);
@@ -82,17 +105,13 @@ multiline!
 `, [])).toStrictEqual([{
             title: 'hello world!',
             path: ['hello world!'],
-            body: {
-                content: "",
-            },
+            body: EMPTY_BODY,
             children: [],
             childrenByTitleIndex: {}
         }, {
             title: 'and the second one',
             path: ['and the second one'],
-            body: {
-                content: "",
-            },
+            body: EMPTY_BODY,
             children: [],
             childrenByTitleIndex: {}
         }]);
@@ -113,25 +132,19 @@ multiline
 `, [])).toStrictEqual([{
             title: 'hello world!',
             path: ['hello world!'],
-            body: {
-                content: "first body",
-            },
+            body: generateSingleLineBody("first body"),
             children: [],
             childrenByTitleIndex: {}
         }, {
             title: 'and the second one',
             path: ['and the second one'],
-            body: {
-                content: "second body\nmultiline",
-            },
+            body: generateTwoLineBody("second body", "multiline"),
             children: [],
             childrenByTitleIndex: {}
         }, {
             title: 'and the third one without body',
             path: ['and the third one without body'],
-            body: {
-                content: "",
-            },
+            body: EMPTY_BODY,
             children: [],
             childrenByTitleIndex: {}
         }]);
@@ -158,9 +171,7 @@ multiline
 `, [])).toStrictEqual([{
             title: 'hello world!',
             path: ['hello world!'],
-            body: {
-                content: "first body",
-            },
+            body: generateSingleLineBody("first body"),
             childrenByTitleIndex: {
                 'first child': 0,
                 'second child': 1,
@@ -169,34 +180,26 @@ multiline
             children: [{
                 title: 'first child',
                 path: ['hello world!', 'first child'],
-                body: {
-                    content: 'first child\'s body',
-                },
+                body: generateSingleLineBody('first child\'s body'),
                 children: [],
                 childrenByTitleIndex: {}
             }, {
                 title: 'second child',
                 path: ['hello world!', 'second child'],
-                body: {
-                    content: 'second child\'s body\nmultiline'
-                },
+                body: generateTwoLineBody('second child\'s body', 'multiline'),
                 children: [],
                 childrenByTitleIndex: {}
             }, {
                 title: 'third child without body',
                 path: ['hello world!', 'third child without body'],
-                body: {
-                    content: ''
-                },
+                body: EMPTY_BODY,
                 children: [],
                 childrenByTitleIndex: {}
             }]
         }, {
             title: 'another top level item',
             path: ['another top level item'],
-            body: {
-                content: "",
-            },
+            body: EMPTY_BODY,
             children: [],
             childrenByTitleIndex: {}
         }]);

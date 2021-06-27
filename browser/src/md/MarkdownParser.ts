@@ -1,17 +1,5 @@
-import internal from "node:stream";
-
-export interface MarkdownBody {
-    content: string;
-}
-
-export interface MarkdownNode {
-    title: string;
-    body: MarkdownBody;
-    path: Array<string>;
-
-    children: Array<MarkdownNode>;
-    childrenByTitleIndex:  { [key: string]: number };
-}
+import { MarkdownNode } from './types';
+import parseBody from './MarkdownBodyParser';
 
 function readAllSharpsFromStart(s: string) {
     let sharps = "";
@@ -40,9 +28,7 @@ function parseChunk(chunk: string, parentPath: Array<String>): MarkdownNode {
         const newNode = {
             title: title.trim(),
             path: path,
-            body: {
-                content: body.substr(0, childrenStartAt).trim()
-            },
+            body: parseBody(body.substr(0, childrenStartAt).trim()),
             children: childChunks.map(chunk => parseChunk(chunk, path)),
             childrenByTitleIndex: {},
         };
@@ -55,9 +41,7 @@ function parseChunk(chunk: string, parentPath: Array<String>): MarkdownNode {
         return {
             title: title.trim(),
             path: path,
-            body: {
-                content: body.trim()
-            },
+            body: parseBody(body.trim()),
             children: [],
             childrenByTitleIndex: {}
         };

@@ -6,7 +6,7 @@ import '@testing-library/jest-dom'
 import { enableFetchMocks } from 'jest-fetch-mock'
 import fetchMock from "jest-fetch-mock"
 import * as reactDom from 'react-router-dom';
-import {MarkdownNode} from './MarkdownParser';
+
 jest.mock('react-router-dom', () => {
     const history = {
         push: jest.fn(),
@@ -36,6 +36,7 @@ describe('App', () => {
         // https://github.com/jefflau/jest-fetch-mock/issues/184
         fetchMock.resetMocks();
         fetchMock.mockResponse('# default data');
+        (reactDom.useHistory().push as jest.Mock).mockReset();
         (reactDom.useLocation as jest.Mock).mockReturnValue({
             pathname: '/'
         });

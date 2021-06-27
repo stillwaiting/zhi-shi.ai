@@ -3,7 +3,8 @@ import logo from './logo.svg';
 import './App.scss';
 import BodyComponent from './body/BodyComponent';
 import TopicsTreeComponent from './TopicsTreeComponent';
-import parse, { MarkdownNode } from './md/MarkdownParser';
+import parse from './md/MarkdownParser';
+import { MarkdownNode } from './md/types';
 import NodeHeaderComponent from './NodeHeaderComponent';
 import { BrowserRouter as Router, Route, Link, useHistory, useLocation } from "react-router-dom";
 
