@@ -1,5 +1,6 @@
 import { getNodeText } from '@testing-library/dom';
 import React, { useState } from 'react';
+import './BodyComponent.scss';
 
 import { MarkdownBody, MarkdownNode } from '../md/types';
 
@@ -8,7 +9,7 @@ type BodyComponent = {
 };
 
 export default ( { body }: BodyComponent ) => {
-    return <pre>
+    return <pre className='BodyComponent'>
         {JSON.stringify(body.content, null, 2)}
     </pre>;
 }

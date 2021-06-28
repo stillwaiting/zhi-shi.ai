@@ -11,10 +11,18 @@ export interface MarkdownBodyTextChunk extends MarkdownBodyChunk {
     style: MarkdownTextStyle;
 }
 
+export const isMarkdownBodyTextChunk = (obj: any): obj is MarkdownBodyTextChunk => {
+    return typeof obj === 'object' && obj.text !== undefined && obj.style !== undefined;
+}
+
 export interface MarkdownBodyParagraph {
     rawLines: Array<string>;
 
     chunks: Array<MarkdownBodyChunk>;
+}
+
+export const isMarkdownBodyParagraph = (obj: any): obj is MarkdownBodyTextChunk => {
+    return typeof obj === 'object' && obj.rawLines !== undefined && obj.chunks !== undefined;
 }
 
 export interface MarkdownBody {

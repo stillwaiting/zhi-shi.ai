@@ -1,12 +1,7 @@
 import mdParse from './MarkdownParser';
 
 const EMPTY_BODY = {
-    content: [
-        {
-            chunks: [],
-            rawLines: [""]
-        }
-    ],
+    content: [],
 };
 
 function generateSingleLineBody(line) {
