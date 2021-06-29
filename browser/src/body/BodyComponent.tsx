@@ -2,16 +2,29 @@ import { getNodeText } from '@testing-library/dom';
 import React, { useState } from 'react';
 import './BodyComponent.scss';
 
-import { MarkdownBody, MarkdownNode } from '../md/types';
+import { isMarkdownBodyChunkList, isMarkdownBodyChunkTextParagraph, MarkdownBody, MarkdownNode } from '../md/types';
+import BodyTextParagraphComponent from './BodyTextParagraphComponent';
+// import BodyOrderedListComponent from './BodyOrderedListComponent';
+import BodyUnorderedListComponent from './BodyUnorderedListComponent';
 
 type BodyComponent = {
     body: MarkdownBody
 };
 
 export default ( { body }: BodyComponent ) => {
-    return <pre className='BodyComponent'>
-        {JSON.stringify(body.content, null, 2)}
-    </pre>;
+    return <div className='BodyComponent'>
+        {body.content.map((chunk, contentIdx) => {
+            if (isMarkdownBodyChunkTextParagraph(chunk)) {
+                return <BodyTextParagraphComponent data = {chunk} key={`content${contentIdx}`} />
+            } else if (isMarkdownBodyChunkList(chunk)) {
+                if (chunk.isOrdered) {
+                    return null;//<BodyOrderedListComponent data = {chunk} keys={`content${contentIdx}`} />
+                } else {
+                    return <BodyUnorderedListComponent data = {chunk} key={`content${contentIdx}`} />
+                }
+            }
+        })}
+    </div>;
 }
 
 

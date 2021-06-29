@@ -23,7 +23,7 @@ export interface MarkdownBodyChunkList extends MarkdownBodyChunk {
 }
 export const isMarkdownBodyChunkList = (obj: any): obj is MarkdownBodyChunkList => {
     const castObj = isMarkdownBodyChunk(obj) ? obj : null;
-    return !!castObj && obj.listType !== undefined;
+    return !!castObj && obj.items !== undefined && obj.start !== undefined;
 }
 
 export interface MarkdownTableCell {
