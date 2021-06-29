@@ -1,15 +1,10 @@
-// export enum MarkdownTextStyle {
-//     Plain = "plain",
-//     Bold = "bold",
-//     Italic = "italic"
-// }
 export interface MarkdownBodyChunk {
 }
 export const isMarkdownBodyChunk = (obj: any): obj is MarkdownBodyChunk => {
     return typeof obj === 'object';
 }
 export interface MarkdownBodyChunkTextParagraph extends MarkdownBodyChunk {
-    text: Array<string>;
+    text: string;
 }
 export const isMarkdownBodyChunkTextParagraph = (obj: any): obj is MarkdownBodyChunkTextParagraph => {
     const castObj = isMarkdownBodyChunk(obj) ? obj : null;
@@ -39,7 +34,7 @@ export interface MarkdownTableRow {
 export interface MarkdownBodyChunkTable extends MarkdownBodyChunk {
     rows: Array<MarkdownTableRow>
 }
-export const isMarkdownBodyChunkTable = (obj: any): obj is MarkdownBodyChunkList => {
+export const isMarkdownBodyChunkTable = (obj: any): obj is MarkdownBodyChunkTable => {
     const castObj = isMarkdownBodyChunk(obj) ? obj : null;
     return !!castObj && obj.rows !== undefined;
 }

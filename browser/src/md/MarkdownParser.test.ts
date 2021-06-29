@@ -8,7 +8,7 @@ function generateBody(line) {
     return {
         content: [
             {
-                text: [line]
+                text: line
             }
         ],
     }

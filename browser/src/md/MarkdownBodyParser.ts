@@ -1,8 +1,85 @@
-import { MarkdownBody, MarkdownBodyChunkList, MarkdownBodyChunkTextParagraph } from "./types"
+import { MarkdownBody, MarkdownBodyChunkList, MarkdownBodyChunkTable, MarkdownBodyChunkTextParagraph } from "./types"
 
 function beginningOfTable(line: string) {
-    // TODO
-    return false;
+    return (line.trim().length > 0 && line.trim()[0] === '|');
+}
+
+function findEndOfTable(lines: Array<string>, fromLineIdx: number) {
+    let currLine = fromLineIdx;
+    do {
+        currLine ++;
+    } while (currLine < lines.length && (lines[currLine].trim().startsWith('|') || lines[currLine].trim().startsWith('-')));
+    return currLine;
+}
+
+function parseRowSpan(line: string): number {
+    if (line.startsWith("cols=") || line.startsWith("rows=")) {
+        const split = line.split("rows=", 2);
+        return parseInt(split[1]);
+    }
+    return 1;
+}
+
+function parseColSpan(line: string): number {
+    if (line.startsWith("cols=") || line.startsWith("rows=")) {
+        const split = line.split("cols=", 2);
+        return parseInt(split[1]);
+    }
+    return 1;
+}
+
+function skipSpans(line: string): string {
+    if (line.startsWith("cols=") || line.startsWith("rows=")) {
+        const split = line.split("\n", 2);
+        if (split.length > 1) {
+            return split[1];
+        }
+    }
+    return line;
+}
+
+function parseTable(lines: Array<string>, currLine: number, lineAfterTable: number) {
+    let rowTexts: Array<string> = [];
+    const parsedTable: MarkdownBodyChunkTable = {
+        rows: []
+    };
+    for (let lineIdx = currLine; lineIdx < lineAfterTable; lineIdx++) {
+        const trimmedLine = lines[lineIdx].trim();
+        if (trimmedLine.startsWith('|-') || trimmedLine.startsWith('| --') || trimmedLine.startsWith('-')) {
+            parsedTable.rows.push({
+                cells: rowTexts.map(cellText => ({
+                    rowSpan: parseRowSpan(cellText),
+                    colSpan: parseColSpan(cellText),
+                    content: parseBody(skipSpans(cellText))
+                }))
+            });
+            rowTexts = [];
+        } else {
+            let split = trimmedLine.split('|');
+            split = split.slice(1);
+            if (rowTexts.length == 0) {
+                rowTexts = split.map(str => str.trim());
+            } else {
+                for (let splitIdx = 0; splitIdx < split.length; splitIdx++) {
+                    if (splitIdx < rowTexts.length) {
+                        rowTexts[splitIdx] += '\n' + split[splitIdx].trim();
+                    } else {
+                        rowTexts.push(split[splitIdx].trim());
+                    }
+                }
+            }
+        }
+    }
+    if (rowTexts.length > 0) {
+        parsedTable.rows.push({
+            cells: rowTexts.map(cellText => ({
+                rowSpan: parseRowSpan(cellText),
+                colSpan: parseColSpan(cellText),
+                content: parseBody(skipSpans(cellText))
+            }))
+        });
+    }
+    return parsedTable;
 }
 
 function beginningOfParagraph(line: string) {
@@ -19,19 +96,16 @@ function findEndOfParagraph(lines: Array<string>, fromLineIdx: number) {
 
 function parseParagraph(lines: Array<string>, fromLineIdx: number, lineAfterIdx: number): MarkdownBodyChunkTextParagraph {
     const parsedParagraph: MarkdownBodyChunkTextParagraph = {
-        text: []
+        text: ''
     }
-    let mergedText = '';
 
     for (let currLine = fromLineIdx; currLine < lineAfterIdx; currLine ++) {
-        if (mergedText.length == 0) {
-            mergedText = lines[currLine].trim();
+        if (parsedParagraph.text.length == 0) {
+            parsedParagraph.text = lines[currLine].trim();
         } else {
-            mergedText += ' ' + lines[currLine].trim();
+            parsedParagraph.text += ' ' + lines[currLine].trim();
         }
     }
-    // TODO: parse (split) inline things (link, bold, italic etc)
-    parsedParagraph.text.push(mergedText);
     return parsedParagraph;
 }
 
@@ -43,6 +117,9 @@ function isOrderedList(line: string): boolean {
     const trimmedLine = line.trim();
 
     const split = trimmedLine.split('. ');
+    if (split.length == 1) {
+        return false;
+    }
     if (split[0].length == 1) {
         return true;
     }
@@ -178,14 +255,12 @@ function parseBody(markdownRawBody: string): MarkdownBody {
             continue;
         }
 
-        // TODO
-
-        // if (beginningOfTable(lines[currLine])) {
-        //     const lineAfterTable = findEndOfTable(lines, currLine);
-        //     parsedBody.content.push(parseTable(lines, curr, lineAfterTable));
-        //     currLine = lineAfterTable;
-        //     continue;
-        // }
+        if (beginningOfTable(lines[currLine])) {
+            const lineAfterTable = findEndOfTable(lines, currLine);
+            parsedBody.content.push(parseTable(lines, currLine, lineAfterTable));
+            currLine = lineAfterTable;
+            continue;
+        }
 
         currLine += 1;
     }

@@ -10,7 +10,7 @@ describe('MarkdownBodyParser', () => {
     test('parses single line', () => {
         expect(parseBody('abc')).toStrictEqual({
             content: [{
-                text: ['abc']
+                text: 'abc'
             }]
         });
     });
@@ -18,7 +18,7 @@ describe('MarkdownBodyParser', () => {
     test('parses multiple lines', () => {
         expect(parseBody('abc\nqwe')).toStrictEqual({
             content: [{
-                text: ['abc qwe']
+                text: 'abc qwe'
             }]
         });
     });
@@ -26,9 +26,9 @@ describe('MarkdownBodyParser', () => {
     test('parses several paragraphs', () => {
         expect(parseBody('abc\nqwe\n\nfoo\nbar')).toStrictEqual({
             content: [{
-                text: ['abc qwe']
+                text: 'abc qwe'
             }, {
-                text: ['foo bar']
+                text: 'foo bar'
             }]
         });
     });
@@ -40,7 +40,7 @@ describe('MarkdownBodyParser', () => {
                 start: '-',
                 items: [{
                     content: [{
-                        text: ['hello']
+                        text: 'hello'
                     }]
                 }]
             }]
@@ -53,7 +53,7 @@ describe('MarkdownBodyParser', () => {
                 start: '-',
                 items: [{
                     content: [{
-                        text: ['hello world']
+                        text: 'hello world'
                     }]
                 }]
             }]
@@ -67,11 +67,11 @@ describe('MarkdownBodyParser', () => {
                 start: '-',
                 items: [{
                     content: [{
-                        text: ['hello world']
+                        text: 'hello world'
                     }]
                 },{
                     content: [{
-                        text: ['another one']
+                        text: 'another one'
                     }]
                 }]
             }]
@@ -94,19 +94,19 @@ describe('MarkdownBodyParser', () => {
                 start: "-",
                 items: [{
                     content: [{
-                        text: ["hello world"],
+                        text: "hello world",
                     }, {
                         isOrdered: false,
                         items: [{
                             content: [{
-                                text: ["this is a new list"],
+                                text: "this is a new list",
                             }],
                         }],
                         start: "-",
                     }],
                 }, {
                     content: [{
-                        text: ["and then back to the old one"],
+                        text: "and then back to the old one",
                     }],
                 }]
             }]
@@ -122,17 +122,17 @@ test
 next text
 `)).toStrictEqual({
             "content": [{
-                "text": ["some test"]
+                "text": "some test"
             }, {
                 "isOrdered": false,
                 "items": [{
                     "content": [{
-                        "text": ["list"]
+                        "text": "list"
                     }]
                 }],
                 "start": "-"
             }, {
-                "text": ["next text"]
+                "text": "next text"
             }]
         });
     });
@@ -144,13 +144,13 @@ next text
                 start: '1',
                 items: [{
                     content: [{
-                        text: ['hello']
+                        text: 'hello'
                     }]
                 }]
             }]
         });
     });
-    
+
     test('two line simple ordered list', () => {
         expect(parseBody('1. hello\n   world')).toStrictEqual({
             content: [{
@@ -158,7 +158,7 @@ next text
                 start: '1',
                 items: [{
                     content: [{
-                        text: ['hello world']
+                        text: 'hello world'
                     }]
                 }]
             }]
@@ -172,11 +172,11 @@ next text
                 start: '1',
                 items: [{
                     content: [{
-                        text: ['hello world']
+                        text: 'hello world'
                     }]
                 },{
                     content: [{
-                        text: ['another one']
+                        text: 'another one'
                     }]
                 }]
             }]
@@ -199,24 +199,213 @@ next text
                 start: "1",
                 items: [{
                     content: [{
-                        text: ["hello world"],
+                        text: "hello world",
                     }, {
                         isOrdered: true,
                         items: [{
                             content: [{
-                                text: ["this is a new list"],
+                                text: "this is a new list",
                             }],
                         }],
                         start: "1",
                     }],
                 }, {
                     content: [{
-                        text: ["and then back to the old one"],
+                        text: "and then back to the old one",
                     }],
                 }],
             }]
         });
     });
 
+    test('can parse empty table', () => {
+        expect(parseBody('|')).toStrictEqual({"content": [{"rows": [{"cells": [{"colSpan": 1, "content": {"content": []}, "rowSpan": 1}]}]}]});
+    });
+
+    test('can parse single cell', () => {
+        const parsedBody = parseBody('| blah');
+        expect(parsedBody).toStrictEqual({
+            "content": [
+              {"rows": [
+                  {"cells": [{
+                        "rowSpan": 1,
+                        "colSpan": 1,
+                        "content": {"content": [{
+                              "text": "blah"
+                            }
+                          ]}}]}]}]});
+    });
+
+    test('respects cols and rows', () => {
+        const parsedBody = parseBody('| cols=3;rows=5\n|blah');
+        expect(parsedBody).toStrictEqual({
+            "content": [
+              {
+                "rows": [
+                  {
+                    "cells": [
+                      {
+                        "rowSpan": 5,
+                        "colSpan": 3,
+                        "content": {
+                          "content": [
+                            {
+                              "text": "blah"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          });
+    });
+
+    test('can parse single row', () => {
+        const parsedBody = parseBody(`
+| blah | foo
+|      | baz
+`);
+        expect(parsedBody).toStrictEqual({
+            "content": [
+              {
+                "rows": [
+                  {
+                    "cells": [
+                      {
+                        "rowSpan": 1,
+                        "colSpan": 1,
+                        "content": {
+                          "content": [
+                            {
+                              "text": "blah"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "rowSpan": 1,
+                        "colSpan": 1,
+                        "content": {
+                          "content": [
+                            {
+                              "text": "foo baz"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          });
+    });
+
+    test('can parse multiple rows', () => {
+        const parsedBody = parseBody(`
+| blah | foo
+|      | baz
+----
+| - hello | 1. world
+| - goodbye | 2. cruel
+`);
+        expect(parsedBody).toStrictEqual({
+            "content": [
+              {
+                "rows": [
+                  {
+                    "cells": [
+                      {
+                        "rowSpan": 1,
+                        "colSpan": 1,
+                        "content": {
+                          "content": [
+                            {
+                              "text": "blah"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "rowSpan": 1,
+                        "colSpan": 1,
+                        "content": {
+                          "content": [
+                            {
+                              "text": "foo baz"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "cells": [
+                      {
+                        "rowSpan": 1,
+                        "colSpan": 1,
+                        "content": {
+                          "content": [
+                            {
+                              "isOrdered": false,
+                              "start": "-",
+                              "items": [
+                                {
+                                  "content": [
+                                    {
+                                      "text": "hello"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "content": [
+                                    {
+                                      "text": "goodbye"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "rowSpan": 1,
+                        "colSpan": 1,
+                        "content": {
+                          "content": [
+                            {
+                              "isOrdered": true,
+                              "start": "1",
+                              "items": [
+                                {
+                                  "content": [
+                                    {
+                                      "text": "world"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "content": [
+                                    {
+                                      "text": "cruel"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          });
+    });
 
 });

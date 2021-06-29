@@ -2,9 +2,10 @@ import { getNodeText } from '@testing-library/dom';
 import React, { useState } from 'react';
 import './BodyComponent.scss';
 
-import { isMarkdownBodyChunkList, isMarkdownBodyChunkTextParagraph, MarkdownBody, MarkdownNode } from '../md/types';
+import { isMarkdownBodyChunkList, isMarkdownBodyChunkTable, isMarkdownBodyChunkTextParagraph, MarkdownBody, MarkdownNode } from '../md/types';
 import BodyTextParagraphComponent from './BodyTextParagraphComponent';
 import BodyOrderedListComponent from './BodyOrderedListComponent';
+import BodyTableComponent from './BodyTableComponent';
 import BodyUnorderedListComponent from './BodyUnorderedListComponent';
 
 type BodyComponent = {
@@ -22,6 +23,8 @@ export default ( { body }: BodyComponent ) => {
                 } else {
                     return <BodyUnorderedListComponent data = {chunk} key={`content${contentIdx}`} />
                 }
+            } else if (isMarkdownBodyChunkTable(chunk)) {
+                return <BodyTableComponent data={chunk} key={`content${contentIdx}`} />
             }
         })}
     </div>;

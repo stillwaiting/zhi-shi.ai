@@ -8,8 +8,11 @@ import { MarkdownNode } from './md/types';
 import NodeHeaderComponent from './NodeHeaderComponent';
 import { BrowserRouter as Router, Route, Link, useHistory, useLocation } from "react-router-dom";
 
+import replaceAllInserter from 'string.prototype.replaceall';
+replaceAllInserter.shim();
+
 function generateNodePath(path: Array<string>) {
-  return '/' + path.map(item => encodeURI(item).replace('/', '%2F') ).join('/');
+  return '/' + path.map(item => encodeURI(item).replaceAll('/', '%2F') ).join('/');
 }
 
 function findNode(nodes: Array<MarkdownNode>, path: Array<string>): MarkdownNode | null {
@@ -40,7 +43,9 @@ function App() {
   const [topicsWidth, setTopicsWidth] = useState<number>(300);
   const history = useHistory();
   const location = useLocation();
-  const currentPath = location.pathname.split('/').slice(1).map(item => item.replace('%2F', '/'));
+  const currentPath = location.pathname.split('/').slice(1).map(item => {
+    return item.replaceAll('%2F', '/')
+  });
 
   useEffect(() => {
       fetch('https://stoic-swirles-1788c6.netlify.app/RU.md').then(response => {

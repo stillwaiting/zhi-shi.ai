@@ -2,6 +2,7 @@ import { MarkdownBody } from "../md/types";
 import React from 'react';
 import { fireEvent, render, RenderResult, screen } from '@testing-library/react';
 import BodyComponent from './BodyComponent';
+import parseBody from "../md/MarkdownBodyParser";
 
 describe('BodyComponent', () => {
 
@@ -99,5 +100,19 @@ describe('BodyComponent', () => {
         expect(secondLiElt.getElementsByTagName('p')[0].innerHTML).toStrictEqual('foo');
         expect(thirdLiElt.getElementsByTagName('p')[0].innerHTML).toStrictEqual('world');
         expect(component.getByText('next paragraph')).toBeDefined();
+    });
+
+    test('Can render table', () => {
+        const body = parseBody(`
+| hello |
+---
+|       | world
+        `)
+        const component = render(<BodyComponent body={body} />);
+        const helloElt = component.getByText('hello');
+        const helloTrElt = helloElt.closest('tr');
+        const secondTrElt = helloTrElt.nextSibling as HTMLElement;
+        const secondTrSecondTdElt = secondTrElt.children[1];
+        expect(secondTrSecondTdElt.getElementsByTagName('p')[0].innerHTML).toStrictEqual('world');
     });
 });
