@@ -1,32 +1,51 @@
-export enum MarkdownTextStyle {
-    Plain = "plain",
-    Bold = "bold",
-    Italic = "italic"
-}
+// export enum MarkdownTextStyle {
+//     Plain = "plain",
+//     Bold = "bold",
+//     Italic = "italic"
+// }
 export interface MarkdownBodyChunk {
-
 }
-export interface MarkdownBodyTextChunk extends MarkdownBodyChunk {
-    text: string;
-    style: MarkdownTextStyle;
+export const isMarkdownBodyChunk = (obj: any): obj is MarkdownBodyChunk => {
+    return typeof obj === 'object';
 }
-
-export const isMarkdownBodyTextChunk = (obj: any): obj is MarkdownBodyTextChunk => {
-    return typeof obj === 'object' && obj.text !== undefined && obj.style !== undefined;
+export interface MarkdownBodyChunkTextParagraph extends MarkdownBodyChunk {
+    text: Array<string>;
 }
-
-export interface MarkdownBodyParagraph {
-    rawLines: Array<string>;
-
-    chunks: Array<MarkdownBodyChunk>;
+export const isMarkdownBodyChunkTextParagraph = (obj: any): obj is MarkdownBodyChunkTextParagraph => {
+    const castObj = isMarkdownBodyChunk(obj) ? obj : null;
+    return !!castObj && obj.text !== undefined;
 }
 
-export const isMarkdownBodyParagraph = (obj: any): obj is MarkdownBodyTextChunk => {
-    return typeof obj === 'object' && obj.rawLines !== undefined && obj.chunks !== undefined;
+export interface MarkdownBodyChunkList extends MarkdownBodyChunk {
+    start: string,
+    isOrdered: boolean,
+    items: Array<MarkdownBody>;
+}
+export const isMarkdownBodyChunkList = (obj: any): obj is MarkdownBodyChunkList => {
+    const castObj = isMarkdownBodyChunk(obj) ? obj : null;
+    return !!castObj && obj.listType !== undefined;
+}
+
+export interface MarkdownTableCell {
+    rowSpan: number;
+    colSpan: number;
+    content: MarkdownBody;
+}
+
+export interface MarkdownTableRow {
+    cells: Array<MarkdownTableCell>;
+}
+
+export interface MarkdownBodyChunkTable extends MarkdownBodyChunk {
+    rows: Array<MarkdownTableRow>
+}
+export const isMarkdownBodyChunkTable = (obj: any): obj is MarkdownBodyChunkList => {
+    const castObj = isMarkdownBodyChunk(obj) ? obj : null;
+    return !!castObj && obj.rows !== undefined;
 }
 
 export interface MarkdownBody {
-    content: Array<MarkdownBodyParagraph>;
+    content: Array<MarkdownBodyChunk>;
 }
 
 export interface MarkdownNode {
