@@ -4,7 +4,7 @@ import './BodyComponent.scss';
 
 import { isMarkdownBodyChunkList, isMarkdownBodyChunkTextParagraph, MarkdownBody, MarkdownNode } from '../md/types';
 import BodyTextParagraphComponent from './BodyTextParagraphComponent';
-// import BodyOrderedListComponent from './BodyOrderedListComponent';
+import BodyOrderedListComponent from './BodyOrderedListComponent';
 import BodyUnorderedListComponent from './BodyUnorderedListComponent';
 
 type BodyComponent = {
@@ -18,7 +18,7 @@ export default ( { body }: BodyComponent ) => {
                 return <BodyTextParagraphComponent data = {chunk} key={`content${contentIdx}`} />
             } else if (isMarkdownBodyChunkList(chunk)) {
                 if (chunk.isOrdered) {
-                    return null;//<BodyOrderedListComponent data = {chunk} keys={`content${contentIdx}`} />
+                    return <BodyOrderedListComponent data = {chunk} key={`content${contentIdx}`} />
                 } else {
                     return <BodyUnorderedListComponent data = {chunk} key={`content${contentIdx}`} />
                 }

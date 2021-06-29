@@ -55,6 +55,46 @@ describe('BodyComponent', () => {
         const helloLiElt = helloElt.closest('li');
         const secondLiElt = helloLiElt.nextSibling as HTMLElement;
         const thirdLiElt = secondLiElt.nextSibling as HTMLElement;
+
+        expect(secondLiElt.getElementsByTagName('p')[0].innerHTML).toStrictEqual('foo');
+        expect(thirdLiElt.getElementsByTagName('p')[0].innerHTML).toStrictEqual('world');
+        expect(component.getByText('next paragraph')).toBeDefined();
+    });
+
+    test('Can render ordered lists', () => {
+        const body: MarkdownBody = {
+            content: [{
+                start: '1',
+                isOrdered: true,
+                items: [{
+                    content: [{
+                        text: 'hello',
+                    }]
+                }, {
+                    content: [{
+                        start: '1',
+                        isOrdered: true,
+                        items: [{
+                            content: [{
+                                text:'foo'
+                            }]
+                        }]
+                    }]    
+                }, {
+                    content: [{
+                        text: 'world'
+                    }]
+                }]
+            }, {
+                text: 'next paragraph'
+            }]
+        };
+        const component = render(<BodyComponent body = {body} />);
+
+        const helloElt = component.getByText('hello');
+        const helloLiElt = helloElt.closest('li');
+        const secondLiElt = helloLiElt.nextSibling as HTMLElement;
+        const thirdLiElt = secondLiElt.nextSibling as HTMLElement;
         
         expect(secondLiElt.getElementsByTagName('p')[0].innerHTML).toStrictEqual('foo');
         expect(thirdLiElt.getElementsByTagName('p')[0].innerHTML).toStrictEqual('world');
