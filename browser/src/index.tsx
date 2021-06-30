@@ -5,22 +5,6 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router, Route, Switch, Link, useHistory } from "react-router-dom";
 
-let lastHash = '#';
-setInterval(() => {
-  if (window.location.hash != lastHash) {
-    lastHash = window.location.hash;
-    const anchor = lastHash.substr(1);
-    const higlightAreas = document.getElementsByClassName('highlight');
-    for (let areaIdx = 0; areaIdx < higlightAreas.length; areaIdx++) {
-      const area = higlightAreas[areaIdx];
-      area.classList.remove('active');
-      if (area.classList.contains('highlight-' + anchor)) {
-        area.classList.add('active');
-      }
-    }
-  }
-}, 100);
-
 ReactDOM.render(
   <React.StrictMode>
     <Router>
