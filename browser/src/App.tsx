@@ -38,6 +38,21 @@ function findNode(nodes: Array<MarkdownNode>, path: Array<string>): MarkdownNode
   return lastNode || null;
 }
 
+function buildRelativeLink(link: string, currentPath: string[]): string {
+  if (link.startsWith("../") && currentPath.length >= 1) {
+    return buildRelativeLink(link.substr(3), currentPath.slice(0, currentPath.length - 1));
+
+  } else if (link.startsWith('/')) {
+    return link;
+
+  } else if (link.startsWith('#') || link.length == 0) {
+    return generateNodePath(currentPath) + link;
+    
+  } else {
+    return generateNodePath(currentPath) + "/" + link;
+  }
+}
+
 function App() {
   const [unsubmittedData, setUnsubmittedData] = useState<string>("");
   const [nodes, setNodes] = useState<MarkdownNode[]>([]);
@@ -100,7 +115,7 @@ function App() {
             ? <div>
                   <NodeHeaderComponent path={currentNode.path} onPathClicked={(path) => { history.push(generateNodePath(path)) }} />
                   <BodyComponent body={currentNode.body} onLinkClicked={(link) => {
-                      history.push(link);
+                      history.push(buildRelativeLink(link, currentPath));
                   }} />
               </div>
             : 'Not selected'

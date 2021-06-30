@@ -11,7 +11,7 @@ type BodyTableComponent = {
 };
 
 export default ( { data, onLinkClicked }: BodyTableComponent ) => {
-    return <table className='BodyTableComponent'>
+    return <table className='BodyTableComponent'><tbody>
         {data.rows.map((row, rowIdx) => 
             <tr key={`tr${rowIdx}`}>
                 {row.cells.map((cell, cellIdx) => 
@@ -22,7 +22,7 @@ export default ( { data, onLinkClicked }: BodyTableComponent ) => {
                 )}
             </tr>
         )}
-    </table>;
+    </tbody></table>;
 }
 
 

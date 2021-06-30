@@ -151,4 +151,26 @@ blah content
 
         expect((mocked(reactDom.useHistory().push).mock.calls[0][0])).toBe("/Hello%2Ftesting");
     });
+
+    test('supports link traversal', async() => {
+        (reactDom.useLocation as jest.Mock).mockReturnValue({
+            pathname: '/Hello%2Ftesting/another one'
+        });
+        let component = await createApp();
+        fireEvent.change(component.getByTestId('textarea'), { target: { value: `
+# Hello/testing
+
+blah content
+
+## another one
+
+[boom](../#hehe)
+
+` } });
+        fireEvent.click(component.getByTestId('submit'));
+
+        fireEvent.click(component.getByText('boom'));
+
+        expect((mocked(reactDom.useHistory().push).mock.calls[0][0])).toBe("/Hello%2Ftesting#hehe");
+    });
 });
