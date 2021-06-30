@@ -4,6 +4,9 @@ import './BodyTextParagraphComponent.scss';
 
 import { isMarkdownBodyChunkTextParagraph, MarkdownBody, MarkdownBodyChunkTextParagraph, MarkdownNode } from '../md/types';
 
+import replaceAllInserter from 'string.prototype.replaceall';
+replaceAllInserter.shim();
+
 type BodyTextParagraphComponent = {
     data: MarkdownBodyChunkTextParagraph
 };
@@ -38,6 +41,8 @@ function toHtml(text: string): string {
         return chunk;
     }).join('');
 
+
+    htmlText = htmlText.replaceAll(/\[(.*?)\]\((.*?)\)/g, '<a href=\'$2\'>$1</a>');
 
     return htmlText;
 }

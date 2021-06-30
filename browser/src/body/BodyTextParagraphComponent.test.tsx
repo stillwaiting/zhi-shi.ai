@@ -18,4 +18,12 @@ describe('BodyTextParagraphComponent', () => {
         const component = render(<BodyTextParagraphComponent data={{text: "*hello **world***"}} />);
         expect(component.container.children[0].innerHTML).toBe('<i>hello <b>world</b></i>');
     });
+
+    test('renders links', () => {
+        const text = `
+            hello [world](blah/test test""/another one#anchor)
+        `
+        const component = render(<BodyTextParagraphComponent data={{text: text}} />);
+        expect(component.getByText('world').outerHTML).toBe('<a href="blah/test test&quot;&quot;/another one#anchor">world</a>');
+    });
 });
