@@ -408,4 +408,15 @@ next text
           });
     });
 
+    test('can parse question and answers', () => {
+      const parsedBody = parseBody(`
+
+? this is a question...
+! and this is an answer then
+
+`);
+      expect(parsedBody).toStrictEqual({"content": [{"answers": [{"text": "and this is an answer then"}], "question": {text: "this is a question..."}}]} );
+      
+    });
+
 });

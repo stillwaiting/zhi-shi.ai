@@ -1,6 +1,6 @@
-import { MarkdownBody, MarkdownBodyChunkList, MarkdownBodyChunkTable, MarkdownBodyChunkTextParagraph } from "./types"
+import { MarkdownBody, MarkdownBodyChunkList, MarkdownBodyChunkQuestionAnswers, MarkdownBodyChunkTable, MarkdownBodyChunkTextParagraph } from "./types"
 
-function beginningOfTable(line: string) {
+function isBeginningOfTable(line: string) {
     return (line.trim().length > 0 && line.trim()[0] === '|');
 }
 
@@ -82,15 +82,15 @@ function parseTable(lines: Array<string>, currLine: number, lineAfterTable: numb
     return parsedTable;
 }
 
-function beginningOfParagraph(line: string) {
-    return (line.trim().length > 0 && !beginningOfList(line) && !beginningOfTable(line));
+function isBeginningOfParagraph(line: string) {
+    return (line.trim().length > 0 && !isBeginningOfList(line) && !isBeginningOfTable(line)) && !isBeginningOfQuestionAnswers(line);
 }
 
 function findEndOfParagraph(lines: Array<string>, fromLineIdx: number) {
     let currentLine = fromLineIdx;
     do {
         currentLine += 1;
-    } while (currentLine < lines.length && beginningOfParagraph(lines[currentLine]));
+    } while (currentLine < lines.length && isBeginningOfParagraph(lines[currentLine]));
     return currentLine;
 }
 
@@ -134,7 +134,7 @@ function isUnorderedList(line: string) {
     return trimmedLine.startsWith('- ');
 }
 
-function beginningOfList(line: string) {
+function isBeginningOfList(line: string) {
     return isOrderedList(line) || isUnorderedList(line);
 }
 
@@ -232,6 +232,37 @@ function parseList(lines: Array<string>, startFromLineIdx: number, untilLineIdx:
     return parsedList;
 }
 
+function isBeginningOfQuestionAnswers(line: string) {
+    return line.trim().startsWith('?');
+}
+
+function findEndOfQuestionAnswers(lines: Array<string>, fromLineIdx: number) {
+    let currLine = fromLineIdx;
+    do {
+        currLine ++;
+    } while (currLine < lines.length && (lines[currLine].trim().startsWith('?') || lines[currLine].trim().startsWith('!')));
+    return currLine;
+}
+
+function parseQuestionsAnswers(lines: Array<string>, startFromLineIdx: number, untilLineIdx: number): MarkdownBodyChunkQuestionAnswers {
+    const parsedQuestionAnswers: MarkdownBodyChunkQuestionAnswers = {
+        question: {
+            text: ''
+        },
+        answers: []
+    };
+    let nextItemLines: Array<string> = [];
+    for (let lineIdx = startFromLineIdx; lineIdx < untilLineIdx; lineIdx ++ ) {
+        if (lineIdx == startFromLineIdx) {
+            parsedQuestionAnswers.question = parseParagraph([lines[lineIdx].trim().substr(1)], 0, 1);
+            continue;
+        }
+
+        parsedQuestionAnswers.answers.push(parseParagraph([lines[lineIdx].trim().substr(1)], 0, 1));
+    }
+    return parsedQuestionAnswers;
+}
+
 function parseBody(markdownRawBody: string): MarkdownBody {
     const parsedBody: MarkdownBody = {
         content: []
@@ -241,23 +272,30 @@ function parseBody(markdownRawBody: string): MarkdownBody {
 
     let currLine = 0;
     while (currLine < lines.length) {
-        if (beginningOfParagraph(lines[currLine])) {
+        if (isBeginningOfParagraph(lines[currLine])) {
             const lineAfterParagraph = findEndOfParagraph(lines, currLine);
             parsedBody.content.push(parseParagraph(lines, currLine, lineAfterParagraph));
             currLine = lineAfterParagraph;
             continue;
         }
 
-        if (beginningOfList(lines[currLine])) {
+        if (isBeginningOfList(lines[currLine])) {
             const lineAfterList = findEndOfList(lines, currLine);
             parsedBody.content.push(parseList(lines, currLine, lineAfterList));
             currLine = lineAfterList;
             continue;
         }
 
-        if (beginningOfTable(lines[currLine])) {
+        if (isBeginningOfTable(lines[currLine])) {
             const lineAfterTable = findEndOfTable(lines, currLine);
             parsedBody.content.push(parseTable(lines, currLine, lineAfterTable));
+            currLine = lineAfterTable;
+            continue;
+        }
+
+        if (isBeginningOfQuestionAnswers(lines[currLine])) {
+            const lineAfterTable = findEndOfQuestionAnswers(lines, currLine);
+            parsedBody.content.push(parseQuestionsAnswers(lines, currLine, lineAfterTable));
             currLine = lineAfterTable;
             continue;
         }
