@@ -46,6 +46,8 @@ function toHtml(text: string): string {
 
     htmlText = htmlText.replaceAll(/\[(.*?)\]\((.*?)\)/g, '<a href=\'$2\'>$1</a>');
 
+    htmlText = htmlText.replaceAll(/\[#(.*?)\](.*?)\[\/\]/g, '<span class="highlight highlight-$1">$2</span>(<a href=\'#$1\'>$1</a>)')
+
     return htmlText;
 }
 
@@ -56,9 +58,11 @@ export default ( { data, onLinkClicked }: BodyTextParagraphComponent ) => {
         onClick={(e: React.MouseEvent<HTMLElement>) => {
             const targetLink = (e.target as HTMLElement).closest('a');
             if(!targetLink) return;
-            e.preventDefault();
-            
-            onLinkClicked(targetLink.attributes[0].value); 
+            const href = targetLink.attributes[0].value;
+            if (!href.startsWith('#')) {
+                e.preventDefault();
+                onLinkClicked(targetLink.attributes[0].value); 
+            }
         }}
     />;
 }

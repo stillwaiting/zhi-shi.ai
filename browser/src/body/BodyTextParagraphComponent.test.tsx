@@ -27,7 +27,7 @@ describe('BodyTextParagraphComponent', () => {
         expect(component.getByText('world').outerHTML).toBe('<a href="blah/test test&quot;&quot;/another one#anchor">world</a>');
     });
 
-    test('does not replace in links', () => {
+    test('fires events on link click', () => {
         const text = `
             hello [world](blah/test test""/another one#anchor)
         `
@@ -36,4 +36,23 @@ describe('BodyTextParagraphComponent', () => {
         fireEvent.click(component.getByText('world'));
         expect(link).toBe('blah/test test""/another one#anchor');
     });
+
+    test('does not fire events on anchor click', () => {
+        const text = `
+            hello [world](#foobar)
+        `
+        let link = '';
+        const component = render(<BodyTextParagraphComponent data={{text: text}} onLinkClicked={(firedLink) =>{ link = firedLink}} />);
+        fireEvent.click(component.getByText('world'));
+        expect(link).toBe('');
+    });
+
+    test('renders highlighted areas', () => {
+        const text = `
+            hello [#world]foo bar[/]
+        `
+        const component = render(<BodyTextParagraphComponent data={{text: text}} onLinkClicked={(firedLink) =>{}} />);
+        expect(component.container.children[0].innerHTML.trim()).toBe("hello <span class=\"highlight highlight-world\">foo bar</span>(<a href=\"#world\">world</a>)");
+    });
+    
 });
