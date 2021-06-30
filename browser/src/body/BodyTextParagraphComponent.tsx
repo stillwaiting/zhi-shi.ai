@@ -4,11 +4,13 @@ import './BodyTextParagraphComponent.scss';
 
 import { isMarkdownBodyChunkTextParagraph, MarkdownBody, MarkdownBodyChunkTextParagraph, MarkdownNode } from '../md/types';
 
+// @ts-ignore
 import replaceAllInserter from 'string.prototype.replaceall';
 replaceAllInserter.shim();
 
 type BodyTextParagraphComponent = {
-    data: MarkdownBodyChunkTextParagraph
+    data: MarkdownBodyChunkTextParagraph,
+    onLinkClicked: (link: string) => void
 };
 
 // Being pragmatic and decided not to parse it completely
@@ -47,8 +49,18 @@ function toHtml(text: string): string {
     return htmlText;
 }
 
-export default ( { data }: BodyTextParagraphComponent ) => {
-    return <p className='BodyTextParagraphComponent' dangerouslySetInnerHTML = {{__html: toHtml(data.text)}} />;
+export default ( { data, onLinkClicked }: BodyTextParagraphComponent ) => {
+    return <p 
+        className='BodyTextParagraphComponent' 
+        dangerouslySetInnerHTML = {{__html: toHtml(data.text)}} 
+        onClick={(e: React.MouseEvent<HTMLElement>) => {
+            const targetLink = (e.target as HTMLElement).closest('a');
+            if(!targetLink) return;
+            e.preventDefault();
+            
+            onLinkClicked(targetLink.attributes[0].value); 
+        }}
+    />;
 }
 
 

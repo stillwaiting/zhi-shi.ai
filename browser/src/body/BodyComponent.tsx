@@ -9,22 +9,23 @@ import BodyTableComponent from './BodyTableComponent';
 import BodyUnorderedListComponent from './BodyUnorderedListComponent';
 
 type BodyComponent = {
-    body: MarkdownBody
+    body: MarkdownBody,
+    onLinkClicked: (link: string) => void
 };
 
-export default ( { body }: BodyComponent ) => {
+export default ( { body, onLinkClicked }: BodyComponent ) => {
     return <div className='BodyComponent'>
         {body.content.map((chunk, contentIdx) => {
             if (isMarkdownBodyChunkTextParagraph(chunk)) {
-                return <BodyTextParagraphComponent data = {chunk} key={`content${contentIdx}`} />
+                return <BodyTextParagraphComponent data = {chunk} key={`content${contentIdx}`} onLinkClicked={onLinkClicked} />
             } else if (isMarkdownBodyChunkList(chunk)) {
                 if (chunk.isOrdered) {
-                    return <BodyOrderedListComponent data = {chunk} key={`content${contentIdx}`} />
+                    return <BodyOrderedListComponent data = {chunk} key={`content${contentIdx}`} onLinkClicked={onLinkClicked} />
                 } else {
-                    return <BodyUnorderedListComponent data = {chunk} key={`content${contentIdx}`} />
+                    return <BodyUnorderedListComponent data = {chunk} key={`content${contentIdx}`} onLinkClicked={onLinkClicked} />
                 }
             } else if (isMarkdownBodyChunkTable(chunk)) {
-                return <BodyTableComponent data={chunk} key={`content${contentIdx}`} />
+                return <BodyTableComponent data={chunk} key={`content${contentIdx}`} onLinkClicked={onLinkClicked} />
             }
         })}
     </div>;

@@ -1,6 +1,10 @@
 export interface MarkdownNodeError {
 }
 
+// Links - must be correct
+// Titles - must not contain special characters "*", "_", "<", ">"
+// TItles - must be unique
+
 export interface TwoOrMoreNodesHaveSameTitleError extends MarkdownNodeError {
     title: string,
     paths: Array<Array<string>>

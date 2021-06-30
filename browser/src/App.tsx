@@ -8,6 +8,7 @@ import { MarkdownNode } from './md/types';
 import NodeHeaderComponent from './NodeHeaderComponent';
 import { BrowserRouter as Router, Route, Link, useHistory, useLocation } from "react-router-dom";
 
+ // @ts-ignore
 import replaceAllInserter from 'string.prototype.replaceall';
 replaceAllInserter.shim();
 
@@ -98,7 +99,9 @@ function App() {
           {currentNode 
             ? <div>
                   <NodeHeaderComponent path={currentNode.path} onPathClicked={(path) => { history.push(generateNodePath(path)) }} />
-                  <BodyComponent body={currentNode.body} />
+                  <BodyComponent body={currentNode.body} onLinkClicked={(link) => {
+                      history.push(link);
+                  }} />
               </div>
             : 'Not selected'
           }

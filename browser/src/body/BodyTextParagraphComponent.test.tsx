@@ -7,7 +7,7 @@ import BodyTextParagraphComponent from "./BodyTextParagraphComponent";
 
 describe('BodyTextParagraphComponent', () => {
     test('renders decorations', () => {
-        const component = render(<BodyTextParagraphComponent data={{text: "*hello* **world** _foo_ __bar__"}} />);
+        const component = render(<BodyTextParagraphComponent data={{text: "*hello* **world** _foo_ __bar__"}} onLinkClicked={() =>{}} />);
         expect(component.getByText('hello').tagName).toBe('I');
         expect(component.getByText('world').tagName).toBe('B');
         expect(component.getByText('foo').tagName).toBe('I');
@@ -15,7 +15,7 @@ describe('BodyTextParagraphComponent', () => {
     });
 
     test('renders nested decorations', () => {
-        const component = render(<BodyTextParagraphComponent data={{text: "*hello **world***"}} />);
+        const component = render(<BodyTextParagraphComponent data={{text: "*hello **world***"}} onLinkClicked={() =>{}} />);
         expect(component.container.children[0].innerHTML).toBe('<i>hello <b>world</b></i>');
     });
 
@@ -23,7 +23,17 @@ describe('BodyTextParagraphComponent', () => {
         const text = `
             hello [world](blah/test test""/another one#anchor)
         `
-        const component = render(<BodyTextParagraphComponent data={{text: text}} />);
+        const component = render(<BodyTextParagraphComponent data={{text: text}} onLinkClicked={() =>{}} />);
         expect(component.getByText('world').outerHTML).toBe('<a href="blah/test test&quot;&quot;/another one#anchor">world</a>');
+    });
+
+    test('does not replace in links', () => {
+        const text = `
+            hello [world](blah/test test""/another one#anchor)
+        `
+        let link = '';
+        const component = render(<BodyTextParagraphComponent data={{text: text}} onLinkClicked={(firedLink) =>{ link = firedLink}} />);
+        fireEvent.click(component.getByText('world'));
+        expect(link).toBe('blah/test test""/another one#anchor');
     });
 });

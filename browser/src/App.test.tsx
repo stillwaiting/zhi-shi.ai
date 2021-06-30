@@ -129,4 +129,26 @@ describe('App', () => {
 
         expect((mocked(reactDom.useHistory().push).mock.calls[0][0])).toBe("/Hello%2Ftesting");
     });
+
+    test('redirects on body link clicks', async() => {
+        (reactDom.useLocation as jest.Mock).mockReturnValue({
+            pathname: '/Hello%2Ftesting/another one'
+        });
+        let component = await createApp();
+        fireEvent.change(component.getByTestId('textarea'), { target: { value: `
+# Hello/testing
+
+blah content
+
+## another one
+
+[boom](/Hello%2Ftesting)
+
+` } });
+        fireEvent.click(component.getByTestId('submit'));
+
+        fireEvent.click(component.getByText('boom'));
+
+        expect((mocked(reactDom.useHistory().push).mock.calls[0][0])).toBe("/Hello%2Ftesting");
+    });
 });
