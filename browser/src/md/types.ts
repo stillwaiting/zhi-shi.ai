@@ -43,6 +43,11 @@ export interface MarkdownBodyChunkQuestionAnswers extends MarkdownBodyChunk {
     question: MarkdownBodyChunkTextParagraph,
     answers: Array<MarkdownBodyChunkTextParagraph>
 }
+export const isMarkdownBodyChunkQuestionAnswers = (obj: any): obj is MarkdownBodyChunkQuestionAnswers => {
+    const castObj = isMarkdownBodyChunk(obj) ? obj : null;
+    return !!castObj && obj.question !== undefined;
+}
+
 
 export interface MarkdownBody {
     content: Array<MarkdownBodyChunk>;

@@ -15,7 +15,7 @@ describe('BodyComponent', () => {
             }]
         };
 
-        const component = render(<BodyComponent body = {body} />);
+        const component = render(<BodyComponent body = {body} onLinkClicked={() => {}} />);
         const helloElt = component.getByText('hello');
         const worldElt = component.getByText('world');
         expect(helloElt).toBeDefined();
@@ -50,11 +50,11 @@ describe('BodyComponent', () => {
                 text: 'next paragraph'
             }]
         };
-        const component = render(<BodyComponent body = {body} />);
+        const component = render(<BodyComponent body = {body} onLinkClicked={() => {}} />);
 
         const helloElt = component.getByText('hello');
         const helloLiElt = helloElt.closest('li');
-        const secondLiElt = helloLiElt.nextSibling as HTMLElement;
+        const secondLiElt = helloLiElt!.nextSibling as HTMLElement;
         const thirdLiElt = secondLiElt.nextSibling as HTMLElement;
 
         expect(secondLiElt.getElementsByTagName('p')[0].innerHTML).toStrictEqual('foo');
@@ -90,11 +90,11 @@ describe('BodyComponent', () => {
                 text: 'next paragraph'
             }]
         };
-        const component = render(<BodyComponent body = {body} />);
+        const component = render(<BodyComponent body = {body} onLinkClicked={() => {}} />);
 
         const helloElt = component.getByText('hello');
         const helloLiElt = helloElt.closest('li');
-        const secondLiElt = helloLiElt.nextSibling as HTMLElement;
+        const secondLiElt = helloLiElt!.nextSibling as HTMLElement;
         const thirdLiElt = secondLiElt.nextSibling as HTMLElement;
         
         expect(secondLiElt.getElementsByTagName('p')[0].innerHTML).toStrictEqual('foo');
@@ -108,11 +108,22 @@ describe('BodyComponent', () => {
 ---
 |       | world
         `)
-        const component = render(<BodyComponent body={body} />);
+        const component = render(<BodyComponent body={body} onLinkClicked={() => {}} />);
         const helloElt = component.getByText('hello');
         const helloTrElt = helloElt.closest('tr');
-        const secondTrElt = helloTrElt.nextSibling as HTMLElement;
+        const secondTrElt = helloTrElt!.nextSibling as HTMLElement;
         const secondTrSecondTdElt = secondTrElt.children[1];
         expect(secondTrSecondTdElt.getElementsByTagName('p')[0].innerHTML).toStrictEqual('world');
     });
+
+    test('Can render question and answers', () => {
+        const body = parseBody(`
+? (hello|world)
+        `)
+        const component = render(<BodyComponent body={body} onLinkClicked={() => {}} />);
+        const helloElt = component.getByText('hello');
+        expect(helloElt.tagName).toStrictEqual('OPTION');
+    });
+
+    // TODO: on-click propagation
 });

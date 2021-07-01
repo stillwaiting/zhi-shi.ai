@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './SentenceComponent.scss';
+import './BodyQuestionComponent.scss';
 
 // Searches for "(blah|foo)" dropdown representative strings
 const DROPDOWN_REGEXP = /(\(.+?\|.*?\))/g;
@@ -10,19 +10,19 @@ const parseDropdownString = (dropdownString: string) =>
 const countDropdowns = (splitSentence: Array<string>) => 
     splitSentence.filter(subSentence => subSentence.match(DROPDOWN_REGEXP)).length;
 
-type SentenceComponentProps = {
+type BodyQuestionComponentProps = {
     onSubmit: (indices: Array<number>) => void, 
-    sentence: string
+    question: string
 }
 
-export default ({ onSubmit, sentence }: SentenceComponentProps) => {
+export default ({ onSubmit, question }: BodyQuestionComponentProps) => {
     const [selectedDropdownIndices, setSelectedDropdownIndices] = useState<Array<number>>(
-        Array((sentence.match(DROPDOWN_REGEXP) || []).length).fill(0)
+        Array((question.match(DROPDOWN_REGEXP) || []).length).fill(0)
     );
     const [isAnswered, setIsAnswered] = useState<boolean>(false)
 
     // Each item is either an arbitrary string or a "dropdown" string like "(blah|foo)"
-    const splitSentence = sentence.split(DROPDOWN_REGEXP) || [];
+    const splitQuestion = question.split(DROPDOWN_REGEXP) || [];
 
     const dropdownClassName = (dropdownIdx: number): string => {
         if (isAnswered) {
@@ -36,12 +36,12 @@ export default ({ onSubmit, sentence }: SentenceComponentProps) => {
     }
 
     return (
-        <div className="SentenceComponent">
+        <div className="BodyQuestionComponent">
             <div>
-                {splitSentence.map((subSentence, subSentenceIdx) => {
+                {splitQuestion.map((subSentence, subSentenceIdx) => {
                     if (DROPDOWN_REGEXP.test(subSentence)) {
                         const options = parseDropdownString(subSentence);
-                        const dropdownIdx = countDropdowns(splitSentence.slice(0, subSentenceIdx));
+                        const dropdownIdx = countDropdowns(splitQuestion.slice(0, subSentenceIdx));
                         return [
                             isAnswered ? <span key={`index${subSentenceIdx}`}>({dropdownIdx + 1})</span> : null,
                             <span key={subSentenceIdx}>
@@ -72,9 +72,7 @@ export default ({ onSubmit, sentence }: SentenceComponentProps) => {
                 :  <button className="button" onClick={() => {
                         setIsAnswered(true);
                         onSubmit(selectedDropdownIndices);
-                    }}>
-                        Submit
-                    </button>
+                    }}>Submit</button>
             }
         </div>
     );
