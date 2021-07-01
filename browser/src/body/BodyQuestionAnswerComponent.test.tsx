@@ -4,6 +4,19 @@ import BodyQuestionAnswerComponent from './BodyQuestionAnswerComponent';
 import '@testing-library/jest-dom'
 
 describe('BodyQuestionAnswerComponent', () => {
+    // @ts-ignore
+    let oldRandom = global.Math.random;
+
+    beforeEach(() => {
+        // @ts-ignore
+        global.Math.random = () => 0
+    });
+    
+    afterEach(() => {
+        // @ts-ignore
+        global.Math.random = oldRandom;
+    })
+    
     test('does not show answers before submit', () => {
         const component = render(<BodyQuestionAnswerComponent data={{
             question: {text: "(Hello|blah|baz), (world|foo)(!|.)"},

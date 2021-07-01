@@ -15,9 +15,20 @@ type BodyQuestionComponentProps = {
     question: string
 }
 
+function shuffleArray(array: Array<any>) {
+    if (Math.random() === 0) {
+        return array; // tests
+    }
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
 export default ({ onSubmit, question }: BodyQuestionComponentProps) => {
     const [selectedDropdownIndices, setSelectedDropdownIndices] = useState<Array<number>>(
-        Array((question.match(DROPDOWN_REGEXP) || []).length).fill(0)
+        (question.match(DROPDOWN_REGEXP) || []).map(question => Math.floor(Math.random() * question.split('|').length))
     );
     const [isAnswered, setIsAnswered] = useState<boolean>(false)
 
@@ -48,17 +59,18 @@ export default ({ onSubmit, question }: BodyQuestionComponentProps) => {
                                 <select
                                     className={dropdownClassName(dropdownIdx)}
                                     disabled={isAnswered}
+                                    value={selectedDropdownIndices[dropdownIdx]}
                                     onChange={e => {
                                         const newIndices = [...selectedDropdownIndices];
                                         newIndices[dropdownIdx] = parseInt(e.target.value);
                                         setSelectedDropdownIndices(newIndices);
                                     }}
                                 >
-                                {options.map((option, idx) => (
+                                {shuffleArray(options.map((option, idx) => (
                                     <option key={idx} value={idx}>
                                         {option}
                                     </option>
-                                ))}
+                                )))}
                                 </select>
                             </span>
                         ];
@@ -71,6 +83,7 @@ export default ({ onSubmit, question }: BodyQuestionComponentProps) => {
                 ? null 
                 :  <button className="button" onClick={() => {
                         setIsAnswered(true);
+            
                         onSubmit(selectedDropdownIndices);
                     }}>Submit</button>
             }

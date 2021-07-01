@@ -2,6 +2,7 @@ import React from 'react';
 import { fireEvent, render, RenderResult, screen } from '@testing-library/react';
 import BodyQuestionComponent from './BodyQuestionComponent';
 import '@testing-library/jest-dom'
+import { mockRandomForEach, resetMockRandom } from 'jest-mock-random';
 
 const getDropdowns = (component: RenderResult): HTMLCollectionOf<HTMLSelectElement> => 
     component.container.getElementsByTagName('select');
@@ -17,6 +18,19 @@ const hasButton = (component: RenderResult): boolean =>
     component.container.getElementsByTagName('button').length > 0
 
 describe('BodyQuestionComponent', () => {
+
+    // @ts-ignore
+    let oldRandom = global.Math.random;
+
+    beforeEach(() => {
+        // @ts-ignore
+        global.Math.random = () => 0
+    });
+    
+    afterEach(() => {
+        // @ts-ignore
+        global.Math.random = oldRandom;
+    })
 
     test('renders without dropdowns', () => {
         const component = render(<BodyQuestionComponent question="Hello, world!" onSubmit={() => {}} />);
@@ -35,9 +49,9 @@ describe('BodyQuestionComponent', () => {
             ['!', '.']
         ];
         expected.forEach((options, dropdownIdx) => {
-        options.forEach((option, optionIdx) => {
-                expect(getOptions(dropdowns[dropdownIdx])[optionIdx].innerHTML).toEqual(option);
-        });
+            options.forEach((option, optionIdx) => {
+                    expect(getOptions(dropdowns[dropdownIdx])[optionIdx].innerHTML).toEqual(option);
+            });
         });
     });
 
@@ -97,5 +111,29 @@ describe('BodyQuestionComponent', () => {
         fireEvent.click(getButton(component));
         expect(getDropdowns(component)[0].className).toBe("success")
         expect(getDropdowns(component)[1].className).toBe("error")
+    });
+
+    test('shuffles answers', () => {
+        // @ts-ignore
+        global.Math.random = oldRandom;
+        const valuesOfFirstSelect = {};
+        for (let i =0; i < 100; i++ ) {
+            const component = render(<BodyQuestionComponent question="(Hello|blah|baz), (world|foo)(!|.)" onSubmit={(submitted) => {}} />);
+            const value = (getDropdowns(component)[0].children[0] as HTMLOptionElement).value;
+            valuesOfFirstSelect[value] = 1;
+        }
+        expect(Object.keys(valuesOfFirstSelect)).toHaveLength(3);
+    });
+
+    test('shuffles pre-selected answers', () => {
+        // @ts-ignore
+        global.Math.random = oldRandom;
+        const valuesOfFirstSelect = {};
+        for (let i =0; i < 100; i++ ) {
+            const component = render(<BodyQuestionComponent question="(Hello|blah|baz), (world|foo)(!|.)" onSubmit={(submitted) => {}} />);
+            const value = getDropdowns(component)[0].value;
+            valuesOfFirstSelect[value] = 1;
+        }
+        expect(Object.keys(valuesOfFirstSelect)).toHaveLength(3);
     });
 });
