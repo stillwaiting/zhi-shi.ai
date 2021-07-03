@@ -7,18 +7,17 @@ import './NodeHeaderComponent.scss';
 
 type NodeHeaderComponent = {
     path: Array<string>,
-    onPathClicked: (path: Array<string>) => void
+    onTitleClicked: (title: string) => void
 };
 
-export default ( { path, onPathClicked }: NodeHeaderComponent ) => {
+export default ( { path, onTitleClicked }: NodeHeaderComponent ) => {
     return <div className='NodeHeaderComponent' data-testid='NodeHeaderComponent'>
         {path.map((pathItem, index) => {
-            const prefixPath = path.slice(0, index + 1);
             return <span key={`pathItem${index}`}> 
                     <span className='separator'>/</span>
                 <a href='#' onClick={(e) => {
                         e.preventDefault();
-                        onPathClicked(prefixPath);
+                        onTitleClicked(pathItem);
                 }}>{pathItem}</a>
             </span>;
         })}

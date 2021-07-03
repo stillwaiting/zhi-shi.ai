@@ -7,17 +7,15 @@ import { isMarkdownBodyChunkTextParagraph, MarkdownBody, MarkdownBodyChunkList, 
 
 type BodyTableComponent = {
     data: MarkdownBodyChunkTable
-    onLinkClicked: (link: string) => void
 };
 
-export default ( { data, onLinkClicked }: BodyTableComponent ) => {
+export default ( { data }: BodyTableComponent ) => {
     return <table className='BodyTableComponent'><tbody>
         {data.rows.map((row, rowIdx) => 
             <tr key={`tr${rowIdx}`}>
                 {row.cells.map((cell, cellIdx) => 
                     <td key={`td${cellIdx}`} colSpan={cell.colSpan} rowSpan={cell.rowSpan}><BodyComponent 
                             body={cell.content} 
-                            onLinkClicked={onLinkClicked} 
                     /></td>
                 )}
             </tr>

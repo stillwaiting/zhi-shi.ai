@@ -6,14 +6,13 @@ import BodyComponent from './BodyComponent';
 import { isMarkdownBodyChunkTextParagraph, MarkdownBody, MarkdownBodyChunkList, MarkdownBodyChunkTextParagraph, MarkdownNode } from '../md/types';
 
 type BodyUnorderedListComponent = {
-    data: MarkdownBodyChunkList,
-    onLinkClicked: (link: string) => void
+    data: MarkdownBodyChunkList
 };
 
-export default ( { data, onLinkClicked }: BodyUnorderedListComponent ) => {
+export default ( { data }: BodyUnorderedListComponent ) => {
     return <ul>
         {data.items.map((item, itemIdx) => 
-            <li key={`li${itemIdx}`}><BodyComponent body={item} onLinkClicked={onLinkClicked} /></li>
+            <li key={`li${itemIdx}`}><BodyComponent body={item} /></li>
         )}
     </ul>;
 }

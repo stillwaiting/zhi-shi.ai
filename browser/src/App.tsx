@@ -7,71 +7,117 @@ import parse from './md/MarkdownParser';
 import { MarkdownNode } from './md/types';
 import NodeHeaderComponent from './NodeHeaderComponent';
 import { BrowserRouter as Router, Route, Link, useHistory, useLocation } from "react-router-dom";
+import AppContext from './AppContext';
 
  // @ts-ignore
 import replaceAllInserter from 'string.prototype.replaceall';
 replaceAllInserter.shim();
 
-function generateNodePath(path: Array<string>) {
-  return '/' + path.map(item => encodeURI(item).replaceAll('/', '%2F') ).join('/');
+function encodeTitle(title: string) {
+  return encodeURI(title).replaceAll('/', '%2F');
 }
 
-function findNode(nodes: Array<MarkdownNode>, path: Array<string>): MarkdownNode | null {
-  if (path.length == 0) {
-    return null;
-  }
-  let lastNode = nodes.find((node) => node.title == path[0]);
-  if (!lastNode) {
-    return null;
-  }
-  let pathIterator = 1
+function buildNodePath(titleAndMaybeAnchor: string, currentNodePath: string[]): string {
+  if (titleAndMaybeAnchor.startsWith("..") && titleAndMaybeAnchor.indexOf('|') >= 0 && currentNodePath.length > 1) {
+    const split = titleAndMaybeAnchor.split('|');
+    return encodeTitle(currentNodePath[currentNodePath.length - 2]) + '|' + encodeTitle(split[1]);
+  } 
 
-  while (pathIterator < path.length) {
-    const childIdx: number | undefined = lastNode.childrenByTitleIndex[path[pathIterator]];
-    if (childIdx === undefined) {
-      return null;
+  if (titleAndMaybeAnchor.startsWith('|')) {
+    return encodeTitle(currentNodePath[currentNodePath.length - 1]) + '|' + encodeTitle(titleAndMaybeAnchor.substr(1));
+  }
+
+  if (titleAndMaybeAnchor === "..") {
+    return encodeTitle(currentNodePath[currentNodePath.length - 2]);
+  } 
+
+  if (titleAndMaybeAnchor.indexOf('|') >= 0) {
+    const split = titleAndMaybeAnchor.split('|');
+    return encodeTitle(split[0]) + '|' + encodeTitle(split[1]);
+  }
+
+  return encodeTitle(titleAndMaybeAnchor);
+}
+
+function findNodeWithTitle(nodes: MarkdownNode[], title: string): MarkdownNode | null {
+  for (let nodeIdx = 0; nodeIdx < nodes.length; nodeIdx++) {
+    if (nodes[nodeIdx].title === title) {
+      return nodes[nodeIdx];
     }
-    lastNode = lastNode.children[childIdx];
-    pathIterator ++ ;
-
+    const maybeFoundInChildren = findNodeWithTitle(nodes[nodeIdx].children, title);
+    if (maybeFoundInChildren) {
+      return maybeFoundInChildren;
+    }
   }
-  return lastNode || null;
+  return null;
 }
 
-function buildRelativeLink(link: string, currentPath: string[]): string {
-  if (link.startsWith("../") && currentPath.length >= 1) {
-    return buildRelativeLink(link.substr(3), currentPath.slice(0, currentPath.length - 1));
-
-  } else if (link.startsWith('/')) {
-    return link;
-
-  } else if (link.startsWith('#') || link.length == 0) {
-    return generateNodePath(currentPath) + link;
-    
-  } else {
-    return generateNodePath(currentPath) + "/" + link;
+declare global {
+  interface Window { 
+    externalText: string | undefined; 
+    externalNodeTitle: string | undefined;
+    externalNodeLine: number | undefined;
+    externalSelectedText: string | undefined;
+    externalGotoEditor: ((nodeTitle: string) => void) | undefined;
   }
+}
+
+function parseNodePath(nodePath: string) {
+  let title = nodePath.substr(1).replaceAll('%2F', '/');
+  let anchor = '';
+
+  if (title.indexOf('|') >= 0) {
+    const split = title.split('|');
+    title = split[0];
+    anchor = split[1];
+  }
+  return [title, anchor];
 }
 
 function App() {
   const [unsubmittedData, setUnsubmittedData] = useState<string>("");
   const [nodes, setNodes] = useState<MarkdownNode[]>([]);
   const [topicsWidth, setTopicsWidth] = useState<number>(300);
+  const [externalNodeTitle, setExternalNodeTitle] = useState<string>("");
+  const [externalNodeLine, setExternalNodeLine] = useState<number>(0);
+  const [externalSelectedText, setExternalSelectedText] = useState<string>("");
+
   const history = useHistory();
   const location = useLocation();
-  const currentPath = location.pathname.split('/').slice(1).map(item => {
-    return item.replaceAll('%2F', '/')
-  });
+
+  const [currentNodeTitle, currentNodeAnchor] = parseNodePath(location.pathname);
+
+  console.log(location.pathname, currentNodeTitle, currentNodeAnchor);
 
   useEffect(() => {
-      fetch('https://stoic-swirles-1788c6.netlify.app/RU.md').then(response => {
-        // console.log(response);
-        return response.text();
-      }).then(text => {
-        setNodes(parse(text, []));
-      });
+      const interval = setInterval(() => {
+        if (window.externalText && window.externalText !== unsubmittedData) {
+          console.log('Text has changed');
+          setNodes(parse(window.externalText, []));
+          setUnsubmittedData(window.externalText);
+        }
+
+        if (window.externalNodeLine && window.externalNodeTitle && window.externalNodeLine !== externalNodeLine) {
+          console.log("Line has changed: from " + externalNodeLine + " to " + window.externalNodeLine);
+          const node = findNodeWithTitle(nodes, window.externalNodeTitle);
+          if (node) {
+            history.push(encodeTitle(node.title));
+            setExternalNodeLine(window.externalNodeLine);
+          }
+        }
+
+        if (window.externalSelectedText !== undefined && window.externalSelectedText !== externalSelectedText) {
+            setExternalSelectedText(window.externalSelectedText);
+        }
+
+      }, 500);
+
+      return () => {
+        clearInterval(interval);
+      }
+      
     },
-  []);
+  [nodes, externalNodeLine, externalNodeTitle, externalSelectedText, unsubmittedData]);
 
   const onDataChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setUnsubmittedData(e.currentTarget.value);
@@ -89,43 +135,59 @@ function App() {
     setTopicsWidth(topicsWidth - 50);
   }
 
-  const currentNode = findNode(nodes, currentPath);
+  const currentNode = findNodeWithTitle(nodes, currentNodeTitle);
 
   return (
-    <div className="App">
-      <div className="topics" style={{width: topicsWidth + 'px' }} data-testid='menu-container'>
+    <AppContext.Provider value={{
+      currentNodeTitle: currentNodeTitle,
+      currentNodeAnchor: currentNodeAnchor,
+      currentSelectedText: externalSelectedText,
+      onLinkClicked: (link) => {
+        history.push(buildNodePath(link, currentNode ? currentNode.path : []));
+      }
+    }}>
+      <div className="App">
+        <div className="topics" style={{width: topicsWidth + 'px' }} data-testid='menu-container'>
 
-        <a href='#' onClick={(e) => {
-          e.preventDefault();
-          onIncreseWidthClick();
-        }} data-testid='plus'>+ width</a> |
+          <a href='#' onClick={(e) => {
+            e.preventDefault();
+            onIncreseWidthClick();
+          }} data-testid='plus'>+ width</a> |
 
-        <a href='#' onClick={(e) => {
-          e.preventDefault();
-          onDecreaseWidthClick();
-        }} data-testid='minus'>- width</a> <br />
+          <a href='#' onClick={(e) => {
+            e.preventDefault();
+            onDecreaseWidthClick();
+          }} data-testid='minus'>- width</a> <br />
 
-        <TopicsTreeComponent nodes={nodes} currentNodePath={currentPath} onNodeClicked={(node) => {
-          history.push(generateNodePath(node.path));
-        }} />
+          <TopicsTreeComponent nodes={nodes} onNodeClicked={(node) => {
+            history.push(encodeTitle(node.title));
+          }} />
+        </div>
+
+        <div className="content">
+            {window.externalGotoEditor && currentNode ? 
+              <div>
+                  <a href='#' onClick={(e) => { 
+                      e.preventDefault();
+                      window.externalGotoEditor!(currentNode.title);
+                  }}>goto</a>
+              </div> : null
+            }
+
+            {currentNode 
+              ? <div>
+                    <NodeHeaderComponent path={currentNode.path} onTitleClicked={(title) => history.push(encodeTitle(title)) } />
+                    <BodyComponent body={currentNode.body} />
+                </div>
+              : 'Not selected'
+            }
+        </div>
+        <hr />
+        <textarea data-testid='textarea' onChange={onDataChange} value={String(unsubmittedData)} placeholder="Paste your data"></textarea>
+        <hr />
+        <button data-testid='submit' onClick={onSubmitClicked}>Submit</button>
       </div>
-
-      <div className="content">
-          {currentNode 
-            ? <div>
-                  <NodeHeaderComponent path={currentNode.path} onPathClicked={(path) => { history.push(generateNodePath(path)) }} />
-                  <BodyComponent body={currentNode.body} onLinkClicked={(link) => {
-                      history.push(buildRelativeLink(link, currentPath));
-                  }} />
-              </div>
-            : 'Not selected'
-          }
-      </div>
-      <hr />
-      <textarea data-testid='textarea' onChange={onDataChange} value={String(unsubmittedData)} placeholder="Paste your data"></textarea>
-      <hr />
-      <button data-testid='submit' onClick={onSubmitClicked}>Submit</button>
-    </div>
+    </AppContext.Provider>
   );
 }
 

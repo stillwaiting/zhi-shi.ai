@@ -1,21 +1,30 @@
 import { getNodeText } from '@testing-library/dom';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './BodyTextParagraphComponent.scss';
 
 import { isMarkdownBodyChunkTextParagraph, MarkdownBody, MarkdownBodyChunkTextParagraph, MarkdownNode } from '../md/types';
+
+import AppContext  from '../AppContext';
 
 // @ts-ignore
 import replaceAllInserter from 'string.prototype.replaceall';
 replaceAllInserter.shim();
 
 type BodyTextParagraphComponent = {
-    data: MarkdownBodyChunkTextParagraph,
-    onLinkClicked: (link: string) => void
+    data: MarkdownBodyChunkTextParagraph
 };
 
 // Being pragmatic and decided not to parse it completely
-function toHtml(text: string, highlightedArea: string): string {
-    let htmlText = text.split("**").map((chunk, idx) => {
+function toHtml(text: string, anchor: string, selectedText: string): string {
+    let htmlText = text;
+
+    if (selectedText.length > 0) {
+        htmlText = htmlText.split(selectedText.replaceAll("\n", " ").trim()).join(
+            '<span class="selected">' + selectedText + '</span>'
+        );
+    }
+    
+    htmlText = htmlText.split("**").map((chunk, idx) => {
         if (idx %2 == 1) {
             return "<b>" + chunk + "</b>";
         }
@@ -44,52 +53,36 @@ function toHtml(text: string, highlightedArea: string): string {
     }).join('');
 
 
-    htmlText = htmlText.replaceAll(/\[(.*?)\]\((.*?)\)/g, '<a href=\'$2\'>$1</a>');
+    htmlText = htmlText.replaceAll(/\[(.*?)\]\((.*?)\)/g, (a1, a2, a3, a4) => {
+        return '<a href=\'' + a3.split('#').join('|') + '\'>' + a2 + '</a>'
+    });
 
     htmlText = htmlText.replaceAll(
         // [#highlightedArea]blah[/] ====> <span class="highlight active">blah</span>(<a href='#highlightedArea'>highlightedArea</a>)
-        new RegExp('\\[#' + highlightedArea + '\\](.*?)\\[\\/\\]', 'g'), 
-        '<span class="highlight active">$1</span>(<a href=\'#' + highlightedArea + '\'>' + highlightedArea + '</a>)')
+        new RegExp('\\[#' + anchor + '\\](.*?)\\[\\/\\]', 'g'), 
+        '<span class="highlight active">$1</span>(<a href=\'|' + anchor + '\'>' + anchor + '</a>)');
     
     htmlText = htmlText.replaceAll(
         // [#foo]blah[/] ====> <span class="highlight highlight-foo">blah</span>(<a href='#foo'>foo</a>)
         /\[#(.*?)\](.*?)\[\/\]/g, 
-        '<span class="highlight highlight-$1">$2</span>(<a href=\'#$1\'>$1</a>)'
+        '<span class="highlight highlight-$1">$2</span>(<a href=\'|$1\'>$1</a>)'
     );
-
 
     return htmlText;
 }
 
-export default ( { data, onLinkClicked }: BodyTextParagraphComponent ) => {
-    const [anchor, setAnchor] = useState<string>(window.location.hash);
-    const [onHashChangeCallback, setOnHashChangeCallback] = useState<() => void>(() => {
-        return () => {
-            setAnchor(window.location.hash)
-        }
-    });
-
-
-    useEffect(() => {
-        if (data.text.indexOf('[#') >= 0) {
-            window.addEventListener('hashchange', onHashChangeCallback);
-        
-            return () => {
-            window.removeEventListener('hashchange', onHashChangeCallback);
-            }
-        }
-      }, [])
-
+export default ( { data }: BodyTextParagraphComponent ) => {
+    const context = useContext(AppContext);
     return <p 
         className='BodyTextParagraphComponent' 
-        dangerouslySetInnerHTML = {{__html: toHtml(data.text, anchor.startsWith('#') ? anchor.substr(1) : anchor)}} 
+        dangerouslySetInnerHTML = {{__html: toHtml(data.text, context.currentNodeAnchor, context.currentSelectedText)}} 
         onClick={(e: React.MouseEvent<HTMLElement>) => {
             const targetLink = (e.target as HTMLElement).closest('a');
             if(!targetLink) return;
             const href = targetLink.attributes[0].value;
             if (!href.startsWith('#')) {
                 e.preventDefault();
-                onLinkClicked(targetLink.attributes[0].value); 
+                context.onLinkClicked(targetLink.attributes[0].value); 
             }
         }}
     />;
