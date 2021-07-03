@@ -8,6 +8,7 @@ import { MarkdownNode } from './md/types';
 import NodeHeaderComponent from './NodeHeaderComponent';
 import { BrowserRouter as Router, Route, Link, useHistory, useLocation } from "react-router-dom";
 import AppContext from './AppContext';
+import copy from 'copy-to-clipboard';
 
  // @ts-ignore
 import replaceAllInserter from 'string.prototype.replaceall';
@@ -92,13 +93,11 @@ function App() {
   useEffect(() => {
       const interval = setInterval(() => {
         if (window.externalText && window.externalText !== unsubmittedData) {
-          console.log('Text has changed');
           setNodes(parse(window.externalText, []));
           setUnsubmittedData(window.externalText);
         }
 
         if (window.externalNodeLine && window.externalNodeTitle && window.externalNodeLine !== externalNodeLine) {
-          console.log("Line has changed: from " + externalNodeLine + " to " + window.externalNodeLine);
           const node = findNodeWithTitle(nodes, window.externalNodeTitle);
           if (node) {
             history.push(encodeTitle(node.title));
@@ -165,18 +164,27 @@ function App() {
         </div>
 
         <div className="content">
-            {window.externalGotoEditor && currentNode ? 
-              <div>
-                  <a href='#' onClick={(e) => { 
-                      e.preventDefault();
-                      window.externalGotoEditor!(currentNode.title);
-                  }}>goto</a>
-              </div> : null
-            }
-
             {currentNode 
               ? <div>
                     <NodeHeaderComponent path={currentNode.path} onTitleClicked={(title) => history.push(encodeTitle(title)) } />
+                    {window.externalGotoEditor && currentNode ? 
+                      <div>
+                          <a href='#' onClick={(e) => { 
+                              e.preventDefault();
+                              window.externalGotoEditor!(currentNode.title);
+                          }}>goto</a>
+                      </div> : null
+                    }
+
+                    {currentNodeTitle 
+                      ? <div>
+                          <a href='#' onClick={(e) => {
+                            e.preventDefault();
+                            copy(currentNodeTitle + (currentNodeAnchor ? '|' + currentNodeAnchor : '') );
+                          }}>copy link</a>
+                        </div>
+                      : null}
+                    
                     <BodyComponent body={currentNode.body} />
                 </div>
               : 'Not selected'

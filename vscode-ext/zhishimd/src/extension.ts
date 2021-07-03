@@ -37,8 +37,6 @@ export function activate(context: vscode.ExtensionContext) {
 			panel.webview.postMessage({ 
 				file: vscode.window.activeTextEditor!.document.fileName, 
 				content:  vscode.window.activeTextEditor!.document.getText(),
-				// line: vscode.window.activeTextEditor!.selection.anchor.line,
-				// pos: vscode.window.activeTextEditor!.selection.anchor.character,
 			 });
 		});
 
@@ -57,9 +55,8 @@ export function activate(context: vscode.ExtensionContext) {
 			while (line <= editor.selection.end.line && line - editor.selection.start.line < 10) {
 				const startFrom = line == editor.selection.start.line ? editor.selection.start.character : 0;
 				const endAt = line == editor.selection.end.line ? editor.selection.end.character : content[line].length;
-				for (let pos = startFrom; pos < endAt; pos++ ){
-					selectedText += content[line][pos];
-				}
+
+				selectedText += content[line].substr(startFrom, endAt - startFrom);
 				selectedText += "\n";
 				line ++;
 			}
@@ -83,10 +80,6 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 
 			panel.webview.postMessage({ 
-				// file: vscode.window.activeTextEditor!.document.fileName, 
-				// content:  vscode.window.activeTextEditor!.document.getText(),
-				// line: vscode.window.activeTextEditor!.selection.anchor.line,
-				// pos: v8scode.window.activeTextEditor!.selection.anchor.character,
 				title: content[lineNo].split('#').join('').trim(),
 				line: lastLine
 			 });
@@ -108,25 +101,9 @@ export function activate(context: vscode.ExtensionContext) {
 							)
 						);
 
-						// vscode.window.visibleTextEditors[0].selection = new vscode.Selection(
-						// 	new vscode.Position(lineNo, 0),
-						// 	new vscode.Position(lineNo, 0)
-						// 	);
-
-						// 	vscode.window.visibleTextEditors[0].
 						break;
 					}
 				}
-
-				// vscode.workspace.openTextDocument(message.file).then(doc => {
-				// 	vscode.window.showTextDocument(doc, vscode.ViewColumn.Beside).then(textDoc => {
-				// 		textDoc.selection = new vscode.Selection(
-				// 			new vscode.Position(parseInt(message.line), 0),
-				// 			new vscode.Position(parseInt(message.line), 0)
-				// 			);
-				// 			console.log(message);
-				// 	});
-				//   });
 			},
 			undefined,
 			context.subscriptions
@@ -142,6 +119,9 @@ export function activate(context: vscode.ExtensionContext) {
 export function deactivate() {}
 
 function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionContext) {
+	// cd ~/dev/zhi-shi.ai/browser
+	// INLINE_RUNTIME_CHUNK=false yarn build
+	// cp -r build/* ../vscode-ext/zhishimd/media/
 	return `
 	<!doctype html>
 	<html lang="en">
@@ -159,9 +139,9 @@ function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionCon
 	   <body style='background: white; color: black'>
 		  <noscript>You need to enable JavaScript to run this app.</noscript>
 		  <div id="root"></div>
-		  <script src="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/static/js/runtime-main.cbffb267.js'))}"></script>
-		  <script src="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/static/js/2.724c6693.chunk.js'))}"></script>
-		  <script src="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/static/js/main.7940ef51.chunk.js'))}"></script>
+		  <script src="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/static/js/runtime-main.3aa2fcd1.js'))}"></script>
+		  <script src="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/static/js/2.4b77eb07.chunk.js'))}"></script>
+		  <script src="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/static/js/main.4c107154.chunk.js'))}"></script>
 
 			<script>
 
@@ -183,7 +163,7 @@ function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionCon
 					if (event.data.line) {
 						window.externalNodeLine = event.data.line;
 					}
-					if (event.data.selectedText) {
+					if (event.data.selectedText !== undefined) {
 						window.externalSelectedText = event.data.selectedText;
 					}
 			});
@@ -193,49 +173,4 @@ function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionCon
 
 	   </body>
 	</html>	`;
-
-
-
-	return `<!DOCTYPE html>
-  <html lang="en">
-  <head>
-	  <meta charset="UTF-8">
-	  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	  <title>Cat Coding</title>
-  </head>
-  <body>
-	  <pre id="lines-of-code-counter">01</pre>
-
-	  <script>
-	  const vscode = acquireVsCodeApi();
-	  	function goTo() {
-			  vscode.postMessage({
-					file: document.getElementById('fileinput').value,
-					line: document.getElementById('filelineno').value
-			  });
-		  }
-		
-	  </script>
-
-	  <div>
-	  	File: <input id='fileinput' /> <br />
-
-		<div>
-	  Line: <input id='filelineno' /> <br />
-	  		<button onClick='goTo();'>GO</button>
-		</div>
-  
-	  <script>
-		document.getElementById('lines-of-code-counter').innerHTML = '3';
-  
-		  // Handle the message inside the webview
-		  window.addEventListener('message', event => {
-  
-			  const message = event.data; // The JSON data our extension sent
-  
-			  document.getElementById('lines-of-code-counter').innerHTML = JSON.stringify(message, null, 2);
-		  });
-	  </script>
-  </body>
-  </html>`;
   }
