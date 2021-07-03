@@ -180,7 +180,7 @@ function App() {
                       ? <div>
                           <a href='#' onClick={(e) => {
                             e.preventDefault();
-                            copy(currentNodeTitle + (currentNodeAnchor ? '|' + currentNodeAnchor : '') );
+                            copy(currentNodeTitle + (currentNodeAnchor ? '#' + currentNodeAnchor : '') );
                           }}>copy link</a>
                         </div>
                       : null}

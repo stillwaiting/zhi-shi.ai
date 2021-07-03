@@ -13,11 +13,15 @@ const GREEN_TICK = <img className="success" src='https://images2.imgbox.com/7e/a
 
 function renderAnswers(answers: Array<MarkdownBodyChunkTextParagraph>, dropdownIndices: number[])  {
     return <table><tbody>{dropdownIndices.map((dropdownIndex, idx) => {
-        return <tr key={"answer_" + idx} className="answer">
-            <td>({idx+1})</td>
-            <td>{dropdownIndex == 0 ? GREEN_TICK : RED_CROSS}</td>
-            <td><BodyTextParagraphComponent data={answers[idx]} /></td>
-        </tr>
+        if (answers[idx]) {
+            return <tr key={"answer_" + idx} className="answer">
+                <td>({idx+1})</td>
+                <td>{dropdownIndex == 0 ? GREEN_TICK : RED_CROSS}</td>
+                <td><BodyTextParagraphComponent data={answers[idx]} /></td>
+            </tr>
+        } else {
+            return <span>Error, no answer</span>;
+        }
     })}</tbody></table>;
 }
 
