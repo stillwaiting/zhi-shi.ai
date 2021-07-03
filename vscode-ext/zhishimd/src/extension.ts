@@ -141,7 +141,7 @@ function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionCon
 		  <div id="root"></div>
 		  <script src="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/static/js/runtime-main.3aa2fcd1.js'))}"></script>
 		  <script src="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/static/js/2.4b77eb07.chunk.js'))}"></script>
-		  <script src="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/static/js/main.4c107154.chunk.js'))}"></script>
+		  <script src="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/static/js/main.ceacf256.chunk.js'))}"></script>
 
 			<script>
 
