@@ -2,3 +2,4 @@ node_modules/**
 vscode-ext/zhishimd/node_modules/**
 
 vscode-ext/zhishimd/media/**
+vscode-ext/zhishimd/out/**
