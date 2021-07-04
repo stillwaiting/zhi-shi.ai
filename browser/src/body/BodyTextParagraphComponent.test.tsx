@@ -5,32 +5,12 @@ import BodyComponent from './BodyComponent';
 import parseBody from "../md/MarkdownBodyParser";
 import BodyTextParagraphComponent from "./BodyTextParagraphComponent";
 
+import AppContext from '../AppContext';
+
 describe('BodyTextParagraphComponent', () => {
 
-    let oldLocationHash = '';
-    let oldAddEventListener = {};
-    let oldRemoveEventListener = {};
-
-    beforeEach(() => {
-        oldLocationHash = window.location.hash;
-        oldAddEventListener = window.addEventListener;
-        oldRemoveEventListener = window.removeEventListener;
-        window.addEventListener = jest.fn();
-        window.removeEventListener = jest.fn();
-        window.location.hash = 'doit';
-    });
-
-    afterEach(() => {
-        window.location.hash = oldLocationHash;
-
-        // @ts-ignore
-        window.addEventListener = oldAddEventListener;
-        // @ts-ignore
-        window.removeEventListener = oldRemoveEventListener;
-    });
-
     test('renders decorations', () => {
-        const component = render(<BodyTextParagraphComponent data={{text: "*hello* **world** _foo_ __bar__"}} onLinkClicked={() =>{}} />);
+        const component = render(<BodyTextParagraphComponent data={{text: "*hello* **world** _foo_ __bar__"}}  />);
         expect(component.getByText('hello').tagName).toBe('I');
         expect(component.getByText('world').tagName).toBe('B');
         expect(component.getByText('foo').tagName).toBe('I');
@@ -38,34 +18,35 @@ describe('BodyTextParagraphComponent', () => {
     });
 
     test('renders nested decorations', () => {
-        const component = render(<BodyTextParagraphComponent data={{text: "*hello **world***"}} onLinkClicked={() =>{}} />);
+        const component = render(<BodyTextParagraphComponent data={{text: "*hello **world***"}}  />);
         expect(component.container.children[0].innerHTML).toBe('<i>hello <b>world</b></i>');
     });
 
-    test('renders links', () => {
+    test('renders links and fires events on link click', () => {
         const text = `
             hello [world](blah/test test""/another one#anchor)
         `
-        const component = render(<BodyTextParagraphComponent data={{text: text}} onLinkClicked={() =>{}} />);
-        expect(component.getByText('world').outerHTML).toBe('<a href="blah/test test&quot;&quot;/another one#anchor">world</a>');
-    });
-
-    test('fires events on link click', () => {
-        const text = `
-            hello [world](blah/test test""/another one#anchor)
-        `
-        let link = '';
-        const component = render(<BodyTextParagraphComponent data={{text: text}} onLinkClicked={(firedLink) =>{ link = firedLink}} />);
+        let capturedLink = '';
+        const component = render(
+            <AppContext.Provider value={{
+                currentNodeTitle: '',
+                currentNodeAnchor: '',
+                currentSelectedText: '',
+                onLinkClicked: (link) => { capturedLink = link}
+            }}>
+                <BodyTextParagraphComponent data={{text: text}}   />
+            </AppContext.Provider>
+        );
         fireEvent.click(component.getByText('world'));
-        expect(link).toBe('blah/test test""/another one#anchor');
+        expect(capturedLink).toBe('blah/test test""/another one|anchor');
     });
 
     test('does not fire events on anchor click', async () => {
         const text = `
-            hello [world](#foobar)
+            hello <a href='#foobar'>world</a>
         `
         let link = '';
-        const component = render(<BodyTextParagraphComponent data={{text: text}} onLinkClicked={(firedLink) =>{ link = firedLink}} />);''
+        const component = render(<BodyTextParagraphComponent data={{text: text}} />);''
         fireEvent.click(component.getByText('world'));
 
         // This is to make sure that the has was propagated to window.location; otherwise other tests might start failing randomly
@@ -82,45 +63,40 @@ describe('BodyTextParagraphComponent', () => {
         const text = `
             hello [#world]foo bar[/]
         `
-        const component = render(<BodyTextParagraphComponent data={{text: text}} onLinkClicked={(firedLink) =>{}} />);
-        expect(component.container.children[0].innerHTML.trim()).toBe("hello <span class=\"highlight highlight-world\">foo bar</span>(<a href=\"#world\">world</a>)");
+        const component = render(<BodyTextParagraphComponent data={{text: text}} />);
+        expect(component.container.children[0].innerHTML.trim()).toBe("hello <span class=\"highlight highlight-world\">foo bar</span>(<a href=\"|world\">world</a>)");
     });
 
     test('highlights highlighted areas', () => {
         const text = `
             hello [#doit]foo bar[/]
         `
-        const component = render(<BodyTextParagraphComponent data={{text: text}} onLinkClicked={(firedLink) =>{}} />);
-        expect(component.container.children[0].innerHTML.trim()).toBe("hello <span class=\"highlight active\">foo bar</span>(<a href=\"#doit\">doit</a>)");
-    });
-
-    test('renders switching of highlighted areas', async () => {
-        const text = `
-            hello [#world]foo bar[/]
-        `
-        const component = render(<BodyTextParagraphComponent data={{text: text}} onLinkClicked={(firedLink) =>{}} />);
-        window.location.hash = 'world';
-
-        await act(() => 
-            new Promise(resolve => setTimeout(() => {
-                (window.addEventListener as jest.Mock).mock.calls.find((call) => call[0] === 'hashchange')[1]('world');
-                resolve();
-            }, 0))
+        const component = render(
+            <AppContext.Provider value={{
+                currentNodeTitle: '',
+                currentNodeAnchor: 'doit',
+                currentSelectedText: '',
+                onLinkClicked: (link) => {}
+            }}>
+                <BodyTextParagraphComponent data={{text: text}} />
+            </AppContext.Provider>
         );
-
-        expect(component.container.children[0].innerHTML.trim()).toBe("hello <span class=\"highlight active\">foo bar</span>(<a href=\"#world\">world</a>)");
+        expect(component.container.children[0].innerHTML.trim()).toBe("hello <span class=\"highlight active\">foo bar</span>(<a href=\"|doit\">doit</a>)");
     });
 
-    test('cleans state on unmount', () => {
-        const text = `
-            hello [#world]foo bar[/]
-        `
-        const { unmount } = render(<div><BodyTextParagraphComponent data={{text: text}} onLinkClicked={(firedLink) =>{}} /></div>);
-        unmount();
-
-        expect((window.addEventListener as jest.Mock).mock.calls.find((call) => call[0] === 'hashchange')[1]).toStrictEqual(
-            (window.removeEventListener as jest.Mock).mock.calls.find((call) => call[0] === 'hashchange')[1]
-        )
+    test('selects text', () => {
+        const text = 'hello world hello world';
+        const component = render(
+            <AppContext.Provider value={{
+                currentNodeTitle: '',
+                currentNodeAnchor: '',
+                currentSelectedText: 'world',
+                onLinkClicked: (link) => {}
+            }}>
+                <BodyTextParagraphComponent data={{text: text}} />
+            </AppContext.Provider>
+        );
+        expect(component.container.children[0].innerHTML.trim()).toBe("hello <span class=\"selected\">world</span> hello <span class=\"selected\">world</span>");
     })
     
 });
