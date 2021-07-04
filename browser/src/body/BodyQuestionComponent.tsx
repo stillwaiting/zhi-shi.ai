@@ -54,7 +54,6 @@ export default ({ onSubmit, question }: BodyQuestionComponentProps) => {
                         const options = parseDropdownString(subSentence);
                         const dropdownIdx = countDropdowns(splitQuestion.slice(0, subSentenceIdx));
                         return [
-                            isAnswered ? <span key={`index${subSentenceIdx}`}>({dropdownIdx + 1})</span> : null,
                             <span key={subSentenceIdx}>
                                 <select
                                     className={dropdownClassName(dropdownIdx)}
@@ -72,7 +71,8 @@ export default ({ onSubmit, question }: BodyQuestionComponentProps) => {
                                     </option>
                                 )))}
                                 </select>
-                            </span>
+                            </span>,
+                            isAnswered ? <sup key={`index${subSentenceIdx}`} className={dropdownClassName(dropdownIdx)}>({dropdownIdx + 1})</sup> : null
                         ];
                     } else {
                         return <span key={subSentenceIdx}>{subSentence}</span>;
