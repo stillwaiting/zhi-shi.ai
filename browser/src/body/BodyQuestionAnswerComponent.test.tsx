@@ -21,7 +21,7 @@ describe('BodyQuestionAnswerComponent', () => {
         const component = render(<BodyQuestionAnswerComponent data={{
             question: {text: "(Hello|blah|baz), (world|foo)(!|.)"},
             answers: [{text: "answer 1"}, {text: "answer 2"}]
-        }} onLinkClicked = {() => {}} />);
+        }} />);
         expect(component.container.getElementsByClassName('answer').length).toBe(0);
     });
 
@@ -29,7 +29,7 @@ describe('BodyQuestionAnswerComponent', () => {
         const component = render(<BodyQuestionAnswerComponent data={{
             question: {text: "(Hello|blah|baz), (world|foo)"},
             answers: [{text: "answer 1"}, {text: "answer 2"}]
-        }} onLinkClicked = {() => {}} />);
+        }}  />);
         const firstSelect = component.container.getElementsByTagName('select')[1]
         fireEvent.change(firstSelect, {
             target: {value: firstSelect.getElementsByTagName('option')[1].value}

@@ -15,7 +15,7 @@ describe('BodyComponent', () => {
             }]
         };
 
-        const component = render(<BodyComponent body = {body} onLinkClicked={() => {}} />);
+        const component = render(<BodyComponent body = {body} />);
         const helloElt = component.getByText('hello');
         const worldElt = component.getByText('world');
         expect(helloElt).toBeDefined();
@@ -50,7 +50,7 @@ describe('BodyComponent', () => {
                 text: 'next paragraph'
             }]
         };
-        const component = render(<BodyComponent body = {body} onLinkClicked={() => {}} />);
+        const component = render(<BodyComponent body = {body}  />);
 
         const helloElt = component.getByText('hello');
         const helloLiElt = helloElt.closest('li');
@@ -90,7 +90,7 @@ describe('BodyComponent', () => {
                 text: 'next paragraph'
             }]
         };
-        const component = render(<BodyComponent body = {body} onLinkClicked={() => {}} />);
+        const component = render(<BodyComponent body = {body} />);
 
         const helloElt = component.getByText('hello');
         const helloLiElt = helloElt.closest('li');
@@ -108,7 +108,7 @@ describe('BodyComponent', () => {
 ---
 |       | world
         `)
-        const component = render(<BodyComponent body={body} onLinkClicked={() => {}} />);
+        const component = render(<BodyComponent body={body} />);
         const helloElt = component.getByText('hello');
         const helloTrElt = helloElt.closest('tr');
         const secondTrElt = helloTrElt!.nextSibling as HTMLElement;
@@ -120,7 +120,7 @@ describe('BodyComponent', () => {
         const body = parseBody(`
 ? (hello|world)
         `)
-        const component = render(<BodyComponent body={body} onLinkClicked={() => {}} />);
+        const component = render(<BodyComponent body={body} />);
         const helloElt = component.getByText('hello');
         expect(helloElt.tagName).toStrictEqual('OPTION');
     });

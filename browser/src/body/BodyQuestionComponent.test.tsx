@@ -113,10 +113,27 @@ describe('BodyQuestionComponent', () => {
         expect(getDropdowns(component)[1].className).toBe("error")
     });
 
+    test('in answer mode draws the number near the answer', () => {
+        const component = render(<BodyQuestionComponent question="(Hello|blah|baz), (world|foo)(!|.)" onSubmit={(submitted) => {}} />);
+        fireEvent.click(getButton(component));
+        expect(component.queryAllByText('(1)')).toHaveLength(1);
+        expect(component.queryAllByText('(2)')).toHaveLength(1);
+        expect(component.queryAllByText('(3)')).toHaveLength(1);
+        expect(component.queryAllByText('(4)')).toHaveLength(0);
+    });
+
+
+    test('in question mode does not draw the number near the answer', () => {
+        const component = render(<BodyQuestionComponent question="(Hello|blah|baz), (world|foo)(!|.)" onSubmit={(submitted) => {}} />);
+        expect(component.queryAllByText('(1)')).toHaveLength(0);
+        expect(component.queryAllByText('(2)')).toHaveLength(0);
+        expect(component.queryAllByText('(3)')).toHaveLength(0);
+    });
+
     test('shuffles answers', () => {
         // @ts-ignore
         global.Math.random = oldRandom;
-        const valuesOfFirstSelect = {};
+        const valuesOfFirstSelect: { [key:string]: number } = {};
         for (let i =0; i < 100; i++ ) {
             const component = render(<BodyQuestionComponent question="(Hello|blah|baz), (world|foo)(!|.)" onSubmit={(submitted) => {}} />);
             const value = (getDropdowns(component)[0].children[0] as HTMLOptionElement).value;
@@ -128,7 +145,7 @@ describe('BodyQuestionComponent', () => {
     test('shuffles pre-selected answers', () => {
         // @ts-ignore
         global.Math.random = oldRandom;
-        const valuesOfFirstSelect = {};
+        const valuesOfFirstSelect: { [key:string]: number } = {};
         for (let i =0; i < 100; i++ ) {
             const component = render(<BodyQuestionComponent question="(Hello|blah|baz), (world|foo)(!|.)" onSubmit={(submitted) => {}} />);
             const value = getDropdowns(component)[0].value;
