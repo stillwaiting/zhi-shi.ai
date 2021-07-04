@@ -1,6 +1,8 @@
 import { MarkdownNode } from './types';
 import parseBody from './MarkdownBodyParser';
 
+
+
 function readAllSharpsFromStart(s: string) {
     let sharps = "";
     let pos = 0;

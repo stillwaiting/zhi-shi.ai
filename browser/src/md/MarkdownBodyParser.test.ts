@@ -419,4 +419,23 @@ next text
       
     });
 
+    test('parses templates', () => {
+      const parsedBody = parseBody(`
+{set:hello}
+foo
+bar
+{/set}
+
+{set:world}
+baz
+blah
+{/set}
+
+
+{hello}
+{world}
+`);
+      expect(parsedBody).toStrictEqual({"content": [{"text": "foo bar baz blah"}]});
+    });
+
 });

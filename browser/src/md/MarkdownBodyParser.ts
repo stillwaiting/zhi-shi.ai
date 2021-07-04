@@ -1,5 +1,13 @@
 import { MarkdownBody, MarkdownBodyChunkList, MarkdownBodyChunkQuestionAnswers, MarkdownBodyChunkTable, MarkdownBodyChunkTextParagraph } from "./types"
 
+// @ts-ignore
+import matchAll from 'string.prototype.matchall'
+// @ts-ignore
+import replaceAllInserter from 'string.prototype.replaceall';
+
+matchAll.shim()
+replaceAllInserter.shim()
+
 function isBeginningOfTable(line: string) {
     return (line.trim().length > 0 && line.trim()[0] === '|');
 }
