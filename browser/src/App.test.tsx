@@ -29,28 +29,31 @@ const createApp = async () => {
         component = render(<App />)
     });
     
-    await digestEvents();
-
-    act(() => {
-        fireEvent.change(component!.getByTestId('textarea'), { target: { value: 
-            '# default data'
-        }});
-    });
-    await digestEvents();
-    act(() => {
-        fireEvent.click(component!.getByTestId('submit'));
-    });
-    await digestEvents();
+    fireEvent.change(component!.getByTestId('textarea'), { target: { value: 
+        '# default data'
+    }});
+    fireEvent.click(component!.getByTestId('submit'));
 
     return component!;
 }
 
 describe('App', () => {
-    beforeEach(() => {
-        (reactDom.useHistory().push as jest.Mock).mockReset();
+    beforeEach(async () => {
         (reactDom.useLocation as jest.Mock).mockReturnValue({
             pathname: '/'
         });
+        await digestEvents()
+        jest.useFakeTimers();
+    });
+
+    afterEach(() => {
+        jest.useRealTimers();
+        (reactDom.useHistory().push as jest.Mock).mockReset();
+        (reactDom.useLocation as jest.Mock).mockReset();
+        delete window.externalText;
+        delete window.externalNodeLine;
+        delete window.externalNodeTitle;
+        delete window.externalSelectedText;
     });
 
     test('onSubmit should render menu', async () => {
@@ -116,9 +119,7 @@ describe('App', () => {
                 '## yet another one\n' +
                 'blah content\n'
         }});
-        await digestEvents();
         fireEvent.click(component.getByTestId('submit'));
-        await digestEvents();
 
         const lookupNodes = component.getAllByText(/.*blah content.*/).filter(item => item.tagName != 'TEXTAREA');
         expect(lookupNodes).toHaveLength(1);
@@ -131,13 +132,10 @@ describe('App', () => {
         let component = await createApp();
         fireEvent.change(component.getByTestId('textarea'), { target: { value: '# Hello/testing\nblah content \n## another one\n' } });
 
-        await digestEvents();
         fireEvent.click(component.getByTestId('submit'));
 
         const lookupNodes = (component.getAllByTestId('NodeHeaderComponent'))[0];
         fireEvent.click(lookupNodes.children[0].children[1]);
-
-        await digestEvents();
 
         expect((mocked(reactDom.useHistory().push).mock.calls[0][0])).toBe("/Hello%2Ftesting");
     });
@@ -157,13 +155,8 @@ blah content
 [boom](Hello/testing)
 
 ` } });
-        await digestEvents();
         fireEvent.click(component.getByTestId('submit'));
-
-        await digestEvents();
         fireEvent.click(component.getByText('boom'));
-
-        await digestEvents();
 
         expect((mocked(reactDom.useHistory().push).mock.calls[0][0])).toBe("/Hello%2Ftesting");
     });
@@ -188,5 +181,76 @@ blah content
         fireEvent.click(component.getByText('boom'));
 
         expect((mocked(reactDom.useHistory().push).mock.calls[0][0])).toBe("/Hello%2Ftesting|hehe");
+    });
+
+    test('supports window.externalText', async () => {
+        let component = await createApp();
+        window.externalText = '# this is external header';
+        act(() => { jest.advanceTimersByTime(1500)} );
+        expect(component.getByText('this is external header').innerHTML).toBe('this is external header');
+    
+    });
+
+    test('window.externalText does not override new text', async () => {
+        let component = await createApp();
+        window.externalText = '# this is external header';
+        act(() => {  jest.advanceTimersByTime(1500); });
+
+        fireEvent.change(component.getByTestId('textarea'), { target: { value: `
+        # blah content        
+        ` } });
+        fireEvent.click(component.getByTestId('submit'));
+        act(() => { jest.advanceTimersByTime(1500)} );
+
+        expect(component.getByText('blah content').innerHTML).toBe('blah content');
+    });
+
+    test('supports window.externalNodeLine and  window.externalNodeTitle', async () => {
+        let component = await createApp();
+
+        window.externalText = '# hello2\n\nblah\n\nworld';
+        act(() => { jest.advanceTimersByTime(1500)} );
+
+        window.externalNodeTitle = 'hello2';
+        window.externalNodeLine = 0;
+        act(() => { jest.advanceTimersByTime(1500)} );
+
+        expect((mocked(reactDom.useHistory().push).mock.calls[0][0])).toBe("/hello2");
+    });
+
+    test('supports window.externalNodeLine and window.externalNodeTitle should not break navigation', async () => {
+        let component = await createApp();
+
+        window.externalText = '# hello3\n\nblah\n\n# world1';
+        act(() => { jest.advanceTimersByTime(1500)} );
+
+        window.externalNodeTitle = 'hello3';
+        window.externalNodeLine = 0;
+        act(() => { jest.advanceTimersByTime(1500)} );
+
+        fireEvent.click(component.getByText('world1'));
+        act(() => { jest.advanceTimersByTime(1500)} );
+        
+        expect((mocked(reactDom.useHistory().push).mock.calls)).toHaveLength(2);
+    });
+
+    test('supports window.externalNodeLine and window.externalNodeTitle should refocus on same node when line changes', async () => {
+        let component = await createApp();
+
+        window.externalText = '# hello4\n\nblah\n\n# world4';
+        act(() => { jest.advanceTimersByTime(1500)} );
+
+        window.externalNodeTitle = 'hello4';
+        window.externalNodeLine = 1;
+        act(() => { jest.advanceTimersByTime(1500)} );
+
+        fireEvent.click(component.getByText('world4'));
+        act(() => { jest.advanceTimersByTime(1500)} );
+
+        window.externalNodeLine = 0;
+        act(() => { jest.advanceTimersByTime(1500)} );
+        
+        expect((mocked(reactDom.useHistory().push).mock.calls)).toHaveLength(3);
+        expect((mocked(reactDom.useHistory().push).mock.calls[2][0])).toBe("/hello4");
     });
 });

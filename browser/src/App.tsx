@@ -79,8 +79,9 @@ function App() {
   const [unsubmittedData, setUnsubmittedData] = useState<string>("");
   const [nodes, setNodes] = useState<MarkdownNode[]>([]);
   const [topicsWidth, setTopicsWidth] = useState<number>(300);
-  const [externalNodeTitle, setExternalNodeTitle] = useState<string>("");
-  const [externalNodeLine, setExternalNodeLine] = useState<number>(0);
+
+  const [externalText, setExternalText] = useState<string>("");
+  const [externalNodeLine, setExternalNodeLine] = useState<number>(-1);
   const [externalSelectedText, setExternalSelectedText] = useState<string>("");
 
   const history = useHistory();
@@ -90,21 +91,24 @@ function App() {
 
   useEffect(() => {
       const interval = setInterval(() => {
-        if (window.externalText && window.externalText !== unsubmittedData) {
+        if (window.externalText && window.externalText !== externalText) {
           setNodes(parse(window.externalText, []));
-          setUnsubmittedData(window.externalText);
+          setExternalText(window.externalText);
         }
 
-        if (window.externalNodeLine && window.externalNodeTitle && window.externalNodeLine !== externalNodeLine) {
+        // must handle externalNodeLine === 0, therefore "!== undefined"
+        if (window.externalNodeLine !== undefined && window.externalNodeTitle && window.externalNodeLine !== externalNodeLine) {
           const node = findNodeWithTitle(nodes, window.externalNodeTitle);
           if (node) {
             history.push('/' + encodeTitle(node.title));
-            setExternalNodeLine(window.externalNodeLine);
           }
+          setExternalNodeLine(window.externalNodeLine);
         }
 
+        // must handle externalSelectedText === '' (drop of selection), therefore "!== undefined"
         if (window.externalSelectedText !== undefined && window.externalSelectedText !== externalSelectedText) {
             setExternalSelectedText(window.externalSelectedText);
+            setExternalSelectedText(externalSelectedText);
         }
 
       }, 500);
@@ -112,9 +116,8 @@ function App() {
       return () => {
         clearInterval(interval);
       }
-      
     },
-  [nodes, externalNodeLine, externalNodeTitle, externalSelectedText, unsubmittedData]);
+  [nodes, externalText, externalNodeLine, externalSelectedText]);
 
   const onDataChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setUnsubmittedData(e.currentTarget.value);
