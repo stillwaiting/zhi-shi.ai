@@ -3,8 +3,6 @@ import { fireEvent, render, RenderResult, screen, act } from '@testing-library/r
 import App from './App';
 import { mocked } from 'ts-jest/utils';
 import '@testing-library/jest-dom'
-import { enableFetchMocks } from 'jest-fetch-mock'
-import fetchMock from "jest-fetch-mock"
 import * as reactDom from 'react-router-dom';
 
 jest.mock('react-router-dom', () => {
@@ -21,30 +19,38 @@ function sleep(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+const digestEvents = async () => {
+    return await act(async () => { sleep(0) });
+}
+
 const createApp = async () => {
     let component : RenderResult | null;
     act(() => {
         component = render(<App />)
     });
-    await act(async () => { sleep(10) });
+    
+    await digestEvents();
+
+    act(() => {
+        fireEvent.change(component!.getByTestId('textarea'), { target: { value: 
+            '# default data'
+        }});
+    });
+    await digestEvents();
+    act(() => {
+        fireEvent.click(component!.getByTestId('submit'));
+    });
+    await digestEvents();
+
     return component!;
 }
 
 describe('App', () => {
     beforeEach(() => {
-        enableFetchMocks();
-        // https://github.com/jefflau/jest-fetch-mock/issues/184
-        fetchMock.resetMocks();
-        fetchMock.mockResponse('# default data');
         (reactDom.useHistory().push as jest.Mock).mockReset();
         (reactDom.useLocation as jest.Mock).mockReturnValue({
             pathname: '/'
         });
-    });
-
-    test('should load data from web', async () => {
-        let component = await createApp();
-        expect(component.getByText('default data').innerHTML).toBe('default data');
     });
 
     test('onSubmit should render menu', async () => {
@@ -67,7 +73,7 @@ describe('App', () => {
         expect(component.getByTestId('menu-container').style.width).toBe('250px');
     });
 
-    test('on click should rote user to the node', async () => {
+    test('on title click should rote user to the node', async () => {
         let component = await createApp();
         fireEvent.click(component!.getByText('default data'));
         expect(reactDom.useHistory().push).toBeCalled();
@@ -76,7 +82,7 @@ describe('App', () => {
 
     test('location should be parsed and node must be selected', async () => {
         (reactDom.useLocation as jest.Mock).mockReturnValue({
-            pathname: '/Hello%2Ftesting/another one'
+            pathname: '/another one'
         });
         let component = await createApp();
         fireEvent.change(component.getByTestId('textarea'), { target: { value: '# Hello/testing\n ## another one' } });
@@ -98,9 +104,9 @@ describe('App', () => {
         expect(lookupNodes).toHaveLength(1);
     });
 
-    test('renders content of a child node', async() => {
+    test('renders content of a child node', async () => {
         (reactDom.useLocation as jest.Mock).mockReturnValue({
-            pathname: '/Hello%2Ftesting/yet another one'
+            pathname: '/yet another one'
         });
         let component = await createApp();
         fireEvent.change(component.getByTestId('textarea'), { target: { value: 
@@ -110,29 +116,35 @@ describe('App', () => {
                 '## yet another one\n' +
                 'blah content\n'
         }});
+        await digestEvents();
         fireEvent.click(component.getByTestId('submit'));
+        await digestEvents();
 
-        const lookupNodes = (await component.findAllByText(/.*blah content.*/)).filter(item => item.tagName != 'TEXTAREA');
+        const lookupNodes = component.getAllByText(/.*blah content.*/).filter(item => item.tagName != 'TEXTAREA');
         expect(lookupNodes).toHaveLength(1);
     });
 
     test('redirects on NodeHeader clicks', async() => {
         (reactDom.useLocation as jest.Mock).mockReturnValue({
-            pathname: '/Hello%2Ftesting/another one'
+            pathname: '/another one'
         });
         let component = await createApp();
         fireEvent.change(component.getByTestId('textarea'), { target: { value: '# Hello/testing\nblah content \n## another one\n' } });
+
+        await digestEvents();
         fireEvent.click(component.getByTestId('submit'));
 
-        const lookupNodes = (await component.findAllByTestId('NodeHeaderComponent'))[0];
+        const lookupNodes = (component.getAllByTestId('NodeHeaderComponent'))[0];
         fireEvent.click(lookupNodes.children[0].children[1]);
+
+        await digestEvents();
 
         expect((mocked(reactDom.useHistory().push).mock.calls[0][0])).toBe("/Hello%2Ftesting");
     });
 
     test('redirects on body link clicks', async() => {
         (reactDom.useLocation as jest.Mock).mockReturnValue({
-            pathname: '/Hello%2Ftesting/another one'
+            pathname: '/another one'
         });
         let component = await createApp();
         fireEvent.change(component.getByTestId('textarea'), { target: { value: `
@@ -142,19 +154,23 @@ blah content
 
 ## another one
 
-[boom](/Hello%2Ftesting)
+[boom](Hello/testing)
 
 ` } });
+        await digestEvents();
         fireEvent.click(component.getByTestId('submit'));
 
+        await digestEvents();
         fireEvent.click(component.getByText('boom'));
+
+        await digestEvents();
 
         expect((mocked(reactDom.useHistory().push).mock.calls[0][0])).toBe("/Hello%2Ftesting");
     });
 
     test('supports link traversal', async() => {
         (reactDom.useLocation as jest.Mock).mockReturnValue({
-            pathname: '/Hello%2Ftesting/another one'
+            pathname: '/another one'
         });
         let component = await createApp();
         fireEvent.change(component.getByTestId('textarea'), { target: { value: `
@@ -164,13 +180,13 @@ blah content
 
 ## another one
 
-[boom](../#hehe)
+[boom](..#hehe)
 
 ` } });
         fireEvent.click(component.getByTestId('submit'));
 
         fireEvent.click(component.getByText('boom'));
 
-        expect((mocked(reactDom.useHistory().push).mock.calls[0][0])).toBe("/Hello%2Ftesting#hehe");
+        expect((mocked(reactDom.useHistory().push).mock.calls[0][0])).toBe("/Hello%2Ftesting|hehe");
     });
 });

@@ -18,26 +18,26 @@ function encodeTitle(title: string) {
   return encodeURI(title).replaceAll('/', '%2F');
 }
 
-function buildNodePath(titleAndMaybeAnchor: string, currentNodePath: string[]): string {
+function buildNodeUrl(titleAndMaybeAnchor: string, currentNodePath: string[]): string {
   if (titleAndMaybeAnchor.startsWith("..") && titleAndMaybeAnchor.indexOf('|') >= 0 && currentNodePath.length > 1) {
     const split = titleAndMaybeAnchor.split('|');
-    return encodeTitle(currentNodePath[currentNodePath.length - 2]) + '|' + encodeTitle(split[1]);
+    return '/' +encodeTitle(currentNodePath[currentNodePath.length - 2]) + '|' + encodeTitle(split[1]);
   } 
 
   if (titleAndMaybeAnchor.startsWith('|')) {
-    return encodeTitle(currentNodePath[currentNodePath.length - 1]) + '|' + encodeTitle(titleAndMaybeAnchor.substr(1));
+    return '/' + encodeTitle(currentNodePath[currentNodePath.length - 1]) + '|' + encodeTitle(titleAndMaybeAnchor.substr(1));
   }
 
   if (titleAndMaybeAnchor === "..") {
-    return encodeTitle(currentNodePath[currentNodePath.length - 2]);
+    return '/' + encodeTitle(currentNodePath[currentNodePath.length - 2]);
   } 
 
   if (titleAndMaybeAnchor.indexOf('|') >= 0) {
     const split = titleAndMaybeAnchor.split('|');
-    return encodeTitle(split[0]) + '|' + encodeTitle(split[1]);
+    return '/' + encodeTitle(split[0]) + '|' + encodeTitle(split[1]);
   }
 
-  return encodeTitle(titleAndMaybeAnchor);
+  return '/' + encodeTitle(titleAndMaybeAnchor);
 }
 
 function findNodeWithTitle(nodes: MarkdownNode[], title: string): MarkdownNode | null {
@@ -88,8 +88,6 @@ function App() {
 
   const [currentNodeTitle, currentNodeAnchor] = parseNodePath(location.pathname);
 
-  console.log(location.pathname, currentNodeTitle, currentNodeAnchor);
-
   useEffect(() => {
       const interval = setInterval(() => {
         if (window.externalText && window.externalText !== unsubmittedData) {
@@ -100,7 +98,7 @@ function App() {
         if (window.externalNodeLine && window.externalNodeTitle && window.externalNodeLine !== externalNodeLine) {
           const node = findNodeWithTitle(nodes, window.externalNodeTitle);
           if (node) {
-            history.push(encodeTitle(node.title));
+            history.push('/' + encodeTitle(node.title));
             setExternalNodeLine(window.externalNodeLine);
           }
         }
@@ -142,7 +140,7 @@ function App() {
       currentNodeAnchor: currentNodeAnchor,
       currentSelectedText: externalSelectedText,
       onLinkClicked: (link) => {
-        history.push(buildNodePath(link, currentNode ? currentNode.path : []));
+        history.push(buildNodeUrl(link, currentNode ? currentNode.path : []));
       }
     }}>
       <div className="App">
@@ -159,14 +157,14 @@ function App() {
           }} data-testid='minus'>- width</a> <br />
 
           <TopicsTreeComponent nodes={nodes} onNodeClicked={(node) => {
-            history.push(encodeTitle(node.title));
+            history.push('/' + encodeTitle(node.title));
           }} />
         </div>
 
         <div className="content">
             {currentNode 
               ? <div>
-                    <NodeHeaderComponent path={currentNode.path} onTitleClicked={(title) => history.push(encodeTitle(title)) } />
+                    <NodeHeaderComponent path={currentNode.path} onTitleClicked={(title) => history.push('/' + encodeTitle(title)) } />
                     {window.externalGotoEditor && currentNode ? 
                       <div>
                           <a href='#' onClick={(e) => { 
