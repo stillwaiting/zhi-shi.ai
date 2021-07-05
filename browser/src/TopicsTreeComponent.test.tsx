@@ -2,17 +2,18 @@ import React from 'react';
 import { fireEvent, render, RenderResult, screen } from '@testing-library/react';
 import TopicsTreeComponent from './TopicsTreeComponent';
 import '@testing-library/jest-dom'
-import { MarkdownNode } from './MarkdownParser';
+import { MarkdownNode } from './md/types';
+import AppContext  from './AppContext';
 
 const WITH_NESTED_CHILDREN = [
     {
         title: 'hello1', 
-        body: {content: ''}, 
+        body: {content: [{'text':''}]}, 
         path: ['hello1'], 
         children: [
             {
                 title: 'hello2', 
-                body: {content: ''}, 
+                body: {content: [{'text':''}]}, 
                 children: [], 
                 path: ['hello1', 'hello2'], 
                 childrenByTitleIndex: {}
@@ -26,17 +27,16 @@ const WITH_NESTED_CHILDREN = [
 
 describe('TopicsTreeComponent', () => {
     test('renders empty set of nodes', () => {
-        const component = render(<TopicsTreeComponent nodes={[]} currentNodePath={[]} onNodeClicked={() => {}} />);
+        const component = render(<TopicsTreeComponent nodes={[]} onNodeClicked={() => {}} />);
         expect(component.container.getElementsByTagName('ul')).toHaveLength(0);
     });
 
     test('renders titles', async () => {
         const component = render(<TopicsTreeComponent 
             nodes={[
-                {title: 'hello1', body: {content: ''}, children: [], childrenByTitleIndex: {}, path: ['hello1']},
-                {title: 'hello2', body: {content: ''}, children: [], childrenByTitleIndex: {}, path: ['hello1']}
+                {title: 'hello1', body: {content: [{text: ''}]}, children: [], childrenByTitleIndex: {}, path: ['hello1']},
+                {title: 'hello2', body: {content: [{text: ''}]}, children: [], childrenByTitleIndex: {}, path: ['hello1']}
             ]} 
-            currentNodePath={[]} 
             onNodeClicked={() => {}} 
         />);
 
@@ -49,34 +49,41 @@ describe('TopicsTreeComponent', () => {
     });
 
     test('renders nested titles', async () => {
-        const component = render(<TopicsTreeComponent nodes={WITH_NESTED_CHILDREN} currentNodePath={[]} onNodeClicked={() => {}} />);
+        const component = render(<TopicsTreeComponent nodes={WITH_NESTED_CHILDREN} onNodeClicked={() => {}} />);
         expect(component.container.getElementsByTagName('ul')).toHaveLength(2);
         expect(component.container.getElementsByTagName('li')).toHaveLength(2);
         const node1 = await component.findByText('hello1');
         const node2 = await component.findByText('hello2');
         expect(node1).toBeInstanceOf(HTMLElement);
         expect(node2).toBeInstanceOf(HTMLElement);
-        // TODO: check that node2 is in a nested child
+        // @ts-ignore
+        expect(component.getByText('hello2').parentNode.parentNode.parentNode.children[0].innerHTML).toBe('hello1')
     });
 
     test('selects the current node', async () => {
-        const component = render(<TopicsTreeComponent nodes={WITH_NESTED_CHILDREN} currentNodePath={
-            ["hello1", "hello2"]
-        } onNodeClicked={() => {}} />);
+        const component = render(
+            <AppContext.Provider value={{
+                currentNodeTitle: 'hello2',
+                currentNodeAnchor: '',
+                currentSelectedText: '',
+                onLinkClicked: (link) => { }
+            }}>
+                <TopicsTreeComponent nodes={WITH_NESTED_CHILDREN} onNodeClicked={() => {}} />
+            </AppContext.Provider>
+        
+        );
         expect(component.container.getElementsByTagName('ul')).toHaveLength(2);
         expect(component.container.getElementsByTagName('li')).toHaveLength(2);
-        const node1 = await component.findByText('hello1');
-        const node2 = await component.findByText('hello2');
+        const node1 = component.getByText('hello1');
+        const node2 = component.getByText('hello2');
         expect(node1.className).toBe('plainNode');
         expect(node2.className).toBe('selectedNode');
     });
 
     test('passes over the clicked node', async () => {
         let clickedNode: MarkdownNode;
-        const component = render(<TopicsTreeComponent nodes={WITH_NESTED_CHILDREN} currentNodePath={
-            ["hello1", "hello2"]
-        } onNodeClicked={(node) => { clickedNode = node; }} />);
-        const node2 = await component.findByText('hello2');
+        const component = render(<TopicsTreeComponent nodes={WITH_NESTED_CHILDREN} onNodeClicked={(node) => { clickedNode = node; }} />);
+        const node2 = component.getByText('hello2');
         fireEvent.click(node2);
         expect(clickedNode!.title).toBe("hello2");
     });
