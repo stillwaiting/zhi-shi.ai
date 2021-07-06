@@ -1,7 +1,9 @@
 .TopicsTreeComponent {
+    font-size:95%;
     ul {
+        white-space: nowrap;
         text-align: left;
-        line-height: 30px;
+        line-height: 20px;
     }
     a.selectedNode {
         color: red;
