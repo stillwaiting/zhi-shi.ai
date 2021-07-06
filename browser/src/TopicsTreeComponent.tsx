@@ -35,24 +35,6 @@ export default ({ nodes, onNodeClicked }: TopicsTreeComponent ) => {
 
     const context = useContext(AppContext);
 
-    useEffect(() => {
-        const timeout = setTimeout(()=> {
-            const selectedNodes = document.getElementsByClassName('selectedNode');
-            if (selectedNodes.length > 0) {
-                const oldScrollY = window.scrollY;
-                selectedNodes[0].scrollIntoView();
-                window.scrollTo({
-                    left: window.scrollX,
-                    top: oldScrollY
-                });
-            }
-        }, 0);
-
-        return () => {
-            clearTimeout(timeout);
-        }
-    }, [context.currentNodeTitle]);
-
     return <div className="TopicsTreeComponent">
         {renderNodes(nodes, context.currentNodeTitle, onNodeClicked)}
     </div>;

@@ -108,7 +108,6 @@ function App() {
         // must handle externalSelectedText === '' (drop of selection), therefore "!== undefined"
         if (window.externalSelectedText !== undefined && window.externalSelectedText !== externalSelectedText) {
             setExternalSelectedText(window.externalSelectedText);
-            setExternalSelectedText(externalSelectedText);
         }
 
       }, 500);
@@ -117,7 +116,7 @@ function App() {
         clearInterval(interval);
       }
     },
-  [nodes, externalText, externalNodeLine, externalSelectedText]);
+  [nodes, history, externalText, externalNodeLine, externalSelectedText]);
 
   const onDataChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setUnsubmittedData(e.currentTarget.value);
@@ -167,7 +166,9 @@ function App() {
         <div className="content">
             {currentNode 
               ? <div>
-                    <NodeHeaderComponent path={currentNode.path} onTitleClicked={(title) => history.push('/' + encodeTitle(title)) } />
+                    <NodeHeaderComponent path={currentNode.path} onTitleClicked={(title) => 
+                      history.push('/' + encodeTitle(title)) 
+                    } />
                     {window.externalGotoEditor && currentNode ? 
                       <div>
                           <a href='#' onClick={(e) => { 
@@ -182,9 +183,23 @@ function App() {
                           <a href='#' onClick={(e) => {
                             e.preventDefault();
                             copy(currentNodeTitle + (currentNodeAnchor ? '#' + currentNodeAnchor : '') );
-                          }}>copy link</a>
+                          }}>copy link</a> 
+                          | |
+                          <a href='#' onClick={(e) => {
+                            e.preventDefault();
+                            const selectedNodes = document.getElementsByClassName('selectedNode');
+                            if (selectedNodes.length > 0) {
+                                const oldScrollY = window.scrollY;
+                                selectedNodes[0].scrollIntoView();
+                                window.scrollTo({
+                                    left: window.scrollX,
+                                    top: oldScrollY
+                                });
+                            }
+                           }}>focus</a>
                         </div>
                       : null}
+
                     
                     <BodyComponent body={currentNode.body} />
                 </div>

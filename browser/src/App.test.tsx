@@ -218,6 +218,21 @@ blah content
         expect((mocked(reactDom.useHistory().push).mock.calls[0][0])).toBe("/hello2");
     });
 
+    test('supports externalSelectedText', async () => {
+        (reactDom.useLocation as jest.Mock).mockReturnValue({
+            pathname: '/hello2'
+        });
+        let component = await createApp();
+
+        window.externalText = '# hello2\n\nblah\n\nworld';
+        act(() => { jest.advanceTimersByTime(1500)} );
+
+        window.externalSelectedText = 'lah';
+        act(() => { jest.advanceTimersByTime(1500)} );
+
+        expect(component.getByText('lah').classList).toContain("selected");
+    });
+
     test('supports window.externalNodeLine and window.externalNodeTitle should not break navigation', async () => {
         let component = await createApp();
 

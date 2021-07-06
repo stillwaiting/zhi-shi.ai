@@ -98,7 +98,8 @@ export function activate(context: vscode.ExtensionContext) {
 							new vscode.Range(
 								new vscode.Position(lineNo, 0), 
 								new vscode.Position(lineNo, 0)
-							)
+							),
+							vscode.TextEditorRevealType.AtTop
 						);
 
 						break;
@@ -134,14 +135,14 @@ function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionCon
 		  <link rel="apple-touch-icon" href="/logo192.png"/>
 		  <link rel="manifest" href="/manifest.json"/>
 		  <title>React App</title>
-		  <link href="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/static/css/main.d109108a.chunk.css'))}" rel="stylesheet">
+		  <link href="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/static/css/main.96445705.chunk.css'))}" rel="stylesheet">
 	   </head>
 	   <body style='background: white; color: black'>
 		  <noscript>You need to enable JavaScript to run this app.</noscript>
 		  <div id="root"></div>
-		  <script src="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/static/js/runtime-main.3aa2fcd1.js'))}"></script>
-		  <script src="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/static/js/2.4b77eb07.chunk.js'))}"></script>
-		  <script src="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/static/js/main.98ac5263.chunk.js'))}"></script>
+		  <script src="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/static/js/runtime-main.4a94e718.js'))}"></script>
+		  <script src="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/static/js/2.8cd9cd7d.chunk.js'))}"></script>
+		  <script src="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/static/js/main.16f42e71.chunk.js'))}"></script>
 
 			<script>
 
