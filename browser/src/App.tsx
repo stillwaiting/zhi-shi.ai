@@ -53,6 +53,13 @@ function findNodeWithTitle(nodes: MarkdownNode[], title: string): MarkdownNode |
   return null;
 }
 
+function removeComments(s: string): string {
+  if (s) {
+    return s.replaceAll(/\/\*(.|\n)*?\*\//g, '');
+  }
+  return s;
+}
+
 declare global {
   interface Window { 
     externalText: string | undefined; 
@@ -92,7 +99,7 @@ function App() {
   useEffect(() => {
       const interval = setInterval(() => {
         if (window.externalText && window.externalText !== externalText) {
-          setNodes(parse(window.externalText, []));
+          setNodes(parse(removeComments(window.externalText), []));
           setExternalText(window.externalText);
         }
 
@@ -123,7 +130,7 @@ function App() {
   }
 
   const onSubmitClicked = () => {
-    setNodes(parse(unsubmittedData, []));
+    setNodes(parse(removeComments(unsubmittedData), []));
   }
 
   const onIncreseWidthClick = () => {
@@ -174,7 +181,7 @@ function App() {
                           <a href='#' onClick={(e) => { 
                               e.preventDefault();
                               window.externalGotoEditor!(currentNode.title);
-                          }}>goto</a>
+                          }}>goto in editor</a>
                       </div> : null
                     }
 
@@ -196,7 +203,7 @@ function App() {
                                     top: oldScrollY
                                 });
                             }
-                           }}>focus</a>
+                           }}>focus in tree</a>
                         </div>
                       : null}
 

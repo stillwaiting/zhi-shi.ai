@@ -191,6 +191,14 @@ blah content
     
     });
 
+    test('removes comments', async () => {
+        let component = await createApp();
+        window.externalText = '# this is external /* header\n blahblah */';
+        act(() => { jest.advanceTimersByTime(1500)} );
+        expect(component.getByText('this is external').innerHTML).toBe('this is external');
+    
+    });
+
     test('window.externalText does not override new text', async () => {
         let component = await createApp();
         window.externalText = '# this is external header';
