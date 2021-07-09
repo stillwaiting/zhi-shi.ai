@@ -53,7 +53,8 @@ function toHtml(text: string, anchor: string, selectedText: string): string {
     }).join('');
 
 
-    htmlText = htmlText.replaceAll(/\[(.*?)\]\((.*?)\)/g, (a1, a2, a3, a4) => {
+
+    htmlText = htmlText.replaceAll(/\[([^\]]*?)\]\((.*?)\)/g, (a1, a2, a3, a4) => {
         return '<a href=\'' + a3.split('#').join('|') + '\'>' + a2 + '</a>'
     });
 
@@ -64,7 +65,7 @@ function toHtml(text: string, anchor: string, selectedText: string): string {
     
     htmlText = htmlText.replaceAll(
         // [#foo]blah[/] ====> <span class="highlight highlight-foo">blah</span>(<a href='#foo'>foo</a>)
-        /\[#(.*?)\](.*?)\[\/\]/g, 
+        /\[#([^\]]*?)\](.*?)\[\/\]/g, 
         '<span class="highlight highlight-$1">$2</span>(<a href=\'|$1\'>$1</a>)'
     );
 
