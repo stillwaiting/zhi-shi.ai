@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { MarkdownBodyChunkQuestionAnswers, MarkdownBodyChunkTextParagraph } from '../md/types'
 import BodyTextParagraphComponent from './BodyTextParagraphComponent'
 
@@ -27,9 +27,11 @@ function renderAnswers(answers: Array<MarkdownBodyChunkTextParagraph>, dropdownI
 
 export default ( {data}: SentenceWithAnswers) => {
     const [dropdownIndices, setSubmittedDropdownIndices] = useState<Array<number>>([])
-
+    useEffect(() =>
+        setSubmittedDropdownIndices([])
+    , [data.question.text, data.answers.length]);
     return <div>
-        <div><BodyQuestionComponent question={data.question.text} onSubmit={(indices) => setSubmittedDropdownIndices(indices)} /></div>
+        <div><BodyQuestionComponent question={data.question.text} onSubmit={(indices) => setSubmittedDropdownIndices(indices)} indices={dropdownIndices}/></div>
         {dropdownIndices.length > 0 ? renderAnswers(data.answers, dropdownIndices) : null}
         <div style={{visibility: 'hidden'}}>
             {RED_CROSS}

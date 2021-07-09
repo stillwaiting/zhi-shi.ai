@@ -12,7 +12,8 @@ const countDropdowns = (splitSentence: Array<string>) =>
 
 type BodyQuestionComponentProps = {
     onSubmit: (indices: Array<number>) => void, 
-    question: string
+    question: string,
+    indices: Array<number>
 }
 
 function shuffleArray(array: Array<any>) {
@@ -26,17 +27,18 @@ function shuffleArray(array: Array<any>) {
     return array;
 }
 
-export default ({ onSubmit, question }: BodyQuestionComponentProps) => {
+export default ({ onSubmit, question, indices }: BodyQuestionComponentProps) => {
     const [selectedDropdownIndices, setSelectedDropdownIndices] = useState<Array<number>>(
-        (question.match(DROPDOWN_REGEXP) || []).map(question => Math.floor(Math.random() * question.split('|').length))
+        indices.length > 0 
+            ? indices : 
+            (question.match(DROPDOWN_REGEXP) || []).map(question => Math.floor(Math.random() * question.split('|').length))
     );
-    const [isAnswered, setIsAnswered] = useState<boolean>(false)
-
+    
     // Each item is either an arbitrary string or a "dropdown" string like "(blah|foo)"
     const splitQuestion = question.split(DROPDOWN_REGEXP) || [];
 
     const dropdownClassName = (dropdownIdx: number): string => {
-        if (isAnswered) {
+        if (indices.length > 0) {
             if (selectedDropdownIndices[dropdownIdx] == 0) {
                 return 'success';
             } else {
@@ -57,7 +59,7 @@ export default ({ onSubmit, question }: BodyQuestionComponentProps) => {
                             <span key={subSentenceIdx}>
                                 <select
                                     className={dropdownClassName(dropdownIdx)}
-                                    disabled={isAnswered}
+                                    disabled={indices.length > 0}
                                     value={selectedDropdownIndices[dropdownIdx]}
                                     onChange={e => {
                                         const newIndices = [...selectedDropdownIndices];
@@ -72,18 +74,16 @@ export default ({ onSubmit, question }: BodyQuestionComponentProps) => {
                                 )))}
                                 </select>
                             </span>,
-                            isAnswered ? <sup key={`index${subSentenceIdx}`} className={dropdownClassName(dropdownIdx)}>({dropdownIdx + 1})</sup> : null
+                            indices.length > 0 ? <sup key={`index${subSentenceIdx}`} className={dropdownClassName(dropdownIdx)}>({dropdownIdx + 1})</sup> : null
                         ];
                     } else {
                         return <span key={subSentenceIdx}>{subSentence}</span>;
                     }
                 })}
             </div>
-            {isAnswered 
+            {indices.length > 0 
                 ? null 
                 :  <button className="button" onClick={() => {
-                        setIsAnswered(true);
-            
                         onSubmit(selectedDropdownIndices);
                     }}>Submit</button>
             }
