@@ -83,7 +83,16 @@ describe('BodyTextParagraphComponent', () => {
         `
         const component = render(<BodyTextParagraphComponent data={{text: text}} />);
         expect(component.container.children[0].innerHTML.trim()).toBe(
-            "hello <span class=\"dobule-line\">foo bar</span>");
+            "hello <span class=\"doubleline\">foo bar</span>");
+    });
+
+    test('renders ending', () => {
+        const text = `
+            hello <ending>foo bar</ending>
+        `
+        const component = render(<BodyTextParagraphComponent data={{text: text}} />);
+        expect(component.container.children[0].innerHTML.trim()).toBe(
+            "hello <span class=\"ending\">foo bar</span>");
     });
 
     test('highlights highlighted areas', () => {

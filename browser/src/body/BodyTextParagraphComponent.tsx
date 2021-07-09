@@ -14,6 +14,13 @@ type BodyTextParagraphComponent = {
     data: MarkdownBodyChunkTextParagraph
 };
 
+const supportedTagsReplacement = ['dashed', 'ddashed', 'wave', 'prefix', 'suffix', 'ending', 'root', 'nowrap'].map(tag => {
+    const regexp = new RegExp(`\\<${tag}\\>(.*?)\\<\\/${tag}\\>`, "g");
+    
+    return (str: string) => str.replaceAll(regexp, `<span class="${tag}">$1</span>`);
+});
+
+
 // Being pragmatic and decided not to parse it completely
 function toHtml(text: string, anchor: string, selectedText: string): string {
     let htmlText = text;
@@ -74,20 +81,9 @@ function toHtml(text: string, anchor: string, selectedText: string): string {
         '<span class="doubleline">$1</span>'
     );
 
-    htmlText = htmlText.replaceAll(
-        /\<dashed\>(.*?)\<\/dashed\>/g,
-        '<span class="dashed">$1</span>'
-    );
-
-    htmlText = htmlText.replaceAll(
-        /\<wave\>(.*?)\<\/wave\>/g,
-        '<span class="wave">$1</span>'
-    );
-
-    htmlText = htmlText.replaceAll(
-        /\<ddashed\>(.*?)\<\/ddashed\>/g,
-        '<span class="ddashed">$1</span>'
-    );
+    supportedTagsReplacement.forEach(replacer => {
+        htmlText = replacer(htmlText);
+    });
 
     return htmlText;
 }
