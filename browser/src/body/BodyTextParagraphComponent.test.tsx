@@ -64,7 +64,17 @@ describe('BodyTextParagraphComponent', () => {
             hello [#world]foo bar[/]
         `
         const component = render(<BodyTextParagraphComponent data={{text: text}} />);
-        expect(component.container.children[0].innerHTML.trim()).toBe("hello <span class=\"highlight highlight-world\">foo bar</span>(<a href=\"|world\">world</a>)");
+        expect(component.container.children[0].innerHTML.trim()).toBe(
+            "hello <span class=\"highlight highlight-world\">foo bar</span>(<a href=\"|world\">world</a>)");
+    });
+
+    test('highlighted areas and links play together well', () => {
+        const text = `
+            hello [#world]foo bar[/] (link)[#blah]
+        `
+        const component = render(<BodyTextParagraphComponent data={{text: text}} />);
+        expect(component.container.children[0].innerHTML.trim()).toBe(
+            "hello <span class=\"highlight highlight-world\">foo bar</span>(<a href=\"|world\">world</a>) (link)[#blah]");
     });
 
     test('highlights highlighted areas', () => {
@@ -81,7 +91,8 @@ describe('BodyTextParagraphComponent', () => {
                 <BodyTextParagraphComponent data={{text: text}} />
             </AppContext.Provider>
         );
-        expect(component.container.children[0].innerHTML.trim()).toBe("hello <span class=\"highlight active\">foo bar</span>(<a href=\"|doit\">doit</a>)");
+        expect(component.container.children[0].innerHTML.trim()).toBe(
+            "hello <span class=\"highlight active\">foo bar</span>(<a href=\"|doit\">doit</a>)");
     });
 
     test('selects text', () => {
@@ -96,7 +107,8 @@ describe('BodyTextParagraphComponent', () => {
                 <BodyTextParagraphComponent data={{text: text}} />
             </AppContext.Provider>
         );
-        expect(component.container.children[0].innerHTML.trim()).toBe("hello <span class=\"selected\">world</span> hello <span class=\"selected\">world</span>");
+        expect(component.container.children[0].innerHTML.trim()).toBe(
+            "hello <span class=\"selected\">world</span> hello <span class=\"selected\">world</span>");
     })
     
 });
