@@ -122,7 +122,35 @@ export function deactivate() {}
 function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionContext) {
 	// cd ~/dev/zhi-shi.ai/browser
 	// INLINE_RUNTIME_CHUNK=false yarn build
+	// rm -rf ../vscode-ext/zhishimd/media/*
 	// cp -r build/* ../vscode-ext/zhishimd/media/
+	// update the manufest
+	// bump version in package.json
+	// cd ~/dev/zhi-shi.ai/vscode-ext/zhishimd
+	// yarn vsce package
+	const manifest = {
+		"files": {
+		  "main.css": "/static/css/main.96445705.chunk.css",
+		  "main.js": "/static/js/main.538bf286.chunk.js",
+		  "main.js.map": "/static/js/main.538bf286.chunk.js.map",
+		  "runtime-main.js": "/static/js/runtime-main.4a94e718.js",
+		  "runtime-main.js.map": "/static/js/runtime-main.4a94e718.js.map",
+		  "static/js/2.8cd9cd7d.chunk.js": "/static/js/2.8cd9cd7d.chunk.js",
+		  "static/js/2.8cd9cd7d.chunk.js.map": "/static/js/2.8cd9cd7d.chunk.js.map",
+		  "static/js/3.2d767a97.chunk.js": "/static/js/3.2d767a97.chunk.js",
+		  "static/js/3.2d767a97.chunk.js.map": "/static/js/3.2d767a97.chunk.js.map",
+		  "index.html": "/index.html",
+		  "static/css/main.96445705.chunk.css.map": "/static/css/main.96445705.chunk.css.map",
+		  "static/js/2.8cd9cd7d.chunk.js.LICENSE.txt": "/static/js/2.8cd9cd7d.chunk.js.LICENSE.txt"
+		},
+		"entrypoints": [
+		  "static/js/runtime-main.4a94e718.js",
+		  "static/js/2.8cd9cd7d.chunk.js",
+		  "static/css/main.96445705.chunk.css",
+		  "static/js/main.538bf286.chunk.js"
+		]
+	  };
+
 	return `
 	<!doctype html>
 	<html lang="en">
@@ -135,14 +163,14 @@ function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionCon
 		  <link rel="apple-touch-icon" href="/logo192.png"/>
 		  <link rel="manifest" href="/manifest.json"/>
 		  <title>React App</title>
-		  <link href="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/static/css/main.96445705.chunk.css'))}" rel="stylesheet">
+		  <link href="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/' + manifest.entrypoints[2]))}" rel="stylesheet">
 	   </head>
 	   <body style='background: white; color: black'>
 		  <noscript>You need to enable JavaScript to run this app.</noscript>
 		  <div id="root"></div>
-		  <script src="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/static/js/runtime-main.4a94e718.js'))}"></script>
-		  <script src="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/static/js/2.8cd9cd7d.chunk.js'))}"></script>
-		  <script src="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/static/js/main.16f42e71.chunk.js'))}"></script>
+		  <script src="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/' + manifest.entrypoints[0]))}"></script>
+		  <script src="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/' + manifest.entrypoints[1]))}"></script>
+		  <script src="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/' + manifest.entrypoints[3]))}"></script>
 
 			<script>
 
