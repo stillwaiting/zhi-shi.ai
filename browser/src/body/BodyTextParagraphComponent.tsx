@@ -69,6 +69,26 @@ function toHtml(text: string, anchor: string, selectedText: string): string {
         '<span class="highlight highlight-$1">$2</span>(<a href=\'|$1\'>$1</a>)'
     );
 
+    htmlText = htmlText.replaceAll(
+        /\<d\>(.*?)\<\/d\>/g,
+        '<span class="doubleline">$1</span>'
+    );
+
+    htmlText = htmlText.replaceAll(
+        /\<dashed\>(.*?)\<\/dashed\>/g,
+        '<span class="dashed">$1</span>'
+    );
+
+    htmlText = htmlText.replaceAll(
+        /\<wave\>(.*?)\<\/wave\>/g,
+        '<span class="wave">$1</span>'
+    );
+
+    htmlText = htmlText.replaceAll(
+        /\<ddashed\>(.*?)\<\/ddashed\>/g,
+        '<span class="ddashed">$1</span>'
+    );
+
     return htmlText;
 }
 

@@ -30,7 +30,7 @@ export default ( {data}: SentenceWithAnswers) => {
     useEffect(() =>
         setSubmittedDropdownIndices([])
     , [data.question.text, data.answers.length]);
-    return <div>
+    return <div key={Math.random()}>
         <div><BodyQuestionComponent question={data.question.text} onSubmit={(indices) => setSubmittedDropdownIndices(indices)} indices={dropdownIndices}/></div>
         {dropdownIndices.length > 0 ? renderAnswers(data.answers, dropdownIndices) : null}
         <div style={{visibility: 'hidden'}}>

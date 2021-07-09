@@ -77,6 +77,15 @@ describe('BodyTextParagraphComponent', () => {
             "hello <span class=\"highlight highlight-world\">foo bar</span>(<a href=\"|world\">world</a>) (link)[#blah]");
     });
 
+    test('renders double-line', () => {
+        const text = `
+            hello <d>foo bar</d>
+        `
+        const component = render(<BodyTextParagraphComponent data={{text: text}} />);
+        expect(component.container.children[0].innerHTML.trim()).toBe(
+            "hello <span class=\"dobule-line\">foo bar</span>");
+    });
+
     test('highlights highlighted areas', () => {
         const text = `
             hello [#doit]foo bar[/]
