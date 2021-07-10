@@ -2,6 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import BodyQuestionAnswerComponent from './BodyQuestionAnswerComponent';
 import '@testing-library/jest-dom'
+import AppContext from '../AppContext';
 
 describe('BodyQuestionAnswerComponent', () => {
     // @ts-ignore
@@ -18,7 +19,7 @@ describe('BodyQuestionAnswerComponent', () => {
     })
     
     test('does not show answers before submit', () => {
-        const component = render(<BodyQuestionAnswerComponent data={{
+        const component = render(<BodyQuestionAnswerComponent  data={{
             question: {text: "(Hello|blah|baz), (world|foo)(!|.)"},
             answers: [{text: "answer 1"}, {text: "answer 2"}]
         }} />);
@@ -26,7 +27,7 @@ describe('BodyQuestionAnswerComponent', () => {
     });
 
     test('shows answers after submit', () => {
-        const component = render(<BodyQuestionAnswerComponent data={{
+        const component = render(<BodyQuestionAnswerComponent  data={{
             question: {text: "(Hello|blah|baz), (world|foo)"},
             answers: [{text: "answer 1"}, {text: "answer 2"}]
         }}  />);
@@ -42,5 +43,30 @@ describe('BodyQuestionAnswerComponent', () => {
         expect(answers[0].innerHTML).toContain("answer 1")
         expect(answers[1].innerHTML).toContain("class=\"error\"")
         expect(answers[1].innerHTML).toContain("answer 2")
+    });
+
+    test('appends answers with referenes from title when provided', () => {
+        const component = render(<AppContext.Provider value={{
+                currentNodeTitle: 'doit ::to!',
+                currentNodeAnchor: '',
+                currentSelectedText: '',
+                onLinkClicked: (link) => {}
+            }}>
+            <BodyQuestionAnswerComponent  data={{
+                question: {text: "(Hello|blah|baz), (world|foo)"},
+                answers: [{text: "answer 1"}, {text: "answer 2"}]
+            }}  />
+        </AppContext.Provider>);
+        fireEvent.click(component.container.getElementsByTagName('button')[0]);
+        expect(component.getAllByText("Details")).toHaveLength(2);
+    });
+
+    test('does not append answers when no anchor was provided in title', () => {
+        const component = render(<BodyQuestionAnswerComponent  data={{
+            question: {text: "(Hello|blah|baz), (world|foo)"},
+            answers: [{text: "answer 1"}, {text: "answer 2"}]
+        }}  />);
+        fireEvent.click(component.container.getElementsByTagName('button')[0]);
+        expect(component.container.innerHTML.indexOf('Details')).toBe(-1)
     });
 });
