@@ -276,4 +276,21 @@ blah content
         expect((mocked(reactDom.useHistory().push).mock.calls)).toHaveLength(3);
         expect((mocked(reactDom.useHistory().push).mock.calls[2][0])).toBe("/hello4");
     });
+
+    test('validates nodes with the same title', async () => {
+        let component = await createApp();
+
+        window.externalText = `
+
+# hello
+
+# hello
+
+## world
+        `;
+        act(() => { jest.advanceTimersByTime(1500)} );
+
+        expect(component.getByText('hello has 2 nodes!')).toBeDefined();
+        expect(component.getAllByTestId('error')).toHaveLength(1);
+    });
 });

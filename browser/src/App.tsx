@@ -12,6 +12,7 @@ import copy from 'copy-to-clipboard';
 
  // @ts-ignore
 import replaceAllInserter from 'string.prototype.replaceall';
+import { getNodeText } from '@testing-library/react';
 replaceAllInserter.shim();
 
 function encodeTitle(title: string) {
@@ -82,9 +83,31 @@ function parseNodePath(nodePath: string) {
   return [title, anchor];
 }
 
+function indexNodeByTitle(node: MarkdownNode, indexedNodes: {[key: string]: Array<MarkdownNode>}) {
+  if (indexedNodes[node.title]) {
+    indexedNodes[node.title].push(node);
+  } else {
+    indexedNodes[node.title] = [node];
+  }
+  node.children.forEach(child => {
+    indexNodeByTitle(child, indexedNodes);
+  });
+}
+
+function indexNodesByTitle(nodes: Array<MarkdownNode>) {
+  const indexedNodes: {[key: string]: Array<MarkdownNode>} = {};
+
+  nodes.forEach(node => {
+    indexNodeByTitle(node, indexedNodes);
+  });
+
+  return indexedNodes;
+}
+
 function App() {
   const [unsubmittedData, setUnsubmittedData] = useState<string>("");
   const [nodes, setNodes] = useState<MarkdownNode[]>([]);
+  const [nodesByTitle, setNodesByTitle] = useState<{[key: string]: Array<MarkdownNode>}>({});
   const [topicsWidth, setTopicsWidth] = useState<number>(300);
 
   const [externalText, setExternalText] = useState<string>("");
@@ -99,7 +122,9 @@ function App() {
   useEffect(() => {
       const interval = setInterval(() => {
         if (window.externalText && window.externalText !== externalText) {
-          setNodes(parse(removeComments(window.externalText), []));
+          const nodes = parse(removeComments(window.externalText), []);
+          setNodes(nodes);
+          setNodesByTitle(indexNodesByTitle(nodes));
           setExternalText(window.externalText);
         }
 
@@ -130,7 +155,9 @@ function App() {
   }
 
   const onSubmitClicked = () => {
-    setNodes(parse(removeComments(unsubmittedData), []));
+    const nodes = parse(removeComments(unsubmittedData), []);
+    setNodes(nodes);
+    setNodesByTitle(indexNodesByTitle(nodes));
   }
 
   const onIncreseWidthClick = () => {
@@ -153,6 +180,7 @@ function App() {
       }
     }}>
       <div className="App">
+
         <div className="topics" style={{width: topicsWidth + 'px' }} data-testid='menu-container'>
 
           <a href='#' onClick={(e) => {
@@ -181,6 +209,13 @@ function App() {
         </div>
 
         <div className="content">
+
+            {Object.entries(nodesByTitle).filter(entity => entity[1].length > 1).map(badNodeEntity => 
+                <div className='error' key={badNodeEntity[0]} data-testid='error'>
+                  {badNodeEntity[0]} has {badNodeEntity[1].length} nodes!
+                </div>
+            )}
+
             {currentNode 
               ? <div>
                     <NodeHeaderComponent path={currentNode.path} onTitleClicked={(title) => 
