@@ -165,6 +165,16 @@ function App() {
             onDecreaseWidthClick();
           }} data-testid='minus'>- width</a> <br />
 
+          <a href='#' onClick={(e) => {
+            e.preventDefault();
+            window.history.back()
+          }} data-testid='back'>back</a> |
+
+          <a href='#' onClick={(e) => {
+            e.preventDefault();
+            window.history.forward();
+          }} data-testid='forward'>forward</a> <br />
+
           <TopicsTreeComponent nodes={nodes} onNodeClicked={(node) => {
             history.push('/' + encodeTitle(node.title));
           }} />
