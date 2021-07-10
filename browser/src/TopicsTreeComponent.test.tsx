@@ -4,6 +4,7 @@ import TopicsTreeComponent from './TopicsTreeComponent';
 import '@testing-library/jest-dom'
 import { MarkdownNode } from './md/types';
 import AppContext  from './AppContext';
+import parse from './md/MarkdownParser';
 
 const WITH_NESTED_CHILDREN = [
     {
@@ -86,5 +87,24 @@ describe('TopicsTreeComponent', () => {
         const node2 = component.getByText('hello2');
         fireEvent.click(node2);
         expect(clickedNode!.title).toBe("hello2");
+    });
+
+    test('renders number of tasks', () => {
+        const nodes = parse(
+`
+# hello
+
+## Task
+
+? (apple|banana)
+! apple
+
+# Task another
+
+`, []
+        )
+        const component = render(<TopicsTreeComponent nodes={nodes} onNodeClicked={() => {}} />);
+        expect(component.getByText('Task (1)')).toBeDefined();
+        expect(component.getByText('Task another (0)')).toBeDefined();
     });
 });

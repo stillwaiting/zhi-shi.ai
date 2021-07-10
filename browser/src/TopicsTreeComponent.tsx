@@ -2,7 +2,7 @@ import { getNodeText } from '@testing-library/dom';
 import React, { useState, useEffect, useContext } from 'react';
 import AppContext from './AppContext';
 
-import { MarkdownNode } from './md/types';
+import { isMarkdownBodyChunkQuestionAnswers, MarkdownBody, MarkdownBodyChunk, MarkdownNode } from './md/types';
 import './TopicsTreeComponent.scss';
 
 type TopicsTreeComponent = {
@@ -10,12 +10,21 @@ type TopicsTreeComponent = {
     onNodeClicked: (node: MarkdownNode) => any
 }
 
+
+function calculateNumberOfQuestions(body: MarkdownBody) {
+    return body.content.filter(chunk => isMarkdownBodyChunkQuestionAnswers(chunk)).length;
+}
+
 const renderNodes = (nodes: MarkdownNode[], currentNodeTitle: string, onNodeClicked: (node: MarkdownNode) => any) => {
-    if (nodes.length == 0) {
+    if (!nodes || nodes.length == 0) {
         return null;
     }
     return <ul>
         {nodes.map((node, nodeIdx) => {
+            const title = node.title.indexOf('Task') >= 0 
+                ? node.title + ' (' + calculateNumberOfQuestions(node.body) + ')'
+                : node.title;
+
             return <li key={`node${nodeIdx}`}>
                 <a href='#' onClick={(e) => {
                     e.preventDefault();
@@ -24,7 +33,7 @@ const renderNodes = (nodes: MarkdownNode[], currentNodeTitle: string, onNodeClic
                 
                 className={(node.title === currentNodeTitle) ? "selectedNode" : "plainNode"}
                 
-                >{node.title}</a> <br />
+                >{title}</a> <br />
                 {renderNodes(node.children, currentNodeTitle, onNodeClicked)}
             </li>;
         })}
