@@ -153,6 +153,7 @@ function App() {
   const [nodes, setNodes] = useState<MarkdownNode[]>([]);
   const [nodesByTitle, setNodesByTitle] = useState<{[key: string]: Array<MarkdownNode>}>({});
   const [topicsWidth, setTopicsWidth] = useState<number>(300);
+  const [expandQuestions, setExpandQuestions] = useState<boolean>(false);
 
   const [externalText, setExternalText] = useState<string>("");
   const [externalNodeLine, setExternalNodeLine] = useState<number>(-1);
@@ -227,6 +228,7 @@ function App() {
       },
       currentNodeAnchor: currentNodeAnchor,
       currentSelectedText: externalSelectedText,
+      expandQuestionAnswer: expandQuestions,
       onLinkClicked: (link) => {
         history.push(nodeLinkToHttpPath(link, currentNode ? currentNode.path : []));
       }
@@ -245,15 +247,7 @@ function App() {
             onDecreaseWidthClick();
           }} data-testid='minus'>- width</a> <br />
 
-          <a href='#' onClick={(e) => {
-            e.preventDefault();
-            window.history.back()
-          }} data-testid='back'>back</a> |
-
-          <a href='#' onClick={(e) => {
-            e.preventDefault();
-            window.history.forward();
-          }} data-testid='forward'>forward</a> <br />
+      
 
           <TopicsTreeComponent nodes={nodes} onNodeClicked={(node) => {
             history.push(nodeLinkToHttpPath(node.title, []));
@@ -261,6 +255,23 @@ function App() {
         </div>
 
         <div className="content">
+
+            <div>
+                <a href='#' onClick={(e) => {
+                e.preventDefault();
+                window.history.back()
+              }} data-testid='back'>back</a> |
+
+              <a href='#' onClick={(e) => {
+                e.preventDefault();
+                window.history.forward();
+              }} data-testid='forward'>forward</a> <br />
+            </div>
+            <div>
+              <input type="checkbox" data-testid='expandAnswers' checked={expandQuestions} onChange={e => 
+                  setExpandQuestions(!expandQuestions)} 
+              /> expand questions
+            </div>
 
             {Object.entries(nodesByTitle).filter(entity => entity[1].length > 1).map(badNodeEntity => 
                 <div className='error' key={badNodeEntity[0]} data-testid='error'>

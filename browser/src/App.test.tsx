@@ -388,4 +388,40 @@ blah content
 
         expect(component.container.innerHTML).not.toContain('invalid link!');
     });
+
+    test('by default renders collapsed answers', async () => {
+        (reactDom.useLocation as jest.Mock).mockReturnValue({
+            pathname: '/world'
+        });
+        let component = await createApp();
+
+        window.externalText = `
+## world
+
+? (1|2)
+! the answer
+        `;
+        act(() => { jest.advanceTimersByTime(1500)} );
+
+        expect(component.container.innerHTML).not.toContain('the answer');
+    });
+
+    test('expands answers when "expand answers" is checked', async () => {
+        (reactDom.useLocation as jest.Mock).mockReturnValue({
+            pathname: '/world'
+        });
+        let component = await createApp();
+
+        window.externalText = `
+## world
+
+? (1|2)
+! the answer
+        `;
+        act(() => { jest.advanceTimersByTime(1500)} );
+
+        fireEvent.click(component.getByTestId('expandAnswers'));
+
+        expect(component.container.innerHTML).toContain('the answer');
+    });
 });

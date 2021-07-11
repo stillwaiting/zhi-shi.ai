@@ -42,10 +42,12 @@ function renderAnswers(nodeTitle: string, answers: Array<MarkdownBodyChunkTextPa
 
 export default ( {data }: SentenceWithAnswers) => {
     const context = useContext(AppContext);
-    const [dropdownIndices, setSubmittedDropdownIndices] = useState<Array<number>>([])
+    const [dropdownIndices, setSubmittedDropdownIndices] = useState<Array<number>>(
+        context.expandQuestionAnswer ? data.answers.map(answer => 0) : []
+    )
     useEffect(() =>
-        setSubmittedDropdownIndices([])
-    , [data.question.text, data.answers.length]);
+        setSubmittedDropdownIndices(context.expandQuestionAnswer ? data.answers.map(answer => 0) : [])
+    , [data.question.text, data.answers.length, context.expandQuestionAnswer]);
     return <div key={Math.random()}>
         <div><BodyQuestionComponent question={data.question.text} onSubmit={(indices) => setSubmittedDropdownIndices(indices)} indices={dropdownIndices}/></div>
         {dropdownIndices.length > 0 ? renderAnswers(context.currentNodeTitle, data.answers, dropdownIndices) : null}

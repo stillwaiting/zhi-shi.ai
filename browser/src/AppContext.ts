@@ -6,6 +6,7 @@ export type AppContext = {
     currentSelectedText: string,
     linkRenderer: (link: string, text:string) => string,
     onLinkClicked: (link: string) => void,
+    expandQuestionAnswer: boolean
 };
 
 export default React.createContext<AppContext>({
@@ -13,5 +14,6 @@ export default React.createContext<AppContext>({
     currentNodeAnchor: '',
     currentSelectedText: '',
     linkRenderer: (link, text) => { return `<a href="${link.split('"').join('&quot;')}">${text}</a>`; },
-    onLinkClicked: (link) => {}
+    onLinkClicked: (link) => {},
+    expandQuestionAnswer: false
 });

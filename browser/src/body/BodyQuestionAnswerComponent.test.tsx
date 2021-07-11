@@ -51,6 +51,7 @@ describe('BodyQuestionAnswerComponent', () => {
                 currentNodeAnchor: '',
                 currentSelectedText: '',
                 onLinkClicked: (link) => {},
+                expandQuestionAnswer: false,
                 linkRenderer: (link, text) => { return `<a href="${link.split('"').join('&quot;')}">${text}</a>`; },
             }}>
             <BodyQuestionAnswerComponent  data={{
@@ -68,6 +69,7 @@ describe('BodyQuestionAnswerComponent', () => {
                 currentNodeAnchor: '',
                 currentSelectedText: '',
                 onLinkClicked: (link) => {},
+                expandQuestionAnswer: false,
                 linkRenderer: (link, text) => { return `<a href="${link.split('"').join('&quot;')}">${text}</a>`; },
             }}>
             <BodyQuestionAnswerComponent  data={{
@@ -86,5 +88,23 @@ describe('BodyQuestionAnswerComponent', () => {
         }}  />);
         fireEvent.click(component.container.getElementsByTagName('button')[0]);
         expect(component.container.innerHTML.indexOf('Details')).toBe(-1)
+    });
+
+    test('expands answers when context provided', () => {
+        const component = render(<AppContext.Provider value={{
+                currentNodeTitle: 'doit ::to!',
+                currentNodeAnchor: '',
+                currentSelectedText: '',
+                onLinkClicked: (link) => {},
+                expandQuestionAnswer: true,
+                linkRenderer: (link, text) => { return `<a href="${link.split('"').join('&quot;')}">${text}</a>`; },
+            }}>
+            <BodyQuestionAnswerComponent  data={{
+                question: {text: "(Hello|blah|baz), (world|foo)"},
+                answers: [{text: "answer 1"}, {text: "answer 2 [link](text)"}]
+            }}  />
+        </AppContext.Provider>);
+        expect(component.container.innerHTML).toContain("answer 1");
+        expect(component.container.innerHTML).toContain("answer 2");
     });
 });
