@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, RenderResult, screen, act } from '@testing-library/react';
+import { fireEvent, render, RenderResult, screen, act, cleanup } from '@testing-library/react';
 import App from './App';
 import { mocked } from 'ts-jest/utils';
 import '@testing-library/jest-dom'
@@ -47,6 +47,7 @@ describe('App', () => {
     });
 
     afterEach(() => {
+        cleanup();
         jest.useRealTimers();
         (reactDom.useHistory().push as jest.Mock).mockReset();
         (reactDom.useLocation as jest.Mock).mockReset();
