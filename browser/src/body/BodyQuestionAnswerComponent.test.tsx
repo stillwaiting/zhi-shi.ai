@@ -62,6 +62,23 @@ describe('BodyQuestionAnswerComponent', () => {
         expect(component.getAllByText("Details")).toHaveLength(2);
     });
 
+    test('does not append answer with referenes from title when they already have a link', () => {
+        const component = render(<AppContext.Provider value={{
+                currentNodeTitle: 'doit ::to!',
+                currentNodeAnchor: '',
+                currentSelectedText: '',
+                onLinkClicked: (link) => {},
+                linkRenderer: (link, text) => { return `<a href="${link.split('"').join('&quot;')}">${text}</a>`; },
+            }}>
+            <BodyQuestionAnswerComponent  data={{
+                question: {text: "(Hello|blah|baz), (world|foo)"},
+                answers: [{text: "answer 1"}, {text: "answer 2 [link](text)"}]
+            }}  />
+        </AppContext.Provider>);
+        fireEvent.click(component.container.getElementsByTagName('button')[0]);
+        expect(component.getAllByText("Details")).toHaveLength(1);
+    });
+
     test('does not append answers when no anchor was provided in title', () => {
         const component = render(<BodyQuestionAnswerComponent  data={{
             question: {text: "(Hello|blah|baz), (world|foo)"},

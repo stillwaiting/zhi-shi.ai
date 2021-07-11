@@ -25,7 +25,7 @@ function renderAnswers(nodeTitle: string, answers: Array<MarkdownBodyChunkTextPa
                 text: answers[idx].text
             }
 
-            if (titleAnchor) {
+            if (titleAnchor && body.text.indexOf('](') < 0) {
                 body.text += ' [Details](..#' + titleAnchor + ').';
             }
 
