@@ -50,7 +50,8 @@ describe('BodyQuestionAnswerComponent', () => {
                 currentNodeTitle: 'doit ::to!',
                 currentNodeAnchor: '',
                 currentSelectedText: '',
-                onLinkClicked: (link) => {}
+                onLinkClicked: (link) => {},
+                linkRenderer: (link, text) => { return `<a href="${link.split('"').join('&quot;')}">${text}</a>`; },
             }}>
             <BodyQuestionAnswerComponent  data={{
                 question: {text: "(Hello|blah|baz), (world|foo)"},

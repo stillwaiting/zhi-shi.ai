@@ -180,7 +180,7 @@ blah content
 
         fireEvent.click(component.getByText('boom'));
 
-        expect((mocked(reactDom.useHistory().push).mock.calls[0][0])).toBe("/Hello%2Ftesting|hehe");
+        expect((mocked(reactDom.useHistory().push).mock.calls[0][0])).toBe("/Hello%2Ftesting|separator|hehe");
     });
 
     test('supports window.externalText', async () => {
@@ -292,5 +292,100 @@ blah content
 
         expect(component.getByText('hello has 2 nodes!')).toBeDefined();
         expect(component.getAllByTestId('error')).toHaveLength(1);
+    });
+
+    test('marks invalid links as invalid', async () => {
+        (reactDom.useLocation as jest.Mock).mockReturnValue({
+            pathname: '/world'
+        });
+        let component = await createApp();
+
+        window.externalText = `
+
+# hello
+
+# hello
+
+## world
+[blah](blah)
+
+        `;
+        act(() => { jest.advanceTimersByTime(1500)} );
+
+        expect(component.container.innerHTML).toContain('invalid link!');
+    });
+
+    test('does not mark valid links as invalid', async () => {
+        (reactDom.useLocation as jest.Mock).mockReturnValue({
+            pathname: '/world'
+        });
+        let component = await createApp();
+
+        window.externalText = `
+
+# hello
+
+# blah
+
+# hello
+
+## world
+[blah](blah)
+
+        `;
+        act(() => { jest.advanceTimersByTime(1500)} );
+
+        expect(component.container.innerHTML).not.toContain('invalid link!');
+    });
+
+
+    test('can find full links', async () => {
+        (reactDom.useLocation as jest.Mock).mockReturnValue({
+            pathname: '/world'
+        });
+        let component = await createApp();
+
+        window.externalText = `
+
+# hello
+
+[#frag]fragment[/]
+
+# blah
+
+
+## world
+[blah](hello#frag)
+
+        `;
+        act(() => { jest.advanceTimersByTime(1500)} );
+
+        expect(component.container.innerHTML).not.toContain('invalid link!');
+    });
+
+    test('can find fragments in table', async () => {
+        (reactDom.useLocation as jest.Mock).mockReturnValue({
+            pathname: '/world'
+        });
+        let component = await createApp();
+
+        window.externalText = `
+
+# hello
+
+|foo | [#frag]fragment[/] |
+---
+| blah |
+
+# blah
+
+
+## world
+[blah](hello#frag)
+
+        `;
+        act(() => { jest.advanceTimersByTime(1500)} );
+
+        expect(component.container.innerHTML).not.toContain('invalid link!');
     });
 });

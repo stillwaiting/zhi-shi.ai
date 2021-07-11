@@ -22,7 +22,7 @@ const supportedTagsReplacement = ['dashed', 'ddashed', 'wave', 'prefix', 'suffix
 
 
 // Being pragmatic and decided not to parse it completely
-function toHtml(text: string, anchor: string, selectedText: string): string {
+function toHtml(text: string, selectedAnchor: string, selectedText: string, linkRenderer: (link: string, text:string) => string): string {
     let htmlText = text;
 
     if (selectedText.length > 0) {
@@ -62,18 +62,23 @@ function toHtml(text: string, anchor: string, selectedText: string): string {
 
 
     htmlText = htmlText.replaceAll(/\[([^\]]*?)\]\((.*?)\)/g, (a1, a2, a3, a4) => {
-        return '<a href=\'' + a3.split('#').join('|') + '\'>' + a2 + '</a>'
+        return linkRenderer(a3, a2);
     });
 
     htmlText = htmlText.replaceAll(
         // [#highlightedArea]blah[/] ====> <span class="highlight active">blah</span>(<a href='#highlightedArea'>highlightedArea</a>)
-        new RegExp('\\[#' + anchor + '\\](.*?)\\[\\/\\]', 'g'), 
-        '<span class="highlight active">$1</span>(<a href=\'|' + anchor + '\'>' + anchor + '</a>)');
+        new RegExp('\\[#' + selectedAnchor + '\\](.*?)\\[\\/\\]', 'g'), 
+        (a1, a2, a3, a4) => {
+            return '<span class="highlight active">' + a2 + '</span>(' + linkRenderer('#' + selectedAnchor, selectedAnchor) + ')'
+        }
+    );
     
     htmlText = htmlText.replaceAll(
         // [#foo]blah[/] ====> <span class="highlight highlight-foo">blah</span>(<a href='#foo'>foo</a>)
         /\[#([^\]]*?)\](.*?)\[\/\]/g, 
-        '<span class="highlight highlight-$1">$2</span>(<a href=\'|$1\'>$1</a>)'
+        (a1, a2, a3, a4) => {
+            return '<span class="highlight highlight-' + a2 + '">' + a3 + '</span>(' + linkRenderer('#' + a2, a2) + ')'
+        }
     );
 
     htmlText = htmlText.replaceAll(
@@ -92,15 +97,13 @@ export default ( { data }: BodyTextParagraphComponent ) => {
     const context = useContext(AppContext);
     return <p 
         className='BodyTextParagraphComponent' 
-        dangerouslySetInnerHTML = {{__html: toHtml(data.text, context.currentNodeAnchor, context.currentSelectedText)}} 
+        dangerouslySetInnerHTML = {{__html: toHtml(data.text, context.currentNodeAnchor, context.currentSelectedText, context.linkRenderer)}} 
         onClick={(e: React.MouseEvent<HTMLElement>) => {
             const targetLink = (e.target as HTMLElement).closest('a');
             if(!targetLink) return;
             const href = targetLink.attributes[0].value;
-            if (!href.startsWith('#')) {
-                e.preventDefault();
-                context.onLinkClicked(targetLink.attributes[0].value); 
-            }
+            e.preventDefault();
+            context.onLinkClicked(targetLink.attributes[0].value); 
         }}
     />;
 }

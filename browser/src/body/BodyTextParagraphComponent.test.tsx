@@ -32,31 +32,34 @@ describe('BodyTextParagraphComponent', () => {
                 currentNodeTitle: '',
                 currentNodeAnchor: '',
                 currentSelectedText: '',
-                onLinkClicked: (link) => { capturedLink = link}
+                onLinkClicked: (link) => { capturedLink = link},
+                linkRenderer: (link, text) => { return `<a href="${link.split('"').join('&quot;')}">${text}</a>`; }
             }}>
                 <BodyTextParagraphComponent data={{text: text}}   />
             </AppContext.Provider>
         );
         fireEvent.click(component.getByText('world'));
-        expect(capturedLink).toBe('blah/test test""/another one|anchor');
+        expect(capturedLink).toBe('blah/test test""/another one#anchor');
     });
 
-    test('does not fire events on anchor click', async () => {
+    test('does fire events on anchor click', async () => {
         const text = `
             hello <a href='#foobar'>world</a>
         `
-        let link = '';
-        const component = render(<BodyTextParagraphComponent data={{text: text}} />);''
-        fireEvent.click(component.getByText('world'));
-
-        // This is to make sure that the has was propagated to window.location; otherwise other tests might start failing randomly
-        await act(() => 
-            new Promise(resolve => setTimeout(() => {
-                resolve();
-            }, 0))
+        let capturedLink = '';
+        const component = render(
+            <AppContext.Provider value={{
+                currentNodeTitle: '',
+                currentNodeAnchor: '',
+                currentSelectedText: '',
+                onLinkClicked: (link) => { capturedLink = link},
+                linkRenderer: (link, text) => { return `<a href="${link.split('"').join('&quot;')}}">${text}</a>`; }
+            }}>
+                <BodyTextParagraphComponent data={{text: text}}   />
+            </AppContext.Provider>
         );
-        
-        expect(link).toBe('');
+        fireEvent.click(component.getByText('world'));
+        expect(capturedLink).toBe('#foobar');
     });
 
     test('renders highlighted areas', () => {
@@ -65,7 +68,7 @@ describe('BodyTextParagraphComponent', () => {
         `
         const component = render(<BodyTextParagraphComponent data={{text: text}} />);
         expect(component.container.children[0].innerHTML.trim()).toBe(
-            "hello <span class=\"highlight highlight-world\">foo bar</span>(<a href=\"|world\">world</a>)");
+            "hello <span class=\"highlight highlight-world\">foo bar</span>(<a href=\"#world\">world</a>)");
     });
 
     test('highlighted areas and links play together well', () => {
@@ -74,7 +77,7 @@ describe('BodyTextParagraphComponent', () => {
         `
         const component = render(<BodyTextParagraphComponent data={{text: text}} />);
         expect(component.container.children[0].innerHTML.trim()).toBe(
-            "hello <span class=\"highlight highlight-world\">foo bar</span>(<a href=\"|world\">world</a>) (link)[#blah]");
+            "hello <span class=\"highlight highlight-world\">foo bar</span>(<a href=\"#world\">world</a>) (link)[#blah]");
     });
 
     test('renders double-line', () => {
@@ -104,13 +107,14 @@ describe('BodyTextParagraphComponent', () => {
                 currentNodeTitle: '',
                 currentNodeAnchor: 'doit',
                 currentSelectedText: '',
-                onLinkClicked: (link) => {}
+                onLinkClicked: (link) => {},
+                linkRenderer: (link, text) => { return `<a href="${link.split('"').join('&quot;')}">${text}</a>`; }
             }}>
                 <BodyTextParagraphComponent data={{text: text}} />
             </AppContext.Provider>
         );
         expect(component.container.children[0].innerHTML.trim()).toBe(
-            "hello <span class=\"highlight active\">foo bar</span>(<a href=\"|doit\">doit</a>)");
+            "hello <span class=\"highlight active\">foo bar</span>(<a href=\"#doit\">doit</a>)");
     });
 
     test('selects text', () => {
@@ -120,7 +124,8 @@ describe('BodyTextParagraphComponent', () => {
                 currentNodeTitle: '',
                 currentNodeAnchor: '',
                 currentSelectedText: 'world',
-                onLinkClicked: (link) => {}
+                onLinkClicked: (link) => {},
+                linkRenderer: (link, text) => { return `<a href="${link.split('"').join('&quot;')}}">${text}</a>`; }
             }}>
                 <BodyTextParagraphComponent data={{text: text}} />
             </AppContext.Provider>

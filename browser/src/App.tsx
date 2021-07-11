@@ -4,7 +4,7 @@ import './App.scss';
 import BodyComponent from './body/BodyComponent';
 import TopicsTreeComponent from './TopicsTreeComponent';
 import parse from './md/MarkdownParser';
-import { MarkdownNode } from './md/types';
+import { isMarkdownBodyChunkList, isMarkdownBodyChunkTable, isMarkdownBodyChunkTextParagraph, MarkdownBody, MarkdownNode } from './md/types';
 import NodeHeaderComponent from './NodeHeaderComponent';
 import { BrowserRouter as Router, Route, Link, useHistory, useLocation } from "react-router-dom";
 import AppContext from './AppContext';
@@ -15,43 +15,46 @@ import replaceAllInserter from 'string.prototype.replaceall';
 import { getNodeText } from '@testing-library/react';
 replaceAllInserter.shim();
 
+// We have to use a custom separator because '#' might be treated specially both by browser, react router and 
+// vscode extension's WebView
+const ANCHOR_SEPARATOR = '|separator|';
+
 function encodeTitle(title: string) {
   return encodeURI(title).replaceAll('/', '%2F');
 }
 
-function buildNodeUrl(titleAndMaybeAnchor: string, currentNodePath: string[]): string {
-  if (titleAndMaybeAnchor.startsWith("..") && titleAndMaybeAnchor.indexOf('|') >= 0 && currentNodePath.length > 1) {
-    const split = titleAndMaybeAnchor.split('|');
-    return '/' +encodeTitle(currentNodePath[currentNodePath.length - 2]) + '|' + encodeTitle(split[1]);
+function nodeLinkToHttpPath(titleAndMaybeAnchor: string, currentNodePath: string[]): string {
+  if (titleAndMaybeAnchor.startsWith("..") && titleAndMaybeAnchor.indexOf('#') >= 0 && currentNodePath.length > 1) {
+    const split = titleAndMaybeAnchor.split('#');
+    return '/' +encodeTitle(currentNodePath[currentNodePath.length - 2]) + ANCHOR_SEPARATOR + encodeTitle(split[1]);
   } 
 
-  if (titleAndMaybeAnchor.startsWith('|')) {
-    return '/' + encodeTitle(currentNodePath[currentNodePath.length - 1]) + '|' + encodeTitle(titleAndMaybeAnchor.substr(1));
+  if (titleAndMaybeAnchor.startsWith('#')) {
+    return '/' + encodeTitle(currentNodePath[currentNodePath.length - 1]) + ANCHOR_SEPARATOR + encodeTitle(titleAndMaybeAnchor.substr(1));
   }
 
   if (titleAndMaybeAnchor === "..") {
     return '/' + encodeTitle(currentNodePath[currentNodePath.length - 2]);
   } 
 
-  if (titleAndMaybeAnchor.indexOf('|') >= 0) {
-    const split = titleAndMaybeAnchor.split('|');
-    return '/' + encodeTitle(split[0]) + '|' + encodeTitle(split[1]);
+  if (titleAndMaybeAnchor.indexOf('#') >= 0) {
+    const split = titleAndMaybeAnchor.split('#');
+    return '/' + encodeTitle(split[0]) + ANCHOR_SEPARATOR + encodeTitle(split[1]);
   }
 
   return '/' + encodeTitle(titleAndMaybeAnchor);
 }
 
-function findNodeWithTitle(nodes: MarkdownNode[], title: string): MarkdownNode | null {
-  for (let nodeIdx = 0; nodeIdx < nodes.length; nodeIdx++) {
-    if (nodes[nodeIdx].title === title) {
-      return nodes[nodeIdx];
-    }
-    const maybeFoundInChildren = findNodeWithTitle(nodes[nodeIdx].children, title);
-    if (maybeFoundInChildren) {
-      return maybeFoundInChildren;
-    }
+function httpPathToNodeLink(nodePath: string) {
+  let title = nodePath.substr(1).replaceAll('%2F', '/');
+  let anchor = '';
+
+  if (title.indexOf(ANCHOR_SEPARATOR) >= 0) {
+    const split = title.split(ANCHOR_SEPARATOR);
+    title = split[0];
+    anchor = split[1];
   }
-  return null;
+  return [title, anchor];
 }
 
 function removeComments(s: string): string {
@@ -69,18 +72,6 @@ declare global {
     externalSelectedText: string | undefined;
     externalGotoEditor: ((nodeTitle: string) => void) | undefined;
   }
-}
-
-function parseNodePath(nodePath: string) {
-  let title = nodePath.substr(1).replaceAll('%2F', '/');
-  let anchor = '';
-
-  if (title.indexOf('|') >= 0) {
-    const split = title.split('|');
-    title = split[0];
-    anchor = split[1];
-  }
-  return [title, anchor];
 }
 
 function indexNodeByTitle(node: MarkdownNode, indexedNodes: {[key: string]: Array<MarkdownNode>}) {
@@ -104,6 +95,59 @@ function indexNodesByTitle(nodes: Array<MarkdownNode>) {
   return indexedNodes;
 }
 
+function doesBodyContainAnchor(body: MarkdownBody, anchor: string): boolean {
+  for (let chunkIdx = 0; chunkIdx < body.content.length; chunkIdx ++) {
+    const bodyChunk = body.content[chunkIdx];
+    if (isMarkdownBodyChunkTextParagraph(bodyChunk)) {
+      if (bodyChunk.text.split('[#' + anchor + ']').length > 1) {
+        return true;
+      }
+    } else if (isMarkdownBodyChunkList(bodyChunk)) {
+      for (let itemIdx = 0; itemIdx < bodyChunk.items.length; itemIdx ++) {
+          const listItem = bodyChunk.items[itemIdx];
+          if (doesBodyContainAnchor(listItem, anchor)) {
+            return true;
+          }
+      }
+    } else if (isMarkdownBodyChunkTable(bodyChunk)) {
+      for (let rowIdx = 0; rowIdx < bodyChunk.rows.length; rowIdx ++) {
+        const row = bodyChunk.rows[rowIdx];
+        for (let cellIdx = 0; cellIdx < row.cells.length; cellIdx++ ) {
+          const cell = row.cells[cellIdx];
+          if (doesBodyContainAnchor(cell.content, anchor)) {
+            return true;
+          }
+        }
+      }
+    }
+  }
+  return false;
+}
+
+function isValidNodeLink(nodesByTitle: {[key: string]: Array<MarkdownNode>}, currentNodeTitle: string, link: string): boolean {
+  const currentNode = nodesByTitle[currentNodeTitle][0];
+  if (link === '..') {
+    return currentNode.path.length > 1;
+  }
+  if (link.startsWith('..#')) {
+    if (currentNode.path.length <= 1) {
+      return false;
+    }
+    return doesBodyContainAnchor(nodesByTitle[currentNode.path[currentNode.path.length - 2]][0].body, link.substr(3));
+  }
+  if (link.startsWith('#')) {
+    return doesBodyContainAnchor(currentNode.body, link.substr(1));
+  }
+  if (link.indexOf('#') >= 0) {
+    const split = link.split('#');
+    if (!nodesByTitle[split[0]] || nodesByTitle[split[0]].length == 0) {
+      return false;
+    }
+    return doesBodyContainAnchor(nodesByTitle[split[0]][0].body, split[1]);
+  }
+  return nodesByTitle[link] && nodesByTitle[link].length > 0;
+}
+
 function App() {
   const [unsubmittedData, setUnsubmittedData] = useState<string>("");
   const [nodes, setNodes] = useState<MarkdownNode[]>([]);
@@ -117,7 +161,7 @@ function App() {
   const history = useHistory();
   const location = useLocation();
 
-  const [currentNodeTitle, currentNodeAnchor] = parseNodePath(location.pathname);
+  const [currentNodeTitle, currentNodeAnchor] = httpPathToNodeLink(location.pathname);
 
   useEffect(() => {
       const interval = setInterval(() => {
@@ -130,9 +174,9 @@ function App() {
 
         // must handle externalNodeLine === 0, therefore "!== undefined"
         if (window.externalNodeLine !== undefined && window.externalNodeTitle && window.externalNodeLine !== externalNodeLine) {
-          const node = findNodeWithTitle(nodes, window.externalNodeTitle);
+          const node = nodesByTitle[window.externalNodeTitle] ? nodesByTitle[window.externalNodeTitle][0] : undefined;
           if (node) {
-            history.push('/' + encodeTitle(node.title));
+            history.push(nodeLinkToHttpPath(node.title, []));
           }
           setExternalNodeLine(window.externalNodeLine);
         }
@@ -168,15 +212,23 @@ function App() {
     setTopicsWidth(topicsWidth - 50);
   }
 
-  const currentNode = findNodeWithTitle(nodes, currentNodeTitle);
+  const currentNode = nodesByTitle[currentNodeTitle] ? nodesByTitle[currentNodeTitle][0] : undefined;
 
   return (
     <AppContext.Provider value={{
       currentNodeTitle: currentNodeTitle,
+      linkRenderer: (link, text) => {
+          const linkHtml = '<a href=\'' + link.split('"').join('&quot;') + '\'>' + text + '</a>';
+          if (isValidNodeLink(nodesByTitle, currentNodeTitle, link)) {
+            return linkHtml;
+          } else {
+            return linkHtml + ' <span class="error">invalid link!</span>';
+          }
+      },
       currentNodeAnchor: currentNodeAnchor,
       currentSelectedText: externalSelectedText,
       onLinkClicked: (link) => {
-        history.push(buildNodeUrl(link, currentNode ? currentNode.path : []));
+        history.push(nodeLinkToHttpPath(link, currentNode ? currentNode.path : []));
       }
     }}>
       <div className="App">
@@ -204,7 +256,7 @@ function App() {
           }} data-testid='forward'>forward</a> <br />
 
           <TopicsTreeComponent nodes={nodes} onNodeClicked={(node) => {
-            history.push('/' + encodeTitle(node.title));
+            history.push(nodeLinkToHttpPath(node.title, []));
           }} />
         </div>
 
@@ -219,7 +271,7 @@ function App() {
             {currentNode 
               ? <div>
                     <NodeHeaderComponent path={currentNode.path} onTitleClicked={(title) => 
-                      history.push('/' + encodeTitle(title)) 
+                      history.push(nodeLinkToHttpPath(title, [])) 
                     } />
                     {window.externalGotoEditor && currentNode ? 
                       <div>
@@ -268,3 +320,4 @@ function App() {
 }
 
 export default App;
+
