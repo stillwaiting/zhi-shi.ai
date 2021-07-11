@@ -64,7 +64,12 @@
   }
 }
 
-.error {
+div.error {
+  color: #a00;
+  border: 1px solid #a00;
+}
+
+span.error {
   color: #a00;
   border: 1px solid #a00;
 }
