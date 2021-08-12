@@ -15,8 +15,8 @@ const GREEN_TICK = <img className="success" src='data:image/png;base64,iVBORw0KG
 
 function renderAnswers(nodeTitle: string, answers: Array<MarkdownBodyChunkTextParagraph>, dropdownIndices: number[])  {
     let titleAnchor = '';
-    if (nodeTitle.indexOf('::') >= 0 && nodeTitle.indexOf('!') >= 0) {
-        titleAnchor = nodeTitle.split('::')[1];
+    if (nodeTitle.indexOf('::') >= 0) {
+        titleAnchor = nodeTitle.split('::')[1].trim();
     }
 
     return <table><tbody>{dropdownIndices.map((dropdownIndex, idx) => {
@@ -25,7 +25,7 @@ function renderAnswers(nodeTitle: string, answers: Array<MarkdownBodyChunkTextPa
                 text: answers[idx].text
             }
 
-            if (titleAnchor && body.text.indexOf('](') < 0) {
+            if (titleAnchor && body.text.indexOf(']') < 0) {
                 body.text += ' [Details](..#' + titleAnchor + ').';
             }
 
