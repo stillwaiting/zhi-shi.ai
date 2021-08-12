@@ -219,7 +219,7 @@ function App() {
     <AppContext.Provider value={{
       currentNodeTitle: currentNodeTitle,
       linkRenderer: (link, text) => {
-          const linkHtml = '<a href=\'' + link.split('"').join('&quot;') + '\'>' + text + '</a>';
+          const linkHtml = '<a href=\'' + link.split('"').join('&quot;') + '\' target="_blank">' + text + '</a>';
           if (isValidNodeLink(nodesByTitle, currentNodeTitle, link)) {
             return linkHtml;
           } else {
