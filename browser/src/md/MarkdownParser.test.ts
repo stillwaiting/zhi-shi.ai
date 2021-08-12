@@ -187,4 +187,62 @@ multiline
             childrenByTitleIndex: {}
         }]);
     });
+
+    test('parses without body but with children correctly', () => {
+        const content = 
+`# Части речи
+
+## Существительное
+
+## Rule: имена существительные собственные и нарицательные
+
+https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/chto-takoe-imya-suschestvitelnoe.html#i-4
+`;
+        const result = mdParse(content, []);
+        expect(result).toStrictEqual([
+            {
+              "body": {
+                "content": []
+              },
+              "children": [
+                {
+                  "body": {
+                    "content": []
+                  },
+                  "children": [],
+                  "childrenByTitleIndex": {},
+                  "path": [
+                    "Части речи",
+                    "Существительное"
+                  ],
+                  "title": "Существительное"
+                },
+                {
+                  "body": {
+                    "content": [
+                      {
+                        "text": "https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/chto-takoe-imya-suschestvitelnoe.html#i-4"
+                      }
+                    ]
+                  },
+                  "children": [],
+                  "childrenByTitleIndex": {},
+                  "path": [
+                    "Части речи",
+                    "Rule: имена существительные собственные и нарицательные"
+                  ],
+                  "title": "Rule: имена существительные собственные и нарицательные"
+                }
+              ],
+              "childrenByTitleIndex": {
+                "Rule: имена существительные собственные и нарицательные": 1,
+                "Существительное": 0
+              },
+              "path": [
+                "Части речи"
+              ],
+              "title": "Части речи"
+            }
+          ]);
+    });
 });
