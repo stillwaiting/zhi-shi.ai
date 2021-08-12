@@ -22,15 +22,15 @@ function parseChunk(chunk: string, parentPath: Array<String>): MarkdownNode {
     path.push(title.trim());
 
     if (body.indexOf("\n#") >= 0 || body.startsWith("#")) {
-        const childrenStartAt = body.indexOf("\n#");
-        const childrenStr = body.substr(childrenStartAt+1);
+        const childrenStartAt = body.startsWith("#") ?  0 : body.indexOf("\n#")+1;
+        const childrenStr = body.substr(childrenStartAt);
         const childrenSharps = readAllSharpsFromStart(childrenStr);
         const childChunks = ("\n" + childrenStr).split("\n" + childrenSharps + " ");
         childChunks.shift();
         const newNode = {
             title: title.trim(),
             path: path,
-            body: parseBody(body.substr(0, childrenStartAt).trim()),
+            body: parseBody(body.substr(0, childrenStartAt - 1).trim()),
             children: childChunks.map(chunk => parseChunk(chunk, path)),
             childrenByTitleIndex: {},
         };
