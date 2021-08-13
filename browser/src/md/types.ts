@@ -55,7 +55,10 @@ export interface MarkdownBody {
 
 export interface MarkdownNode {
     title: string;
+
     body: MarkdownBody;
+    nodeTemplateVariables: { [name: string]: string };
+
     path: Array<string>;
 
     children: Array<MarkdownNode>;

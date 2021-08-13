@@ -271,32 +271,12 @@ function parseQuestionsAnswers(lines: Array<string>, startFromLineIdx: number, u
     return parsedQuestionAnswers;
 }
 
-const PROCESS_TEMPLATE_REGEXP = /{set:(.*?)}((.|[\r\n])*?){\/set}/g
-
-function processTemplates(body: string) {
-    const matches = body.matchAll(PROCESS_TEMPLATE_REGEXP);
-    const replacements: { [key: string]: string } = {};
-    do {
-        const next = matches.next();
-        if (next && next.value) {
-            replacements[next.value[1]] = next.value[2];
-        } else {
-            break;
-        }
-    } while (true);
-    body = body.replaceAll(PROCESS_TEMPLATE_REGEXP, '');
-    Object.keys(replacements).forEach(key => {
-        body = body.replaceAll("{" + key + "}", replacements[key].trim());
-    });
-    return body;
-}
-
 function parseBody(markdownRawBody: string): MarkdownBody {
     const parsedBody: MarkdownBody = {
         content: []
     };
-
-    const lines = processTemplates(markdownRawBody.trim()).split("\n");
+    
+    const lines = markdownRawBody.trim().split("\n");
 
     let currLine = 0;
     while (currLine < lines.length) {

@@ -1,16 +1,17 @@
 import mdParse from './MarkdownParser';
+import { MarkdownBody, MarkdownNode } from './types';
 
-const EMPTY_BODY = {
-    content: [],
+const EMPTY_BODY: MarkdownBody = {
+    content: []
 };
 
-function generateBody(line) {
+function generateBody(line: string): MarkdownBody {
     return {
         content: [
             {
                 text: line
             }
-        ],
+        ]
     }
 }
 
@@ -32,52 +33,60 @@ describe('MarkdownParser', () => {
     });
 
     test('parses empty title only', () => {
-        expect(mdParse('# hello world!', [])).toStrictEqual([{
+        const expected: MarkdownNode = {
             title: 'hello world!',
             path: ['hello world!'],
             body: EMPTY_BODY,
+            nodeTemplateVariables: {},
             children: [],
             childrenByTitleIndex: {}
-        }]);
+        };
+        expect(mdParse('# hello world!', [])).toStrictEqual([expected]);
     });
 
     test('adds parent path', () => {
-        expect(mdParse('# hello world!', ['parent'])).toStrictEqual([{
+        const expected: MarkdownNode = {
             title: 'hello world!',
             path: ['parent', 'hello world!'],
             body: EMPTY_BODY,
+            nodeTemplateVariables: {},
             children: [],
             childrenByTitleIndex: {}
-        }]);
+        };
+        expect(mdParse('# hello world!', ['parent'])).toStrictEqual([expected]);
     });
 
     test('parses title and body only', () => {
+        const expected: MarkdownNode = {
+            title: 'hello world!',
+            path: ['hello world!'],
+            body: generateBody('this is my shiny body'),
+            nodeTemplateVariables: {},
+            children: [],
+            childrenByTitleIndex: {}
+        };
         expect(mdParse(
 `# hello world!
 
 this is my shiny body
-`, [])).toStrictEqual([{
-            title: 'hello world!',
-            path: ['hello world!'],
-            body: generateBody('this is my shiny body'),
-            children: [],
-            childrenByTitleIndex: {}
-        }]);
+`, [])).toStrictEqual([expected]);
     });
 
     test('parses title and multiline body', () => {
+        const expected: MarkdownNode = {
+            title: 'hello world!',
+            path: ['hello world!'],
+            body: generateBody("this is my shiny body multiline!"),
+            nodeTemplateVariables: {},
+            children: [],
+            childrenByTitleIndex: {}
+        };
         expect(mdParse(
 `# hello world!
 
 this is my shiny body
 multiline!
-`, [])).toStrictEqual([{
-            title: 'hello world!',
-            path: ['hello world!'],
-            body: generateBody("this is my shiny body multiline!"),
-            children: [],
-            childrenByTitleIndex: {}
-        }]);
+`, [])).toStrictEqual([expected]);
     });
 
     test('parses two titles without bodies', () => {
@@ -89,12 +98,14 @@ multiline!
             title: 'hello world!',
             path: ['hello world!'],
             body: EMPTY_BODY,
+            nodeTemplateVariables: {},
             children: [],
             childrenByTitleIndex: {}
         }, {
             title: 'and the second one',
             path: ['and the second one'],
             body: EMPTY_BODY,
+            nodeTemplateVariables: {},
             children: [],
             childrenByTitleIndex: {}
         }]);
@@ -116,18 +127,21 @@ multiline
             title: 'hello world!',
             path: ['hello world!'],
             body: generateBody("first body"),
+            nodeTemplateVariables: {},
             children: [],
             childrenByTitleIndex: {}
         }, {
             title: 'and the second one',
             path: ['and the second one'],
             body: generateBody("second body multiline"),
+            nodeTemplateVariables: {},
             children: [],
             childrenByTitleIndex: {}
         }, {
             title: 'and the third one without body',
             path: ['and the third one without body'],
             body: EMPTY_BODY,
+            nodeTemplateVariables: {},
             children: [],
             childrenByTitleIndex: {}
         }]);
@@ -155,6 +169,7 @@ multiline
             title: 'hello world!',
             path: ['hello world!'],
             body: generateBody("first body"),
+            nodeTemplateVariables: {},
             childrenByTitleIndex: {
                 'first child': 0,
                 'second child': 1,
@@ -164,18 +179,21 @@ multiline
                 title: 'first child',
                 path: ['hello world!', 'first child'],
                 body: generateBody('first child\'s body'),
+                nodeTemplateVariables: {},
                 children: [],
                 childrenByTitleIndex: {}
             }, {
                 title: 'second child',
                 path: ['hello world!', 'second child'],
                 body: generateBody('second child\'s body multiline'),
+                nodeTemplateVariables: {},
                 children: [],
                 childrenByTitleIndex: {}
             }, {
                 title: 'third child without body',
                 path: ['hello world!', 'third child without body'],
                 body: EMPTY_BODY,
+                nodeTemplateVariables: {},
                 children: [],
                 childrenByTitleIndex: {}
             }]
@@ -183,10 +201,77 @@ multiline
             title: 'another top level item',
             path: ['another top level item'],
             body: EMPTY_BODY,
+            nodeTemplateVariables: {},
             children: [],
             childrenByTitleIndex: {}
         }]);
     });
+
+    test('parses templates', () => {
+        const parsedBody = mdParse(`
+# hello
+  {set:hello}
+  foo
+  bar
+  {/set}
+
+  {hello}
+  
+## child
+
+  {set:world}
+  baz
+  blah
+  {/set}
+  
+  
+  {hello}
+  {world}
+  `, []);
+        expect(parsedBody).toStrictEqual([
+            {
+              "title": "hello",
+              "path": [
+                "hello"
+              ],
+              "body": {
+                "content": [
+                  {
+                    "text": "foo bar"
+                  }
+                ]
+              },
+              "nodeTemplateVariables": {
+                "hello": "\n  foo\n  bar\n  "
+              },
+              "children": [
+                {
+                  "title": "child",
+                  "path": [
+                    "hello",
+                    "child"
+                  ],
+                  "body": {
+                    "content": [
+                      {
+                        "text": "foo bar baz blah"
+                      }
+                    ]
+                  },
+                  "nodeTemplateVariables": {
+                    "hello": "\n  foo\n  bar\n  ",
+                    "world": "\n  baz\n  blah\n  "
+                  },
+                  "children": [],
+                  "childrenByTitleIndex": {}
+                }
+              ],
+              "childrenByTitleIndex": {
+                "child": 0
+              }
+            }
+          ]);
+      });
 
     test('parses without body but with children correctly', () => {
         const content = 
@@ -204,11 +289,13 @@ https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/chto-takoe-imya-suschestvi
               "body": {
                 "content": []
               },
+              nodeTemplateVariables: {},
               "children": [
                 {
                   "body": {
                     "content": []
                   },
+                  nodeTemplateVariables: {},
                   "children": [],
                   "childrenByTitleIndex": {},
                   "path": [
@@ -222,9 +309,10 @@ https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/chto-takoe-imya-suschestvi
                     "content": [
                       {
                         "text": "https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/chto-takoe-imya-suschestvitelnoe.html#i-4"
-                      }
-                    ]
+                      },
+                    ],
                   },
+                  nodeTemplateVariables: {},
                   "children": [],
                   "childrenByTitleIndex": {},
                   "path": [

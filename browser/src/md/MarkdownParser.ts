@@ -13,7 +13,46 @@ function readAllSharpsFromStart(s: string) {
     return sharps;
 }
 
-function parseChunk(chunk: string, parentPath: Array<String>): MarkdownNode {
+const PROCESS_TEMPLATE_REGEXP = /{set:(.*?)}((.|[\r\n])*?){\/set}/g
+
+/**
+ * Moves constructions like
+ *      {set:blah}
+ *          foo
+ *      {/set}
+ * to variables.
+ * 
+ */
+function extractNewVariables(body: string, variables: { [name: string]: string }): string {
+    const matches = body.matchAll(PROCESS_TEMPLATE_REGEXP);
+    const replacements: { [key: string]: string } = {};
+    do {
+        const next = matches.next();
+        if (next && next.value) {
+            replacements[next.value[1]] = next.value[2];
+        } else {
+            break;
+        }
+    } while (true);
+    body = body.replaceAll(PROCESS_TEMPLATE_REGEXP, '');
+    Object.keys(replacements).forEach(key => {
+        variables[key] = replacements[key];
+    });
+    return body;
+}
+
+/**
+ * "abc {foo} def" -> {foo: bar} -> "abs bar def"
+ * 
+ */
+function insertVariables(body: string, variables: { [name: string]: string}): string {
+    Object.keys(variables).forEach(key => {
+        body = body.replaceAll("{" + key + "}", variables[key].trim());
+    });
+    return body;
+}
+
+function parseChunk(chunk: string, parentPath: Array<String>, parentNodeVariables: {[name: string]: string} = {}): MarkdownNode {
     const split = (chunk.trim() + "\n").split("\n");
     const title = split[0];
     const body = split.slice(1).join("\n").trim();
@@ -21,17 +60,25 @@ function parseChunk(chunk: string, parentPath: Array<String>): MarkdownNode {
     const path = Object.assign([], parentPath);
     path.push(title.trim());
 
+    const nodeVars = JSON.parse(JSON.stringify(parentNodeVariables));
+
     if (body.indexOf("\n#") >= 0 || body.startsWith("#")) {
-        const childrenStartAt = body.startsWith("#") ?  0 : body.indexOf("\n#")+1;
+        const childrenStartAt = body.startsWith("#") ?  0 : body.indexOf("\n#") + 1;
         const childrenStr = body.substr(childrenStartAt);
         const childrenSharps = readAllSharpsFromStart(childrenStr);
         const childChunks = ("\n" + childrenStr).split("\n" + childrenSharps + " ");
+
+        let processedBody = body.substr(0, childrenStartAt).trim();
+        processedBody = extractNewVariables(processedBody, nodeVars);
+        processedBody = insertVariables(processedBody, nodeVars);
+
         childChunks.shift();
-        const newNode = {
+        const newNode: MarkdownNode = {
             title: title.trim(),
             path: path,
-            body: parseBody(body.substr(0, childrenStartAt - 1).trim()),
-            children: childChunks.map(chunk => parseChunk(chunk, path)),
+            body: parseBody(processedBody),
+            nodeTemplateVariables: nodeVars,
+            children: childChunks.map(chunk => parseChunk(chunk, path, nodeVars)),
             childrenByTitleIndex: {},
         };
         newNode.childrenByTitleIndex = newNode.children.reduce((index: { [key:string]: number }, childNode, idx) => {
@@ -40,10 +87,14 @@ function parseChunk(chunk: string, parentPath: Array<String>): MarkdownNode {
         }, {});
         return newNode;
     } else {
+        let processedBody = extractNewVariables(body, nodeVars);
+        processedBody = insertVariables(processedBody, nodeVars);
+
         return {
             title: title.trim(),
             path: path,
-            body: parseBody(body.trim()),
+            body: parseBody(processedBody.trim()),
+            nodeTemplateVariables: nodeVars,
             children: [],
             childrenByTitleIndex: {}
         };
