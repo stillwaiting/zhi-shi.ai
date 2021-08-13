@@ -4,6 +4,7 @@ import App from './App';
 import { mocked } from 'ts-jest/utils';
 import '@testing-library/jest-dom'
 import * as reactDom from 'react-router-dom';
+import copy from 'copy-to-clipboard';
 
 jest.mock('react-router-dom', () => {
     const history = {
@@ -14,6 +15,8 @@ jest.mock('react-router-dom', () => {
         useLocation: jest.fn()
     };
 });
+
+jest.mock('copy-to-clipboard');
 
 function sleep(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -161,6 +164,50 @@ blah content
 
         expect((mocked(reactDom.useHistory().push).mock.calls[0][0])).toBe("/Hello%2Ftesting");
     });
+
+    test('does not redirect on http links', async() => {
+        (reactDom.useLocation as jest.Mock).mockReturnValue({
+            pathname: '/another one'
+        });
+        let component = await createApp();
+        fireEvent.change(component.getByTestId('textarea'), { target: { value: `
+# Hello/testing
+
+blah content
+
+## another one
+
+[boom](http://google.com)
+
+` } });
+        fireEvent.click(component.getByTestId('submit'));
+        fireEvent.click(component.getByText('boom'));
+
+        expect((mocked(reactDom.useHistory().push).mock.calls.length)).toBe(0);
+    });
+
+    test('renders copy button for http links and does not redirect', async() => {
+        (reactDom.useLocation as jest.Mock).mockReturnValue({
+            pathname: '/another one'
+        });
+        let component = await createApp();
+        fireEvent.change(component.getByTestId('textarea'), { target: { value: `
+# Hello/testing
+
+blah content
+
+## another one
+
+[boom](http://google.com)
+
+` } });
+        fireEvent.click(component.getByTestId('submit'));
+        fireEvent.click(component.getByText('copy'));
+
+        expect((mocked(copy).mock.calls[0][0])).toBe("http://google.com");
+        expect((mocked(reactDom.useHistory().push).mock.calls.length)).toBe(0);
+    });
+
 
     test('supports link traversal', async() => {
         (reactDom.useLocation as jest.Mock).mockReturnValue({
@@ -425,4 +472,6 @@ blah content
 
         expect(component.container.innerHTML).toContain('the answer');
     });
+
+
 });

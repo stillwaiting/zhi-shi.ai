@@ -22,26 +22,6 @@ describe('BodyTextParagraphComponent', () => {
         expect(component.container.children[0].innerHTML).toBe('<i>hello <b>world</b></i>');
     });
 
-    test('renders http links and doesn not fire custom events on click', () => {
-        const text = `
-            hello [world](http://google.com)
-        `
-        let capturedLink = '';
-        const component = render(
-            <AppContext.Provider value={{
-                currentNodeTitle: '',
-                currentNodeAnchor: '',
-                currentSelectedText: '',
-                onLinkClicked: (link) => { capturedLink = link},
-                linkRenderer: (link, text) => { return `<a href="${link.split('"').join('&quot;')}" target='_blank'>${text}</a>`; }
-            }}>
-                <BodyTextParagraphComponent data={{text: text}}   />
-            </AppContext.Provider>
-        );
-        fireEvent.click(component.getByText('world'));
-        expect(capturedLink).toBe('');
-    });
-
     test('renders links and fires events on link click', () => {
         const text = `
             hello [world](blah/test test""/another one#anchor)

@@ -5,7 +5,7 @@ export type AppContext = {
     currentNodeAnchor: string,
     currentSelectedText: string,
     linkRenderer: (link: string, text:string) => string,
-    onLinkClicked: (link: string) => void,
+    onLinkClicked: (link: string, e: React.MouseEvent<HTMLElement>) => void,
     expandQuestionAnswer: boolean
 };
 

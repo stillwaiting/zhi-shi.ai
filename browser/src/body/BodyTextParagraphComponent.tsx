@@ -102,10 +102,7 @@ export default ( { data }: BodyTextParagraphComponent ) => {
             const targetLink = (e.target as HTMLElement).closest('a');
             if(!targetLink) return;
             const href = targetLink.attributes[0].value;
-            if (href.indexOf('http') != 0) {
-                e.preventDefault();
-                context.onLinkClicked(href); 
-            }
+            context.onLinkClicked(href, e); 
         }}
     />;
 }

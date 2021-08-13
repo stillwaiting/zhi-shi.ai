@@ -215,12 +215,16 @@ function App() {
 
   const currentNode = nodesByTitle[currentNodeTitle] ? nodesByTitle[currentNodeTitle][0] : undefined;
 
+  const COPY_REFIX = "copy:";
+
   return (
     <AppContext.Provider value={{
       currentNodeTitle: currentNodeTitle,
       linkRenderer: (link, text) => {
           const linkHtml = '<a href=\'' + link.split('"').join('&quot;') + '\' target="_blank">' + text + '</a>';
-          if (isValidNodeLink(nodesByTitle, currentNodeTitle, link)) {
+          if (link.trim().startsWith("http")) {
+            return linkHtml + " (<a href='" + COPY_REFIX + link + "'>copy</a>)";
+          } if (isValidNodeLink(nodesByTitle, currentNodeTitle, link)) {
             return linkHtml;
           } else {
             return linkHtml + ' <span class="error">invalid link!</span>';
@@ -229,7 +233,15 @@ function App() {
       currentNodeAnchor: currentNodeAnchor,
       currentSelectedText: externalSelectedText,
       expandQuestionAnswer: expandQuestions,
-      onLinkClicked: (link) => {
+      onLinkClicked: (link, e) => {
+        if (link.startsWith("http")) {
+          return;
+        }
+        e.preventDefault();
+        if (link.startsWith(COPY_REFIX)) {
+          copy(link.substr(COPY_REFIX.length));
+          return;
+        }
         history.push(nodeLinkToHttpPath(link, currentNode ? currentNode.path : []));
       }
     }}>
