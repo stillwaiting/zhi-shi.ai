@@ -25,6 +25,14 @@ const supportedTagsReplacement = ['dashed', 'ddashed', 'wave', 'prefix', 'suffix
 function toHtml(text: string, selectedAnchor: string, selectedText: string, linkRenderer: (link: string, text:string) => string): string {
     let htmlText = text;
 
+    // Extract all links before substution to avoid corrupting the links
+    let links: { [key: string] : string} = {};
+    htmlText = htmlText.replaceAll(/\[([^\]]*?)\]\((.*?)\)/g, (a1, a2, a3, a4) => {
+        const key = "" + Math.random() + "" + new Date().getTime();
+        links[key] = linkRenderer(a3, a2);
+        return key;
+    });
+
     if (selectedText.length > 0) {
         htmlText = htmlText.split(selectedText.replaceAll("\n", " ").trim()).join(
             '<span class="selected">' + selectedText + '</span>'
@@ -59,12 +67,6 @@ function toHtml(text: string, selectedAnchor: string, selectedText: string, link
         return chunk;
     }).join('');
 
-
-
-    htmlText = htmlText.replaceAll(/\[([^\]]*?)\]\((.*?)\)/g, (a1, a2, a3, a4) => {
-        return linkRenderer(a3, a2);
-    });
-
     htmlText = htmlText.replaceAll(
         // [#highlightedArea]blah[/] ====> <span class="highlight active">blah</span>(<a href='#highlightedArea'>highlightedArea</a>)
         new RegExp('\\[#' + selectedAnchor + '\\](.*?)\\[\\/\\]', 'g'), 
@@ -88,6 +90,10 @@ function toHtml(text: string, selectedAnchor: string, selectedText: string, link
 
     supportedTagsReplacement.forEach(replacer => {
         htmlText = replacer(htmlText);
+    });
+
+    Object.keys(links).forEach(linkKey => {
+        htmlText = htmlText.replace(linkKey, links[linkKey]);
     });
 
     return htmlText;
