@@ -224,6 +224,8 @@ function App() {
           const linkHtml = '<a href=\'' + link.split('"').join('&quot;') + '\' target="_blank">' + text + '</a>';
           if (link.trim().startsWith("http")) {
             return linkHtml + " (<a href='" + COPY_REFIX + link + "'>copy</a>)";
+          } else if (link.trim().startsWith('{')) {
+            return link + "  <span class=\"error\">template not found or escaped!</span> (<a href='" + COPY_REFIX + link + "'>copy</a>)";
           } if (isValidNodeLink(nodesByTitle, currentNodeTitle, link)) {
             return linkHtml;
           } else {

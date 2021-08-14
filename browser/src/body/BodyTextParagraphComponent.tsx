@@ -83,6 +83,15 @@ function toHtml(text: string, selectedAnchor: string, selectedText: string, link
         }
     );
 
+    htmlText = htmlText.replaceAll("\\{", "{").replaceAll("\\}", "}");
+
+    htmlText = htmlText.replaceAll(
+        /\{(.*)\}/g,
+        (a1, a2, a3, a4) => {
+            return linkRenderer(a1, a1);
+        }
+    )
+
     htmlText = htmlText.replaceAll(
         /\<d\>(.*?)\<\/d\>/g,
         '<span class="doubleline">$1</span>'

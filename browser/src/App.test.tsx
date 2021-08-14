@@ -54,6 +54,7 @@ describe('App', () => {
         jest.useRealTimers();
         (reactDom.useHistory().push as jest.Mock).mockReset();
         (reactDom.useLocation as jest.Mock).mockReset();
+        (copy as jest.Mock).mockReset();
         delete window.externalText;
         delete window.externalNodeLine;
         delete window.externalNodeTitle;
@@ -208,6 +209,38 @@ blah content
         expect((mocked(reactDom.useHistory().push).mock.calls.length)).toBe(0);
     });
 
+    test('renders copy button for escaped templates', async() => {
+        (reactDom.useLocation as jest.Mock).mockReturnValue({
+            pathname: '/Hello'
+        });
+        let component = await createApp();
+        fireEvent.change(component.getByTestId('textarea'), { target: { value: `
+# Hello
+
+\\{blah}
+
+` } });
+        fireEvent.click(component.getByTestId('submit'));
+        fireEvent.click(component.getByText('copy'));
+
+        expect((mocked(copy).mock.calls[0][0])).toBe("{blah}");
+        expect((mocked(reactDom.useHistory().push).mock.calls.length)).toBe(0);
+    });
+
+    test('renders error if template wasnt removed', async() => {
+        (reactDom.useLocation as jest.Mock).mockReturnValue({
+            pathname: '/Hello'
+        });
+        let component = await createApp();
+        fireEvent.change(component.getByTestId('textarea'), { target: { value: `
+# Hello
+
+{blah}
+
+` } });
+        fireEvent.click(component.getByTestId('submit'));
+        expect(component.getByText('template not found or escaped!')).toBeInTheDocument();
+    });
 
     test('supports link traversal', async() => {
         (reactDom.useLocation as jest.Mock).mockReturnValue({

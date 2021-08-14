@@ -62,6 +62,26 @@ describe('BodyTextParagraphComponent', () => {
         expect(capturedLink).toBe('http://blah.com_hello_');
     });
 
+    test('renders http links with underscores', () => {
+        const text = `
+            \\{foo}
+        `
+        let capturedLink = '';
+        const component = render(
+            <AppContext.Provider value={{
+                currentNodeTitle: '',
+                currentNodeAnchor: '',
+                currentSelectedText: '',
+                onLinkClicked: (link) => { capturedLink = link},
+                linkRenderer: (link, text) => { return `<a href="${link.split('"').join('&quot;')}">${text}</a>`; }
+            }}>
+                <BodyTextParagraphComponent data={{text: text}}   />
+            </AppContext.Provider>
+        );
+        fireEvent.click(component.getByText('{foo}'));
+        expect(capturedLink).toBe('{foo}');
+    });
+
     test('does fire events on anchor click', async () => {
         const text = `
             hello <a href='#foobar'>world</a>
