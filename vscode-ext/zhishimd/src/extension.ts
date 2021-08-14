@@ -132,23 +132,23 @@ function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionCon
 	const manifest = {
 		"files": {
 		  "main.css": "/static/css/main.4f480753.chunk.css",
-		  "main.js": "/static/js/main.e7cd48ed.chunk.js",
-		  "main.js.map": "/static/js/main.e7cd48ed.chunk.js.map",
+		  "main.js": "/static/js/main.cb79a045.chunk.js",
+		  "main.js.map": "/static/js/main.cb79a045.chunk.js.map",
 		  "runtime-main.js": "/static/js/runtime-main.4a94e718.js",
 		  "runtime-main.js.map": "/static/js/runtime-main.4a94e718.js.map",
-		  "static/js/2.0f163214.chunk.js": "/static/js/2.0f163214.chunk.js",
-		  "static/js/2.0f163214.chunk.js.map": "/static/js/2.0f163214.chunk.js.map",
+		  "static/js/2.acaf5da6.chunk.js": "/static/js/2.acaf5da6.chunk.js",
+		  "static/js/2.acaf5da6.chunk.js.map": "/static/js/2.acaf5da6.chunk.js.map",
 		  "static/js/3.2d767a97.chunk.js": "/static/js/3.2d767a97.chunk.js",
 		  "static/js/3.2d767a97.chunk.js.map": "/static/js/3.2d767a97.chunk.js.map",
 		  "index.html": "/index.html",
 		  "static/css/main.4f480753.chunk.css.map": "/static/css/main.4f480753.chunk.css.map",
-		  "static/js/2.0f163214.chunk.js.LICENSE.txt": "/static/js/2.0f163214.chunk.js.LICENSE.txt"
+		  "static/js/2.acaf5da6.chunk.js.LICENSE.txt": "/static/js/2.acaf5da6.chunk.js.LICENSE.txt"
 		},
 		"entrypoints": [
 		  "static/js/runtime-main.4a94e718.js",
-		  "static/js/2.0f163214.chunk.js",
+		  "static/js/2.acaf5da6.chunk.js",
 		  "static/css/main.4f480753.chunk.css",
-		  "static/js/main.e7cd48ed.chunk.js"
+		  "static/js/main.cb79a045.chunk.js"
 		]
 	  };
 
