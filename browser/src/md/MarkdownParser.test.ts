@@ -273,6 +273,39 @@ multiline
           ]);
       });
 
+      test('skips escaped templates', () => {
+        const parsedBody = mdParse(`
+# hello
+  {set:hello}
+  foo
+  bar
+  {/set}
+
+  \\{hello}
+  world
+  `, []);
+        expect(parsedBody).toStrictEqual([
+          {
+            "title": "hello",
+            "path": [
+              "hello"
+            ],
+            "body": {
+              "content": [
+                {
+                  "text": "\\{hello} world"
+                }
+              ]
+            },
+            "nodeTemplateVariables": {
+              "hello": "\n  foo\n  bar\n  "
+            },
+            "children": [],
+            "childrenByTitleIndex": {}
+          }
+        ]);
+      });
+
     test('parses without body but with children correctly', () => {
         const content = 
 `# Части речи

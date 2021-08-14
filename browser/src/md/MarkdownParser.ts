@@ -46,9 +46,15 @@ function extractNewVariables(body: string, variables: { [name: string]: string }
  * 
  */
 function insertVariables(body: string, variables: { [name: string]: string}): string {
+    const randomStr1 = "" + Math.random() + "" + new Date().getTime();
+    const randomStr2 = "" + Math.random() + "" + new Date().getTime();
+    body = body.replaceAll("\\{", randomStr1);
+    body = body.replaceAll("\\}", randomStr2);
     Object.keys(variables).forEach(key => {
         body = body.replaceAll("{" + key + "}", variables[key].trim());
     });
+    body = body.replaceAll(randomStr1, "\\{");
+    body = body.replaceAll(randomStr2, "\\}");
     return body;
 }
 
