@@ -132,8 +132,8 @@ function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionCon
 	const manifest = {
 		"files": {
 		  "main.css": "/static/css/main.4f480753.chunk.css",
-		  "main.js": "/static/js/main.cb79a045.chunk.js",
-		  "main.js.map": "/static/js/main.cb79a045.chunk.js.map",
+		  "main.js": "/static/js/main.cc134d91.chunk.js",
+		  "main.js.map": "/static/js/main.cc134d91.chunk.js.map",
 		  "runtime-main.js": "/static/js/runtime-main.4a94e718.js",
 		  "runtime-main.js.map": "/static/js/runtime-main.4a94e718.js.map",
 		  "static/js/2.acaf5da6.chunk.js": "/static/js/2.acaf5da6.chunk.js",
@@ -148,7 +148,7 @@ function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionCon
 		  "static/js/runtime-main.4a94e718.js",
 		  "static/js/2.acaf5da6.chunk.js",
 		  "static/css/main.4f480753.chunk.css",
-		  "static/js/main.cb79a045.chunk.js"
+		  "static/js/main.cc134d91.chunk.js"
 		]
 	  };
 
