@@ -273,6 +273,42 @@ multiline
           ]);
       });
 
+      test('supports nested templates', () => {
+        const parsedBody = mdParse(`
+# hello
+  {set:hello}
+  foo
+  {/set}
+
+  {set:world}
+   {hello} world!
+  {/set}
+
+  {world}
+  `, []);
+        expect(parsedBody).toStrictEqual([
+          {
+            "title": "hello",
+            "path": [
+              "hello"
+            ],
+            "body": {
+              "content": [
+                {
+                  "text": "foo world!"
+                }
+              ]
+            },
+            "nodeTemplateVariables": {
+              "hello": "\n  foo\n  ",
+              "world": "\n   foo world!\n  "
+            },
+            "children": [],
+            "childrenByTitleIndex": {}
+          }
+        ]);
+      });
+
       test('skips escaped templates', () => {
         const parsedBody = mdParse(`
 # hello

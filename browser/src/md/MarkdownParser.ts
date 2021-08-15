@@ -1,5 +1,8 @@
 import { MarkdownNode } from './types';
 import parseBody from './MarkdownBodyParser';
+import replaceAllInserter from 'string.prototype.replaceall';
+
+replaceAllInserter.shim();
 
 
 
@@ -23,7 +26,7 @@ const PROCESS_TEMPLATE_REGEXP = /{set:(.*?)}((.|[\r\n])*?){\/set}/g
  * to variables.
  * 
  */
-function extractNewVariables(body: string, variables: { [name: string]: string }): string {
+function extractNewVariables(body: string): [string, { [name: string]: string }] {
     const matches = body.matchAll(PROCESS_TEMPLATE_REGEXP);
     const replacements: { [key: string]: string } = {};
     do {
@@ -35,10 +38,11 @@ function extractNewVariables(body: string, variables: { [name: string]: string }
         }
     } while (true);
     body = body.replaceAll(PROCESS_TEMPLATE_REGEXP, '');
+    const variables: { [name: string]: string } = {};
     Object.keys(replacements).forEach(key => {
         variables[key] = replacements[key];
     });
-    return body;
+    return [body, variables];
 }
 
 /**
@@ -58,6 +62,17 @@ function insertVariables(body: string, variables: { [name: string]: string}): st
     return body;
 }
 
+function addNewVars(nodeVars: { [name: string]: string; }, newVars: { [name: string]: string; }) {
+    Object.keys(newVars).forEach(varName => {
+        nodeVars[varName] = newVars[varName];
+    });
+    Object.keys(newVars).forEach(newVarName => {
+        if (nodeVars[newVarName].indexOf('{') >= 0) {
+            nodeVars[newVarName] = insertVariables(nodeVars[newVarName], nodeVars);
+        }
+    });
+}
+
 function parseChunk(chunk: string, parentPath: Array<String>, parentNodeVariables: {[name: string]: string} = {}): MarkdownNode {
     const split = (chunk.trim() + "\n").split("\n");
     const title = split[0];
@@ -74,9 +89,12 @@ function parseChunk(chunk: string, parentPath: Array<String>, parentNodeVariable
         const childrenSharps = readAllSharpsFromStart(childrenStr);
         const childChunks = ("\n" + childrenStr).split("\n" + childrenSharps + " ");
 
-        let processedBody = body.substr(0, childrenStartAt).trim();
-        processedBody = extractNewVariables(processedBody, nodeVars);
-        processedBody = insertVariables(processedBody, nodeVars);
+        const bodyWithoutChildren = body.substr(0, childrenStartAt).trim();
+        const [bodyNoNewVars, newVars] = extractNewVariables(bodyWithoutChildren);
+
+        addNewVars(nodeVars, newVars);
+
+        const processedBody = insertVariables(bodyNoNewVars, nodeVars);
 
         childChunks.shift();
         const newNode: MarkdownNode = {
@@ -93,7 +111,10 @@ function parseChunk(chunk: string, parentPath: Array<String>, parentNodeVariable
         }, {});
         return newNode;
     } else {
-        let processedBody = extractNewVariables(body, nodeVars);
+        let [processedBody, newVars] = extractNewVariables(body);
+
+        addNewVars(nodeVars, newVars);
+
         processedBody = insertVariables(processedBody, nodeVars);
 
         return {
