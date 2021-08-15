@@ -1,10 +1,5 @@
 import { MarkdownNode } from './types';
 import parseBody from './MarkdownBodyParser';
-import replaceAllInserter from 'string.prototype.replaceall';
-
-replaceAllInserter.shim();
-
-
 
 function readAllSharpsFromStart(s: string) {
     let sharps = "";
