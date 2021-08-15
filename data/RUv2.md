@@ -4,7 +4,62 @@
 https://ru.wikipedia.org/wiki/%D0%98%D0%BC%D1%8F_%D1%81%D1%83%D1%89%D0%B5%D1%81%D1%82%D0%B2%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D0%B5
 {/set}
 
-|определение существительного|\{ссылка-сущ}
+{set:ссылка-сущ-ж}
+https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/rod-imyon-suschestvitelnyh.html#:~:text=%D0%BC%D1%83%D0%B6%C2%AD%D1%81%D0%BA%D0%BE%D0%B9%2C-,%D0%B6%D0%B5%D0%BD%C2%AD%D1%81%D0%BA%D0%B8%D0%B9,-%D0%B8%D0%BB%D0%B8
+{/set}
+
+{set:ссылка-сущ-м}
+https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/rod-imyon-suschestvitelnyh.html#:~:text=%D1%80%D0%BE%D0%B4%D0%BE%D0%B2%20%E2%80%94-,%D0%BC%D1%83%D0%B6%C2%AD%D1%81%D0%BA%D0%BE%D0%B9,-%2C%20%D0%B6%D0%B5%D0%BD%C2%AD%D1%81%D0%BA%D0%B8%D0%B9
+{/set}
+
+{set:ссылка-сущ-ср}
+https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/rod-imyon-suschestvitelnyh.html#:~:text=%D0%B8%D0%BB%D0%B8-,%D1%81%D1%80%D0%B5%D0%B4%D0%BD%D0%B8%D0%B9,-%3A
+{/set}
+
+{set:ссылка-сущ-пад-им}
+https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/chto-takoe-padezh-tablitsa-padezhey.html#:~:text=%D0%9F%D0%A0%D0%95%D0%94%D0%9B%D0%9E%D0%93%D0%98-,%D0%98%D0%BC%D0%B5%D0%BD%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9,-%28%D0%B5%D1%81%D1%82%D1%8C
+{/set}
+
+{set:ссылка-сущ-пад-род}
+https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/chto-takoe-padezh-tablitsa-padezhey.html#:~:text=%D0%BD%D0%B5%D1%82%29-,%D0%BA%D0%BE%D0%B3%D0%BE%3F%20%D1%87%D0%B5%D0%B3%D0%BE%3F,-%D1%81
+{/set}
+
+{set:ссылка-сущ-пад-дат}
+https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/chto-takoe-padezh-tablitsa-padezhey.html#:~:text=%D0%BA%D1%80%D0%BE%D0%BC%D0%B5-,%D0%94%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9,-%28%D0%B4%D0%B0%D1%82%D1%8C
+{/set}
+
+{set:ссылка-сущ-пад-вин}
+https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/chto-takoe-padezh-tablitsa-padezhey.html#:~:text=%D1%81%D0%BE%D0%B3%D0%BB%D0%B0%D1%81%D0%BD%D0%BE-,%D0%92%D0%B8%D0%BD%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9,-%28%D0%B2%D0%B8%D0%B6%D1%83
+{/set}
+
+{set:ссылка-сущ-пад-тв}
+https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/chto-takoe-padezh-tablitsa-padezhey.html#:~:text=%D0%B2%D0%BE-,%D0%A2%D0%B2%D0%BE%D1%80%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9,-%28%D0%B4%D0%BE%D0%B2%D0%BE%C2%AD%D0%BB%D0%B5%D0%BD
+{/set}
+
+{set:ссылка-сущ-пад-пр}
+https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/chto-takoe-padezh-tablitsa-padezhey.html#:~:text=%D0%BF%D0%B5%D1%80%D0%B5%D0%B4-,%D0%9F%D1%80%D0%B5%D0%B4%D0%BB%D0%BE%D0%B6%D0%BD%D1%8B%D0%B9,-%28%D0%B4%D1%83%D0%BC%D0%B0%D1%82%D1%8C
+{/set}
+
+|**существительное** определение|\{ссылка-сущ}
+--
+|**существительное род** женский| \{ссылка-сущ-ж}
+--
+|существительное род мужской | \{ссылка-сущ-м}
+--
+|существительное род средний| \{ссылка-сущ-ср}
+---
+|**существительное падеж** им| \{ссылка-сущ-пад-им}
+---
+|существительное падеж род| \{ссылка-сущ-пад-род}
+---
+|существительное падеж дат| \{ссылка-сущ-пад-дат}
+---
+|существительное падеж вин| \{ссылка-сущ-пад-вин}
+---
+|существительное падеж тв| \{ссылка-сущ-пад-тв}
+---
+|существительное падеж пр| \{ссылка-сущ-пад-пр}
+
 ## Части речи
 
 ### Существительное
@@ -312,7 +367,7 @@ c большой буквы, так как собственное имя.
 ##### Task 1 жен
 
 {set:с}
-с мягким знаком на конце, поскольку [существительное]({ссылка-сущ}) женского рода. 
+с мягким знаком на конце, поскольку [существительное]({ссылка-сущ}) [женского рода]({ссылка-сущ-ж}). 
 {/set}
 
 ? (мышь|мыш) 
@@ -324,7 +379,7 @@ c большой буквы, так как собственное имя.
 ##### Task 1 муж
 
 {set:без}
-без мягкого знака, так как существительное мужского рода.
+без мягкого знака, так как [существительное]({ссылка-сущ}) [мужского рода]({ссылка-сущ-м}).
 {/set}
 
 ? (Врач|врачь) 
@@ -342,27 +397,27 @@ c большой буквы, так как собственное имя.
 /********************************/
 
 {set:правило-ссылка-им}
-[Правило](https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/chto-takoe-padezh-tablitsa-padezhey.html#:~:text=%D0%9F%D0%A0%D0%95%D0%94%D0%9B%D0%9E%D0%93%D0%98-,%D0%98%D0%BC%D0%B5%D0%BD%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9,-%28%D0%B5%D1%81%D1%82%D1%8C)
+[Правило]({ссылка-сущ-пад-им})
 {/set}
 
 {set:правило-ссылка-род}
-[Правило](https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/chto-takoe-padezh-tablitsa-padezhey.html#:~:text=%D0%BD%D0%B5%D1%82%29-,%D0%BA%D0%BE%D0%B3%D0%BE%3F%20%D1%87%D0%B5%D0%B3%D0%BE%3F,-%D1%81)
+[Правило]({ссылка-сущ-пад-род})
 {/set}
 
 {set:правило-ссылка-дат}
-[Правило](https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/chto-takoe-padezh-tablitsa-padezhey.html#:~:text=%D0%BA%D1%80%D0%BE%D0%BC%D0%B5-,%D0%94%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9,-%28%D0%B4%D0%B0%D1%82%D1%8C)
+[Правило]({ссылка-сущ-пад-дат})
 {/set}
 
 {set:правило-ссылка-вин}
-[Правило](https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/chto-takoe-padezh-tablitsa-padezhey.html#:~:text=%D1%81%D0%BE%D0%B3%D0%BB%D0%B0%D1%81%D0%BD%D0%BE-,%D0%92%D0%B8%D0%BD%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9,-%28%D0%B2%D0%B8%D0%B6%D1%83)
+[Правило]({ссылка-сущ-пад-вин})
 {/set}
 
 {set:правило-ссылка-тв}
-[Правило](https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/chto-takoe-padezh-tablitsa-padezhey.html#:~:text=%D0%B2%D0%BE-,%D0%A2%D0%B2%D0%BE%D1%80%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9,-%28%D0%B4%D0%BE%D0%B2%D0%BE%C2%AD%D0%BB%D0%B5%D0%BD)
+[Правило]({ссылка-сущ-пад-тв})
 {/set}
 
 {set:правило-ссылка-пр}
-[Правило](https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/chto-takoe-padezh-tablitsa-padezhey.html#:~:text=%D0%BF%D0%B5%D1%80%D0%B5%D0%B4-,%D0%9F%D1%80%D0%B5%D0%B4%D0%BB%D0%BE%D0%B6%D0%BD%D1%8B%D0%B9,-%28%D0%B4%D1%83%D0%BC%D0%B0%D1%82%D1%8C)
+[Правило]({ссылка-сущ-пад-пр})
 {/set}
 
 
@@ -384,29 +439,28 @@ c большой буквы, так как собственное имя.
 |пр|\{правило-ссылка-пр}
 ----
 
+{set:оп}
+Определите падеж существительного:
+{/set}
+
 ##### Task им
 
-{set:падеж-им}
+{set:выбор-падеж-им}
 (именительный|родительный|творительный|предложный|винительный|дательный)
 {/set}
 
-Определите падеж существительного:
-
-
-? у меня живет кот {падеж-им}
-! живет *кто?* кот – именительный. {правило-ссылка-им}
+? {оп} у меня живет кот {выбор-падеж-им}.
+! живет *кто?* кот – [именительный]({ссылка-сущ-пад-им}). {правило-ссылка-им}
 
 
 ##### Task род
 
-Определите падеж существительного:
-
-{set:падеж-род}
+{set:выбор-падеж-род}
 (родительный|творительный|предложный|винительный|дательный|именительный)
 {/set}
 
-? увидел кота {падеж-род}
-! увидел *кого?* кота – родительный. {правило-ссылка-род}
+? {оп} увидел кота {выбор-падеж-род}
+! увидел *кого?* кота – [родительный]({ссылка-сущ-пад-род}). {правило-ссылка-род}
 
 
 ##### Task дат

@@ -88,7 +88,7 @@ function toHtml(text: string, selectedAnchor: string, selectedText: string, link
     htmlText = htmlText.replaceAll(
         /\{(.*)\}/g,
         (a1, a2, a3, a4) => {
-            return linkRenderer(a1, a1);
+            return '<span class="var">' + a1 + '</span>';
         }
     )
 
@@ -108,6 +108,14 @@ function toHtml(text: string, selectedAnchor: string, selectedText: string, link
     return htmlText;
 }
 
+function selectSpan(element: HTMLElement) {
+    const selection = window.getSelection();        
+    const range = document.createRange();
+    range.selectNodeContents(element);
+    selection!.removeAllRanges();
+    selection!.addRange(range);
+}
+
 export default ( { data }: BodyTextParagraphComponent ) => {
     const context = useContext(AppContext);
     return <p 
@@ -115,9 +123,14 @@ export default ( { data }: BodyTextParagraphComponent ) => {
         dangerouslySetInnerHTML = {{__html: toHtml(data.text, context.currentNodeAnchor, context.currentSelectedText, context.linkRenderer)}} 
         onClick={(e: React.MouseEvent<HTMLElement>) => {
             const targetLink = (e.target as HTMLElement).closest('a');
-            if(!targetLink) return;
-            const href = targetLink.attributes[0].value;
-            context.onLinkClicked(href, e); 
+            const targetSpan = (e.target as HTMLElement).closest('span');
+            if (targetLink) {
+                const href = targetLink.attributes[0].value;
+                context.onLinkClicked(href, e); 
+            } else if (targetSpan && targetSpan.className == 'var') {
+                selectSpan(targetSpan);
+                e.preventDefault();
+            }
         }}
     />;
 }
