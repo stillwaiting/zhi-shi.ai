@@ -4,8 +4,6 @@ import BodyTextParagraphComponent from './BodyTextParagraphComponent'
 
 import BodyQuestionComponent from './BodyQuestionComponent'
 
-import AppContext from '../AppContext';
-
 type SentenceWithAnswers = {
     data: MarkdownBodyChunkQuestionAnswers
 }
