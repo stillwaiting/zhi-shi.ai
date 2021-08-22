@@ -40,8 +40,18 @@ function renderAnswers(nodeTitle: string, answers: Array<MarkdownBodyChunkTextPa
     })}</tbody></table>;
 }
 
+export type ContextType = {
+    expandQuestionAnswer: boolean,
+    currentNodeTitle: string
+};
+
+export const Context = React.createContext<ContextType>({
+    expandQuestionAnswer: false,
+    currentNodeTitle: ''
+});
+
 export default ( {data }: SentenceWithAnswers) => {
-    const context = useContext(AppContext);
+    const context = useContext(Context);
     const [dropdownIndices, setSubmittedDropdownIndices] = useState<Array<number>>(
         context.expandQuestionAnswer ? data.answers.map(answer => 0) : []
     )

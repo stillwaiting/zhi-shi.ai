@@ -1,6 +1,6 @@
 import { getNodeText } from '@testing-library/dom';
 import React, { useState, useEffect, useContext } from 'react';
-import AppContext from './AppContext';
+import { Context } from './body/BodyQuestionAnswerComponent';
 
 import { isMarkdownBodyChunkQuestionAnswers, MarkdownBody, MarkdownBodyChunk, MarkdownNode } from './md/types';
 import './TopicsTreeComponent.scss';
@@ -42,7 +42,7 @@ const renderNodes = (nodes: MarkdownNode[], currentNodeTitle: string, onNodeClic
 
 export default ({ nodes, onNodeClicked }: TopicsTreeComponent ) => {
 
-    const context = useContext(AppContext);
+    const context = useContext(Context);
 
     return <div className="TopicsTreeComponent">
         {renderNodes(nodes, context.currentNodeTitle, onNodeClicked)}

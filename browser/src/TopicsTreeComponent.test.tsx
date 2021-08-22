@@ -3,7 +3,7 @@ import { fireEvent, render, RenderResult, screen } from '@testing-library/react'
 import TopicsTreeComponent from './TopicsTreeComponent';
 import '@testing-library/jest-dom'
 import { MarkdownNode } from './md/types';
-import AppContext  from './AppContext';
+import { Context }  from './body/BodyQuestionAnswerComponent';
 import parse from './md/MarkdownParser';
 
 const WITH_NESTED_CHILDREN = [
@@ -63,14 +63,11 @@ describe('TopicsTreeComponent', () => {
 
     test('selects the current node', async () => {
         const component = render(
-            <AppContext.Provider value={{
+            <Context.Provider value={{
                 currentNodeTitle: 'hello2',
-                currentNodeAnchor: '',
-                currentSelectedText: '',
-                onLinkClicked: (link) => { }
             }}>
                 <TopicsTreeComponent nodes={WITH_NESTED_CHILDREN} onNodeClicked={() => {}} />
-            </AppContext.Provider>
+            </Context.Provider>
         
         );
         expect(component.container.getElementsByTagName('ul')).toHaveLength(2);

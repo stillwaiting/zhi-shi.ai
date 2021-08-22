@@ -29,7 +29,6 @@ describe('BodyTextParagraphComponent', () => {
         let capturedLink = '';
         const component = render(
             <AppContext.Provider value={{
-                currentNodeTitle: '',
                 currentNodeAnchor: '',
                 currentSelectedText: '',
                 onLinkClicked: (link) => { capturedLink = link},
@@ -49,7 +48,6 @@ describe('BodyTextParagraphComponent', () => {
         let capturedLink = '';
         const component = render(
             <AppContext.Provider value={{
-                currentNodeTitle: '',
                 currentNodeAnchor: '',
                 currentSelectedText: '',
                 onLinkClicked: (link) => { capturedLink = link},
@@ -62,14 +60,13 @@ describe('BodyTextParagraphComponent', () => {
         expect(capturedLink).toBe('http://blah.com_hello_');
     });
 
-    test('renders http links with underscores', () => {
+    test('selects template on click', () => {
         const text = `
             \\{foo}
         `
         let capturedLink = '';
         const component = render(
             <AppContext.Provider value={{
-                currentNodeTitle: '',
                 currentNodeAnchor: '',
                 currentSelectedText: '',
                 onLinkClicked: (link) => { capturedLink = link},
@@ -79,7 +76,7 @@ describe('BodyTextParagraphComponent', () => {
             </AppContext.Provider>
         );
         fireEvent.click(component.getByText('{foo}'));
-        expect(capturedLink).toBe('{foo}');
+        expect((window.getSelection()!.focusNode! as HTMLSpanElement).innerHTML).toBe('{foo}');
     });
 
     test('does fire events on anchor click', async () => {
@@ -89,7 +86,6 @@ describe('BodyTextParagraphComponent', () => {
         let capturedLink = '';
         const component = render(
             <AppContext.Provider value={{
-                currentNodeTitle: '',
                 currentNodeAnchor: '',
                 currentSelectedText: '',
                 onLinkClicked: (link) => { capturedLink = link},
@@ -144,7 +140,6 @@ describe('BodyTextParagraphComponent', () => {
         `
         const component = render(
             <AppContext.Provider value={{
-                currentNodeTitle: '',
                 currentNodeAnchor: 'doit',
                 currentSelectedText: '',
                 onLinkClicked: (link) => {},
@@ -161,7 +156,6 @@ describe('BodyTextParagraphComponent', () => {
         const text = 'hello world hello world';
         const component = render(
             <AppContext.Provider value={{
-                currentNodeTitle: '',
                 currentNodeAnchor: '',
                 currentSelectedText: 'world',
                 onLinkClicked: (link) => {},

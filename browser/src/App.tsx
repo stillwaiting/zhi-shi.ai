@@ -8,6 +8,7 @@ import { isMarkdownBodyChunkList, isMarkdownBodyChunkTable, isMarkdownBodyChunkT
 import NodeHeaderComponent from './NodeHeaderComponent';
 import { BrowserRouter as Router, Route, Link, useHistory, useLocation } from "react-router-dom";
 import AppContext from './AppContext';
+import { Context as QuestionAsnwerContext } from './body/BodyQuestionAnswerComponent';
 import copy from 'copy-to-clipboard';
 
  // @ts-ignore
@@ -219,8 +220,13 @@ function App() {
   const COPY_IMAGE_SRC = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAYCAYAAAAYl8YPAAAACXBIWXMAAACwAAAAsAEUaqtpAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAAp0RVh0VGl0bGUAQ29weUaQl90AAAAQdEVYdEF1dGhvcgBtaWdodHltYW7DdcowAAAAIXRFWHRDcmVhdGlvbiBUaW1lADIwMTAtMDQtMDdUMTk6MTk6MDOeH3TcAAAAPXRFWHRTb3VyY2UAaHR0cHM6Ly9vcGVuY2xpcGFydC5vcmcvZGV0YWlsLzM4ODgxL2NvcHktYnktbWlnaHR5bWFuQIt9qQAAAFh0RVh0Q29weXJpZ2h0AENDMCBQdWJsaWMgRG9tYWluIERlZGljYXRpb24gaHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvcHVibGljZG9tYWluL3plcm8vMS4wL8bjvfkAAAMLSURBVDiNhZTPa1xVFMc/580LM0nzQ0yoNsEaJN0oopJSwUQpaBe6cSHiqq5U1H/AhRSCC8GtO8WNiKA0KxeiIEVQKFhBK6WL2jZircU00yT6fsy8d885XcxLMpPMjA/u4r177+d9zvcerrzzra1P1UlDApaAphASCCnkd6iv/ymX/AYvnj0vOf/zxLMTtN9cLOf7Tf7ya8TnX8bF2i1WT877S9//Ia1hsEiTwZMeoJwj2n6ZR1Q4exJvDIWF1AdOagnXN+HCDHMbp+yxcKi9+jy/1webpUPMCuevbfz+WyqTU2Fu/MlyMRkf+WKRn0f6rY/DEJgGmD/nI43Jci3SFnHRQsey5bhertDk3QMwy+UA5OpmRDOD8BC89akeCa0aZWuMUI6xfXuCc5+tn1pZ8jMrK2K9ZomLuyOyB/3pZsTxI4aMgNXBg+BBwMBn6/zw9dEnLp7nI/A3QHZDjzUTHOj2c4WFe43ooDTuzvQ9Um49Xnv6uRt88t1lf20HGFmfVtQcGHTIImSJy6VHWVh7iqWlCT4GF4BIExfft1GH9Lo75P86V5vuciwsyPH2M0uj/3zYKTOVnrzUIWSDxcydfAuZvWwys6EyPV4e0xkdX9642I417yyIpJOduhOywWbmzvIJqZ1Iii2tt/EH2+jRsnHhm9Yrsaa+qxXcCQ6aDc4sjiJef8/jwmS6sDrBG7SKCa79djONzAvMqvKsAg7JzKrhAohg4qiAkRO5paLegah3oGXqWB8z8yoGpxpeSThILnGrndWuXKmh5hSmBHXSO1OY93afd8ewA6mAwRyTTOLm38nqB6fXR50EyDFSJh949gV89HC3Vc/mHisoDMwzib+6/vDb+8t59T77Ua043Avai6Fj0/vNKCTqG3KKWxVad3k7EN1nGNQB+sOKBLzKa/fv5j1latdhlD4EhueoeW+79Jzk3olqZYsIcV8YibTDIeIAhULhRqlO6VAalOYUVr2ro2XnWusLy/M0e//05m2THCfHyMUtRyUX80wMxat7J/+vVQPYuNZs3AWFKDbDNon58AAAAABJRU5ErkJggg==";
 
   return (
-    <AppContext.Provider value={{
+
+    <QuestionAsnwerContext.Provider value={{
       currentNodeTitle: currentNodeTitle,
+      expandQuestionAnswer: expandQuestions,
+    }}>
+
+    <AppContext.Provider value={{
       linkRenderer: (link, text) => {
           const linkHtml = '<a href=\'' + link.split('"').join('&quot;') + '\' target="_blank">' + text + '</a>';
           if (link.trim().startsWith("http")) {
@@ -233,7 +239,6 @@ function App() {
       },
       currentNodeAnchor: currentNodeAnchor,
       currentSelectedText: externalSelectedText,
-      expandQuestionAnswer: expandQuestions,
       onLinkClicked: (link, e) => {
         if (link.startsWith("http")) {
           return;
@@ -340,6 +345,7 @@ function App() {
         <button data-testid='submit' onClick={onSubmitClicked}>Submit</button>
       </div>
     </AppContext.Provider>
+    </QuestionAsnwerContext.Provider>
   );
 }
 
