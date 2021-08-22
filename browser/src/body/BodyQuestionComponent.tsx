@@ -31,7 +31,7 @@ export default ({ onSubmit, question, indices }: BodyQuestionComponentProps) => 
     const [selectedDropdownIndices, setSelectedDropdownIndices] = useState<Array<number>>(
         indices.length > 0 
             ? indices : 
-            (question.match(DROPDOWN_REGEXP) || []).map(question => Math.floor(Math.random() * question.split('|').length))
+            (question.match(DROPDOWN_REGEXP) || []).map(question => -1)
     );
     
     // Each item is either an arbitrary string or a "dropdown" string like "(blah|foo)"
@@ -67,6 +67,7 @@ export default ({ onSubmit, question, indices }: BodyQuestionComponentProps) => 
                                         setSelectedDropdownIndices(newIndices);
                                     }}
                                 >
+                                    <option key="-1" value="-1">{indices.length > 0 ? options[0] : '?'}</option>
                                 {shuffleArray(options.map((option, idx) => (
                                     <option key={idx} value={idx}>
                                         {option}

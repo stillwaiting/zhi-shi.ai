@@ -31,7 +31,7 @@ describe('BodyQuestionAnswerComponent', () => {
             question: {text: "(Hello|blah|baz), (world|foo)"},
             answers: [{text: "answer 1"}, {text: "answer 2"}]
         }}  />);
-        const firstSelect = component.container.getElementsByTagName('select')[1]
+        const firstSelect = component.container.getElementsByTagName('select')[0]
         fireEvent.change(firstSelect, {
             target: {value: firstSelect.getElementsByTagName('option')[1].value}
         });

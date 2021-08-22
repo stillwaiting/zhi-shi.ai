@@ -44,9 +44,9 @@ describe('BodyQuestionComponent', () => {
         const dropdowns = getDropdowns(component);
         expect(dropdowns).toHaveLength(3);
         const expected = [
-            ['Hello', 'blah', 'baz'],
-            ['world', 'foo'],
-            ['!', '.']
+            ['?', 'Hello', 'blah', 'baz'],
+            ['?', 'world', 'foo'],
+            ['?', '!', '.']
         ];
         expected.forEach((options, dropdownIdx) => {
             options.forEach((option, optionIdx) => {
@@ -64,13 +64,13 @@ describe('BodyQuestionComponent', () => {
         expect(caughtValue).toHaveLength(0);
     });
 
-    test('onSubmit returns array of zeros when no values were selected', () => {
+    test('onSubmit returns array of -1s when no values were selected', () => {
         let caughtValue;
         const component = render(<BodyQuestionComponent question="(Hello|blah|baz), (world|foo)(!|.)" onSubmit={(submitted) => {
             caughtValue = submitted;
         }} indices={[]} />);
         fireEvent.click(getButton(component));
-        expect(caughtValue).toEqual([0, 0, 0]);
+        expect(caughtValue).toEqual([-1, -1, -1]);
     });
 
     test('onSubmit returns selected values', () => {
@@ -80,10 +80,10 @@ describe('BodyQuestionComponent', () => {
         }} indices={[]} />);
         const firstSelect = getDropdowns(component)[1]
         fireEvent.change(firstSelect, {
-            target: {value: getOptions(firstSelect)[1].value}
+            target: {value: getOptions(firstSelect)[2].value}
         });
         fireEvent.click(getButton(component));
-        expect(caughtValue).toEqual([0, 1, 0]);
+        expect(caughtValue).toEqual([-1, 1, -1]);
     });
 
     test('in answer mode dropdowns are disabled', () => {
@@ -91,6 +91,13 @@ describe('BodyQuestionComponent', () => {
             onSubmit={(submitted) => {}} indices={[0, 0, 0]} />);
         const firstSelect = getDropdowns(component)[1];
         expect(firstSelect.disabled).toBeTruthy()
+    });
+
+    test('in answer mode replaces ? with anser', () => {
+        const component = render(<BodyQuestionComponent question="(Hello|blah|baz), (world|foo)(!|.)" 
+            onSubmit={(submitted) => {}} indices={[-1, -1, -1]} />);
+        const firstSelect = (getDropdowns(component)[0].children[0] as HTMLOptionElement).innerHTML.trim();
+        expect(firstSelect).toEqual("Hello")
     });
 
     test('in answer mode button disappears', () => {
@@ -124,7 +131,7 @@ describe('BodyQuestionComponent', () => {
         expect(component.queryAllByText('(3)')).toHaveLength(0);
     });
 
-    test('shuffles answers', () => {
+    test('by default selects first item', () => {
         // @ts-ignore
         global.Math.random = oldRandom;
         const valuesOfFirstSelect: { [key:string]: number } = {};
@@ -134,17 +141,17 @@ describe('BodyQuestionComponent', () => {
             const value = (getDropdowns(component)[0].children[0] as HTMLOptionElement).value;
             valuesOfFirstSelect[value] = 1;
         }
-        expect(Object.keys(valuesOfFirstSelect)).toHaveLength(3);
+        expect(Object.keys(valuesOfFirstSelect)).toStrictEqual(["-1"]);
     });
 
-    test('shuffles pre-selected answers', () => {
+    test('shuffles answers', () => {
         // @ts-ignore
         global.Math.random = oldRandom;
         const valuesOfFirstSelect: { [key:string]: number } = {};
         for (let i =0; i < 100; i++ ) {
             const component = render(<BodyQuestionComponent question="(Hello|blah|baz), (world|foo)(!|.)" 
                 onSubmit={(submitted) => {}} indices={[]} />);
-            const value = getDropdowns(component)[0].value;
+            const value = (getDropdowns(component)[0].children[1] as HTMLOptionElement).value;
             valuesOfFirstSelect[value] = 1;
         }
         expect(Object.keys(valuesOfFirstSelect)).toHaveLength(3);
