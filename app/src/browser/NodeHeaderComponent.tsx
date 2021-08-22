@@ -1,8 +1,3 @@
-import { getNodeText } from '@testing-library/dom';
-import React, { useState } from 'react';
-
-import { MarkdownBody, MarkdownNode } from './md/types';
-
 import './NodeHeaderComponent.scss';
 
 type NodeHeaderComponent = {

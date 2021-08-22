@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import Browser from './browser/Browser';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router, Route, Switch, Link, useHistory } from "react-router-dom";
 
@@ -10,7 +10,7 @@ ReactDOM.render(
     <Router>
       <Switch>
           <Route >
-            <App />
+            <Browser />
           </Route>
         </Switch>
     </Router>

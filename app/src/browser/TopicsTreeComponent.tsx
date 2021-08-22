@@ -1,8 +1,7 @@
-import { getNodeText } from '@testing-library/dom';
 import React, { useState, useEffect, useContext } from 'react';
-import { Context } from './body/BodyQuestionAnswerComponent';
+import { Context } from './../body/BodyQuestionAnswerComponent';
 
-import { isMarkdownBodyChunkQuestionAnswers, MarkdownBody, MarkdownBodyChunk, MarkdownNode } from './md/types';
+import { isMarkdownBodyChunkQuestionAnswers, MarkdownBody, MarkdownBodyChunk, MarkdownNode } from './../md/types';
 import './TopicsTreeComponent.scss';
 
 type TopicsTreeComponent = {

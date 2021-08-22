@@ -2,9 +2,9 @@ import React from 'react';
 import { fireEvent, render, RenderResult, screen } from '@testing-library/react';
 import TopicsTreeComponent from './TopicsTreeComponent';
 import '@testing-library/jest-dom'
-import { MarkdownNode } from './md/types';
-import { Context }  from './body/BodyQuestionAnswerComponent';
-import parse from './md/MarkdownParser';
+import { MarkdownNode } from './../md/types';
+import { Context }  from './../body/BodyQuestionAnswerComponent';
+import parse from './../md/MarkdownParser';
 
 const WITH_NESTED_CHILDREN = [
     {

@@ -1,8 +1,6 @@
 import React from 'react';
 import { fireEvent, render, RenderResult, screen } from '@testing-library/react';
-import TopicsTreeComponent from './TopicsTreeComponent';
 import '@testing-library/jest-dom'
-import { MarkdownNode } from './md/types';
 import NodeHeaderComponent from './NodeHeaderComponent';
 
 describe('NodeHeaderComponent', () => {

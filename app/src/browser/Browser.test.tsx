@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, RenderResult, screen, act, cleanup } from '@testing-library/react';
-import App from './App';
+import App from './Browser';
 import { mocked } from 'ts-jest/utils';
 import '@testing-library/jest-dom'
 import * as reactDom from 'react-router-dom';

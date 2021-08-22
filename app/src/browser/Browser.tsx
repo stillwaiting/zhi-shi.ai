@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
-import './App.scss';
-import BodyComponent from './body/BodyComponent';
+import './Browser.scss';
+import BodyComponent from './../body/BodyComponent';
 import TopicsTreeComponent from './TopicsTreeComponent';
-import parse from './md/MarkdownParser';
-import { isMarkdownBodyChunkList, isMarkdownBodyChunkTable, isMarkdownBodyChunkTextParagraph, MarkdownBody, MarkdownNode } from './md/types';
+import parse from './../md/MarkdownParser';
+import { isMarkdownBodyChunkList, isMarkdownBodyChunkTable, isMarkdownBodyChunkTextParagraph, MarkdownBody, MarkdownNode } from './../md/types';
 import NodeHeaderComponent from './NodeHeaderComponent';
 import { BrowserRouter as Router, Route, Link, useHistory, useLocation } from "react-router-dom";
-import { Context as TextParagraphContext } from './body/BodyTextParagraphComponent';
-import { Context as QuestionAsnwerContext } from './body/BodyQuestionAnswerComponent';
+import { Context as TextParagraphContext } from './../body/BodyTextParagraphComponent';
+import { Context as QuestionAsnwerContext } from './../body/BodyQuestionAnswerComponent';
 import copy from 'copy-to-clipboard';
 
  // @ts-ignore
 import replaceAllInserter from 'string.prototype.replaceall';
-import { getNodeText } from '@testing-library/react';
 replaceAllInserter.shim();
 
 // We have to use a custom separator because '#' might be treated specially both by browser, react router and 
@@ -149,7 +147,7 @@ function isValidNodeLink(nodesByTitle: {[key: string]: Array<MarkdownNode>}, cur
   return nodesByTitle[link] && nodesByTitle[link].length > 0;
 }
 
-function App() {
+function Browser() {
   const [unsubmittedData, setUnsubmittedData] = useState<string>("");
   const [nodes, setNodes] = useState<MarkdownNode[]>([]);
   const [nodesByTitle, setNodesByTitle] = useState<{[key: string]: Array<MarkdownNode>}>({});
@@ -251,7 +249,7 @@ function App() {
         history.push(nodeLinkToHttpPath(link, currentNode ? currentNode.path : []));
       }
     }}>
-      <div className="App">
+      <div className="Browser">
 
         <div className="topics" style={{width: topicsWidth + 'px' }} data-testid='menu-container'>
 
@@ -349,5 +347,5 @@ function App() {
   );
 }
 
-export default App;
+export default Browser;
 
