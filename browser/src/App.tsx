@@ -7,7 +7,7 @@ import parse from './md/MarkdownParser';
 import { isMarkdownBodyChunkList, isMarkdownBodyChunkTable, isMarkdownBodyChunkTextParagraph, MarkdownBody, MarkdownNode } from './md/types';
 import NodeHeaderComponent from './NodeHeaderComponent';
 import { BrowserRouter as Router, Route, Link, useHistory, useLocation } from "react-router-dom";
-import AppContext from './AppContext';
+import { Context as TextParagraphContext } from './body/BodyTextParagraphComponent';
 import { Context as QuestionAsnwerContext } from './body/BodyQuestionAnswerComponent';
 import copy from 'copy-to-clipboard';
 
@@ -226,7 +226,7 @@ function App() {
       expandQuestionAnswer: expandQuestions,
     }}>
 
-    <AppContext.Provider value={{
+    <TextParagraphContext.Provider value={{
       linkRenderer: (link, text) => {
           const linkHtml = '<a href=\'' + link.split('"').join('&quot;') + '\' target="_blank">' + text + '</a>';
           if (link.trim().startsWith("http")) {
@@ -344,7 +344,7 @@ function App() {
         <hr />
         <button data-testid='submit' onClick={onSubmitClicked}>Submit</button>
       </div>
-    </AppContext.Provider>
+    </TextParagraphContext.Provider>
     </QuestionAsnwerContext.Provider>
   );
 }

@@ -4,8 +4,6 @@ import './BodyTextParagraphComponent.scss';
 
 import { isMarkdownBodyChunkTextParagraph, MarkdownBody, MarkdownBodyChunkTextParagraph, MarkdownNode } from '../md/types';
 
-import AppContext  from '../AppContext';
-
 // @ts-ignore
 import replaceAllInserter from 'string.prototype.replaceall';
 replaceAllInserter.shim();
@@ -116,8 +114,22 @@ function selectSpan(element: HTMLElement) {
     selection!.addRange(range);
 }
 
+export type ContextType = {
+    currentNodeAnchor: string,
+    currentSelectedText: string,
+    linkRenderer: (link: string, text:string) => string,
+    onLinkClicked: (link: string, e: React.MouseEvent<HTMLElement>) => void,
+};
+
+export const Context = React.createContext<ContextType>({
+    currentNodeAnchor: '',
+    currentSelectedText: '',
+    linkRenderer: (link, text) => { return `<a href="${link.split('"').join('&quot;')}">${text}</a>`; },
+    onLinkClicked: (link) => {},
+});
+
 export default ( { data }: BodyTextParagraphComponent ) => {
-    const context = useContext(AppContext);
+    const context = useContext(Context);
     return <p 
         className='BodyTextParagraphComponent' 
         dangerouslySetInnerHTML = {{__html: toHtml(data.text, context.currentNodeAnchor, context.currentSelectedText, context.linkRenderer)}} 
