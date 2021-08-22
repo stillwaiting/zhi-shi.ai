@@ -9,10 +9,18 @@ import { BrowserRouter as Router, Route, Link, useHistory, useLocation } from "r
 import { Context as TextParagraphContext } from './../body/BodyTextParagraphComponent';
 import { Context as QuestionAsnwerContext } from './../body/BodyQuestionAnswerComponent';
 import copy from 'copy-to-clipboard';
+// import raw from './test.md'
 
  // @ts-ignore
 import replaceAllInserter from 'string.prototype.replaceall';
 replaceAllInserter.shim();
+
+
+// fetch(raw)
+//   .then(r => r.text())
+//   .then(text => {
+//     console.log('text decoded:', text);
+//   });
 
 // We have to use a custom separator because '#' might be treated specially both by browser, react router and 
 // vscode extension's WebView
