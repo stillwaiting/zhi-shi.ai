@@ -20,7 +20,6 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 
-
 	const PROCESS_TEMPLATE_REGEXP = /{set:(.*?)}((.|[\r\n])*?){\/set}/g
 
 	context.subscriptions.push(disposable);
@@ -29,8 +28,8 @@ export function activate(context: vscode.ExtensionContext) {
 		'markdown',
 		{
 			provideCompletionItems(document, position, token, context) {
-				const text = stripNonParents(document.getText(), document.lineAt(position).lineNumber);
-				const textSplit = text.split('{set:');
+				const directParentsText = stripNonParents(document.getText(), document.lineAt(position).lineNumber);
+				const textSplit = directParentsText.map(line => line.lineText).join("\n").split('{set:');
 				const items: Array<vscode.CompletionItem> = [];
 				for (let textSplitIdx = 1; textSplitIdx < textSplit.length; textSplitIdx ++) {
 					let item = new vscode.CompletionItem(textSplit[textSplitIdx].split('}')[0], vscode.CompletionItemKind.Text);
@@ -41,7 +40,31 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 		},
 		'{'
-	))
+	));
+
+	context.subscriptions.push(vscode.languages.registerDefinitionProvider(
+		'markdown',
+		{
+			provideDefinition(document, position, token) {
+				const line = document.lineAt(position).text;
+				const template = extractTemplateText(line, position);
+				if (template) {
+					const directParentsText = stripNonParents(document.getText(), document.lineAt(position).lineNumber);
+					const templateDefinitionLine =directParentsText.find(line => line.lineText.indexOf("{set:" + template + "}") >= 0);
+					if (templateDefinitionLine) {
+						return {
+							uri: document.uri,
+							range: new vscode.Range(
+								new vscode.Position(templateDefinitionLine.lineNo+1, 0), 
+								new vscode.Position(templateDefinitionLine.lineNo+2, 0)
+							)
+						}
+					}
+				}
+				return [];
+			}
+		}
+	));
 
 	disposable = vscode.commands.registerCommand('zhishimd.toc', () => {
 		const panel = vscode.window.createWebviewPanel(
@@ -54,12 +77,22 @@ export function activate(context: vscode.ExtensionContext) {
 			  } // Webview options. More on these later.
 		  );
 		panel.webview.html = getWebviewContent(panel.webview, context);
-		vscode.workspace.onDidChangeTextDocument(e => {
-			panel.webview.postMessage({ 
-				file: vscode.window.activeTextEditor!.document.fileName, 
-				content:  vscode.window.activeTextEditor!.document.getText(),
-			 });
-		});
+
+		let lastTextSent = '';
+		function updateEditorText() {
+			if (vscode.window.activeTextEditor) {
+				if (vscode.window.activeTextEditor!.document.getText() != lastTextSent) {
+					lastTextSent = vscode.window.activeTextEditor!.document.getText();
+						panel.webview.postMessage({ 
+							file: vscode.window.activeTextEditor!.document.fileName, 
+							content:  lastTextSent,
+						});
+				}
+			}
+		}
+
+		vscode.workspace.onDidChangeTextDocument(updateEditorText);
+		setInterval(updateEditorText, 100);
 
 		let lastLine = -1;
 
@@ -189,37 +222,41 @@ function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionCon
 	   </head>
 	   <body style='background: white; color: black'>
 		  <noscript>You need to enable JavaScript to run this app.</noscript>
+
+		  <script>
+
+		  window.vscode = acquireVsCodeApi();
+
+		  window.externalGotoEditor = (title) => {
+			window.vscode.postMessage({
+				  gotoTitle: title
+			  });
+		  };
+
+		  window.addEventListener('message', event => {
+				  if (event.data.content) {
+					  window.externalText = event.data.content;
+				  }
+				  if (event.data.title) {
+					  window.externalNodeTitle = event.data.title;
+				  }
+				  if (event.data.line) {
+					  window.externalNodeLine = event.data.line;
+				  }
+				  if (event.data.selectedText !== undefined) {
+					  window.externalSelectedText = event.data.selectedText;
+				  }
+		  });
+
+		  </script>
+
+
 		  <div id="root"></div>
 		  <script src="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/' + manifest.entrypoints[0]))}"></script>
 		  <script src="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/' + manifest.entrypoints[1]))}"></script>
 		  <script src="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/' + manifest.entrypoints[3]))}"></script>
 
-			<script>
-
-			const vscode = acquireVsCodeApi();
-
-			window.externalGotoEditor = (title) => {
-				vscode.postMessage({
-					gotoTitle: title
-				});
-			};
-
-			window.addEventListener('message', event => {
-					if (event.data.content) {
-						window.externalText = event.data.content;
-					}
-					if (event.data.title) {
-						window.externalNodeTitle = event.data.title;
-					}
-					if (event.data.line) {
-						window.externalNodeLine = event.data.line;
-					}
-					if (event.data.selectedText !== undefined) {
-						window.externalSelectedText = event.data.selectedText;
-					}
-			});
-
-			</script>
+		
 
 
 	   </body>
@@ -227,24 +264,50 @@ function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionCon
   }
 
 
-function stripNonParents(text: string, startLine: number): string {
-	let strippedText = '';
+function stripNonParents(text: string, startLine: number): Array<{lineNo: number, lineText: string}> {
+	let strippedText: Array<{lineNo: number, lineText: string}> = [];
 	const lines = text.split("\n");
 	let currentDelimiter = '#######################################################################';
-	let nodeText = '';
+	let nodeText: Array<{lineNo: number, lineText: string}> = [];
 	for (let lineNo = startLine; lineNo >= 0; lineNo -- ) {
 		const line = lines[lineNo];
 		if (line.startsWith('#')) {
 			const lineDelim = line.split(' ')[0];
 			if (lineDelim.length < currentDelimiter.length) {
 				currentDelimiter = lineDelim;
-				strippedText = nodeText + strippedText;
+				strippedText = nodeText.concat(strippedText);
 			}
-			nodeText = '';
+			nodeText = [];
 		} else {
-			nodeText = line + nodeText;
+			nodeText.unshift({lineNo: lineNo, lineText: line});
 		}
 	}
 	return strippedText;
+}
+
+function extractTemplateText(line: string, position: vscode.Position) {
+	let left = '';
+	for (let pos = position.character; pos >= 0; pos --) {
+		if (line[pos] == '{') {
+			left = '{' + left;
+			break;
+		}
+		left = line[pos] + left;
+	}
+	if (!left.startsWith('{')) {
+		return undefined;
+	}
+	let right = '';
+	for (let pos = position.character + 1; pos < line.length; pos ++) {
+		if (line[pos] == '}') {
+			right = right + '}';
+			break;
+		}
+		right = right + line[pos];
+	}
+	if (!right.endsWith('}')) {
+		return undefined;
+	}
+	return (left + right).substr(1, (left + right).length - 2);
 }
 
