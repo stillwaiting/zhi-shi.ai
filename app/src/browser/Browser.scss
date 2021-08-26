@@ -26,50 +26,52 @@
     padding: 0;
     margin:0;
   }
+
+  .Browser-logo {
+    height: 40vmin;
+    pointer-events: none;
+  }
+  
+  @media (prefers-reduced-motion: no-preference) {
+    .Browser-logo {
+      animation: App-logo-spin infinite 20s linear;
+    }
+  }
+  
+  .Browser-header {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+  }
+  
+  .Browser-link {
+    color: #61dafb;
+  }
+  
+  @keyframes Browser-logo-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  div.error {
+    color: #a00;
+    border: 1px solid #a00;
+  }
+  
+  span.error {
+    color: #a00;
+    border: 1px solid #a00;
+  }
+  
   
 }
 
-.Browser-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .Browser-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.Browser-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.Browser-link {
-  color: #61dafb;
-}
-
-@keyframes Browser-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-div.error {
-  color: #a00;
-  border: 1px solid #a00;
-}
-
-span.error {
-  color: #a00;
-  border: 1px solid #a00;
-}
