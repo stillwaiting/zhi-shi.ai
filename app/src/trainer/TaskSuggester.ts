@@ -3,7 +3,7 @@ import mdParse from '../md/MarkdownParser';
 import { isMarkdownBodyChunkQuestionAnswers, MarkdownBodyChunkQuestionAnswers, MarkdownNode } from '../md/types';
 
 // Keep TaskType flat to avoid circular dependencies
-type TaskType = {
+export type TaskType = {
     taskIdx: number;
     bodyChunk: MarkdownBodyChunkQuestionAnswers;
     ruleIdx: number;
