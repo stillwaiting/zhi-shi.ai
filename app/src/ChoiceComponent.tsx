@@ -1,10 +1,10 @@
 import React, { ReactElement, useState } from "react";
 import Browser from "./browser/Browser";
-import TrainerComponent from './trainer/TrainerComponent';
+import TrainerAppComponent from './trainer/TrainerAppComponent';
 
 const choices: { [name: string]: ReactElement} = {
     'browser': <Browser />,
-    'Russian': <TrainerComponent />
+    'Russian': <TrainerAppComponent url={'/RUv2.md'} />
 }
 
 export default () => {

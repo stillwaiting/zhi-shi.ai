@@ -12,7 +12,7 @@ export default function() {
         setExpandClicked(!expandClicked);
     }
     if (!supportsTextFragments) {
-        return <div className='BrowserWarning'>
+        return <div className='BrowserWarning' data-testid='BrowserWarning'>
             Your browser does not support links to text fragments! Deep linking is disabled. <a 
                 href='#' onClick={onExpandClick}>{expandClicked ? 'Collapse.' : 'Expand.'}</a>
             
