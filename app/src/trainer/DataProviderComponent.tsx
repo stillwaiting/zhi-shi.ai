@@ -1,5 +1,3 @@
-//process.env.PUBLIC_URL
-
 import { useEffect, useState } from "react";
 import './DataProviderComponent.scss';
 import React from 'react';
