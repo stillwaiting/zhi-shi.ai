@@ -59,6 +59,49 @@ describe('BodyQuestionAnswerComponent', () => {
         expect(component.getAllByText("Details")).toHaveLength(2);
     });
 
+    test('calls back with "isCorrect=true" when all correct', () => {
+        let capturedIsCorrect = false;
+        const component = render(<Context.Provider value={{
+                currentNodeTitle: 'doit ::to!',
+                expandQuestionAnswer: false,
+            }}>
+            <BodyQuestionAnswerComponent  data={{
+                question: {text: "(Hello|blah|baz), (world|foo)"},
+                answers: [{text: "answer 1"}, {text: "answer 2"}],
+            }}  onAnswered={(isCorrect) => {
+                capturedIsCorrect = isCorrect;
+            }} />
+        </Context.Provider>);
+        const firstSelect = component.container.getElementsByTagName('select')[0]
+        fireEvent.change(firstSelect, {
+            target: {value: firstSelect.getElementsByTagName('option')[1].value}
+        });
+        const secondSelect = component.container.getElementsByTagName('select')[1]
+        fireEvent.change(secondSelect, {
+            target: {value: secondSelect.getElementsByTagName('option')[1].value}
+        });
+        fireEvent.click(component.container.getElementsByTagName('button')[0]);
+        expect(capturedIsCorrect).toBeTruthy();
+    });
+
+
+    test('calls back with "isCorrect=false" when at least one is incorrect', () => {
+        let capturedIsCorrect = false;
+        const component = render(<Context.Provider value={{
+                currentNodeTitle: 'doit ::to!',
+                expandQuestionAnswer: false,
+            }}>
+            <BodyQuestionAnswerComponent  data={{
+                question: {text: "(Hello|blah|baz), (world|foo)"},
+                answers: [{text: "answer 1"}, {text: "answer 2"}],
+            }}  onAnswered={(isCorrect) => {
+                capturedIsCorrect = isCorrect;
+            }} />
+        </Context.Provider>);    
+        fireEvent.click(component.container.getElementsByTagName('button')[0]);
+        expect(capturedIsCorrect).toBeFalsy();
+    });
+
     test('does not append answer with referenes from title when they already have a link', () => {
         const component = render(<Context.Provider value={{
                 currentNodeTitle: 'doit ::to!',
