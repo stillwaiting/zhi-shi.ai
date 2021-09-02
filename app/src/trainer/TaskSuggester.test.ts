@@ -72,10 +72,10 @@ Some text that should be ignored.
                   "title": "SubNode 1",
                   "children": [
                     {
-                      "title": "Rule: empty rule, no tasks",
+                      "title": "Rule 0: empty rule, no tasks",
                       "rule": {
                         "ruleIdx": 0,
-                        "nodeTitle": "Rule: empty rule, no tasks",
+                        "nodeTitle": "Rule 0: empty rule, no tasks",
                         "taskIdxs": [],
                         "answeredTaskIdxs": [],
                         "lastAnswers": []
@@ -83,10 +83,10 @@ Some text that should be ignored.
                       "children": []
                     },
                     {
-                      "title": "Rule: single tasks node",
+                      "title": "Rule 1: single tasks node",
                       "rule": {
                         "ruleIdx": 1,
-                        "nodeTitle": "Rule: single tasks node",
+                        "nodeTitle": "Rule 1: single tasks node",
                         "taskIdxs": [
                           0,
                           1
@@ -97,10 +97,10 @@ Some text that should be ignored.
                       "children": []
                     },
                     {
-                      "title": "Rule: several task nodes",
+                      "title": "Rule 2: several task nodes",
                       "rule": {
                         "ruleIdx": 2,
-                        "nodeTitle": "Rule: several task nodes",
+                        "nodeTitle": "Rule 2: several task nodes",
                         "taskIdxs": [
                           2,
                           3,
