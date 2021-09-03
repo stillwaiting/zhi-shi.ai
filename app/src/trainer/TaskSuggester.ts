@@ -6,32 +6,46 @@ import { isMarkdownBodyChunkQuestionAnswers, MarkdownBodyChunkQuestionAnswers, M
 // Keep TaskType flat to avoid circular dependencies
 export type TaskType = {
     taskIdx: number;
-    bodyChunk: MarkdownBodyChunkQuestionAnswers;
     ruleIdx: number;
+    topicIdx: number;
+    bodyChunk: MarkdownBodyChunkQuestionAnswers;
+}
+
+export type StatsType = {
+    totalTasks: number;
+    correctlyAnsweredTasks: number;
+    incorrectlyAnsweredTasks: number;
 }
 
 // Keep RuleType flat to avoid circular dependencies
 type RuleType = {
     ruleIdx: number;
+    topicIdx: number;
+
     nodeTitle: string;
     taskIdxs: Array<number>;
+
+    stats: StatsType;
+
     answeredTaskIdxs: { [taskIdx: number]: boolean }; // purged when full; true - correctly, false - incorrectly
     lastAnswers: Array<boolean>; // true - correctly, false - incorrectly
 }
 
-type RuleTreeLeafType = {
-    title: string,
-    rule: RuleType | undefined,
+export type TopicType = {
+    topicIdx: number;
+    title: string;
 
-    children: Array<RuleTreeLeafType> // always empty for "rule" nodes
+    stats: StatsType;
+
+    rules: Array<RuleType> // always empty for "rule" nodes
 }
 
 export default class TaskSuggester {
 
-    // Each RuleType object has 2 references: one from the tree, another one from the
+    // Each RuleType object has 2 references: one from the topic, another one from the
     // array (with index = RuleType.ruleIdx)
     // Tasks are not included in the tree, thus keeping it small and making it easy to operate (e.g. to clone)
-    private rulesTree: Array<RuleTreeLeafType> = [];
+    private topics: Array<TopicType> = [];
     private rules: Array<RuleType> = [];
 
     // Each TaskType has only a single reference
@@ -40,12 +54,11 @@ export default class TaskSuggester {
     private selectedRuleIdxs: Array<number> = []; // empty means all
     private lastAnsweredRuleIdxs: Array<number> = [];
 
-        constructor(rawMdData: string) {
+    constructor(rawMdData: string) {
         const tree = mdParse(rawMdData, []);
 
         tree.forEach(node => {
-            const leaf = this.parseMarkdown(node);
-            this.rulesTree.push(leaf);
+            this.parseMarkdown(node);
         });
     }
 
@@ -54,8 +67,8 @@ export default class TaskSuggester {
         this.lastAnsweredRuleIdxs = [];
     }
 
-    getRulesTree(): Array<RuleTreeLeafType> {
-        return JSON.parse(JSON.stringify(this.rulesTree));
+    getTopics(): Array<TopicType> {
+        return JSON.parse(JSON.stringify(this.topics));
     }
 
     isTaskInSelectedRules(taskIdx: number): boolean {
@@ -66,7 +79,16 @@ export default class TaskSuggester {
     }
 
     recordAnswer(taskIdx: number, isCorrect: boolean) {
-        const rule = this.rules[this.tasks[taskIdx].ruleIdx];
+        const task = this.tasks[taskIdx];
+        const rule = this.rules[task.ruleIdx];
+        const topic = this.topics[task.topicIdx];
+        if (isCorrect) {
+            rule.stats.correctlyAnsweredTasks ++;
+            topic.stats.correctlyAnsweredTasks ++;
+        } else {
+            rule.stats.incorrectlyAnsweredTasks ++;
+            topic.stats.incorrectlyAnsweredTasks ++; 
+        }
         rule.answeredTaskIdxs[taskIdx] = isCorrect;
         if (Object.keys(rule.answeredTaskIdxs).length == rule.taskIdxs.length) {
             rule.answeredTaskIdxs = { };
@@ -86,6 +108,20 @@ export default class TaskSuggester {
                 this.lastAnsweredRuleIdxs = [];
             }
         }
+    }
+
+    clearStats() {
+        this.topics.forEach((topic) => {
+            topic.stats.correctlyAnsweredTasks = 0;
+            topic.stats.incorrectlyAnsweredTasks = 0;
+        });
+        this.rules.forEach((rule) => {
+            rule.stats.correctlyAnsweredTasks = 0;
+            rule.stats.incorrectlyAnsweredTasks = 0;
+            rule.answeredTaskIdxs = {};
+            rule.lastAnswers = [];
+        });
+        this.lastAnsweredRuleIdxs = [];
     }
     
     suggestNextTask(): TaskType {
@@ -135,44 +171,64 @@ export default class TaskSuggester {
         return rule.lastAnswers.indexOf(false) >= 0;
     }
 
-    private parseMarkdown(node: MarkdownNode): RuleTreeLeafType {
-        let leaf: RuleTreeLeafType = {
-            title: node.title,
-            rule: undefined,
-            children: []
-        };
-        if (node.title.indexOf("Rule") == 0) {
-            this.rules.push({
-                ruleIdx: this.rules.length,
-                nodeTitle: node.title,
-                taskIdxs: [],
-                answeredTaskIdxs: [],
-                lastAnswers: []
+    private parseMarkdown(node: MarkdownNode) {
+        if (node.children[0].title.indexOf("Rule") == 0) {
+            let topic: TopicType = {
+                topicIdx: this.topics.length,
+                title: node.title,
+                stats: {
+                    totalTasks: 0,
+                    correctlyAnsweredTasks: 0,
+                    incorrectlyAnsweredTasks: 0
+                },
+                rules: []
+            };
+            this.topics.push(topic);
+            node.children.forEach(ruleNode => {
+                this.parseRuleNode(topic, ruleNode);
             });
-            leaf.rule = this.rules[this.rules.length - 1];
+        } else {
+            node.children.map(childNode => this.parseMarkdown(childNode));
         }
-        if (node.title.indexOf("Task") == 0) {
-            node.body.content.forEach(maybeTask => {
-                if (isMarkdownBodyChunkQuestionAnswers(maybeTask)) {
-                    const task: TaskType = {
-                        taskIdx: this.tasks.length,
-                        bodyChunk: maybeTask,
-                        ruleIdx: this.rules.length - 1
-                    };
-                    this.tasks.push(task);
-                    this.rules[this.rules.length - 1].taskIdxs.push(this.tasks.length - 1);
-                }
-            })
-        }
+    }
 
-        
-        node.children.forEach(child => {
-            const childLeaf = this.parseMarkdown(child)
-            if (node.title.indexOf("Rule") != 0) {
-                leaf.children.push(childLeaf);
+    private parseRuleNode(topic: TopicType, ruleNode: MarkdownNode) {
+        let rule: RuleType = {
+            ruleIdx: this.rules.length,
+            topicIdx: topic.topicIdx,
+            nodeTitle: ruleNode.title,
+            stats: {
+                totalTasks: 0,
+                correctlyAnsweredTasks: 0,
+                incorrectlyAnsweredTasks: 0
+            },
+            taskIdxs: [],
+            answeredTaskIdxs: [],
+            lastAnswers: []
+        };
+        this.rules.push(rule);
+        topic.rules.push(rule);
+        ruleNode.children.forEach(taskNode => {
+            if (taskNode.title.indexOf("Task") == 0) {
+                this.parseTaskNode(topic, rule, taskNode);
             }
-        });
+        })
+    }
 
-        return leaf;
+    private parseTaskNode(topic: TopicType, rule: RuleType, taskNode: MarkdownNode) {
+        taskNode.body.content.forEach(maybeTask => {
+            if (isMarkdownBodyChunkQuestionAnswers(maybeTask)) {
+                const task: TaskType = {
+                    taskIdx: this.tasks.length,
+                    bodyChunk: maybeTask,
+                    ruleIdx: rule.ruleIdx,
+                    topicIdx: topic.topicIdx
+                };
+                this.tasks.push(task);
+                topic.stats.totalTasks ++;
+                rule.stats.totalTasks ++;
+                rule.taskIdxs.push(task.taskIdx);
+            }
+        })
     }
 }

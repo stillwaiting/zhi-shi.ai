@@ -63,79 +63,94 @@ Some text that should be ignored.
 
 
     test('On create builds tree of rules and tasks', () => {
-        const tree = suggester.getRulesTree();
+        const tree = suggester.getTopics();
         expect(tree).toStrictEqual([
-            {
-              "title": "Root 1",
-              "children": [
-                {
-                  "title": "SubNode 1",
-                  "children": [
-                    {
-                      "title": "Rule 0: empty rule, no tasks",
-                      "rule": {
-                        "ruleIdx": 0,
-                        "nodeTitle": "Rule 0: empty rule, no tasks",
-                        "taskIdxs": [],
-                        "answeredTaskIdxs": [],
-                        "lastAnswers": []
-                      },
-                      "children": []
-                    },
-                    {
-                      "title": "Rule 1: single tasks node",
-                      "rule": {
-                        "ruleIdx": 1,
-                        "nodeTitle": "Rule 1: single tasks node",
-                        "taskIdxs": [
-                          0,
-                          1
-                        ],
-                        "answeredTaskIdxs": [],
-                        "lastAnswers": []
-                      },
-                      "children": []
-                    },
-                    {
-                      "title": "Rule 2: several task nodes",
-                      "rule": {
-                        "ruleIdx": 2,
-                        "nodeTitle": "Rule 2: several task nodes",
-                        "taskIdxs": [
-                          2,
-                          3,
-                          4,
-                          5
-                        ],
-                        "answeredTaskIdxs": [],
-                        "lastAnswers": []
-                      },
-                      "children": []
-                    }
-                  ]
-                }
-              ]
+          {
+            "topicIdx": 0,
+            "title": "SubNode 1",
+            "stats": {
+              "totalTasks": 6,
+              "correctlyAnsweredTasks": 0,
+              "incorrectlyAnsweredTasks": 0
             },
-            {
-              "title": "Root 2",
-              "children": [
-                {
-                  "title": "Rule: another root",
-                  "rule": {
-                    "ruleIdx": 3,
-                    "nodeTitle": "Rule: another root",
-                    "taskIdxs": [
-                      6,
-                      7
-                    ],
-                    "answeredTaskIdxs": [],
-                    "lastAnswers": []
-                  },
-                  "children": []
-                }
-              ]
-            }
-          ]);
+            "rules": [
+              {
+                "ruleIdx": 0,
+                "topicIdx": 0,
+                "nodeTitle": "Rule 0: empty rule, no tasks",
+                "stats": {
+                  "totalTasks": 0,
+                  "correctlyAnsweredTasks": 0,
+                  "incorrectlyAnsweredTasks": 0
+                },
+                "taskIdxs": [],
+                "answeredTaskIdxs": [],
+                "lastAnswers": []
+              },
+              {
+                "ruleIdx": 1,
+                "topicIdx": 0,
+                "nodeTitle": "Rule 1: single tasks node",
+                "stats": {
+                  "totalTasks": 2,
+                  "correctlyAnsweredTasks": 0,
+                  "incorrectlyAnsweredTasks": 0
+                },
+                "taskIdxs": [
+                  0,
+                  1
+                ],
+                "answeredTaskIdxs": [],
+                "lastAnswers": []
+              },
+              {
+                "ruleIdx": 2,
+                "topicIdx": 0,
+                "nodeTitle": "Rule 2: several task nodes",
+                "stats": {
+                  "totalTasks": 4,
+                  "correctlyAnsweredTasks": 0,
+                  "incorrectlyAnsweredTasks": 0
+                },
+                "taskIdxs": [
+                  2,
+                  3,
+                  4,
+                  5
+                ],
+                "answeredTaskIdxs": [],
+                "lastAnswers": []
+              }
+            ]
+          },
+          {
+            "topicIdx": 1,
+            "title": "Root 2",
+            "stats": {
+              "totalTasks": 2,
+              "correctlyAnsweredTasks": 0,
+              "incorrectlyAnsweredTasks": 0
+            },
+            "rules": [
+              {
+                "ruleIdx": 3,
+                "topicIdx": 1,
+                "nodeTitle": "Rule: another root",
+                "stats": {
+                  "totalTasks": 2,
+                  "correctlyAnsweredTasks": 0,
+                  "incorrectlyAnsweredTasks": 0
+                },
+                "taskIdxs": [
+                  6,
+                  7
+                ],
+                "answeredTaskIdxs": [],
+                "lastAnswers": []
+              }
+            ]
+          }
+        ]);
     });
 
     test('Selected rules limit the choice of tasks', () => {
@@ -177,6 +192,40 @@ Some text that should be ignored.
         }
     });
 
+    test('Answer updates statistis', () => {
+        suggester.recordAnswer(0, true);
+        expect(suggester.getTopics()[0].stats.correctlyAnsweredTasks).toBe(1);
+        expect(suggester.getTopics()[0].rules[1].stats.correctlyAnsweredTasks).toBe(1);
+    });
+
+    test('Clean statistics cleans statistis', () => {
+      suggester.recordAnswer(0, true);
+      suggester.clearStats();
+      expect(suggester.getTopics()[0].stats.correctlyAnsweredTasks).toBe(0);
+      expect(suggester.getTopics()[0].rules[1].stats.correctlyAnsweredTasks).toBe(0);
+    });
+
+    test('Round-robins through rules', () => {
+      suggester.recordAnswer(0, true);
+      suggester.recordAnswer(2, true);
+      const suggestedTaskIdx = new Set<number>();
+      for (let attempts = 0; attempts < 100; attempts ++) {
+        suggestedTaskIdx.add(suggester.suggestNextTask().taskIdx);
+      }
+      expect(suggestedTaskIdx).toStrictEqual(new Set<number>([6,7]));
+    });
+
+    test('Cleanup drops answered rules memory', () => {
+      suggester.recordAnswer(0, true);
+      suggester.recordAnswer(2, true);
+      suggester.clearStats();
+      const suggestedTaskIdx = new Set<number>();
+      for (let attempts = 0; attempts < 100; attempts ++) {
+        suggestedTaskIdx.add(suggester.suggestNextTask().taskIdx);
+      }
+      expect(suggestedTaskIdx).toStrictEqual(new Set<number>([0,1,2,3,4,5,6,7]));
+    });
+
     test('The answered task is added back to the pool when all other tasks are answered, too', () => {
         suggester.setSelectedRuleIdxs([2]);
         const stats: {[taskIdx:number] : number} = {};
@@ -198,6 +247,17 @@ Some text that should be ignored.
         }
         expect(suggestedTaskIdxs).toStrictEqual(new Set([2,3,5,4]));
     });
+
+    test('Cleanup drops incorrectly answered memory', () => {
+      suggester.recordAnswer(2, false);
+      suggester.clearStats();
+      const suggestedTaskIdxs = new Set<number>();
+      for (let count = 0; count < 900; count ++ ) {
+          const nextTaskIdx = suggester.suggestNextTask().taskIdx;
+          suggestedTaskIdxs.add(nextTaskIdx);
+      }
+      expect(suggestedTaskIdxs).toStrictEqual(new Set([0,1,2,3,4,5,6,7]));
+  });
 
     test('When answered incorrectly and then correctly several times, the enforcement to answer only specific rule goes away', () => {
         suggester.recordAnswer(2, false);
