@@ -1,4 +1,5 @@
 import { timeStamp } from 'node:console';
+import { threadId } from 'node:worker_threads';
 import mdParse from '../md/MarkdownParser';
 import { isMarkdownBodyChunkQuestionAnswers, MarkdownBodyChunkQuestionAnswers, MarkdownNode } from '../md/types';
 
@@ -37,7 +38,7 @@ export default class TaskSuggester {
     private tasks: Array<TaskType> = []; // taskIdx is the index in this array
 
     private selectedRuleIdxs: Array<number> = []; // empty means all
-    private lastAnseredRuleIdx: number = -1;
+    private lastAnsweredRuleIdxs: Array<number> = [];
 
         constructor(rawMdData: string) {
         const tree = mdParse(rawMdData, []);
@@ -50,15 +51,7 @@ export default class TaskSuggester {
 
     setSelectedRuleIdxs(ruleIdxs: Array<number>) {
         this.selectedRuleIdxs = JSON.parse(JSON.stringify(ruleIdxs));
-        if (ruleIdxs.indexOf(this.lastAnseredRuleIdx) < 0) {
-            this.lastAnseredRuleIdx = -1;
-            ruleIdxs.forEach(ruleIdx => {
-                const rule = this.rules[ruleIdx];
-                if (this.lastAnseredRuleIdx == -1 && this.hasIncorrectAnswer(rule)) {
-                    this.lastAnseredRuleIdx = ruleIdx;
-                }
-            })
-        }
+        this.lastAnsweredRuleIdxs = [];
     }
 
     getRulesTree(): Array<RuleTreeLeafType> {
@@ -74,33 +67,61 @@ export default class TaskSuggester {
 
     recordAnswer(taskIdx: number, isCorrect: boolean) {
         const rule = this.rules[this.tasks[taskIdx].ruleIdx];
+        rule.answeredTaskIdxs[taskIdx] = isCorrect;
         if (Object.keys(rule.answeredTaskIdxs).length == rule.taskIdxs.length) {
-            rule.answeredTaskIdxs = { [taskIdx] : isCorrect };
-        } else {
-            rule.answeredTaskIdxs[taskIdx] = isCorrect;
+            rule.answeredTaskIdxs = { };
         }
         rule.lastAnswers.push(isCorrect);
         if (rule.lastAnswers.length > 10) {
             rule.lastAnswers.shift();
         }
-        this.lastAnseredRuleIdx = rule.ruleIdx;
+        if (this.getLastAnsweredRule()?.ruleIdx != rule.ruleIdx) {
+            this.lastAnsweredRuleIdxs.push(rule.ruleIdx);
+        } 
+        
+        if (isCorrect) { // TODO: add test; incorrect must stay to suggest it again
+            if (this.selectedRuleIdxs.length == 0 && this.lastAnsweredRuleIdxs.length >= this.rules.length) {
+                this.lastAnsweredRuleIdxs = [];
+            } else if (this.selectedRuleIdxs.length > 0 && this.lastAnsweredRuleIdxs.length >= this.selectedRuleIdxs.length) {
+                this.lastAnsweredRuleIdxs = [];
+            }
+        }
     }
     
     suggestNextTask(): TaskType {
-        const taskIdxsToLookIn: Array<number> = [];
-        if (this.lastAnseredRuleIdx >= 0 && this.hasIncorrectAnswer(this.rules[this.lastAnseredRuleIdx])) {
-            taskIdxsToLookIn.push(...this.getNotAnsweredTaskIdx(this.rules[this.lastAnseredRuleIdx]));
+        const ruleIdxs: Array<number> = [];
+        if (this.getLastAnsweredRule() && this.hasIncorrectAnswer(this.getLastAnsweredRule()!)) {
+            ruleIdxs.push(this.getLastAnsweredRule()!.ruleIdx);
         } else if (this.selectedRuleIdxs.length > 0) {
-            this.selectedRuleIdxs.forEach(ruleIdx => 
-                taskIdxsToLookIn.push(...this.getNotAnsweredTaskIdx(this.rules[ruleIdx])));
-
+            ruleIdxs.push(...this.selectedRuleIdxs
+                .filter(ruleIdx => this.lastAnsweredRuleIdxs.indexOf(ruleIdx) == -1));
         } else {
-            this.rules.forEach(rule => 
-                taskIdxsToLookIn.push(...this.getNotAnsweredTaskIdx(rule)));
+            ruleIdxs.push(...this.rules
+                .filter(rule => this.lastAnsweredRuleIdxs.indexOf(rule.ruleIdx) == -1)
+                .map(rule => rule.ruleIdx));
         }
+
+        const nonEmptyRuleIdx = ruleIdxs.filter(ruleIdx => this.rules[ruleIdx].taskIdxs.length > 0);
+        
+        if (nonEmptyRuleIdx.length == 0) {
+            this.lastAnsweredRuleIdxs = [];
+            return this.suggestNextTask();
+        }
+
+        const taskIdxsToLookIn: Array<number> = [];
+        nonEmptyRuleIdx.forEach(ruleIdx => taskIdxsToLookIn.push(...this.getNotAnsweredTaskIdx(this.rules[ruleIdx])));
+        
         return JSON.parse(JSON.stringify(
             this.tasks[taskIdxsToLookIn[Math.floor(Math.random() * taskIdxsToLookIn.length)]]
         ));
+    }
+
+    private getLastAnsweredRule(): RuleType | undefined {
+        if (this.lastAnsweredRuleIdxs.length > 0) {
+            return this.rules[this.lastAnsweredRuleIdxs[this.lastAnsweredRuleIdxs.length - 1]];
+        } else {
+            return undefined;
+        }
     }
 
     private getNotAnsweredTaskIdx(rule: RuleType): Array<number> {

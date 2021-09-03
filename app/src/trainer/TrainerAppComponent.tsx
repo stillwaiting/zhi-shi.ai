@@ -9,6 +9,7 @@ let taskSuggester: TaskSuggester | undefined = undefined;
 
 export default function({ url }: { url:string }) {
     const [task, setCurrentTask] = useState<TaskType | null>(null);
+    const [isAnswered, setIsAnswered] = useState<boolean>(false);
     return <div className='TrainerComponent'>
             <BrowserWarningComponent />
             <DataProviderComponent url={process.env.PUBLIC_URL + url} onDataProvided={(data) => {
@@ -17,7 +18,19 @@ export default function({ url }: { url:string }) {
             }}
                  />
             {!!task 
-                ? <div><BodyQuestionAnswerComponent data = {task.bodyChunk} /></div>
+                ? <div><BodyQuestionAnswerComponent data = {task.bodyChunk} onAnswered={
+                    (isCorrect) => {
+                        taskSuggester!.recordAnswer(task.taskIdx, isCorrect);
+                        setIsAnswered(true);
+                    }
+                } /></div>
+                : null
+            }
+            {isAnswered
+                ? <button onClick={() => {
+                    setCurrentTask(taskSuggester!.suggestNextTask());
+                    setIsAnswered(false);
+                }}>Next</button>
                 : null
             }
     </div> ;
