@@ -124,7 +124,9 @@ export type ContextType = {
 export const Context = React.createContext<ContextType>({
     currentNodeAnchor: '',
     currentSelectedText: '',
-    linkRenderer: (link, text) => { return `<a href="${link.split('"').join('&quot;')}" target="_blank">${text}</a>`; },
+    linkRenderer: (link, text) => { 
+        return `<a href="${link.split('"').join('&quot;')}" target="_blank">${text}</a>`; 
+    },
     onLinkClicked: (link) => {},
 });
 

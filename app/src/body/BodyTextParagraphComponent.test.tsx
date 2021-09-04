@@ -104,7 +104,7 @@ describe('BodyTextParagraphComponent', () => {
         `
         const component = render(<BodyTextParagraphComponent data={{text: text}} />);
         expect(component.container.children[0].innerHTML.trim()).toBe(
-            "hello <span class=\"highlight highlight-world\">foo bar</span>(<a href=\"#world\">world</a>)");
+            "hello <span class=\"highlight highlight-world\">foo bar</span>(<a href=\"#world\" target=\"_blank\">world</a>)");
     });
 
     test('highlighted areas and links play together well', () => {
@@ -113,7 +113,7 @@ describe('BodyTextParagraphComponent', () => {
         `
         const component = render(<BodyTextParagraphComponent data={{text: text}} />);
         expect(component.container.children[0].innerHTML.trim()).toBe(
-            "hello <span class=\"highlight highlight-world\">foo bar</span>(<a href=\"#world\">world</a>) (link)[#blah]");
+            "hello <span class=\"highlight highlight-world\">foo bar</span>(<a href=\"#world\" target=\"_blank\">world</a>) (link)[#blah]");
     });
 
     test('renders double-line', () => {
