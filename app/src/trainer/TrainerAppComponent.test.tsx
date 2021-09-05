@@ -123,4 +123,11 @@ Some text that should be ignored.
         const hasWorld2 = component.container.innerHTML.indexOf('world') >= 0;
         expect(new Set<boolean>([hasWorld1, hasWorld2])).toStrictEqual(new Set<boolean>([true, false]));
     });
+
+    test('filter link becomes active when clicked', async () => {
+        const component = await renderAndWaitForData();
+        fireEvent.click(component.getByText('Filter: All'));
+        expect(currentPath).toBe('/filter');
+        expect(component.getByText('Filter: All').className).toBe('active');
+    });
 });

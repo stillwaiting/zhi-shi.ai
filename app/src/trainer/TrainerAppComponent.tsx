@@ -28,6 +28,10 @@ export default function({ url }: { url:string }) {
             }
         }
     }, [location.pathname, task, taskSuggester, history]);
+
+    function isFilterScreen() {
+        return location.pathname.indexOf('filter') >= 0;
+    }
     
     return <div className='TrainerComponent'>
             <BrowserWarningComponent />
@@ -43,14 +47,23 @@ export default function({ url }: { url:string }) {
                 ? <FilterLinkComponent 
                         selectedRuleIdxs={selectedRuleIdxs} 
                         topics={taskSuggester.getTopics()} 
+                        isActive={isFilterScreen()}
                         onClicked={() => {
-                            console.log(buildPath(selectedRuleIdxs, 'filter'));
                             history.push(buildPath(selectedRuleIdxs, 'filter'))
                         }}
                     />
                 : null
             }
 
+            {/* {isFilterScreen()
+                ? <FilterEditorComponent selectedRuleIdxs={selectedRuleIdxs} onChanged={(selectedRuleIdxs) => {
+                    setSelectedRuleIdxs(selectedRuleIdxs);
+                    history.push(buildPath(selectedRuleIdxs, 'filter'))
+                }} onClose = {() => {
+                    history.push(buildPath(selectedRuleIdxs, ''));
+                }} />
+                : null
+            } */}
 
             {!!task 
                 ? <div><BodyQuestionAnswerComponent key={questionCounter} data = {task.bodyChunk} onAnswered={
