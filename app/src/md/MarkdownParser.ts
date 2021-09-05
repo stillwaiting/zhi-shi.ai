@@ -123,9 +123,16 @@ function parseChunk(chunk: string, parentPath: Array<String>, parentNodeVariable
     }
 }
 
+function removeComments(s: string): string {
+    if (s) {
+      return s.replaceAll(/\/\*(.|\n)*?\*\//g, '');
+    }
+    return s;
+}  
+
 
 export default (mdString: string, parentPath: Array<String>): Array<MarkdownNode> => {
-    mdString = mdString.trim();
+    mdString = removeComments(mdString.trim());
 
     if (mdString.length == 0) {
         return [];

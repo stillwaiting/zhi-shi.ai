@@ -64,13 +64,6 @@ function httpPathToNodeLink(nodePath: string) {
   return [title, anchor];
 }
 
-function removeComments(s: string): string {
-  if (s) {
-    return s.replaceAll(/\/\*(.|\n)*?\*\//g, '');
-  }
-  return s;
-}
-
 declare global {
   interface Window { 
     externalText: string | undefined; 
@@ -174,7 +167,7 @@ function Browser() {
   useEffect(() => {
       const interval = setInterval(() => {
         if (window.externalText && window.externalText !== externalText) {
-          const nodes = parse(removeComments(window.externalText), []);
+          const nodes = parse(window.externalText, []);
           setNodes(nodes);
           setNodesByTitle(indexNodesByTitle(nodes));
           setExternalText(window.externalText);
@@ -207,7 +200,7 @@ function Browser() {
   }
 
   const onSubmitClicked = () => {
-    const nodes = parse(removeComments(unsubmittedData), []);
+    const nodes = parse(unsubmittedData, []);
     setNodes(nodes);
     setNodesByTitle(indexNodesByTitle(nodes));
   }
