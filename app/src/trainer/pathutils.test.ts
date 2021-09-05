@@ -1,38 +1,38 @@
-import { extractSelectedRulIdxsFromPath } from './pathutils';
+import { extractSelectedRuleIdxsFromPath } from './pathutils';
 
 describe('pathutils', () => {
 
-    describe('extractSelectedRulIdxsFromPath', () => {
+    describe('extractSelectedRuleIdxsFromPath', () => {
         test('parses simple ruleIdx', () => {
-            expect(extractSelectedRulIdxsFromPath('5')).toStrictEqual([5]);
+            expect(extractSelectedRuleIdxsFromPath('5')).toStrictEqual([5]);
         });
 
         test('parses simple ruleIdx with prefix /', () => {
-            expect(extractSelectedRulIdxsFromPath('/5')).toStrictEqual([5]);
+            expect(extractSelectedRuleIdxsFromPath('/5')).toStrictEqual([5]);
         });
 
         test('parses simple ruleIdx with suffix', () => {
-            expect(extractSelectedRulIdxsFromPath('/5/settings')).toStrictEqual([5]);
+            expect(extractSelectedRuleIdxsFromPath('/5/settings')).toStrictEqual([5]);
         });
 
         test('parses simple region of ruleIdxs', () => {
-            expect(extractSelectedRulIdxsFromPath('/5-7')).toStrictEqual([5, 6, 7]);
+            expect(extractSelectedRuleIdxsFromPath('/5-7')).toStrictEqual([5, 6, 7]);
         });
 
         test('parses combination of regions and single numbers', () => {
-            expect(extractSelectedRulIdxsFromPath('/5-7,9-10,15/blah')).toStrictEqual([5, 6, 7, 9, 10, 15]);
+            expect(extractSelectedRuleIdxsFromPath('/5-7,9-10,15/blah')).toStrictEqual([5, 6, 7, 9, 10, 15]);
         });
 
         test('parses empty string as empty array', () => {
-            expect(extractSelectedRulIdxsFromPath('/')).toStrictEqual([]);
+            expect(extractSelectedRuleIdxsFromPath('/')).toStrictEqual([]);
         });
 
         test('parses path without regions as empty array', () => {
-            expect(extractSelectedRulIdxsFromPath('settings')).toStrictEqual([]);
+            expect(extractSelectedRuleIdxsFromPath('settings')).toStrictEqual([]);
         });
 
         test('parses prefixed path without regions as empty array', () => {
-            expect(extractSelectedRulIdxsFromPath('/settings')).toStrictEqual([]);
+            expect(extractSelectedRuleIdxsFromPath('/settings')).toStrictEqual([]);
         });
     });
 });

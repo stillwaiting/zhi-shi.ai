@@ -5,7 +5,8 @@ import BrowserWarningComponent from "./BrowserWarningComponent";
 import DataProviderComponent from "./DataProviderComponent";
 import TaskSuggester, { TaskType } from "./TaskSuggester";
 import { BrowserRouter as Router, Route, Link, useHistory, useLocation } from "react-router-dom";
-import { extractSelectedRulIdxsFromPath } from "./pathutils";
+import { buildPath, extractSelectedRuleIdxsFromPath } from "./pathutils";
+import FilterLinkComponent from './FilterLinkComponent';
 
 export default function({ url }: { url:string }) {
     const location = useLocation();
@@ -13,13 +14,13 @@ export default function({ url }: { url:string }) {
     const [isAnswered, setIsAnswered] = useState<boolean>(false);
     const [taskSuggester, setTaskSuggester] = useState<TaskSuggester | null>(null);
     const [questionCounter, setQuestionCounter] = useState<number>(0);
-    const [selectedRuleIdxs, setSelectedRuleIdxs] = useState<Array<number>>(extractSelectedRulIdxsFromPath(location.pathname));
+    const [selectedRuleIdxs, setSelectedRuleIdxs] = useState<Array<number>>(extractSelectedRuleIdxsFromPath(location.pathname));
 
     const history = useHistory();
 
     useEffect(() => {
-        const newSelectedRules = extractSelectedRulIdxsFromPath(location.pathname);
-        setSelectedRuleIdxs(extractSelectedRulIdxsFromPath(location.pathname));
+        const newSelectedRules = extractSelectedRuleIdxsFromPath(location.pathname);
+        setSelectedRuleIdxs(extractSelectedRuleIdxsFromPath(location.pathname));
         if (taskSuggester) {
             taskSuggester.setSelectedRuleIdxs(newSelectedRules);
             if (!taskSuggester.isTaskInSelectedRules(task!.taskIdx)) {
@@ -36,7 +37,21 @@ export default function({ url }: { url:string }) {
                  setCurrentTask(taskSuggester.suggestNextTask());
                  setTaskSuggester(taskSuggester);
             }}
-                 />
+            />
+
+            {taskSuggester 
+                ? <FilterLinkComponent 
+                        selectedRuleIdxs={selectedRuleIdxs} 
+                        topics={taskSuggester.getTopics()} 
+                        onClicked={() => {
+                            console.log(buildPath(selectedRuleIdxs, 'filter'));
+                            history.push(buildPath(selectedRuleIdxs, 'filter'))
+                        }}
+                    />
+                : null
+            }
+
+
             {!!task 
                 ? <div><BodyQuestionAnswerComponent key={questionCounter} data = {task.bodyChunk} onAnswered={
                     (isCorrect) => {
