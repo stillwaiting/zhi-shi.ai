@@ -7,6 +7,7 @@ import TaskSuggester, { TaskType } from "./TaskSuggester";
 import { BrowserRouter as Router, Route, Link, useHistory, useLocation } from "react-router-dom";
 import { buildPath, extractSelectedRuleIdxsFromPath } from "./pathutils";
 import FilterLinkComponent from './FilterLinkComponent';
+import FilterEditorComponent from './FilterEditorComponent';
 
 export default function({ url }: { url:string }) {
     const location = useLocation();
@@ -55,17 +56,17 @@ export default function({ url }: { url:string }) {
                 : null
             }
 
-            {/* {isFilterScreen()
-                ? <FilterEditorComponent selectedRuleIdxs={selectedRuleIdxs} onChanged={(selectedRuleIdxs) => {
+            {isFilterScreen() && taskSuggester
+                ? <FilterEditorComponent topics={taskSuggester!.getTopics()} selectedRuleIdxs={selectedRuleIdxs} onChanged={(selectedRuleIdxs) => {
                     setSelectedRuleIdxs(selectedRuleIdxs);
                     history.push(buildPath(selectedRuleIdxs, 'filter'))
                 }} onClose = {() => {
                     history.push(buildPath(selectedRuleIdxs, ''));
                 }} />
                 : null
-            } */}
+            }
 
-            {!!task 
+            {!isFilterScreen() && !!task 
                 ? <div><BodyQuestionAnswerComponent key={questionCounter} data = {task.bodyChunk} onAnswered={
                     (isCorrect) => {
                         taskSuggester!.recordAnswer(task.taskIdx, isCorrect);
