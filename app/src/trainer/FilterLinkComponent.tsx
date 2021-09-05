@@ -1,14 +1,16 @@
 import React, { useEffect } from "react";
 import { TopicType } from "./TaskSuggester";
+import './FilterLinkComponent.scss';
 
 type FilterLinkPropsType = {
     selectedRuleIdxs: Array<number>,
     topics: Array<TopicType>,
+    isActive: boolean,
     onClicked: () => void
 }
 
 // TODO: add tests
-export default function ({ selectedRuleIdxs, topics, onClicked } : FilterLinkPropsType) {
+export default function ({ selectedRuleIdxs, topics, isActive, onClicked } : FilterLinkPropsType) {
     let label = '';
     if (selectedRuleIdxs.length == 0) {
         label = 'All';
@@ -22,12 +24,12 @@ export default function ({ selectedRuleIdxs, topics, onClicked } : FilterLinkPro
         }
     }
 
-    return <div>
-        <a href='#' onClick={
+    return <span className='FilterLinkComponent'>
+        <a className={isActive ? 'active' : 'inactive'} href='#' onClick={
             (e) => {
                 e.preventDefault();
                 onClicked();
             }
         }>Filter: {label}</a>
-    </div>
+    </span>
 }
