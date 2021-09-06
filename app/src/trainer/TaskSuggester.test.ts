@@ -154,7 +154,7 @@ Some text that should be ignored.
     });
 
     test('Selected rules limit the choice of tasks', () => {
-        suggester.setSelectedRuleIdxs([3]);
+        suggester.setSelectedRuleIdxs(new Set<number>([3]));
         const suggestedTaskIdxs = new Set<number>();
         for (let count = 0; count < 100; count ++ ) {
             suggestedTaskIdxs.add(suggester.suggestNextTask().taskIdx);
@@ -167,7 +167,7 @@ Some text that should be ignored.
     });
 
     test('Empty selected rules act as all rules', () => {
-        suggester.setSelectedRuleIdxs([]);
+        suggester.setSelectedRuleIdxs(new Set<number>([]));
 
         const suggestedTaskIdxs = new Set<number>();
         for (let count = 0; count < 100; count ++ ) {
@@ -179,7 +179,7 @@ Some text that should be ignored.
     });
 
     test('Answer excludes the task from the pool of tasks to select', () => {
-        suggester.setSelectedRuleIdxs([2]);
+        suggester.setSelectedRuleIdxs(new Set<number>([2]));
         const suggestedTaskIdxs = new Set<number>();
         for (let count = 0; count < 100; count ++ ) {
             if (suggestedTaskIdxs.size == 4) {
@@ -227,7 +227,7 @@ Some text that should be ignored.
     });
 
     test('The answered task is added back to the pool when all other tasks are answered, too', () => {
-        suggester.setSelectedRuleIdxs([2]);
+        suggester.setSelectedRuleIdxs(new Set<number>([2]));
         const stats: {[taskIdx:number] : number} = {};
         for (let count = 0; count < 80; count ++ ) {
             const nextTaskIdx = suggester.suggestNextTask().taskIdx;
@@ -270,4 +270,4 @@ Some text that should be ignored.
         expect(suggestedTaskIdxs).toStrictEqual(new Set([0,1,2,3,5,4,6,7]));
     });
 
-});
+});                

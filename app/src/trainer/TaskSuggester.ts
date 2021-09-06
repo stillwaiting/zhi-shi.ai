@@ -18,7 +18,7 @@ export type StatsType = {
 }
 
 // Keep RuleType flat to avoid circular dependencies
-type RuleType = {
+export type RuleType = {
     ruleIdx: number;
     topicIdx: number;
 
@@ -51,7 +51,7 @@ export default class TaskSuggester {
     // Each TaskType has only a single reference
     private tasks: Array<TaskType> = []; // taskIdx is the index in this array
 
-    private selectedRuleIdxs: Array<number> = []; // empty means all
+    private selectedRuleIdxs: Set<number> = new Set<number>(); // empty means all
     private lastAnsweredRuleIdxs: Array<number> = [];
 
     constructor(rawMdData: string) {
@@ -62,8 +62,8 @@ export default class TaskSuggester {
         });
     }
 
-    setSelectedRuleIdxs(ruleIdxs: Array<number>) {
-        this.selectedRuleIdxs = JSON.parse(JSON.stringify(ruleIdxs));
+    setSelectedRuleIdxs(ruleIdxs: Set<number>) {
+        this.selectedRuleIdxs = new Set<number>(JSON.parse(JSON.stringify(Array.from(ruleIdxs))));
         this.lastAnsweredRuleIdxs = [];
     }
 
@@ -72,10 +72,10 @@ export default class TaskSuggester {
     }
 
     isTaskInSelectedRules(taskIdx: number): boolean {
-        if (this.selectedRuleIdxs.length == 0) {
+        if (this.selectedRuleIdxs.size == 0) {
             return true;
         }
-        return this.selectedRuleIdxs.indexOf(this.tasks[taskIdx].ruleIdx) >= 0;
+        return this.selectedRuleIdxs.has(this.tasks[taskIdx].ruleIdx);
     }
 
     recordAnswer(taskIdx: number, isCorrect: boolean) {
@@ -102,9 +102,9 @@ export default class TaskSuggester {
         } 
         
         if (isCorrect) { // TODO: add test; incorrect must stay to suggest it again
-            if (this.selectedRuleIdxs.length == 0 && this.lastAnsweredRuleIdxs.length >= this.rules.length) {
+            if (this.selectedRuleIdxs.size == 0 && this.lastAnsweredRuleIdxs.length >= this.rules.length) {
                 this.lastAnsweredRuleIdxs = [];
-            } else if (this.selectedRuleIdxs.length > 0 && this.lastAnsweredRuleIdxs.length >= this.selectedRuleIdxs.length) {
+            } else if (this.selectedRuleIdxs.size > 0 && this.lastAnsweredRuleIdxs.length >= this.selectedRuleIdxs.size) {
                 this.lastAnsweredRuleIdxs = [];
             }
         }
@@ -128,9 +128,10 @@ export default class TaskSuggester {
         const ruleIdxs: Array<number> = [];
         if (this.getLastAnsweredRule() && this.hasIncorrectAnswer(this.getLastAnsweredRule()!)) {
             ruleIdxs.push(this.getLastAnsweredRule()!.ruleIdx);
-        } else if (this.selectedRuleIdxs.length > 0) {
-            ruleIdxs.push(...this.selectedRuleIdxs
-                .filter(ruleIdx => this.lastAnsweredRuleIdxs.indexOf(ruleIdx) == -1));
+        } else if (this.selectedRuleIdxs.size > 0) {
+            ruleIdxs.push(...Array.from(this.selectedRuleIdxs).filter(
+                ruleIdx => this.lastAnsweredRuleIdxs.indexOf(ruleIdx) == -1
+            ));
         } else {
             ruleIdxs.push(...this.rules
                 .filter(rule => this.lastAnsweredRuleIdxs.indexOf(rule.ruleIdx) == -1)

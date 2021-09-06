@@ -1,10 +1,11 @@
 
 // TODO: add test
-export function buildPath(ruleIdxs: Array<number>, screen: string) {
-    if (ruleIdxs.length == 0) {
+export function buildPath(ruleIdxsSet: Set<number>, screen: string) {
+    if (ruleIdxsSet.size == 0) {
         return '/' + screen;
     }
-    ruleIdxs.sort();
+    const ruleIdxs = Array.from(ruleIdxsSet);
+    ruleIdxs.sort((a, b) => a-b);
     const regions: Array<Array<number>> = [];
     let currentRegion = [-1, -1];
     ruleIdxs.forEach(ruleIdx => {
@@ -24,7 +25,7 @@ export function buildPath(ruleIdxs: Array<number>, screen: string) {
         } else {
             return region[0] + '-' + region[1];
         }
-    }).join(',') + '/' + screen;
+    }).join(',') + (screen ? '/' + screen : '');
 }
 
 function parseRegion(region: string): Array<number> {
@@ -36,7 +37,7 @@ function parseRegion(region: string): Array<number> {
     return ret;
 }
 
-export function extractSelectedRuleIdxsFromPath(path: string): Array<number> {
+export function extractSelectedRuleIdxsFromPath(path: string): Set<number> {
     const pathSplit = path.split("/").filter(pathChunk => pathChunk.length > 0);
     if (pathSplit.length > 0 && pathSplit[0].length > 0 && "" + parseInt(pathSplit[0][0]) == pathSplit[0][0]) {
         const regions = pathSplit[0];
@@ -47,8 +48,8 @@ export function extractSelectedRuleIdxsFromPath(path: string): Array<number> {
                         .map(region => parseRegion(region)).reduce((prevValue, currentValue) => 
                             prevValue.concat(currentValue), []);
         ret.push(...regionsSplit.filter(region => region.indexOf('-') < 0).map(item => parseInt(item)));
-        return ret;
+        return new Set<number>(ret);
     
     }
-    return [];
+    return new Set<number>([]);
 }
