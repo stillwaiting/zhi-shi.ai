@@ -68,8 +68,8 @@ describe('BodyQuestionAnswerComponent', () => {
             <BodyQuestionAnswerComponent  data={{
                 question: {text: "(Hello|blah|baz), (world|foo)"},
                 answers: [{text: "answer 1"}, {text: "answer 2"}],
-            }}  onAnswered={(isCorrect) => {
-                capturedIsCorrect = isCorrect;
+            }}  onAnswered={(indices) => {
+                capturedIsCorrect = indices.filter(index => index == 0).length == indices.length;
             }} />
         </Context.Provider>);
         const firstSelect = component.container.getElementsByTagName('select')[0]
@@ -94,8 +94,8 @@ describe('BodyQuestionAnswerComponent', () => {
             <BodyQuestionAnswerComponent  data={{
                 question: {text: "(Hello|blah|baz), (world|foo)"},
                 answers: [{text: "answer 1"}, {text: "answer 2"}],
-            }}  onAnswered={(isCorrect) => {
-                capturedIsCorrect = isCorrect;
+            }}  onAnswered={(indices) => {
+                capturedIsCorrect = indices.filter(index => index == 0).length == indices.length;
             }} />
         </Context.Provider>);    
         fireEvent.click(component.container.getElementsByTagName('button')[0]);

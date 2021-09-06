@@ -12,10 +12,10 @@ import FilterEditorComponent from './FilterEditorComponent';
 export default function({ url }: { url:string }) {
     const location = useLocation();
     const [task, setCurrentTask] = useState<TaskType | null>(null);
-    const [isAnswered, setIsAnswered] = useState<boolean>(false);
     const [taskSuggester, setTaskSuggester] = useState<TaskSuggester | null>(null);
     const [questionCounter, setQuestionCounter] = useState<number>(0);
     const [selectedRuleIdxs, setSelectedRuleIdxs] = useState<Set<number>>(extractSelectedRuleIdxsFromPath(location.pathname));
+    const [answeredIndices, setAnsweredIndices] = useState<Array<number>|undefined>(undefined);
 
     const history = useHistory();
 
@@ -54,7 +54,7 @@ export default function({ url }: { url:string }) {
                             selectedRuleIdxs={selectedRuleIdxs} 
                             topics={taskSuggester.getTopics()} 
                             isActive={isFilterScreen()}
-                            key={questionCounter + (isAnswered ? 'answered' : '')}
+                            key={questionCounter + (answeredIndices ? 'answered' : '')}
                             onClicked={() => {
                                 history.push(buildPath(selectedRuleIdxs, 'filter'))
                             }}
@@ -74,19 +74,24 @@ export default function({ url }: { url:string }) {
             }
 
             {!isFilterScreen() && !!task 
-                ? <div><BodyQuestionAnswerComponent key={questionCounter} data = {task.bodyChunk} onAnswered={
-                    (isCorrect) => {
-                        taskSuggester!.recordAnswer(task.taskIdx, isCorrect);
-                        setIsAnswered(true);
-                    }
-                } /></div>
+                ? <div>
+                        <BodyQuestionAnswerComponent key={questionCounter} data = {task.bodyChunk} onAnswered={
+                                (indices) => {
+                                    taskSuggester!.recordAnswer(task.taskIdx, indices.filter(index => index == 0).length == indices.length);
+                                    setAnsweredIndices(indices);
+                                }
+                            } 
+                            answerIndices={answeredIndices}
+                        />
+                        
+                    </div>
                 : null
             }
-            {isAnswered
+            {isFilterScreen() && answeredIndices
                 ? <button onClick={() => {
                     setCurrentTask(taskSuggester!.suggestNextTask());
-                    setIsAnswered(false);
                     setQuestionCounter(questionCounter + 1);
+                    setAnsweredIndices(undefined);
                 }}>Next</button>
                 : null
             }

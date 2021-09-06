@@ -35,6 +35,8 @@ describe('TrainerAppComponent', () => {
             />
             <Link data-testid='goto1' to='/1'>goto 1</Link>
             <Link data-testid='goto0' to='/0'>goto 0</Link>
+            <Link data-testid='gotofilter' to='/filter'>goto filter</Link>
+            <Link data-testid='goto' to='/'>goto root</Link>
             
             </MemoryRouter>)
         await act(async () => { await sleep(1); });
@@ -56,14 +58,14 @@ describe('TrainerAppComponent', () => {
 Some text that should be ignored.
 
 ? 6 (foo|bar)
-! hello
+! answer 0
 
 ## Rule blah2
 
 ### Task node 4
 
 ? 7 (hello|world)
-! cat
+! answer 1
 
         `);
     });
@@ -138,5 +140,19 @@ Some text that should be ignored.
         fireEvent.click(component.getByText('Submit'));
 
         expect(component.getByText('100%')).toBeDefined();
+    });
+
+    test('navigating to filter and back doesn not reset answer state', async () => {
+        const component = await renderAndWaitForData();
+
+        fireEvent.click(component.getByText('goto 0'));
+
+        answerCorrectly(component);
+        fireEvent.click(component.getByText('Submit'));
+
+        fireEvent.click(component.getByText('goto filter'));
+        fireEvent.click(component.getByText('goto 0'));
+
+        expect(component.getByText('answer 0')).toBeDefined();
     })
 });
