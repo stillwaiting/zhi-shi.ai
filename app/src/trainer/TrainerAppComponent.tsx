@@ -15,7 +15,7 @@ export default function({ url }: { url:string }) {
     const [isAnswered, setIsAnswered] = useState<boolean>(false);
     const [taskSuggester, setTaskSuggester] = useState<TaskSuggester | null>(null);
     const [questionCounter, setQuestionCounter] = useState<number>(0);
-    const [selectedRuleIdxs, setSelectedRuleIdxs] = useState<Array<number>>(extractSelectedRuleIdxsFromPath(location.pathname));
+    const [selectedRuleIdxs, setSelectedRuleIdxs] = useState<Set<number>>(extractSelectedRuleIdxsFromPath(location.pathname));
 
     const history = useHistory();
 
@@ -33,6 +33,10 @@ export default function({ url }: { url:string }) {
     function isFilterScreen() {
         return location.pathname.indexOf('filter') >= 0;
     }
+
+    function isStatsScreen() {
+        return location.pathname.indexOf('stats') >= 0;
+    }
     
     return <div className='TrainerComponent'>
             <BrowserWarningComponent />
@@ -45,14 +49,16 @@ export default function({ url }: { url:string }) {
             />
 
             {taskSuggester 
-                ? <FilterLinkComponent 
-                        selectedRuleIdxs={selectedRuleIdxs} 
-                        topics={taskSuggester.getTopics()} 
-                        isActive={isFilterScreen()}
-                        onClicked={() => {
-                            history.push(buildPath(selectedRuleIdxs, 'filter'))
-                        }}
-                    />
+                ? <div>
+                        <FilterLinkComponent 
+                            selectedRuleIdxs={selectedRuleIdxs} 
+                            topics={taskSuggester.getTopics()} 
+                            isActive={isFilterScreen()}
+                            onClicked={() => {
+                                history.push(buildPath(selectedRuleIdxs, 'filter'))
+                            }}
+                        />
+                    </div>
                 : null
             }
 
