@@ -54,6 +54,7 @@ export default function({ url }: { url:string }) {
                             selectedRuleIdxs={selectedRuleIdxs} 
                             topics={taskSuggester.getTopics()} 
                             isActive={isFilterScreen()}
+                            key={questionCounter + (isAnswered ? 'answered' : '')}
                             onClicked={() => {
                                 history.push(buildPath(selectedRuleIdxs, 'filter'))
                             }}

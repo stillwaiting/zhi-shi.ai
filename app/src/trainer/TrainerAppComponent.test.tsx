@@ -130,4 +130,13 @@ Some text that should be ignored.
         expect(currentPath).toBe('/filter');
         expect(component.getByText('All').className).toBe('active');
     });
+
+    test('filter refreshes stats', async () => {
+        const component = await renderAndWaitForData();
+
+        answerCorrectly(component);
+        fireEvent.click(component.getByText('Submit'));
+
+        expect(component.getByText('100%')).toBeDefined();
+    })
 });

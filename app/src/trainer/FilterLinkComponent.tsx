@@ -15,6 +15,7 @@ export default function ({ selectedRuleIdxs, topics, isActive, onClicked } : Fil
     let selectedTopics: Array<TopicType> = [];
     if (selectedRuleIdxs.size == 0) {
         topicsStr = 'All';
+        selectedTopics = topics;
     } else {
         selectedTopics = topics.filter(topic => topic.rules.find(rule => selectedRuleIdxs.has(rule.ruleIdx)));
 
