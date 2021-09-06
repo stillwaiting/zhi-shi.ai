@@ -126,6 +126,19 @@ Some text that should be ignored.
         expect(new Set<boolean>([hasWorld1, hasWorld2])).toStrictEqual(new Set<boolean>([true, false]));
     });
 
+    test('resets answer when the paths changes', async() => {
+        const component = await renderAndWaitForData();
+
+        fireEvent.click(component.getByText('goto 0'));
+
+        answerCorrectly(component);
+        fireEvent.click(component.getByText('Submit'));
+
+        fireEvent.click(component.getByText('goto 1'));
+        
+        expect(component.queryByText('Next')).toBeNull();
+    });
+
     test('filter link becomes active when clicked', async () => {
         const component = await renderAndWaitForData();
         fireEvent.click(component.getByText('All'));

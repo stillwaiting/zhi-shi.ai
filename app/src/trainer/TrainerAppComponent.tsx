@@ -26,6 +26,7 @@ export default function({ url }: { url:string }) {
             taskSuggester.setSelectedRuleIdxs(newSelectedRules);
             if (!taskSuggester.isTaskInSelectedRules(task!.taskIdx)) {
                 setCurrentTask(taskSuggester.suggestNextTask());
+                setAnsweredIndices(undefined);
             }
         }
     }, [location.pathname, task, taskSuggester, history]);
@@ -87,7 +88,7 @@ export default function({ url }: { url:string }) {
                     </div>
                 : null
             }
-            {isFilterScreen() && answeredIndices
+            {!isFilterScreen() && answeredIndices
                 ? <button onClick={() => {
                     setCurrentTask(taskSuggester!.suggestNextTask());
                     setQuestionCounter(questionCounter + 1);
@@ -95,5 +96,12 @@ export default function({ url }: { url:string }) {
                 }}>Next</button>
                 : null
             }
+
+
+{/* <Link data-testid='goto1' to='/1'>goto 1</Link>
+            <Link data-testid='goto0' to='/0'>goto 0</Link>
+            <Link data-testid='gotofilter' to='/filter'>goto filter</Link>
+            <Link data-testid='goto' to='/'>goto root</Link> */}
+            
     </div> ;
 }
