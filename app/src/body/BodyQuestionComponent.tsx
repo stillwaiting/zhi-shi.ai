@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './BodyQuestionComponent.scss';
+import BodyTextParagraphComponent from './BodyTextParagraphComponent';
 
 // Searches for "(blah|foo)" dropdown representative strings
 const DROPDOWN_REGEXP = /(\(.+?\|.*?\))/g;
@@ -78,7 +79,7 @@ export default ({ onSubmit, question, indices }: BodyQuestionComponentProps) => 
                             indices.length > 0 ? <sup key={`index${subSentenceIdx}`} className={dropdownClassName(dropdownIdx)}>({dropdownIdx + 1})</sup> : null
                         ];
                     } else {
-                        return <span key={subSentenceIdx}>{subSentence}</span>;
+                        return <BodyTextParagraphComponent key={subSentenceIdx} data={{text: subSentence}} inline={true} />;
                     }
                 })}
             </div>

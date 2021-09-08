@@ -9,7 +9,8 @@ import replaceAllInserter from 'string.prototype.replaceall';
 replaceAllInserter.shim();
 
 type BodyTextParagraphComponent = {
-    data: MarkdownBodyChunkTextParagraph
+    data: MarkdownBodyChunkTextParagraph,
+    inline?: boolean,
 };
 
 const supportedTagsReplacement = ['dashed', 'ddashed', 'wave', 'prefix', 'suffix', 'ending', 'root', 'nowrap'].map(tag => {
@@ -130,23 +131,33 @@ export const Context = React.createContext<ContextType>({
     onLinkClicked: (link) => {},
 });
 
-export default ( { data }: BodyTextParagraphComponent ) => {
+export default ( { data, inline }: BodyTextParagraphComponent ) => {
     const context = useContext(Context);
-    return <p 
-        className='BodyTextParagraphComponent' 
-        dangerouslySetInnerHTML = {{__html: toHtml(data.text, context.currentNodeAnchor, context.currentSelectedText, context.linkRenderer)}} 
-        onClick={(e: React.MouseEvent<HTMLElement>) => {
-            const targetLink = (e.target as HTMLElement).closest('a');
-            const targetSpan = (e.target as HTMLElement).closest('span');
-            if (targetLink) {
-                const href = targetLink.attributes[0].value;
-                context.onLinkClicked(href, e); 
-            } else if (targetSpan && targetSpan.className == 'var') {
-                selectSpan(targetSpan);
-                e.preventDefault();
-            }
-        }}
-    />;
+    const onClick = (e: React.MouseEvent<HTMLElement>) => {
+        const targetLink = (e.target as HTMLElement).closest('a');
+        const targetSpan = (e.target as HTMLElement).closest('span');
+        if (targetLink) {
+            const href = targetLink.attributes[0].value;
+            context.onLinkClicked(href, e); 
+        } else if (targetSpan && targetSpan.className == 'var') {
+            selectSpan(targetSpan);
+            e.preventDefault();
+        }
+    };
+
+    if (inline) {
+        return <span 
+            className='BodyTextParagraphComponent' 
+            dangerouslySetInnerHTML = {{__html: toHtml(data.text, context.currentNodeAnchor, context.currentSelectedText, context.linkRenderer)}} 
+            onClick={onClick}
+        />;
+    } else {
+        return <p 
+            className='BodyTextParagraphComponent' 
+            dangerouslySetInnerHTML = {{__html: toHtml(data.text, context.currentNodeAnchor, context.currentSelectedText, context.linkRenderer)}} 
+            onClick={onClick}
+        />;
+    }
 }
 
 

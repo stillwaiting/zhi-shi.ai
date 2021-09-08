@@ -125,6 +125,22 @@ describe('BodyTextParagraphComponent', () => {
             "hello <span class=\"doubleline\">foo bar</span>");
     });
 
+    test('renders span in inline mode', () => {
+        const text = `
+            hello <d>foo bar</d>
+        `
+        const component = render(<BodyTextParagraphComponent data={{text: text}} inline={true} />);
+        expect(component.container.children[0].outerHTML.trim().indexOf('<span')).toBe(0);
+    });
+
+    test('renders p by default', () => {
+        const text = `
+            hello <d>foo bar</d>
+        `
+        const component = render(<BodyTextParagraphComponent data={{text: text}} />);
+        expect(component.container.children[0].outerHTML.trim().indexOf('<p')).toBe(0);
+    });
+
     test('renders ending', () => {
         const text = `
             hello <ending>foo bar</ending>

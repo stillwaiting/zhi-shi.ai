@@ -55,6 +55,11 @@ describe('BodyQuestionComponent', () => {
         });
     });
 
+    test('highlights selected regions', () => {
+        const component = render(<BodyQuestionComponent question="this **should be highlighted** (Hello|blah|baz), (world|foo)(!|.)" onSubmit={() => {}} indices={[]} />);
+        expect(component.getByText("should be highlighted").outerHTML.indexOf('<b>')).toBe(0);
+    });
+
     test('onSubmit returns empty array when no dropdowns', () => {
         let caughtValue;
         const component = render(<BodyQuestionComponent question="Hello, world!" onSubmit={(submitted) => {
