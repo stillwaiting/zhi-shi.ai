@@ -1,0 +1,18 @@
+.FilterEditorComponent {
+    input[type="checkbox"][readonly]:checked {
+        background-color: silver;
+      }
+
+    td {
+        vertical-align: top;
+    }
+
+    .topicRow > td {
+            border-bottom: 1px solid silver;
+        }
+
+    .topicRow:last-child > td {
+            border-bottom: 0px;
+        }
+    
+}

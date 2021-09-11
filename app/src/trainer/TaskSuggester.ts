@@ -64,7 +64,9 @@ export default class TaskSuggester {
 
     setSelectedRuleIdxs(ruleIdxs: Set<number>) {
         this.selectedRuleIdxs = new Set<number>(JSON.parse(JSON.stringify(Array.from(ruleIdxs))));
-        this.lastAnsweredRuleIdxs = [];
+        if (ruleIdxs.size > 0) {
+            this.lastAnsweredRuleIdxs = this.lastAnsweredRuleIdxs.filter(ruleIdx => ruleIdxs.has(ruleIdx));
+        }
     }
 
     getTopics(): Array<TopicType> {
@@ -126,6 +128,7 @@ export default class TaskSuggester {
     
     suggestNextTask(): TaskType {
         const ruleIdxs: Array<number> = [];
+
         if (this.getLastAnsweredRule() && this.hasIncorrectAnswer(this.getLastAnsweredRule()!)) {
             ruleIdxs.push(this.getLastAnsweredRule()!.ruleIdx);
         } else if (this.selectedRuleIdxs.size > 0) {
