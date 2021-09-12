@@ -85,7 +85,7 @@ export default ({ onSubmit, question, indices }: BodyQuestionComponentProps) => 
             </div>
             {indices.length > 0 
                 ? null 
-                :  <button className="button" onClick={() => {
+                :  <button autoFocus className="button" onClick={() => {
                         onSubmit(selectedDropdownIndices);
                     }}>Submit</button>
             }
