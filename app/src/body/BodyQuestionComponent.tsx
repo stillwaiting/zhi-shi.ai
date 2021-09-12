@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import './BodyQuestionComponent.scss';
 import BodyTextParagraphComponent from './BodyTextParagraphComponent';
 
@@ -34,6 +34,8 @@ export default ({ onSubmit, question, indices }: BodyQuestionComponentProps) => 
             ? indices : 
             (question.match(DROPDOWN_REGEXP) || []).map(question => -1)
     );
+
+    const firstDropdownRef = useRef<HTMLSelectElement | null>(null);
     
     // Each item is either an arbitrary string or a "dropdown" string like "(blah|foo)"
     const splitQuestion = question.split(DROPDOWN_REGEXP) || [];
@@ -59,6 +61,8 @@ export default ({ onSubmit, question, indices }: BodyQuestionComponentProps) => 
                         return [
                             <span key={subSentenceIdx}>
                                 <select
+                                    ref={subSentenceIdx == 1 ? firstDropdownRef : null}
+                                    autoFocus={subSentenceIdx == 1}
                                     className={dropdownClassName(dropdownIdx)}
                                     disabled={indices.length > 0}
                                     value={selectedDropdownIndices[dropdownIdx]}
@@ -86,9 +90,18 @@ export default ({ onSubmit, question, indices }: BodyQuestionComponentProps) => 
             </div>
             {indices.length > 0 
                 ? null 
-                :  <button autoFocus className="button" onClick={() => {
+                :  <button className="button" onClick={() => {
                         onSubmit(selectedDropdownIndices);
-                    }}>Submit</button>
+                    }}
+                    onKeyDown={
+                        (e) => {
+                            if (e.key == 'ArrowDown' || e.key == 'ArrowUp') {
+                                console.log('here', firstDropdownRef.current);
+                                firstDropdownRef.current?.focus();
+                            }
+                        }
+                    }
+                    >Submit</button>
             }
         </div>
     );

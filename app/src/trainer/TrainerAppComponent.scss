@@ -2,8 +2,18 @@
     text-align: center;
 
     .questionAnswer {
-        display: inline-block;
+       margin-top:10%;
     }
+    .menu {
+        padding-top:3%;
+    }
+
+    .FilterLinkComponent a {
+        color: grey;
+        text-decoration: none;
+        border-bottom: dotted;
+    }
+
 
     button.next {
         background-color: darkgreen; /* Green */

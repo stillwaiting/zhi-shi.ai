@@ -51,7 +51,7 @@ export default function({ url }: { url:string }) {
             />
 
             {taskSuggester 
-                ? <div>
+                ? <div className="menu">
                         <FilterLinkComponent 
                             selectedRuleIdxs={selectedRuleIdxs} 
                             topics={taskSuggester.getTopics()} 
@@ -85,18 +85,21 @@ export default function({ url }: { url:string }) {
                             } 
                             answerIndices={answeredIndices}
                         />
+
+
+                        {answeredIndices
+                            ? <div><button className="next" autoFocus onClick={() => {
+                                setCurrentTask(taskSuggester!.suggestNextTask());
+                                setQuestionCounter(questionCounter + 1);
+                                setAnsweredIndices(undefined);
+                            }}>Next</button></div>
+                            : null
+                        }
                         
                     </div>
                 : null
             }
-            {!isFilterScreen() && answeredIndices
-                ? <div><button className="next" autoFocus onClick={() => {
-                    setCurrentTask(taskSuggester!.suggestNextTask());
-                    setQuestionCounter(questionCounter + 1);
-                    setAnsweredIndices(undefined);
-                }}>Next</button></div>
-                : null
-            }
+            
 
 
 {/* <Link data-testid='goto1' to='/1'>goto 1</Link>
