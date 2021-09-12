@@ -90,7 +90,7 @@ export default function({ url }: { url:string }) {
                 : null
             }
             {!isFilterScreen() && answeredIndices
-                ? <div><button autoFocus onClick={() => {
+                ? <div><button className="next" autoFocus onClick={() => {
                     setCurrentTask(taskSuggester!.suggestNextTask());
                     setQuestionCounter(questionCounter + 1);
                     setAnsweredIndices(undefined);

@@ -76,12 +76,13 @@ export default ({ onSubmit, question, indices }: BodyQuestionComponentProps) => 
                                 )))}
                                 </select>
                             </span>,
-                            indices.length > 0 ? <sup key={`index${subSentenceIdx}`} className={dropdownClassName(dropdownIdx)}>({dropdownIdx + 1})</sup> : null
+                            indices.length > 0 ? <sup key={`index${subSentenceIdx}`} className={dropdownClassName(dropdownIdx)}>({dropdownIdx + 1})</sup> : null,
                         ];
                     } else {
                         return <BodyTextParagraphComponent key={subSentenceIdx} data={{text: subSentence}} inline={true} />;
                     }
                 })}
+                <sup style={{visibility:'hidden'}}>A{/*adjust height to prevent jumps when answer is revealed*/}</sup>
             </div>
             {indices.length > 0 
                 ? null 
