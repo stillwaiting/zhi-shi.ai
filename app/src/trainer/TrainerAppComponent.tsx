@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Route, Link, useHistory, useLocation } from "r
 import { buildPath, extractSelectedRuleIdxsFromPath } from "./pathutils";
 import FilterLinkComponent from './FilterLinkComponent';
 import FilterEditorComponent from './FilterEditorComponent';
+import './TrainerAppComponent.scss';
 
 export default function({ url }: { url:string }) {
     const location = useLocation();
@@ -39,7 +40,7 @@ export default function({ url }: { url:string }) {
         return location.pathname.indexOf('stats') >= 0;
     }
     
-    return <div className='TrainerComponent'>
+    return <div className='TrainerAppComponent'>
             <BrowserWarningComponent />
             <DataProviderComponent url={process.env.PUBLIC_URL + url} onDataProvided={(data) => {
                  const taskSuggester = new TaskSuggester(data);
@@ -75,7 +76,7 @@ export default function({ url }: { url:string }) {
             }
 
             {!isFilterScreen() && !!task 
-                ? <div>
+                ? <div className="questionAnswer">
                         <BodyQuestionAnswerComponent key={questionCounter} data = {task.bodyChunk} onAnswered={
                                 (indices) => {
                                     taskSuggester!.recordAnswer(task.taskIdx, indices.filter(index => index == 0).length == indices.length);
@@ -89,11 +90,11 @@ export default function({ url }: { url:string }) {
                 : null
             }
             {!isFilterScreen() && answeredIndices
-                ? <button onClick={() => {
+                ? <div><button onClick={() => {
                     setCurrentTask(taskSuggester!.suggestNextTask());
                     setQuestionCounter(questionCounter + 1);
                     setAnsweredIndices(undefined);
-                }}>Next</button>
+                }}>Next</button></div>
                 : null
             }
 

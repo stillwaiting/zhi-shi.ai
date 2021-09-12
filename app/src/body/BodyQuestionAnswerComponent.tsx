@@ -3,6 +3,7 @@ import { MarkdownBodyChunkQuestionAnswers, MarkdownBodyChunkTextParagraph } from
 import BodyTextParagraphComponent from './BodyTextParagraphComponent'
 
 import BodyQuestionComponent from './BodyQuestionComponent'
+import './BodyQuestionAnswerComponent.scss'
 
 type SentenceWithAnswers = {
     data: MarkdownBodyChunkQuestionAnswers,
@@ -64,7 +65,7 @@ export default ( {data, answerIndices, onAnswered }: SentenceWithAnswers) => {
                 : (context.expandQuestionAnswer ? data.answers.map(answer => 0) : [])
         )
     , [data.question.text, data.answers.length, context.expandQuestionAnswer]);
-    return <div key={Math.random()}>
+    return <div key={Math.random()} className="BodyQuestionAnswerComponent">
         <div>
             <BodyQuestionComponent question={data.question.text} onSubmit={(indices) => {
             setSubmittedDropdownIndices(indices);
