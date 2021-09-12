@@ -13,16 +13,13 @@ type CheckboxPropsType = {
     onClick?: () => void
 }
 
-
+// TODO: add tests
 export default ({state, onClick, debug} : CheckboxPropsType) => {
     const checkRef = useRef<HTMLInputElement | null>(null);
   
     useEffect(() => {
-        console.log('at 1', state ,debug );
-        setTimeout(() => {
-            (checkRef.current! as HTMLInputElement).checked = (state === CheckboxState.CHECKED);
-            (checkRef.current! as HTMLInputElement).indeterminate = (state === CheckboxState.INDETERMINATE);
-        }, 1);
+        (checkRef.current! as HTMLInputElement).checked = (state === CheckboxState.CHECKED);
+        (checkRef.current! as HTMLInputElement).indeterminate = (state === CheckboxState.INDETERMINATE);
     }, [state, debug, checkRef])
   
     return (
