@@ -55,11 +55,12 @@ export default function ({ selectedRuleIdxs, topics, isActive, onClicked } : Fil
                 onClicked();
             }
         }>Study: {topicsStr}
-            <br />
+            <br /><span>
             {percentSuccess >= 0 
                 ? <span> Ansered correctly: <span className={caculatePercentClassName(percentSuccess)}>{percentSuccess}%</span></span>
                 : null
             }
+            &nbsp;</span>
         </a>
     </span>
 }

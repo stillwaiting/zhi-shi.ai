@@ -9,10 +9,12 @@ import { buildPath, extractSelectedRuleIdxsFromPath } from "./pathutils";
 import FilterLinkComponent from './FilterLinkComponent';
 import FilterEditorComponent from './FilterEditorComponent';
 import './TrainerAppComponent.scss';
+import { config } from "node:process";
 
 export default function({ url }: { url:string }) {
     const location = useLocation();
     const [task, setCurrentTask] = useState<TaskType | null>(null);
+    const [rawData, setRawData] = useState<string | undefined>(undefined);
     const [taskSuggester, setTaskSuggester] = useState<TaskSuggester | null>(null);
     const [questionCounter, setQuestionCounter] = useState<number>(0);
     const [selectedRuleIdxs, setSelectedRuleIdxs] = useState<Set<number>>(extractSelectedRuleIdxsFromPath(location.pathname));
@@ -46,6 +48,7 @@ export default function({ url }: { url:string }) {
                  const taskSuggester = new TaskSuggester(data);
                  taskSuggester.setSelectedRuleIdxs(selectedRuleIdxs);
                  setCurrentTask(taskSuggester.suggestNextTask());
+                 setRawData(data);
                  setTaskSuggester(taskSuggester);
             }}
             />
@@ -66,12 +69,32 @@ export default function({ url }: { url:string }) {
             }
 
             {isFilterScreen() && taskSuggester
-                ? <FilterEditorComponent topics={taskSuggester!.getTopics()} selectedRuleIdxs={selectedRuleIdxs} onChanged={(selectedRuleIdxs) => {
-                    setSelectedRuleIdxs(selectedRuleIdxs);
-                    history.push(buildPath(selectedRuleIdxs, 'filter'))
-                }} onClose = {() => {
-                    history.push(buildPath(selectedRuleIdxs, ''));
-                }} />
+                ? 
+                <div>
+                        <FilterEditorComponent topics={taskSuggester!.getTopics()} selectedRuleIdxs={selectedRuleIdxs} onChanged={(selectedRuleIdxs) => {
+                        setSelectedRuleIdxs(selectedRuleIdxs);
+                        history.push(buildPath(selectedRuleIdxs, 'filter'))
+                    }} onClose = {() => {
+                        history.push(buildPath(selectedRuleIdxs, ''));
+                    }} />
+
+                    <div className="resetStats">
+                        <a href='#' onClick={
+                            (e) => {
+                                e.preventDefault();
+                                if (window.confirm('Are you sure?')) {
+                                    setTaskSuggester(new TaskSuggester(rawData!));
+                                    taskSuggester.setSelectedRuleIdxs(selectedRuleIdxs);
+                                    setCurrentTask(taskSuggester.suggestNextTask());
+                                    history.push('/');
+                                }
+                            }
+                        }>Reset all stats!</a>
+                    </div>
+
+                </div>
+
+               
                 : null
             }
 
