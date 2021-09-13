@@ -19,6 +19,8 @@ enum SortEnum {
     BEST_TO_WORST
 };
 
+const LOCAL_STORAGE_KEY_EXPANDED = 'expanded';
+
 function statsToPct(stats: StatsType): number | undefined {
     if (stats.correctlyAnsweredTasks + stats.incorrectlyAnsweredTasks > 0) {
         return Math.floor(100 * stats.correctlyAnsweredTasks / (stats.correctlyAnsweredTasks + stats.incorrectlyAnsweredTasks));
@@ -111,7 +113,7 @@ export default function({ topics,  selectedRuleIdxs, onChanged, onClose }: Topic
     let sortedTopics = topics;
 
     const [sortOrder, setSortOrder] = useState<SortEnum>(SortEnum.NATURAL);
-    const [isExpanded, setIsExpanded] = useState<Array<boolean>>(topics.map(topic => false));
+    const [isExpanded, setIsExpanded] = useState<Array<boolean>>(initialiseExpanded(topics.map(topic => false)));
 
     if (sortOrder != SortEnum.NATURAL) {
         sortedTopics.sort((a, b) => 
@@ -152,6 +154,7 @@ export default function({ topics,  selectedRuleIdxs, onChanged, onClose }: Topic
                         return renderTopic(topic, topics, selectedRuleIdxs, onChanged, isExpanded[topic.topicIdx], (newExpanded) => {
                             isExpanded[topic.topicIdx] = newExpanded;
                             setIsExpanded(JSON.parse(JSON.stringify(isExpanded)));
+                            window.localStorage.setItem(LOCAL_STORAGE_KEY_EXPANDED, JSON.stringify(isExpanded));
                         }, sortOrder);
                     })}
                 </tbody>
@@ -262,3 +265,13 @@ function caculatePercentClassName(percentSuccess: number): string  {
     }
     return 'redPct';
 }
+function initialiseExpanded(fallbackValue: boolean[]): boolean[] {
+    if (window.localStorage.getItem(LOCAL_STORAGE_KEY_EXPANDED)) {
+        const candidate = (JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_KEY_EXPANDED)!) as boolean[]);
+        if (candidate.length == fallbackValue.length) {
+            return candidate;
+        }
+    }
+    return fallbackValue;
+}
+

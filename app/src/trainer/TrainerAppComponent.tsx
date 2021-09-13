@@ -45,11 +45,14 @@ export default function({ url }: { url:string }) {
     return <div className='TrainerAppComponent'>
             <BrowserWarningComponent />
             <DataProviderComponent url={process.env.PUBLIC_URL + url} onDataProvided={(data) => {
-                 const taskSuggester = new TaskSuggester(data);
-                 taskSuggester.setSelectedRuleIdxs(selectedRuleIdxs);
-                 setCurrentTask(taskSuggester.suggestNextTask());
-                 setRawData(data);
-                 setTaskSuggester(taskSuggester);
+                const taskSuggester = new TaskSuggester(data);
+                taskSuggester.setSelectedRuleIdxs(selectedRuleIdxs);
+                getAnswersFromLocalStorage().forEach((answer) => {
+                    taskSuggester.recordAnswer(answer[0], answer[1]);
+                });
+                setCurrentTask(taskSuggester.suggestNextTask());
+                setRawData(data);
+                setTaskSuggester(taskSuggester);
             }}
             />
 
@@ -86,6 +89,7 @@ export default function({ url }: { url:string }) {
                                     setTaskSuggester(new TaskSuggester(rawData!));
                                     taskSuggester.setSelectedRuleIdxs(selectedRuleIdxs);
                                     setCurrentTask(taskSuggester.suggestNextTask());
+                                    clearAnswersInLocalStorage();
                                     history.push('/');
                                 }
                             }
@@ -102,7 +106,9 @@ export default function({ url }: { url:string }) {
                 ? <div className="questionAnswer">
                         <BodyQuestionAnswerComponent key={questionCounter} data = {task.bodyChunk} onAnswered={
                                 (indices) => {
-                                    taskSuggester!.recordAnswer(task.taskIdx, indices.filter(index => index == 0).length == indices.length);
+                                    const isCorrect = indices.filter(index => index == 0).length == indices.length;
+                                    taskSuggester!.recordAnswer(task.taskIdx, isCorrect);
+                                    addAnswerToLocalStorage(task.taskIdx, isCorrect);
                                     setAnsweredIndices(indices);
                                 }
                             } 
@@ -132,3 +138,25 @@ export default function({ url }: { url:string }) {
             
     </div> ;
 }
+
+const LOCAL_STORAGE_KEY_ANSWERS = 'answers';
+
+function addAnswerToLocalStorage(taskIdx: number, isCorrect: boolean) {
+    const answers = getAnswersFromLocalStorage();
+    answers.push([taskIdx, isCorrect]);
+    if (answers.length > 1000) {
+        answers.shift();
+    }
+    window.localStorage.setItem(LOCAL_STORAGE_KEY_ANSWERS, JSON.stringify(answers));
+}
+function clearAnswersInLocalStorage() {
+    window.localStorage.removeItem(LOCAL_STORAGE_KEY_ANSWERS);
+}
+
+function getAnswersFromLocalStorage(): Array<[number, boolean]> {
+    if (window.localStorage.getItem(LOCAL_STORAGE_KEY_ANSWERS)) {
+        return JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_KEY_ANSWERS)!);
+    }
+    return [];
+}
+
