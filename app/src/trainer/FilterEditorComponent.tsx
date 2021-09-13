@@ -27,8 +27,9 @@ function statsToPct(stats: StatsType): number | undefined {
 
 
 function renderStats(stats: StatsType): React.ReactNode {
+    const maybePct = statsToPct(stats);
     return <span>
-        {statsToPct(stats) !== undefined ? statsToPct(stats) + '%' : ''}
+        {maybePct !== undefined ? <span className={caculatePercentClassName(maybePct)}>{maybePct}%</span> : ''}
     </span>
 }
 
@@ -43,7 +44,7 @@ function renderTopic(topic: TopicType,
 ): any {
     const topicCheckState = calculateTopicCheckboxState(topic, selectedRuleIdxs);
     return <tr key={topic.topicIdx} className="topicRow">
-        <td>
+        <td className="firstCol">
             <IndeterminateCheckbox state={topicCheckState} debug={topic.title}
                 onClick={() => {
                     onChanged(mapAllToEmpty(recalculateSelectedRuleIdxsOnTopicClick(topics, topic, selectedRuleIdxs), topics))
@@ -59,10 +60,11 @@ function renderTopic(topic: TopicType,
                 } */}
         </td>
         <td>
-            {topic.title} <a href='#' onClick={(e)=> {
-                e.preventDefault();
-                setIsExpanded(!isExpanded);
-            }}>{isExpanded ? "collapse" : "expand"}</a>
+            {topic.title} 
+                &nbsp; (<a href='#' className='expand' onClick={(e)=> {
+                        e.preventDefault();
+                        setIsExpanded(!isExpanded);
+                    }}>{isExpanded ? "collapse" : "expand"}</a>)
             {isExpanded
                 ?   <table>
                         <tbody>
@@ -119,28 +121,33 @@ export default function({ topics,  selectedRuleIdxs, onChanged, onClose }: Topic
 
     return <div className='FilterEditorComponent'>
 
-            <div><a href='#' onClick={(e) => {e.preventDefault(); onClose(); }}>Close</a></div>
+            <div className="back">
+                <a href='#' onClick={(e) => {e.preventDefault(); onClose(); }}><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAOCAYAAABth09nAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA0UlEQVRIx9XUMU5CQRDG8Z8IBSQ2dBSUVHAACuzs6DyCDdQcwMoLUJvQcQmIN7CCK2htIpHGECweBTHPx8NHMvBPJruzO8X37WaGw9Ry1IRznXFXxRgNvEYL/S9tLLHFMFpMHkq/8isMJD/QiRZ3DOW9fR3PuI8WVcTILaZoptTcSPrknPmEO2wk/ZAWHxl35xKjMl7whMcMt+voJz/A137ygO8Utxc3tSboYxUtqqgRmKGH92hhRY3AAt3dejGU/jh/k4zkebTAU1FBK1pEHn4AnPxK6IraSqsAAAAASUVORK5CYII=' /></a>
+                &nbsp;
+                <a href='#' onClick={(e) => {e.preventDefault(); onClose(); }}>back to study</a>
+            </div>
 
             <h1>Select topics to study:</h1>
+        
 
-            <div><IndeterminateCheckbox state={calcuateAllCheckboxState(topics, selectedRuleIdxs)} debug={'All'} 
-                onClick={() =>
-                    onChanged(mapAllToEmpty(recalculateSelectedRuleIdxsOnAllClicked(topics, selectedRuleIdxs), topics))
-                }
-            />
-            
-                    {/* Study {selectedRuleIdxs.size == 0 ? "everything" : "selected"} */}
-            </div>
-            <div>Sorting: 
-                <select>
-                    <option value={SortEnum.NATURAL}>natural order</option>
-                    <option value={SortEnum.WORST_TO_BEST}>from worst to best</option>
-                    <option value={SortEnum.BEST_TO_WORST}>from best to worst</option>
-                </select>
-            </div>
-
-            <table>
+            <table className="mainFilterTable">
                 <tbody>
+                    <tr>
+                        <td className="firstCol">
+                            <IndeterminateCheckbox state={calcuateAllCheckboxState(topics, selectedRuleIdxs)} debug={'All'} 
+                                onClick={() =>
+                                    onChanged(mapAllToEmpty(recalculateSelectedRuleIdxsOnAllClicked(topics, selectedRuleIdxs), topics))
+                                }
+                            />
+                        </td>
+                        <td colSpan={2} className="sorting">
+                                {/* <select>
+                                    <option value={SortEnum.NATURAL}>natural order</option>
+                                    <option value={SortEnum.WORST_TO_BEST}>from worst to best</option>
+                                    <option value={SortEnum.BEST_TO_WORST}>from best to worst</option>
+                                </select> */}
+                        </td>
+                    </tr>
                     {topics.map(topic => {
                         return renderTopic(topic, topics, selectedRuleIdxs, onChanged, isExpanded[topic.topicIdx], (newExpanded) => {
                             isExpanded[topic.topicIdx] = newExpanded;
@@ -247,3 +254,11 @@ function recalculateSelectedRuleIdxsOnTopicClick(topics: Array<TopicType>,topic:
     return newSelection;
 }
 
+function caculatePercentClassName(percentSuccess: number): string  {
+    if (percentSuccess > 75) {
+        return 'greenPct';
+    } else if (percentSuccess > 50) {
+        return 'yellowPct';
+    }
+    return 'redPct';
+}

@@ -34,7 +34,11 @@
     }
 
     select:focus, button:focus {
-      box-shadow: 0 0 5pt 4pt #719ECE;    
+      box-shadow: 0 0 3pt 2pt red;    
+    }
+
+    select:focus {
+      margin: 0px 4px;
     }
 
     button {

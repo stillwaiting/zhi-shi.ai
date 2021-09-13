@@ -7,12 +7,45 @@
         vertical-align: top;
     }
 
+    table.mainFilterTable {
+        margin: 0px auto;
+        text-align:left;
+        width:80%;
+    }
+
+    table.mainFilterTable {
+        table {
+            background-color: #eee;
+        }
+    }
+
+    .sorting {
+        text-align: right;
+    }
+
     .topicRow > td {
             border-bottom: 1px solid silver;
         }
 
     .topicRow:last-child > td {
-            border-bottom: 0px;
+        border-bottom: 0px;
+    }
+
+    .back {
+        text-align: left;
+        padding:10px 20px;
+        a {
+            color: grey;
         }
+    }
     
+
+    a.expand {
+        color: grey;
+    }
+        
+
+    .firstCol {
+        width: 10px;
+    }
 }

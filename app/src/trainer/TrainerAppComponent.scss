@@ -23,4 +23,16 @@
     button.next:focus {
         box-shadow: 0 0 5pt 4pt #719ECE;    
       }
+
+      .greenPct {
+          color: darkgreen;
+      }
+    
+    .yellowPct {
+        color:darkorange;
+    }
+    
+    .redPct {
+        color: red;
+    }
 }

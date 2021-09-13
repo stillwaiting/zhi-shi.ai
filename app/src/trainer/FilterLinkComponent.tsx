@@ -57,9 +57,18 @@ export default function ({ selectedRuleIdxs, topics, isActive, onClicked } : Fil
         }>Study: {topicsStr}
             <br />
             {percentSuccess >= 0 
-                ? <span> Ansered correctly: {percentSuccess}%</span>
+                ? <span> Ansered correctly: <span className={caculatePercentClassName(percentSuccess)}>{percentSuccess}%</span></span>
                 : null
             }
         </a>
     </span>
+}
+
+function caculatePercentClassName(percentSuccess: number): string  {
+    if (percentSuccess > 75) {
+        return 'greenPct';
+    } else if (percentSuccess > 50) {
+        return 'yellowPct';
+    }
+    return 'redPct';
 }
