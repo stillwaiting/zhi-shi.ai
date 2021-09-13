@@ -54,9 +54,10 @@ export default function ({ selectedRuleIdxs, topics, isActive, onClicked } : Fil
                 e.preventDefault();
                 onClicked();
             }
-        }>{topicsStr}
+        }>Study: {topicsStr}
+            <br />
             {percentSuccess >= 0 
-                ? <span> {percentSuccess}%</span>
+                ? <span> Ansered correctly: {percentSuccess}%</span>
                 : null
             }
         </a>

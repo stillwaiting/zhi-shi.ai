@@ -8,12 +8,6 @@
         padding-top:3%;
     }
 
-    .FilterLinkComponent a {
-        color: grey;
-        text-decoration: none;
-        border-bottom: dotted;
-    }
-
 
     button.next {
         background-color: darkgreen; /* Green */
@@ -25,4 +19,8 @@
   display: inline-block;
   font-size: 16px;
     }
+
+    button.next:focus {
+        box-shadow: 0 0 5pt 4pt #719ECE;    
+      }
 }

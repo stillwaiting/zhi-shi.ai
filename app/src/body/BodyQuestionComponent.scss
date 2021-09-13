@@ -33,6 +33,10 @@
         color: red;
     }
 
+    select:focus, button:focus {
+      box-shadow: 0 0 5pt 4pt #719ECE;    
+    }
+
     button {
       background-color: darkslategray; /* Green */
   border: none;
