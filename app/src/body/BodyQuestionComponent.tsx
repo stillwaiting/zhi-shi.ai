@@ -14,7 +14,8 @@ const countDropdowns = (splitSentence: Array<string>) =>
 type BodyQuestionComponentProps = {
     onSubmit: (indices: Array<number>) => void, 
     question: string,
-    indices: Array<number>
+    indices: Array<number>,
+    submitLabel?: string
 }
 
 function shuffleArray(array: Array<any>) {
@@ -28,7 +29,7 @@ function shuffleArray(array: Array<any>) {
     return array;
 }
 
-export default ({ onSubmit, question, indices }: BodyQuestionComponentProps) => {
+export default ({ onSubmit, question, indices, submitLabel }: BodyQuestionComponentProps) => {
     const [selectedDropdownIndices, setSelectedDropdownIndices] = useState<Array<number>>(
         indices.length > 0 
             ? indices : 
@@ -101,7 +102,7 @@ export default ({ onSubmit, question, indices }: BodyQuestionComponentProps) => 
                             }
                         }
                     }
-                    >Submit</button>
+                    >{submitLabel || 'Submit'}</button>
             }
         </div>
     );

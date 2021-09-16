@@ -10,8 +10,9 @@ import FilterLinkComponent from './FilterLinkComponent';
 import FilterEditorComponent from './FilterEditorComponent';
 import './TrainerAppComponent.scss';
 import { config } from "node:process";
+import { Language } from './LanguageType';
 
-export default function({ url }: { url:string }) {
+export default function({ url, lang }: { url:string, lang: Language }) {
     const location = useLocation();
     const [task, setCurrentTask] = useState<TaskType | null>(null);
     const [rawData, setRawData] = useState<string | undefined>(undefined);
@@ -75,6 +76,7 @@ export default function({ url }: { url:string }) {
                             topics={taskSuggester.getTopics()} 
                             isActive={isFilterScreen()}
                             key={questionCounter + (answeredIndices ? 'answered' : '')}
+                            lang={lang}
                             onClicked={() => {
                                 history.push(buildPath(selectedRuleIdxs, 'filter'))
                             }}
@@ -92,6 +94,8 @@ export default function({ url }: { url:string }) {
                             highlightedTopicIdx={getFilterHighlightedTopicIdx()}
                             highlightedRuleIdx={getFilterHighlightedRuleIdx()}
 
+                            lang={lang}
+
                             onChanged={(selectedRuleIdxs) => {
                                 setSelectedRuleIdxs(selectedRuleIdxs);
                                 history.push(buildPath(selectedRuleIdxs, 'filter'))
@@ -106,7 +110,7 @@ export default function({ url }: { url:string }) {
                         <a href='#' onClick={
                             (e) => {
                                 e.preventDefault();
-                                if (window.confirm('Are you sure?')) {
+                                if (window.confirm(lang.CONFIRM)) {
                                     setTaskSuggester(new TaskSuggester(rawData!));
                                     taskSuggester.setSelectedRuleIdxs(selectedRuleIdxs);
                                     setCurrentTask(taskSuggester.suggestNextTask());
@@ -114,7 +118,7 @@ export default function({ url }: { url:string }) {
                                     history.push('/');
                                 }
                             }
-                        }>Reset all stats!</a>
+                        }>{lang.RESET_ALL_STATS_LINK}</a>
                     </div>
 
                 </div>
@@ -123,7 +127,7 @@ export default function({ url }: { url:string }) {
                 : null
             }
 
-            {!isFilterScreen() && !!task 
+            {!isFilterScreen() && task && taskSuggester
                 ? <div className="questionAnswer">
                         <BodyQuestionAnswerComponent key={questionCounter} data = {task.bodyChunk} onAnswered={
                                 (indices) => {
@@ -134,6 +138,7 @@ export default function({ url }: { url:string }) {
                                 }
                             } 
                             answerIndices={answeredIndices}
+                            submitLabel={lang.SUBMIT_BUTTON}
                         />
 
 
@@ -142,18 +147,10 @@ export default function({ url }: { url:string }) {
                                 setCurrentTask(taskSuggester!.suggestNextTask());
                                 setQuestionCounter(questionCounter + 1);
                                 setAnsweredIndices(undefined);
-                            }}>Next</button></div>
+                            }}>{lang.NEXT_BUTTON}</button></div>
                             : null
                         }
-                        
-                    </div>
-                : null
-            }
 
-
-            {
-                task && taskSuggester && !isFilterScreen()
-                    ? 
                         <div className="linkToRule">
                                 <a href={buildPath(selectedRuleIdxs, "filter")}
                                     onClick={
@@ -166,8 +163,16 @@ export default function({ url }: { url:string }) {
                                     taskSuggester!.getTopics()[task.topicIdx].rules.find(rule => rule.ruleIdx == task.ruleIdx)?.nodeTitle.replace("Rule:", "")
                                     }</a>
                         </div>
-                    : null
+                        
+                    </div>
+                : null
             }
+
+
+            
+            <div className='foundError'>
+                <a href='https://github.com/stillwaiting/zhi-shi.ai/issues/new' target='_blank'>{lang.FOUND_ERROR}</a>
+            </div>
             
 
 

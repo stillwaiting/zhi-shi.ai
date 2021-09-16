@@ -6,11 +6,14 @@ import './FilterEditorComponent.scss';
 
 import IndeterminateCheckbox, { CheckboxState } from './IndeterminateCheckbox';
 
+import { Language  } from './LanguageType';
+
 export type TopicSelectorComponentProps = {
     topics: Array<TopicType>,
     selectedRuleIdxs: Set<number>,
     onChanged: (newRuleIdxs: Set<number>) => void,
     onClose: () => void,
+    lang: Language,
 
     highlightedTopicIdx: number,
     highlightedRuleIdx: number
@@ -46,7 +49,8 @@ function renderTopic(topic: TopicType,
     isExpanded: boolean,
     setIsExpanded: (newIsExpanded: boolean) => void,
     sortOrder: SortEnum,
-    highlightedRuleIdx: number
+    highlightedRuleIdx: number,
+    lang: Language
 ): any {
     const topicCheckState = calculateTopicCheckboxState(topic, selectedRuleIdxs);
     return <tr key={topic.topicIdx} className="topicRow">
@@ -70,13 +74,13 @@ function renderTopic(topic: TopicType,
                 &nbsp; (<a href='#' className='expand' onClick={(e)=> {
                         e.preventDefault();
                         setIsExpanded(!isExpanded);
-                    }}>{isExpanded ? "collapse" : "expand"}</a>)
+                    }}>{isExpanded ? lang.COLLAPSE : lang.EXPAND}</a>)
             {isExpanded
                 ?   <table>
                         <tbody>
                             {topic.rules.map(rule => {
                                 const state = calculateRuleCheckboxState(rule, selectedRuleIdxs);
-                                
+
                                 return    <tr key={rule.ruleIdx} className={rule.ruleIdx == highlightedRuleIdx ? 'highlighted' : ''}>
                                     <td><IndeterminateCheckbox state={state} onClick={
                                         () => {
@@ -113,7 +117,7 @@ function renderTopic(topic: TopicType,
 }
 
 // TODO: cover with tests
-export default function({ topics,  selectedRuleIdxs, onChanged, onClose, highlightedTopicIdx, highlightedRuleIdx }: TopicSelectorComponentProps ) {
+export default function({ topics,  selectedRuleIdxs, onChanged, onClose, highlightedTopicIdx, highlightedRuleIdx, lang }: TopicSelectorComponentProps ) {
 
     let sortedTopics = topics;
 
@@ -131,10 +135,10 @@ export default function({ topics,  selectedRuleIdxs, onChanged, onClose, highlig
             <div className="back">
                 <a href='#' onClick={(e) => {e.preventDefault(); onClose(); }}><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAOCAYAAABth09nAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA0UlEQVRIx9XUMU5CQRDG8Z8IBSQ2dBSUVHAACuzs6DyCDdQcwMoLUJvQcQmIN7CCK2htIpHGECweBTHPx8NHMvBPJruzO8X37WaGw9Ry1IRznXFXxRgNvEYL/S9tLLHFMFpMHkq/8isMJD/QiRZ3DOW9fR3PuI8WVcTILaZoptTcSPrknPmEO2wk/ZAWHxl35xKjMl7whMcMt+voJz/A137ygO8Utxc3tSboYxUtqqgRmKGH92hhRY3AAt3dejGU/jh/k4zkebTAU1FBK1pEHn4AnPxK6IraSqsAAAAASUVORK5CYII=' /></a>
                 &nbsp;
-                <a href='#' onClick={(e) => {e.preventDefault(); onClose(); }}>back to study</a>
+                <a href='#' onClick={(e) => {e.preventDefault(); onClose(); }}>{lang.BACK_TO_STUDY_LINK}</a>
             </div>
 
-            <h1>Select topics to study:</h1>
+            <h1>{lang.SELECT_TOPICS_HEADER}:</h1>
         
 
             <table className="mainFilterTable">
@@ -160,7 +164,7 @@ export default function({ topics,  selectedRuleIdxs, onChanged, onClose, highlig
                             isExpanded[topic.topicIdx] = newExpanded;
                             setIsExpanded(JSON.parse(JSON.stringify(isExpanded)));
                             window.localStorage.setItem(LOCAL_STORAGE_KEY_EXPANDED, JSON.stringify(isExpanded));
-                        }, sortOrder, highlightedRuleIdx);
+                        }, sortOrder, highlightedRuleIdx, lang);
                     })}
                 </tbody>
             </table>

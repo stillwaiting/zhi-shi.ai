@@ -9,11 +9,15 @@
     }
 
     .linkToRule {
+        padding-top:20px;
+    }
+
+    .foundError {
         position:absolute;
         bottom:0px;
         text-align: center;
         left:0px; right:0px;
-        padding-bottom:6%;
+        padding-bottom:5%;
     }
 
 
