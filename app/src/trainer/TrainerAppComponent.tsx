@@ -38,10 +38,22 @@ export default function({ url }: { url:string }) {
         return location.pathname.indexOf('filter') >= 0;
     }
 
-    function isStatsScreen() {
-        return location.pathname.indexOf('stats') >= 0;
+    function getFilterHighlightedTopicIdx(): number {
+        const split = location.pathname.split('/');
+        if (split[split.length - 1] == 'filter') {
+            return -1;
+        }
+        return parseInt(split[split.length-2]);
     }
-    
+
+    function getFilterHighlightedRuleIdx(): number {
+        const split = location.pathname.split('/');
+        if (split[split.length - 1] == 'filter') {
+            return -1;
+        }
+        return parseInt(split[split.length-1]);
+    }
+
     return <div className='TrainerAppComponent'>
             <BrowserWarningComponent />
             <DataProviderComponent url={process.env.PUBLIC_URL + url} onDataProvided={(data) => {
@@ -74,12 +86,21 @@ export default function({ url }: { url:string }) {
             {isFilterScreen() && taskSuggester
                 ? 
                 <div>
-                        <FilterEditorComponent topics={taskSuggester!.getTopics()} selectedRuleIdxs={selectedRuleIdxs} onChanged={(selectedRuleIdxs) => {
-                        setSelectedRuleIdxs(selectedRuleIdxs);
-                        history.push(buildPath(selectedRuleIdxs, 'filter'))
-                    }} onClose = {() => {
-                        history.push(buildPath(selectedRuleIdxs, ''));
-                    }} />
+                        <FilterEditorComponent 
+                            topics={taskSuggester!.getTopics()} 
+                            selectedRuleIdxs={selectedRuleIdxs} 
+                            highlightedTopicIdx={getFilterHighlightedTopicIdx()}
+                            highlightedRuleIdx={getFilterHighlightedRuleIdx()}
+
+                            onChanged={(selectedRuleIdxs) => {
+                                setSelectedRuleIdxs(selectedRuleIdxs);
+                                history.push(buildPath(selectedRuleIdxs, 'filter'))
+                            }} 
+                            
+                            onClose = {() => {
+                                history.push(buildPath(selectedRuleIdxs, ''));
+                            }} 
+                        />
 
                     <div className="resetStats">
                         <a href='#' onClick={
@@ -127,6 +148,25 @@ export default function({ url }: { url:string }) {
                         
                     </div>
                 : null
+            }
+
+
+            {
+                task && taskSuggester && !isFilterScreen()
+                    ? 
+                        <div className="linkToRule">
+                                <a href={buildPath(selectedRuleIdxs, "filter")}
+                                    onClick={
+                                        (e) => {
+                                            e.preventDefault();
+                                            history.push(buildPath(selectedRuleIdxs, "filter") + '/' + task.topicIdx + '/' + task.ruleIdx);
+                                        }
+                                    }
+                                >{
+                                    taskSuggester!.getTopics()[task.topicIdx].rules.find(rule => rule.ruleIdx == task.ruleIdx)?.nodeTitle.replace("Rule:", "")
+                                    }</a>
+                        </div>
+                    : null
             }
             
 

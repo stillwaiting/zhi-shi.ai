@@ -10,7 +10,10 @@ export type TopicSelectorComponentProps = {
     topics: Array<TopicType>,
     selectedRuleIdxs: Set<number>,
     onChanged: (newRuleIdxs: Set<number>) => void,
-    onClose: () => void
+    onClose: () => void,
+
+    highlightedTopicIdx: number,
+    highlightedRuleIdx: number
 }
 
 enum SortEnum {
@@ -42,7 +45,8 @@ function renderTopic(topic: TopicType,
     onChanged: (newRuleIdxs: Set<number>) => void,
     isExpanded: boolean,
     setIsExpanded: (newIsExpanded: boolean) => void,
-    sortOrder: SortEnum
+    sortOrder: SortEnum,
+    highlightedRuleIdx: number
 ): any {
     const topicCheckState = calculateTopicCheckboxState(topic, selectedRuleIdxs);
     return <tr key={topic.topicIdx} className="topicRow">
@@ -72,7 +76,8 @@ function renderTopic(topic: TopicType,
                         <tbody>
                             {topic.rules.map(rule => {
                                 const state = calculateRuleCheckboxState(rule, selectedRuleIdxs);
-                                return    <tr key={rule.ruleIdx}>
+                                
+                                return    <tr key={rule.ruleIdx} className={rule.ruleIdx == highlightedRuleIdx ? 'highlighted' : ''}>
                                     <td><IndeterminateCheckbox state={state} onClick={
                                         () => {
                                             onChanged(mapAllToEmpty(recalculateSelectedRuleIdxsOnRuleClick(topics, rule, selectedRuleIdxs), topics))
@@ -108,12 +113,12 @@ function renderTopic(topic: TopicType,
 }
 
 // TODO: cover with tests
-export default function({ topics,  selectedRuleIdxs, onChanged, onClose }: TopicSelectorComponentProps ) {
+export default function({ topics,  selectedRuleIdxs, onChanged, onClose, highlightedTopicIdx, highlightedRuleIdx }: TopicSelectorComponentProps ) {
 
     let sortedTopics = topics;
 
     const [sortOrder, setSortOrder] = useState<SortEnum>(SortEnum.NATURAL);
-    const [isExpanded, setIsExpanded] = useState<Array<boolean>>(initialiseExpanded(topics.map(topic => false)));
+    const [isExpanded, setIsExpanded] = useState<Array<boolean>>(initialiseExpanded(topics.map(topic => false), highlightedTopicIdx));
 
     if (sortOrder != SortEnum.NATURAL) {
         sortedTopics.sort((a, b) => 
@@ -155,7 +160,7 @@ export default function({ topics,  selectedRuleIdxs, onChanged, onClose }: Topic
                             isExpanded[topic.topicIdx] = newExpanded;
                             setIsExpanded(JSON.parse(JSON.stringify(isExpanded)));
                             window.localStorage.setItem(LOCAL_STORAGE_KEY_EXPANDED, JSON.stringify(isExpanded));
-                        }, sortOrder);
+                        }, sortOrder, highlightedRuleIdx);
                     })}
                 </tbody>
             </table>
@@ -265,12 +270,19 @@ function caculatePercentClassName(percentSuccess: number): string  {
     }
     return 'redPct';
 }
-function initialiseExpanded(fallbackValue: boolean[]): boolean[] {
+function initialiseExpanded(fallbackValue: boolean[], highlightedTopicIdx: number): boolean[] {
     if (window.localStorage.getItem(LOCAL_STORAGE_KEY_EXPANDED)) {
         const candidate = (JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_KEY_EXPANDED)!) as boolean[]);
         if (candidate.length == fallbackValue.length) {
+            if (highlightedTopicIdx >= 0) {
+                candidate[highlightedTopicIdx] = true;
+            }
+
             return candidate;
         }
+    }
+    if (highlightedTopicIdx >= 0) {
+        fallbackValue[highlightedTopicIdx] = true;
     }
     return fallbackValue;
 }

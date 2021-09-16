@@ -8,6 +8,14 @@
         padding-top:3%;
     }
 
+    .linkToRule {
+        position:absolute;
+        bottom:0px;
+        text-align: center;
+        left:0px; right:0px;
+        padding-bottom:6%;
+    }
+
 
     button.next {
         background-color: darkgreen; /* Green */
@@ -41,5 +49,11 @@
         a {
             color: red;
         }
+    }
+
+    a {
+        color: grey;
+        text-decoration: none;
+        border-bottom: dotted thin;
     }
 }
