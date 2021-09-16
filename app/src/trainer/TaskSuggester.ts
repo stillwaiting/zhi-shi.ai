@@ -9,6 +9,7 @@ export type TaskType = {
     ruleIdx: number;
     topicIdx: number;
     bodyChunk: MarkdownBodyChunkQuestionAnswers;
+    nodeTitle: string;
 }
 
 export type StatsType = {
@@ -27,8 +28,8 @@ export type RuleType = {
 
     stats: StatsType;
 
-    answeredTaskIdxs: { [taskIdx: number]: boolean }; // purged when full; true - correctly, false - incorrectly
-    lastAnswers: Array<boolean>; // true - correctly, false - incorrectly
+    answeredTaskIdxs: { [taskIdx: number]: boolean }; // purged when full on task.ttle bases; true - correctly, false - incorrectly
+    lastAnswers: Array<[number, boolean]>; // true - correctly, false - incorrectly, capped to 10 (number of needed attemps to "unstick" from incorreclty answered rule)
 }
 
 export type TopicType = {
@@ -92,10 +93,12 @@ export default class TaskSuggester {
             topic.stats.incorrectlyAnsweredTasks ++; 
         }
         rule.answeredTaskIdxs[taskIdx] = isCorrect;
-        if (Object.keys(rule.answeredTaskIdxs).length == rule.taskIdxs.length) {
-            rule.answeredTaskIdxs = { };
-        }
-        rule.lastAnswers.push(isCorrect);
+
+        
+        this.maybeInvalidateRuleAnsweredTaskIdxs(rule, taskIdx);
+
+
+        rule.lastAnswers.push([taskIdx, isCorrect]);
         if (rule.lastAnswers.length > 10) {
             rule.lastAnswers.shift();
         }
@@ -109,6 +112,22 @@ export default class TaskSuggester {
             } else if (this.selectedRuleIdxs.size > 0 && this.lastAnsweredRuleIdxs.length >= this.selectedRuleIdxs.size) {
                 this.lastAnsweredRuleIdxs = [];
             }
+        }
+    }
+
+    private maybeInvalidateRuleAnsweredTaskIdxs(rule: RuleType, taskIdx: number) {
+        const taskNodeTitle = this.tasks[taskIdx].nodeTitle;
+
+        const ruleNodeTitleTaskIdxs = rule.taskIdxs.filter(taskIdx => this.tasks[taskIdx].nodeTitle == taskNodeTitle);
+
+        const answeredNodeTitleTasks = ruleNodeTitleTaskIdxs.reduce((accum, taskIdx) => {
+            return accum + (rule.answeredTaskIdxs[taskIdx] === undefined  ? 0 : 1);
+        }, 0);
+
+        if (answeredNodeTitleTasks == ruleNodeTitleTaskIdxs.length) {
+            ruleNodeTitleTaskIdxs.forEach(taskIdx => {
+                delete rule.answeredTaskIdxs[taskIdx];
+            })
         }
     }
 
@@ -141,19 +160,47 @@ export default class TaskSuggester {
                 .map(rule => rule.ruleIdx));
         }
 
-        const nonEmptyRuleIdx = ruleIdxs.filter(ruleIdx => this.rules[ruleIdx].taskIdxs.length > 0);
+        const nonEmptyRuleIdxs = ruleIdxs.filter(ruleIdx => this.rules[ruleIdx].taskIdxs.length > 0);
         
-        if (nonEmptyRuleIdx.length == 0) {
+        if (nonEmptyRuleIdxs.length == 0) {
             this.lastAnsweredRuleIdxs = [];
             return this.suggestNextTask();
         }
 
-        const taskIdxsToLookIn: Array<number> = [];
-        nonEmptyRuleIdx.forEach(ruleIdx => taskIdxsToLookIn.push(...this.getNotAnsweredTaskIdx(this.rules[ruleIdx])));
-        
+        const suggestedRuleIdx = nonEmptyRuleIdxs[Math.floor(Math.random() * nonEmptyRuleIdxs.length)];
+        const suggestedRule = this.rules[suggestedRuleIdx];
+
+        const suggestedTitle = this.suggestRuleTaskNodeTitle(suggestedRule);
+
+        const titleTaskIdxs = suggestedRule.taskIdxs.filter(taskIdx => this.tasks[taskIdx].nodeTitle === suggestedTitle);
+
+        let notAnsweredTitleTaskIdxs = titleTaskIdxs.filter(taskIdx => 
+            suggestedRule.answeredTaskIdxs[taskIdx] === undefined 
+        );
+        if (notAnsweredTitleTaskIdxs.length == 0) {
+            notAnsweredTitleTaskIdxs = titleTaskIdxs;
+        }
+
         return JSON.parse(JSON.stringify(
-            this.tasks[taskIdxsToLookIn[Math.floor(Math.random() * taskIdxsToLookIn.length)]]
+            this.tasks[notAnsweredTitleTaskIdxs[Math.floor(Math.random() * notAnsweredTitleTaskIdxs.length)]]
         ));
+    }
+
+    private suggestRuleTaskNodeTitle(suggestedRule: RuleType): string {
+        const ruleTaskNodeTitles = new Set<string>(suggestedRule.taskIdxs.map(taskIdx => this.tasks[taskIdx].nodeTitle));
+        const ruleTitles = Array.from(ruleTaskNodeTitles);
+
+        suggestedRule.lastAnswers.forEach(([taskIdx, isCorrect]) => {
+            if (!isCorrect) {
+                for (let cnt = 0; cnt < Math.max(1, ruleTaskNodeTitles.size / 2); cnt++) {
+                    ruleTitles.push(this.tasks[taskIdx].nodeTitle);
+                }
+            }
+        });
+
+        const suggestedTitle = ruleTitles[Math.floor(Math.random() * ruleTitles.length)];
+
+        return suggestedTitle;
     }
 
     private getLastAnsweredRule(): RuleType | undefined {
@@ -164,15 +211,8 @@ export default class TaskSuggester {
         }
     }
 
-    private getNotAnsweredTaskIdx(rule: RuleType): Array<number> {
-        if (Object.keys(rule.answeredTaskIdxs).length == rule.taskIdxs.length) {
-            return rule.taskIdxs;
-        }
-        return rule.taskIdxs.filter(taskIdx => rule.answeredTaskIdxs[taskIdx] === undefined);
-    }
-
     private hasIncorrectAnswer(rule: RuleType): boolean {
-        return rule.lastAnswers.indexOf(false) >= 0;
+        return rule.lastAnswers.map(([taskIdx, isCorrect]) => isCorrect).indexOf(false) >= 0;
     }
 
     private parseMarkdown(node: MarkdownNode) {
@@ -223,6 +263,7 @@ export default class TaskSuggester {
         taskNode.body.content.forEach(maybeTask => {
             if (isMarkdownBodyChunkQuestionAnswers(maybeTask)) {
                 const task: TaskType = {
+                    nodeTitle: taskNode.title,
                     taskIdx: this.tasks.length,
                     bodyChunk: maybeTask,
                     ruleIdx: rule.ruleIdx,

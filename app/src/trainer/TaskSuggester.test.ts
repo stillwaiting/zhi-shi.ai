@@ -180,15 +180,10 @@ Some text that should be ignored.
 
     test('Answer excludes the task from the pool of tasks to select', () => {
         suggester.setSelectedRuleIdxs(new Set<number>([2]));
-        const suggestedTaskIdxs = new Set<number>();
+        const nextTaskIdx = suggester.suggestNextTask().taskIdx;
+        suggester.recordAnswer(nextTaskIdx, true);
         for (let count = 0; count < 100; count ++ ) {
-            if (suggestedTaskIdxs.size == 4) {
-                suggestedTaskIdxs.clear();
-            }
-            const nextTaskIdx = suggester.suggestNextTask().taskIdx;
-            suggester.recordAnswer(nextTaskIdx, true);
-            expect(suggestedTaskIdxs).not.toContain(nextTaskIdx);
-            suggestedTaskIdxs.add(nextTaskIdx);
+            expect(suggester.suggestNextTask().taskIdx).not.toBe(nextTaskIdx);
         }
     });
 
@@ -234,15 +229,18 @@ Some text that should be ignored.
             suggester.recordAnswer(nextTaskIdx, true);
             stats[nextTaskIdx] = stats[nextTaskIdx] ? stats[nextTaskIdx] + 1 : 1;
         }
-        expect(stats).toStrictEqual({2:20, 3:20, 4:20, 5:20});
+        expect(stats[2]).toBeGreaterThan(10);
+        expect(stats[3]).toBeGreaterThan(10);
+        expect(stats[4]).toBeGreaterThan(10);
+        expect(stats[5]).toBeGreaterThan(10);
     });
 
     test('Incorrect answer forces to answer tasks from the same rule', () => {
         suggester.recordAnswer(2, false);
         const suggestedTaskIdxs = new Set<number>();
-        for (let count = 0; count < 9; count ++ ) {
+        for (let count = 0; count < 90; count ++ ) {
             const nextTaskIdx = suggester.suggestNextTask().taskIdx;
-            suggester.recordAnswer(nextTaskIdx, true);
+            suggester.recordAnswer(nextTaskIdx, false);
             suggestedTaskIdxs.add(nextTaskIdx);
         }
         expect(suggestedTaskIdxs).toStrictEqual(new Set([2,3,5,4]));
