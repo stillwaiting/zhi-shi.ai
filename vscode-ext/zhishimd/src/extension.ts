@@ -179,7 +179,7 @@ function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionCon
 	// rm -rf ../vscode-ext/zhishimd/media/*
 	// cp -r build/* ../vscode-ext/zhishimd/media/
 	// geany build/asset-manifest.json
-	// update the manufest
+	// update the manufest below from the content of opened file
 	// bump version in package.json
 	// cd ~/dev/zhi-shi.ai/vscode-ext/zhishimd
 	// yarn vsce package
