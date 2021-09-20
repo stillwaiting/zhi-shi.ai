@@ -29,7 +29,7 @@ export type RuleType = {
     stats: StatsType;
 
     answeredTaskIdxs: { [taskIdx: number]: boolean }; // purged when full on task.ttle bases; true - correctly, false - incorrectly
-    lastAnswers: Array<[number, boolean]>; // true - correctly, false - incorrectly, capped to 10 (number of needed attemps to "unstick" from incorreclty answered rule)
+    lastAnswers: Array<[number, boolean]>; // true - correctly, false - incorrectly, capped to 5 (number of needed attemps to "unstick" from incorreclty answered rule)
 }
 
 export type TopicType = {
@@ -99,7 +99,7 @@ export default class TaskSuggester {
 
 
         rule.lastAnswers.push([taskIdx, isCorrect]);
-        if (rule.lastAnswers.length > 10) {
+        if (rule.lastAnswers.length > 5) {
             rule.lastAnswers.shift();
         }
         if (this.getLastAnsweredRule()?.ruleIdx != rule.ruleIdx) {
