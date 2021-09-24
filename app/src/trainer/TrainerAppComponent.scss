@@ -1,8 +1,27 @@
+html {
+    height: 100%;
+    body {
+        height: 100%;
+        div#root {
+            height: 100%;
+
+            div.choice {
+                height: 100%;
+            }
+        }
+    }
+}
+
+
 .TrainerAppComponent {
     text-align: center;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 
     .questionAnswer {
        margin-top:10%;
+       flex-grow: 1;
     }
     .menu {
         padding-top:3%;
@@ -13,11 +32,13 @@
     }
 
     .foundError {
-        position:absolute;
-        bottom:0px;
-        text-align: center;
-        left:0px; right:0px;
-        padding-bottom:5%;
+        height: 50px;
+        padding: 50px;
+        margin-top: -50px;
+    }
+
+    .FilterEditorComponentContainer {
+        flex-grow: 1;
     }
 
 

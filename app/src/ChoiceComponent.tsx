@@ -10,7 +10,7 @@ const choices: { [name: string]: ReactElement} = {
 
 export default () => {
     const [selected, setSelected] = useState<string>(window.location.href.indexOf('zhi-shi') > 0 ? 'Russian' : '');
-    return <div>
+    return <div className="choice">
         {!selected
          ? <div>
                 {Object.keys(choices).map((choiceName: string) =>

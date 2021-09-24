@@ -87,7 +87,7 @@ export default function({ url, lang }: { url:string, lang: Language }) {
 
             {isFilterScreen() && taskSuggester
                 ? 
-                <div>
+                <div className="FilterEditorComponentContainer">
                         <FilterEditorComponent 
                             topics={taskSuggester!.getTopics()} 
                             selectedRuleIdxs={selectedRuleIdxs} 
