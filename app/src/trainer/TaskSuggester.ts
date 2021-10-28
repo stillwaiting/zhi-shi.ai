@@ -216,7 +216,8 @@ export default class TaskSuggester {
     }
 
     private parseMarkdown(node: MarkdownNode) {
-        if (node.children[0].title.indexOf("Rule") == 0) {
+        
+        if (node.children[0].title.indexOf("Rule") == 0 || node.children[0].title.indexOf("NR") == 0) {
             let topic: TopicType = {
                 topicIdx: this.topics.length,
                 title: node.title,
@@ -237,6 +238,9 @@ export default class TaskSuggester {
     }
 
     private parseRuleNode(topic: TopicType, ruleNode: MarkdownNode) {
+        if (ruleNode.title.indexOf("NR") == 0) {
+            return;
+        }
         let rule: RuleType = {
             ruleIdx: this.rules.length,
             topicIdx: topic.topicIdx,

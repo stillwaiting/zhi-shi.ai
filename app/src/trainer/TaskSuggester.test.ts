@@ -11,6 +11,14 @@ describe('TaskSuggester', () => {
 
 ## SubNode 1
 
+
+### NR: ignore
+
+#### Task ignored task
+
+? 0 Hello (foo|bar)
+! world
+
 ### Rule 0: empty rule, no tasks
 
 ### Rule 1: single tasks node
