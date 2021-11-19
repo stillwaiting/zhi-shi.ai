@@ -53,6 +53,14 @@ Some text that should be ignored.
 
 # Root 2
 
+## NR: some rule that is not ready yet
+
+### Task should not be there
+
+? 6 (Hello|bye)
+! hello
+
+
 ## Rule: another root
 
 ### Task node 3
@@ -64,6 +72,32 @@ Some text that should be ignored.
 
 ? 7 (Cat|Dog)
 ! cat
+
+## TODO: not visib
+
+### Task blahblah
+
+? 6 (Hello|bye)
+! hello
+
+
+## NR: not visible too
+
+### Task foo blah
+
+? 6 (Hello|bye)
+! hello
+
+
+# TODO: fooo
+
+## Rule: not visible
+
+### Task not visible
+
+? 6 (Hello|bye)
+! hello
+
 
         
 `)
