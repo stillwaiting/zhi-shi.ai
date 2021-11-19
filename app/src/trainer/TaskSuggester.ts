@@ -99,7 +99,7 @@ export default class TaskSuggester {
 
 
         rule.lastAnswers.push([taskIdx, isCorrect]);
-        if (rule.lastAnswers.length > 5) {
+        if (rule.lastAnswers.length > Math.min(5, rule.taskIdxs.length - 1)) {
             rule.lastAnswers.shift();
         }
         if (this.getLastAnsweredRule()?.ruleIdx != rule.ruleIdx) {
@@ -181,8 +181,14 @@ export default class TaskSuggester {
             notAnsweredTitleTaskIdxs = titleTaskIdxs;
         }
 
+        const taskIdx = notAnsweredTitleTaskIdxs[Math.floor(Math.random() * notAnsweredTitleTaskIdxs.length)]; 
+
+        if (suggestedRule.lastAnswers.find(item => item[0] === taskIdx)) {
+            return this.suggestNextTask();
+        }
+
         return JSON.parse(JSON.stringify(
-            this.tasks[notAnsweredTitleTaskIdxs[Math.floor(Math.random() * notAnsweredTitleTaskIdxs.length)]]
+            this.tasks[taskIdx]
         ));
     }
 
