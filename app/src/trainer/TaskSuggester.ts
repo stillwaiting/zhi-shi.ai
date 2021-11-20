@@ -18,6 +18,8 @@ export type StatsType = {
     incorrectlyAnsweredTasks: number;
 }
 
+const ERROR_BUFFER_SIZE = 10; // the number of correct answers that must be given to "unstick" from a particual rule (when a error was made)
+
 // Keep RuleType flat to avoid circular dependencies
 export type RuleType = {
     ruleIdx: number;
@@ -28,8 +30,8 @@ export type RuleType = {
 
     stats: StatsType;
 
-    answeredTaskIdxs: { [taskIdx: number]: boolean }; // purged when full on task.ttle bases; true - correctly, false - incorrectly
-    lastAnswers: Array<[number, boolean]>; // true - correctly, false - incorrectly, capped to 5 (number of needed attemps to "unstick" from incorreclty answered rule)
+    lastAnsweredTaskIdxs: {[nodeTitle: string]: Array<number>}; // purged when full for each nodeTitle
+    lastAnsweredNodeTitles: Array<string>; // purged when full
 }
 
 export type TopicType = {
@@ -53,7 +55,18 @@ export default class TaskSuggester {
     private tasks: Array<TaskType> = []; // taskIdx is the index in this array
 
     private selectedRuleIdxs: Set<number> = new Set<number>(); // empty means all
-    private lastAnsweredRuleIdxs: Array<number> = [];
+    private lastAnsweredRuleIdxs: Array<number> = []; // purged when full
+
+    private reversedHistoryTaskIdxLog: Array<Number> = []; // new items come first
+    private debugLog = false;
+
+    // When answered incorrectly, it will stick to the rule and set count and stick to it until count is 0
+    private stickyRuleIdx: number = -1;
+    private stickyRuleIdxCount: number = 0;
+
+    // When answered incorrecty, it will stick to the rule and set count and stick to it until count is 0
+    private stickyTaskNodeTitle: string = '';
+    private stickyTaskNodeTitleCount: number = 0;
 
     constructor(rawMdData: string) {
         const tree = mdParse(rawMdData, []);
@@ -67,6 +80,10 @@ export default class TaskSuggester {
         this.selectedRuleIdxs = new Set<number>(JSON.parse(JSON.stringify(Array.from(ruleIdxs))));
         if (ruleIdxs.size > 0) {
             this.lastAnsweredRuleIdxs = this.lastAnsweredRuleIdxs.filter(ruleIdx => ruleIdxs.has(ruleIdx));
+        }
+        if (ruleIdxs.size > 0 && this.stickyRuleIdx >= 0 && !ruleIdxs.has(this.stickyRuleIdx)) {
+            this.stickyRuleIdx = -1;
+            this.stickyTaskNodeTitle = '';
         }
     }
 
@@ -85,49 +102,74 @@ export default class TaskSuggester {
         const task = this.tasks[taskIdx];
         const rule = this.rules[task.ruleIdx];
         const topic = this.topics[task.topicIdx];
+
+        this.recordAnswerStats(task, rule, topic, isCorrect);
+        
+        this.recordAnswerStatsRule(rule, task);
+
+        this.reversedHistoryTaskIdxLog.unshift(taskIdx);
+        
+        if (this.selectedRuleIdxs.size == 0 && this.lastAnsweredRuleIdxs.length >= this.rules.length) {
+            this.lastAnsweredRuleIdxs = [];
+        } else if (this.selectedRuleIdxs.size > 0 && this.lastAnsweredRuleIdxs.length >= this.selectedRuleIdxs.size) {
+            this.lastAnsweredRuleIdxs = [];
+        }
+
+        this.recordAnswerStickyRules(rule, task, isCorrect);
+    }
+
+    private recordAnswerStickyRules(rule: RuleType, task: TaskType, isCorrect: boolean) {
+        this._debugLog("Sticky rule IDx: " + this.stickyRuleIdx + " " + this.stickyRuleIdxCount);
+        this._debugLog("Sticky title: " + this.stickyTaskNodeTitle + " " + this.stickyTaskNodeTitleCount);
+        if (isCorrect) {
+            if (this.stickyRuleIdx >= 0 && this.stickyRuleIdxCount > 0)  {
+                this.stickyRuleIdxCount--;
+                if (this.stickyRuleIdxCount == 0) {
+                    this.stickyRuleIdx = -1;
+                }
+            }
+
+            if (this.stickyTaskNodeTitle && this.stickyTaskNodeTitleCount > 0)  {
+                this.stickyTaskNodeTitleCount --;
+                if (this.stickyTaskNodeTitleCount == 0) {
+                    this.stickyTaskNodeTitle = '';
+                }
+            }
+        } else {
+            this.stickyRuleIdx = rule.ruleIdx;
+            this.stickyRuleIdxCount = ERROR_BUFFER_SIZE;
+            this.stickyTaskNodeTitle = task.nodeTitle;
+            this.stickyTaskNodeTitleCount = Math.floor(ERROR_BUFFER_SIZE / 3);
+        }
+
+        this._debugLog("Sticky rule IDx: " + this.stickyRuleIdx + " " + this.stickyRuleIdxCount);
+        this._debugLog("Sticky title: " + this.stickyTaskNodeTitle + " " + this.stickyTaskNodeTitleCount);
+    }
+
+    private recordAnswerStatsRule(rule: RuleType, task: TaskType) {
+        if (!rule.lastAnsweredTaskIdxs[task.nodeTitle]) {
+            rule.lastAnsweredTaskIdxs[task.nodeTitle] = [];
+        }
+        rule.lastAnsweredTaskIdxs[task.nodeTitle].push(task.taskIdx);
+        if (rule.lastAnsweredTaskIdxs[task.nodeTitle].length >= rule.taskIdxs.filter(taskIdx => this.tasks[taskIdx].nodeTitle == task.nodeTitle).length) {
+            rule.lastAnsweredTaskIdxs[task.nodeTitle] = [];
+        }
+        rule.lastAnsweredNodeTitles.push(task.nodeTitle);
+        if (rule.lastAnsweredNodeTitles.length >= new Set(rule.taskIdxs.map(taskIdx => this.tasks[taskIdx].nodeTitle)).size) {
+            rule.lastAnsweredNodeTitles = [];
+        }
+        if (this.getLastAnsweredRule()?.ruleIdx != rule.ruleIdx) {
+            this.lastAnsweredRuleIdxs.push(rule.ruleIdx);
+        }
+    }
+
+    private recordAnswerStats(task: TaskType, rule: RuleType, topic: TopicType, isCorrect: boolean) {
         if (isCorrect) {
             rule.stats.correctlyAnsweredTasks ++;
             topic.stats.correctlyAnsweredTasks ++;
         } else {
             rule.stats.incorrectlyAnsweredTasks ++;
             topic.stats.incorrectlyAnsweredTasks ++; 
-        }
-        rule.answeredTaskIdxs[taskIdx] = isCorrect;
-
-        
-        this.maybeInvalidateRuleAnsweredTaskIdxs(rule, taskIdx);
-
-
-        rule.lastAnswers.push([taskIdx, isCorrect]);
-        if (rule.lastAnswers.length > Math.min(5, rule.taskIdxs.length - 1)) {
-            rule.lastAnswers.shift();
-        }
-        if (this.getLastAnsweredRule()?.ruleIdx != rule.ruleIdx) {
-            this.lastAnsweredRuleIdxs.push(rule.ruleIdx);
-        } 
-        
-        if (isCorrect) { // TODO: add test; incorrect must stay to suggest it again
-            if (this.selectedRuleIdxs.size == 0 && this.lastAnsweredRuleIdxs.length >= this.rules.length) {
-                this.lastAnsweredRuleIdxs = [];
-            } else if (this.selectedRuleIdxs.size > 0 && this.lastAnsweredRuleIdxs.length >= this.selectedRuleIdxs.size) {
-                this.lastAnsweredRuleIdxs = [];
-            }
-        }
-    }
-
-    private maybeInvalidateRuleAnsweredTaskIdxs(rule: RuleType, taskIdx: number) {
-        const taskNodeTitle = this.tasks[taskIdx].nodeTitle;
-
-        const ruleNodeTitleTaskIdxs = rule.taskIdxs.filter(taskIdx => this.tasks[taskIdx].nodeTitle == taskNodeTitle);
-
-        const answeredNodeTitleTasks = ruleNodeTitleTaskIdxs.reduce((accum, taskIdx) => {
-            return accum + (rule.answeredTaskIdxs[taskIdx] === undefined  ? 0 : 1);
-        }, 0);
-
-        if (answeredNodeTitleTasks == ruleNodeTitleTaskIdxs.length) {
-            ruleNodeTitleTaskIdxs.forEach(taskIdx => {
-                delete rule.answeredTaskIdxs[taskIdx];
-            })
         }
     }
 
@@ -139,74 +181,129 @@ export default class TaskSuggester {
         this.rules.forEach((rule) => {
             rule.stats.correctlyAnsweredTasks = 0;
             rule.stats.incorrectlyAnsweredTasks = 0;
-            rule.answeredTaskIdxs = {};
-            rule.lastAnswers = [];
+            rule.lastAnsweredTaskIdxs = {};
+            rule.lastAnsweredNodeTitles = [];
         });
         this.lastAnsweredRuleIdxs = [];
+        this.stickyRuleIdx = -1;
+        this.stickyTaskNodeTitle = '';
     }
     
     suggestNextTask(): TaskType {
-        const ruleIdxs: Array<number> = [];
+        const task1 = this.doSuggestNextTask();
+        const task2 = this.doSuggestNextTask();
 
-        if (this.getLastAnsweredRule() && this.hasIncorrectAnswer(this.getLastAnsweredRule()!)) {
-            ruleIdxs.push(this.getLastAnsweredRule()!.ruleIdx);
-        } else if (this.selectedRuleIdxs.size > 0) {
-            ruleIdxs.push(...Array.from(this.selectedRuleIdxs).filter(
-                ruleIdx => this.lastAnsweredRuleIdxs.indexOf(ruleIdx) == -1
-            ));
-        } else {
-            ruleIdxs.push(...this.rules
-                .filter(rule => this.lastAnsweredRuleIdxs.indexOf(rule.ruleIdx) == -1)
-                .map(rule => rule.ruleIdx));
+        this._debugLog("SNT: 1st task from " + task1.nodeTitle + " " + JSON.stringify(task1.bodyChunk.question));
+        this._debugLog("SNT: 2nd task from " + task2.nodeTitle + " " + JSON.stringify(task2.bodyChunk.question));
+
+        const task1HistoryPos = this.reversedHistoryTaskIdxLog.indexOf(task1.taskIdx);
+        const task2HistoryPos = this.reversedHistoryTaskIdxLog.indexOf(task2.taskIdx);
+
+        if (task1HistoryPos < 0) {
+            this._debugLog("SNT: 1st task wasn't asked yet, returning");
+            return task1;
         }
 
-        const nonEmptyRuleIdxs = ruleIdxs.filter(ruleIdx => this.rules[ruleIdx].taskIdxs.length > 0);
+        if (task2HistoryPos < 0) {
+            this._debugLog("SNT: 2nd task wasn't asked yet, returning");
+            return task2;
+        }
+
+        if (task1HistoryPos < task2HistoryPos) {
+            this._debugLog("SNT: 1st task was asked later, returning 2nd");
+            return task2;
+        }
+
+        this._debugLog("SNT: 2nd task was asked later, returning 1st one");
+
+        return task1;
+    }
+
+    private doSuggestNextTask(): TaskType {
+        this._debugLog("------------");
         
-        if (nonEmptyRuleIdxs.length == 0) {
-            this.lastAnsweredRuleIdxs = [];
-            return this.suggestNextTask();
-        }
-
-        const suggestedRuleIdx = nonEmptyRuleIdxs[Math.floor(Math.random() * nonEmptyRuleIdxs.length)];
-        const suggestedRule = this.rules[suggestedRuleIdx];
+        const suggestedRule = this.suggestNextRule();
+        this._debugLog("DSNT: picked rule " + suggestedRule.ruleIdx + " " + suggestedRule.nodeTitle + " tasks " + suggestedRule.taskIdxs.length);
 
         const suggestedTitle = this.suggestRuleTaskNodeTitle(suggestedRule);
+        this._debugLog("DSNT: suggested title " + suggestedTitle);
 
         const titleTaskIdxs = suggestedRule.taskIdxs.filter(taskIdx => this.tasks[taskIdx].nodeTitle === suggestedTitle);
+        this._debugLog("DSNT: found " + titleTaskIdxs.length + " from the suggested title ");
 
         let notAnsweredTitleTaskIdxs = titleTaskIdxs.filter(taskIdx => 
-            suggestedRule.answeredTaskIdxs[taskIdx] === undefined 
+            (suggestedRule.lastAnsweredTaskIdxs[suggestedTitle] || []).indexOf(taskIdx) < 0
         );
+        this._debugLog("DSNT: found " + notAnsweredTitleTaskIdxs.length + "  non answered tasks");
         if (notAnsweredTitleTaskIdxs.length == 0) {
             notAnsweredTitleTaskIdxs = titleTaskIdxs;
         }
 
         const taskIdx = notAnsweredTitleTaskIdxs[Math.floor(Math.random() * notAnsweredTitleTaskIdxs.length)]; 
 
-        if (suggestedRule.lastAnswers.find(item => item[0] === taskIdx)) {
-            return this.suggestNextTask();
-        }
-
+        this._debugLog("------------");
         return JSON.parse(JSON.stringify(
             this.tasks[taskIdx]
         ));
     }
 
+    private suggestNextRule(): RuleType {
+        const ruleIdxs: Array<number> = [];
+
+        if (this.stickyRuleIdx >= 0 && this.stickyRuleIdxCount > 0) {
+            this._debugLog("DSNT: stick to " + this.rules[this.stickyRuleIdx].nodeTitle);
+            ruleIdxs.push(this.stickyRuleIdx);
+        } else if (this.selectedRuleIdxs.size > 0) {
+            this._debugLog("DSNT: filter by selected rules, excluding answered");
+            ruleIdxs.push(...Array.from(this.selectedRuleIdxs).filter(
+                ruleIdx => this.lastAnsweredRuleIdxs.indexOf(ruleIdx) == -1
+            ));
+            if (ruleIdxs.length == 0) {
+                ruleIdxs.push(...Array.from(this.selectedRuleIdxs));
+            }
+        } else {
+            this._debugLog("DSNT: get all rules that were not answered recently");
+            ruleIdxs.push(...this.rules
+                .filter(rule => this.lastAnsweredRuleIdxs.indexOf(rule.ruleIdx) == -1)
+                .map(rule => rule.ruleIdx));
+            if (ruleIdxs.length == 0) {
+                ruleIdxs.push(...this.rules.map(rule => rule.ruleIdx));
+            }
+        }
+        if (ruleIdxs.length < 10) {
+            this._debugLog("DSNT: selected " + JSON.stringify(ruleIdxs));
+        } else {
+            this._debugLog("DSNT: selected " + ruleIdxs.length + " rules");
+        }
+
+        const suggestedRuleIdx = ruleIdxs[Math.floor(Math.random() * ruleIdxs.length)];
+        return this.rules[suggestedRuleIdx];
+    }
+
     private suggestRuleTaskNodeTitle(suggestedRule: RuleType): string {
+        if (this.stickyTaskNodeTitle && this.stickyTaskNodeTitleCount > 0) {
+            this._debugLog("SRT: sticky " + this.stickyTaskNodeTitle);
+            return this.stickyTaskNodeTitle;
+        }
         const ruleTaskNodeTitles = new Set<string>(suggestedRule.taskIdxs.map(taskIdx => this.tasks[taskIdx].nodeTitle));
         const ruleTitles = Array.from(ruleTaskNodeTitles);
 
-        suggestedRule.lastAnswers.forEach(([taskIdx, isCorrect]) => {
-            if (!isCorrect) {
-                for (let cnt = 0; cnt < Math.max(1, ruleTaskNodeTitles.size / 2); cnt++) {
-                    ruleTitles.push(this.tasks[taskIdx].nodeTitle);
-                }
-            }
-        });
+        const notAnsweredRuleTitles = ruleTitles.filter(ruleTitle => suggestedRule.lastAnsweredNodeTitles.indexOf(ruleTitle) < 0);
 
-        const suggestedTitle = ruleTitles[Math.floor(Math.random() * ruleTitles.length)];
+        this._debugLog("SRT: not answered rule titles " + JSON.stringify(notAnsweredRuleTitles));
 
+        const suggestedTitle = notAnsweredRuleTitles[Math.floor(Math.random() * notAnsweredRuleTitles.length)];
         return suggestedTitle;
+    }
+
+    enableDebugLog() {
+        this.debugLog = true;
+    }
+
+    private _debugLog(str: String) {
+        if (this.debugLog) {
+            console.log(str);
+        }
     }
 
     private getLastAnsweredRule(): RuleType | undefined {
@@ -215,10 +312,6 @@ export default class TaskSuggester {
         } else {
             return undefined;
         }
-    }
-
-    private hasIncorrectAnswer(rule: RuleType): boolean {
-        return rule.lastAnswers.map(([taskIdx, isCorrect]) => isCorrect).indexOf(false) >= 0;
     }
 
     private parseMarkdown(node: MarkdownNode) {
@@ -260,16 +353,18 @@ export default class TaskSuggester {
                 incorrectlyAnsweredTasks: 0
             },
             taskIdxs: [],
-            answeredTaskIdxs: [],
-            lastAnswers: []
+            lastAnsweredNodeTitles: [],
+            lastAnsweredTaskIdxs: {}
         };
-        this.rules.push(rule);
-        topic.rules.push(rule);
-        ruleNode.children.forEach(taskNode => {
-            if (taskNode.title.indexOf("Task") == 0) {
-                this.parseTaskNode(topic, rule, taskNode);
-            }
-        })
+        if (ruleNode.children.find(child => child.title.indexOf("Task") == 0)) {
+            this.rules.push(rule);
+            topic.rules.push(rule);
+            ruleNode.children.forEach(taskNode => {
+                if (taskNode.title.indexOf("Task") == 0) {
+                    this.parseTaskNode(topic, rule, taskNode);
+                }
+            })
+        }
     }
 
     private parseTaskNode(topic: TopicType, rule: RuleType, taskNode: MarkdownNode) {

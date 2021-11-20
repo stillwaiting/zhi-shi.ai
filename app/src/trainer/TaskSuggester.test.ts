@@ -19,9 +19,9 @@ describe('TaskSuggester', () => {
 ? 0 Hello (foo|bar)
 ! world
 
-### Rule 0: empty rule, no tasks
+### Rule -1: empty rule, no tasks
 
-### Rule 1: single tasks node
+### Rule 0: single tasks node
 
 #### Task  node 0
 
@@ -33,7 +33,7 @@ Some text that should be ignored.
 ? 1 Bar baz (hello|world)
 ! hello
 
-### Rule 2: several task nodes
+### Rule 1: several task nodes
 
 #### Task node 1
 
@@ -61,7 +61,7 @@ Some text that should be ignored.
 ! hello
 
 
-## Rule: another root
+## Rule 2: another root
 
 ### Task node 3
 
@@ -119,20 +119,7 @@ Some text that should be ignored.
               {
                 "ruleIdx": 0,
                 "topicIdx": 0,
-                "nodeTitle": "Rule 0: empty rule, no tasks",
-                "stats": {
-                  "totalTasks": 0,
-                  "correctlyAnsweredTasks": 0,
-                  "incorrectlyAnsweredTasks": 0
-                },
-                "taskIdxs": [],
-                "answeredTaskIdxs": [],
-                "lastAnswers": []
-              },
-              {
-                "ruleIdx": 1,
-                "topicIdx": 0,
-                "nodeTitle": "Rule 1: single tasks node",
+                "nodeTitle": "Rule 0: single tasks node",
                 "stats": {
                   "totalTasks": 2,
                   "correctlyAnsweredTasks": 0,
@@ -142,13 +129,13 @@ Some text that should be ignored.
                   0,
                   1
                 ],
-                "answeredTaskIdxs": [],
-                "lastAnswers": []
+                "lastAnsweredNodeTitles": [],
+                "lastAnsweredTaskIdxs": {}
               },
               {
-                "ruleIdx": 2,
+                "ruleIdx": 1,
                 "topicIdx": 0,
-                "nodeTitle": "Rule 2: several task nodes",
+                "nodeTitle": "Rule 1: several task nodes",
                 "stats": {
                   "totalTasks": 4,
                   "correctlyAnsweredTasks": 0,
@@ -160,8 +147,8 @@ Some text that should be ignored.
                   4,
                   5
                 ],
-                "answeredTaskIdxs": [],
-                "lastAnswers": []
+                "lastAnsweredNodeTitles": [],
+                "lastAnsweredTaskIdxs": {}
               }
             ]
           },
@@ -175,9 +162,9 @@ Some text that should be ignored.
             },
             "rules": [
               {
-                "ruleIdx": 3,
+                "ruleIdx": 2,
                 "topicIdx": 1,
-                "nodeTitle": "Rule: another root",
+                "nodeTitle": "Rule 2: another root",
                 "stats": {
                   "totalTasks": 2,
                   "correctlyAnsweredTasks": 0,
@@ -187,8 +174,8 @@ Some text that should be ignored.
                   6,
                   7
                 ],
-                "answeredTaskIdxs": [],
-                "lastAnswers": []
+                "lastAnsweredNodeTitles": [],
+                "lastAnsweredTaskIdxs": {}
               }
             ]
           }
@@ -196,7 +183,7 @@ Some text that should be ignored.
     });
 
     test('Selected rules limit the choice of tasks', () => {
-        suggester.setSelectedRuleIdxs(new Set<number>([3]));
+        suggester.setSelectedRuleIdxs(new Set<number>([2]));
         const suggestedTaskIdxs = new Set<number>();
         for (let count = 0; count < 100; count ++ ) {
             suggestedTaskIdxs.add(suggester.suggestNextTask().taskIdx);
@@ -232,7 +219,7 @@ Some text that should be ignored.
     test('Answer updates statistis', () => {
         suggester.recordAnswer(0, true);
         expect(suggester.getTopics()[0].stats.correctlyAnsweredTasks).toBe(1);
-        expect(suggester.getTopics()[0].rules[1].stats.correctlyAnsweredTasks).toBe(1);
+        expect(suggester.getTopics()[0].rules[0].stats.correctlyAnsweredTasks).toBe(1);
     });
 
     test('Clean statistics cleans statistis', () => {
@@ -257,14 +244,14 @@ Some text that should be ignored.
       suggester.recordAnswer(2, true);
       suggester.clearStats();
       const suggestedTaskIdx = new Set<number>();
-      for (let attempts = 0; attempts < 100; attempts ++) {
+      for (let attempts = 0; attempts < 10000; attempts ++) {
         suggestedTaskIdx.add(suggester.suggestNextTask().taskIdx);
       }
       expect(suggestedTaskIdx).toStrictEqual(new Set<number>([0,1,2,3,4,5,6,7]));
     });
 
     test('The answered task is added back to the pool when all other tasks are answered, too', () => {
-        suggester.setSelectedRuleIdxs(new Set<number>([2]));
+        suggester.setSelectedRuleIdxs(new Set<number>([1]));
         const stats: {[taskIdx:number] : number} = {};
         for (let count = 0; count < 80; count ++ ) {
             const nextTaskIdx = suggester.suggestNextTask().taskIdx;
@@ -277,16 +264,32 @@ Some text that should be ignored.
         expect(stats[5]).toBeGreaterThan(10);
     });
 
-    test('Incorrect answer forces to answer tasks from the same rule', () => {
+    test('Incorrect answer forces to answer tasks from the same title', () => {
         suggester.recordAnswer(2, false);
+        suggester.recordAnswer(3, true);
         const suggestedTaskIdxs = new Set<number>();
         for (let count = 0; count < 90; count ++ ) {
             const nextTaskIdx = suggester.suggestNextTask().taskIdx;
             suggester.recordAnswer(nextTaskIdx, false);
             suggestedTaskIdxs.add(nextTaskIdx);
         }
-        expect(suggestedTaskIdxs).toStrictEqual(new Set([2,3,5,4]));
+        expect(suggestedTaskIdxs).toStrictEqual(new Set([2,3]));
     });
+
+    test('Incorrect answer forces to answer tasks from the same rule', () => {
+      suggester.recordAnswer(2, false);
+      suggester.recordAnswer(3, true);
+      suggester.recordAnswer(4, true);
+      suggester.recordAnswer(5, true);
+      suggester.recordAnswer(2, true);
+      suggester.recordAnswer(3, true);
+      const suggestedTaskIdxs = new Set<number>();
+      for (let count = 0; count < 90; count ++ ) {
+          const nextTaskIdx = suggester.suggestNextTask().taskIdx;
+          suggestedTaskIdxs.add(nextTaskIdx);
+      }
+      expect(suggestedTaskIdxs).toStrictEqual(new Set([2,3, 5,4]));
+  });
 
     test('Cleanup drops incorrectly answered memory', () => {
       suggester.recordAnswer(2, false);
