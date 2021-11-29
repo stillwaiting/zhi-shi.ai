@@ -2326,7 +2326,7 @@ TODO: может быть углубиться в словообразовани
 ! {объяснение-3}
 
 
-#### Rule: Число имен существительных
+#### Rule: Число имен существительных.
 
 {set:определить}
 Определить число существительного:
@@ -2740,7 +2740,7 @@ TODO: может быть углубиться в словообразовани
 
 
 
-#### Rule: Правописание суффиксов "чик" и "щик" в существительных
+#### Rule: Правописание суффиксов "чик" и "щик" в существительных.
 
 {set:ссылка-щик}
 https://russkiiyazyk.ru/sostav-slova/suffiks/suffiks-shchik-primery.html#:~:text=%D0%A1%20%D1%81%D1%83%D1%84%C2%AD%D1%84%D0%B8%D0%BA%C2%AD%D1%81%D0%BE%D0%BC%20-%D1%89%D0%B8%D0%BA-%20%D0%BF%D0%B8%D1%88%D1%83%D1%82%C2%AD%D1%81%D1%8F%20%D1%81%D1%83%D1%89%D0%B5%C2%AD%D1%81%D1%82%D0%B2%D0%B8%C2%AD%D1%82%D0%B5%D0%BB%D1%8C%C2%AD%D0%BD%D1%8B%D0%B5%20%D0%BF%D0%BE%D1%81%D0%BB%D0%B5%20%D0%B2%D1%81%D0%B5%D1%85%20%D1%81%D0%BE%D0%B3%D0%BB%D0%B0%D1%81%C2%AD%D0%BD%D1%8B%D1%85%20%D0%BE%D1%81%D0%BD%D0%BE%C2%AD%D0%B2%D1%8B%2C%20%D0%BA%D1%80%D0%BE%C2%AD%D0%BC%D0%B5%20%D0%B1%D1%83%D0%BA%D0%B2%20%C2%AB%D0%B4%C2%BB%2C%20%C2%AB%D1%82%C2%BB%2C%20%C2%AB%D0%B7%C2%BB%2C%20%C2%AB%D1%81%C2%BB%2C%20%C2%AB%D0%B6%C2%BB
@@ -2834,7 +2834,7 @@ https://russkiiyazyk.ru/sostav-slova/suffiks/suffiks-shchik-primery.html#:~:text
 ?шарман(щ|ч)ик
 ! шарма*Н*щик {объяснение-щик}
 
-#### Rule: Правописание гласных в суффиксах "ек", "ик"
+#### Rule: Правописание гласных в суффиксах "ек", "ик".
 
 {set:объяснение-е}
 – гласный звук выпадает, значит пишется "е". [Правило](https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/pravopisanie-suffiksov.html#:~:text=%D0%92%20%D1%81%D1%83%D1%84%C2%AD%D1%84%D0%B8%D0%BA%C2%AD%D1%81%D0%B5%20-%D0%B5%D0%BA-%20%D0%BF%D0%B8%D1%88%D0%B5%D1%82%C2%AD%D1%81%D1%8F%20%D0%B1%D1%83%D0%BA%C2%AD%D0%B2%D0%B0%20%22%D0%B5%22%2C%20%D0%B5%D1%81%D0%BB%D0%B8%20%D0%B2%20%D1%84%D0%BE%D1%80%C2%AD%D0%BC%D0%B5%20%D1%80.%D0%BF.%20%D0%BE%D0%BD%D0%B0%20%D1%81%D1%82%D0%B0%C2%AD%D0%BD%D0%BE%C2%AD%D0%B2%D0%B8%D1%82%C2%AD%D1%81%D1%8F%20%D0%B1%D0%B5%D0%B3%D0%BB%D0%BE%D0%B9.)
@@ -2918,7 +2918,7 @@ https://russkiiyazyk.ru/sostav-slova/suffiks/suffiks-shchik-primery.html#:~:text
 ! нет "ножичка" {объяснение-е}
 
 
-#### Rule: Правописание гласных "о", "е/ё" после шипящих и "ц" в суффиксах и окончаниях
+#### Rule: Правописание гласных "о", "е/ё" после шипящих и "ц" в суффиксах и окончаниях.
 
 {set:ссылка-о}
 https://russkiiyazyk.ru/orfografiya/napisanie-o-e-posle-shipyashhih.html#:~:text=%D1%88%C2%BB%2C%20%C2%AB%D1%87%C2%BB%2C%20%C2%AB%D1%89%C2%BB%20%C2%A0-,%D0%BF%D0%BE%D0%B4%20%D1%83%D0%B4%D0%B0%C2%AD%D1%80%D0%B5%C2%AD%D0%BD%D0%B8%C2%AD%D0%B5%D0%BC%20%D0%BF%D0%B8%D1%88%D0%B5%D1%82%C2%AD%D1%81%D1%8F%20%D0%B1%D1%83%D0%BA%C2%AD%D0%B2%D0%B0%20%C2%AB%D0%BE%C2%BB,-%2C%20%D0%B1%D0%B5%D0%B7%20%D1%83%D0%B4%D0%B0%C2%AD%D1%80%D0%B5%C2%AD%D0%BD%D0%B8%D1%8F%20%E2%80%94%20%C2%AB%D0%B5
@@ -3002,7 +3002,7 @@ https://russkiiyazyk.ru/orfografiya/napisanie-o-e-posle-shipyashhih.html#:~:text
 ? реч(е|о|ё)нька
 ! {объяснение-без}
 
-#### Rule: Правописание "не" с именами существительными
+#### Rule: Правописание "не" с именами существительными.
 
 
 ##### Task 234 слит неупот
@@ -3234,8 +3234,10 @@ https://russkiiyazyk.ru/orfografiya/napisanie-o-e-posle-shipyashhih.html#:~:text
 ##### Task 8 нн: в суффиксе нн
 
 {set:объяснение}
-Существительное образовано от прилагательного (причастия), имеющего НН. [Правило](https://obrazovaka.ru/russkiy-yazyk/n-nn-i-v-suschestvitelnyh.html)
+существительное образовано от прилагательного (причастия), имеющего НН. [Правило](https://obrazovaka.ru/russkiy-yazyk/n-nn-i-v-suschestvitelnyh.html)
 {/set}
+
+/*** ??? от чего образовано? указать */ 
 
 ?листве(нн|н)ица
 ! {объяснение}
