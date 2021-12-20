@@ -13,4 +13,5 @@ export interface Language {
     COLLAPSE: string,
     CONFIRM: string,
     ALL: string,
+    SHOW_IN_TREE: string
 }

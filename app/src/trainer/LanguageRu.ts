@@ -14,7 +14,8 @@ const LANGUAGE_RU: Language = {
     CONFIRM: 'Вы уверены?',
     ALL: 'все',
     TOTAL: 'всего',
-    FOUND_ERROR: 'Нашли ошибку?'
+    FOUND_ERROR: 'Нашли ошибку?',
+    SHOW_IN_TREE: 'показать в дереве'
 }
 
 export default LANGUAGE_RU;

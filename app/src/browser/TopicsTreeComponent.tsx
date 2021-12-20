@@ -20,9 +20,24 @@ const renderNodes = (nodes: MarkdownNode[], currentNodeTitle: string, onNodeClic
     }
     return <ul>
         {nodes.map((node, nodeIdx) => {
-            const title = node.title.indexOf('Task') >= 0 
+            let title = node.title.indexOf('Task') >= 0 
                 ? node.title + ' (' + calculateNumberOfQuestions(node.body) + ')'
                 : node.title;
+
+            const error = (node.body.content.map(item => {
+                if (isMarkdownBodyChunkQuestionAnswers(item)) {
+                    if (item.question.text.indexOf('(') < 0) {
+                        return item.question.text ;
+                    }
+                }
+                return '';
+            })).filter(item => item.length > 0);
+
+            let className = (node.title === currentNodeTitle) ? "selectedNode" : "plainNode";
+            if (error.length) {
+                title += ' error: ' + error[0];
+                className = 'error';
+            }
 
             return <li key={`node${nodeIdx}`}>
                 <a href='#' onClick={(e) => {
@@ -30,7 +45,7 @@ const renderNodes = (nodes: MarkdownNode[], currentNodeTitle: string, onNodeClic
                     onNodeClicked(node);
                 }}
                 
-                className={(node.title === currentNodeTitle) ? "selectedNode" : "plainNode"}
+                className={className}
                 
                 >{title}</a> <br />
                 {renderNodes(node.children, currentNodeTitle, onNodeClicked)}
