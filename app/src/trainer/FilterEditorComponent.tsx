@@ -123,11 +123,17 @@ export default function({ topics,  selectedRuleIdxs, onChanged, onClose, highlig
 
     const [sortOrder, setSortOrder] = useState<SortEnum>(SortEnum.NATURAL);
     const [isExpanded, setIsExpanded] = useState<Array<boolean>>(initialiseExpanded(topics.map(topic => false), highlightedTopicIdx));
+    const [isEmpty, setIsEmpty] = useState<boolean>(false);
 
     if (sortOrder != SortEnum.NATURAL) {
         sortedTopics.sort((a, b) => 
             (statsToPct(a.stats) || 0) - (statsToPct(b.stats) || 0)
         );
+    }
+
+    let fixedSelectedRuleIdx = selectedRuleIdxs;
+    if (selectedRuleIdxs.size == 0 && !isEmpty) {
+        fixedSelectedRuleIdx = new Set(topics.flatMap(topic => topic.rules.map(rule => rule.ruleIdx)));
     }
 
     return <div className='FilterEditorComponent'>
@@ -145,10 +151,12 @@ export default function({ topics,  selectedRuleIdxs, onChanged, onClose, highlig
                 <tbody>
                     <tr>
                         <td className="firstCol">
-                            <IndeterminateCheckbox state={calcuateAllCheckboxState(topics, selectedRuleIdxs)} debug={'All'} 
-                                onClick={() =>
-                                    onChanged(mapAllToEmpty(recalculateSelectedRuleIdxsOnAllClicked(topics, selectedRuleIdxs), topics))
-                                }
+                            <IndeterminateCheckbox state={calcuateAllCheckboxState(topics, fixedSelectedRuleIdx)} debug={'All'} 
+                                onClick={() => {
+                                    const newSelectedRuleIdx = recalculateSelectedRuleIdxsOnAllClicked(topics, fixedSelectedRuleIdx);
+                                    setIsEmpty(newSelectedRuleIdx.size == 0);
+                                    onChanged(mapAllToEmpty(newSelectedRuleIdx, topics));
+                                }}
                             />
                         </td>
                         <td colSpan={2} className="sorting">
@@ -160,7 +168,7 @@ export default function({ topics,  selectedRuleIdxs, onChanged, onClose, highlig
                         </td>
                     </tr>
                     {topics.map(topic => {
-                        return renderTopic(topic, topics, selectedRuleIdxs, onChanged, isExpanded[topic.topicIdx], (newExpanded) => {
+                        return renderTopic(topic, topics, fixedSelectedRuleIdx, onChanged, isExpanded[topic.topicIdx], (newExpanded) => {
                             isExpanded[topic.topicIdx] = newExpanded;
                             setIsExpanded(JSON.parse(JSON.stringify(isExpanded)));
                             window.localStorage.setItem(LOCAL_STORAGE_KEY_EXPANDED, JSON.stringify(isExpanded));
@@ -174,16 +182,15 @@ export default function({ topics,  selectedRuleIdxs, onChanged, onClose, highlig
 }
 function calcuateAllCheckboxState(topics: TopicType[], selectedRuleIdxs: Set<number>): CheckboxState {
     if (selectedRuleIdxs.size == 0) {
+        return CheckboxState.UNCHECKED;
+    }
+    if (selectedRuleIdxs.size == countAllRules(topics)) {
         return CheckboxState.CHECKED;
     }
     return CheckboxState.INDETERMINATE;
 }
 
 function calculateTopicCheckboxState(topic: TopicType, selectedRuleIdxs: Set<number>): CheckboxState {
-    if (selectedRuleIdxs.size == 0) {
-        return CheckboxState.CHECKED;
-    }
-    
     const selectedRulesCount = topic.rules.filter(rule => selectedRuleIdxs.has(rule.ruleIdx)).length;
     if (selectedRulesCount == 0) {
         return CheckboxState.UNCHECKED;
@@ -196,29 +203,16 @@ function calculateTopicCheckboxState(topic: TopicType, selectedRuleIdxs: Set<num
 }
 
 function calculateRuleCheckboxState(rule: RuleType, selectedRuleIdxs: Set<number>): CheckboxState {
-    return selectedRuleIdxs.size == 0 ||  selectedRuleIdxs.has(rule.ruleIdx) ? CheckboxState.CHECKED : CheckboxState.UNCHECKED;
+    return selectedRuleIdxs.has(rule.ruleIdx) ? CheckboxState.CHECKED : CheckboxState.UNCHECKED;
 }
 
 function recalculateSelectedRuleIdxsOnRuleClick(topics: Array<TopicType>, rule: RuleType, selectedRuleIdxs: Set<number>): Set<number> {
     const state = calculateRuleCheckboxState(rule, selectedRuleIdxs);
     const newSelection = new Set<number>(selectedRuleIdxs);
-    if (state != CheckboxState.CHECKED) {
-        newSelection.add(rule.ruleIdx);
-        return newSelection;
-    }
-    if (selectedRuleIdxs.size == 1 && selectedRuleIdxs.has(rule.ruleIdx)) {
-        return newSelection;
-    }
-    if (selectedRuleIdxs.size == 0) {
-        topics.forEach(topicIter => {
-            topicIter.rules.forEach(ruleIter => {
-                if (ruleIter.ruleIdx != rule.ruleIdx) {
-                    newSelection.add(ruleIter.ruleIdx);
-                }
-            })
-        })
-    } else {
+    if (state == CheckboxState.CHECKED) {
         newSelection.delete(rule.ruleIdx);
+    } else {
+        newSelection.add(rule.ruleIdx);
     }
     return newSelection;
 }
@@ -226,13 +220,18 @@ function recalculateSelectedRuleIdxsOnRuleClick(topics: Array<TopicType>, rule: 
 function recalculateSelectedRuleIdxsOnAllClicked(topics: Array<TopicType>, selectedRuleIdxs: Set<number>): Set<number> {
     const state = calcuateAllCheckboxState(topics, selectedRuleIdxs);
     if (state == CheckboxState.CHECKED) {
-        return new Set<number>([topics[0].rules[0].ruleIdx]);
+        return new Set<number>([]);
+    } else {
+        return new Set(topics.flatMap(topic => topic.rules.map(rule => rule.ruleIdx)));
     }
-    return new Set<number>([]);
+}
+
+function countAllRules(topics: Array<TopicType>) {
+    return topics.reduce((old, topic) => old + topic.rules.length, 0);
 }
 
 function mapAllToEmpty(newSelectedRuleIdx:Set<number>, topics: Array<TopicType>): Set<number> {
-    if (newSelectedRuleIdx.size == topics.reduce((old, topic) => old + topic.rules.length, 0)) {
+    if (newSelectedRuleIdx.size == countAllRules(topics)) {
         return new Set<number>([]);
     }
     return newSelectedRuleIdx;
@@ -245,23 +244,10 @@ function recalculateSelectedRuleIdxsOnTopicClick(topics: Array<TopicType>,topic:
         topic.rules.forEach(rule => {
             newSelection.add(rule.ruleIdx);
         })
-        return newSelection;
-    }
-
-    if (selectedRuleIdxs.size == 0) {
-        topics.filter(iterTopic => iterTopic.topicIdx != topic.topicIdx).forEach(iterTopic => {
-            iterTopic.rules.forEach(rule => {
-                newSelection.add(rule.ruleIdx);
-            })
+    } else {
+        topic.rules.forEach(rule => {
+            newSelection.delete(rule.ruleIdx);
         });
-        return newSelection;
-    }
-
-    topic.rules.forEach(rule => {
-        newSelection.delete(rule.ruleIdx);
-    });
-    if (newSelection.size == 0) {
-        newSelection.add(topic.rules[0].ruleIdx);
     }
     return newSelection;
 }
