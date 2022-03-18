@@ -20,6 +20,7 @@ export default function({ url, lang }: { url:string, lang: Language }) {
     const [questionCounter, setQuestionCounter] = useState<number>(0);
     const [selectedRuleIdxs, setSelectedRuleIdxs] = useState<Set<number>>(extractSelectedRuleIdxsFromPath(location.pathname));
     const [answeredIndices, setAnsweredIndices] = useState<Array<number>|undefined>(undefined);
+    const [canShowNextButton, setCanShowNextButton] = useState<boolean>(true);
 
     const history = useHistory();
 
@@ -58,14 +59,20 @@ export default function({ url, lang }: { url:string, lang: Language }) {
     return <div className='TrainerAppComponent'>
             <BrowserWarningComponent />
             <DataProviderComponent url={process.env.PUBLIC_URL + url} onDataProvided={(data) => {
-                const taskSuggester = new TaskSuggester(data);
-                taskSuggester.setSelectedRuleIdxs(selectedRuleIdxs);
-                getAnswersFromLocalStorage().forEach((answer) => {
-                    taskSuggester.recordAnswer(answer[0], answer[1]);
-                });
-                setCurrentTask(taskSuggester.suggestNextTask());
-                setRawData(data);
-                setTaskSuggester(taskSuggester);
+                try {
+                    const taskSuggester = new TaskSuggester(data);
+                    taskSuggester.setSelectedRuleIdxs(selectedRuleIdxs);
+                    getAnswersFromLocalStorage().forEach((answer) => {
+                        taskSuggester.recordAnswer(answer[0], answer[1]);
+                    });
+                    taskSuggester.enableDebugLog();
+                    setCurrentTask(taskSuggester.suggestNextTask());
+                    setRawData(data);
+                    setTaskSuggester(taskSuggester);
+                } catch (ex) {
+                    console.error(ex);
+                    throw ex;
+                }
             }}
             />
 
@@ -112,6 +119,7 @@ export default function({ url, lang }: { url:string, lang: Language }) {
                                 e.preventDefault();
                                 if (window.confirm(lang.CONFIRM)) {
                                     setTaskSuggester(new TaskSuggester(rawData!));
+                                    taskSuggester.enableDebugLog();
                                     taskSuggester.setSelectedRuleIdxs(selectedRuleIdxs);
                                     setCurrentTask(taskSuggester.suggestNextTask());
                                     clearAnswersInLocalStorage();
@@ -135,6 +143,12 @@ export default function({ url, lang }: { url:string, lang: Language }) {
                                     taskSuggester!.recordAnswer(task.taskIdx, isCorrect);
                                     addAnswerToLocalStorage(task.taskIdx, isCorrect);
                                     setAnsweredIndices(indices);
+                                    setCanShowNextButton(isCorrect);
+                                    if (!isCorrect) {
+                                        setTimeout(() => {
+                                            setCanShowNextButton(true);
+                                        }, 3000);
+                                    }
                                 }
                             } 
                             answerIndices={answeredIndices}
@@ -142,27 +156,32 @@ export default function({ url, lang }: { url:string, lang: Language }) {
                         />
 
 
-                        {answeredIndices
+                        {answeredIndices && canShowNextButton
                             ? <div><button className="next" autoFocus onClick={() => {
                                 setCurrentTask(taskSuggester!.suggestNextTask());
                                 setQuestionCounter(questionCounter + 1);
                                 setAnsweredIndices(undefined);
-                            }}>{lang.NEXT_BUTTON}</button></div>
-                            : null
-                        }
-
-                        <div className="linkToRule">
-                                <a href={buildPath(selectedRuleIdxs, "filter")}
+                            }}>{lang.NEXT_BUTTON}</button>
+                            
+                            <div className="linkToRule">
+                            {
+                                    taskSuggester!.getTopics()[task.topicIdx].rules.find(rule => rule.ruleIdx == task.ruleIdx)?.nodeTitle.replace("Rule:", "")
+                                    }
+                                (<a href={buildPath(selectedRuleIdxs, "filter")}
                                     onClick={
                                         (e) => {
                                             e.preventDefault();
                                             history.push(buildPath(selectedRuleIdxs, "filter") + '/' + task.topicIdx + '/' + task.ruleIdx);
                                         }
                                     }
-                                >{
-                                    taskSuggester!.getTopics()[task.topicIdx].rules.find(rule => rule.ruleIdx == task.ruleIdx)?.nodeTitle.replace("Rule:", "")
-                                    }</a>
+                                >{lang.SHOW_IN_TREE}</a>)
                         </div>
+
+                            </div>
+                            : null
+                        }
+
+                    
                         
                     </div>
                 : null

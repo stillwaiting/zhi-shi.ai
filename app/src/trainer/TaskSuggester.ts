@@ -146,11 +146,17 @@ export default class TaskSuggester {
         this._debugLog("Sticky title: " + this.stickyTaskNodeTitle + " " + this.stickyTaskNodeTitleCount);
     }
 
+    private answeredTaskIdxs: Set<number> = new Set();
+
     private recordAnswerStatsRule(rule: RuleType, task: TaskType) {
         if (!rule.lastAnsweredTaskIdxs[task.nodeTitle]) {
             rule.lastAnsweredTaskIdxs[task.nodeTitle] = [];
         }
         rule.lastAnsweredTaskIdxs[task.nodeTitle].push(task.taskIdx);
+        this.answeredTaskIdxs.add(task.taskIdx);
+        console.log("Answered tasks of rule " + rule.ruleIdx +": " + 
+            rule.taskIdxs.filter(taskIdx => this.answeredTaskIdxs.has(taskIdx)).length + " of " + rule.taskIdxs.length
+            );
         if (rule.lastAnsweredTaskIdxs[task.nodeTitle].length >= rule.taskIdxs.filter(taskIdx => this.tasks[taskIdx].nodeTitle == task.nodeTitle).length) {
             rule.lastAnsweredTaskIdxs[task.nodeTitle] = [];
         }

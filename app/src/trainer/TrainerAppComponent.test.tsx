@@ -5,6 +5,7 @@ import fetchMock from 'jest-fetch-mock';
 import TrainerAppComponent from './TrainerAppComponent';
 import { MemoryRouter } from 'react-router';
 import { Link, Route } from "react-router-dom";
+import lang from './LanguageEn';
 
 function sleep(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -24,7 +25,7 @@ describe('TrainerAppComponent', () => {
 
     async function renderAndWaitForData(): Promise<RenderResult> {
         const component = render(<MemoryRouter initialEntries={[currentPath]}> 
-            <TrainerAppComponent url='/foo' />
+            <TrainerAppComponent url='/foo' lang={lang} />
     
             <Route
                 path="*"
@@ -98,8 +99,8 @@ Some text that should be ignored.
 
         for (let idx = 0; idx < 100; idx++) {
             answerCorrectly(component);
-            fireEvent.click(component.getByText('Submit'));
-            fireEvent.click(component.getByText('Next'));
+            fireEvent.click(component.getByText('Check'));
+            fireEvent.click(component.getByText('Next task'));
             expect(component.getByText('world')).toBeDefined();
         }
     });
@@ -109,8 +110,8 @@ Some text that should be ignored.
 
         const hasWorld1 = component.container.innerHTML.indexOf('world') >= 0;
         answerCorrectly(component);
-        fireEvent.click(component.getByText('Submit'));
-        fireEvent.click(component.getByText('Next'));
+        fireEvent.click(component.getByText('Check'));
+        fireEvent.click(component.getByText('Next task'));
         const hasWorld2 = component.container.innerHTML.indexOf('world') >= 0;
         expect(new Set<boolean>([hasWorld1, hasWorld2])).toStrictEqual(new Set<boolean>([true, false]));
     });
@@ -132,25 +133,25 @@ Some text that should be ignored.
         fireEvent.click(component.getByText('goto 0'));
 
         answerCorrectly(component);
-        fireEvent.click(component.getByText('Submit'));
+        fireEvent.click(component.getByText('Check'));
 
         fireEvent.click(component.getByText('goto 1'));
         
-        expect(component.queryByText('Next')).toBeNull();
+        expect(component.queryByText('Next task')).toBeNull();
     });
 
     test('filter link becomes active when clicked', async () => {
         const component = await renderAndWaitForData();
-        fireEvent.click(component.getByText('All'));
+        fireEvent.click(component.getByText('Study: all'));
         expect(currentPath).toBe('/filter');
-        expect(component.getByText('All').className).toBe('active');
+        expect(component.getByText('Study: all').className).toBe('active');
     });
 
     test('filter refreshes stats', async () => {
         const component = await renderAndWaitForData();
 
         answerCorrectly(component);
-        fireEvent.click(component.getByText('Submit'));
+        fireEvent.click(component.getByText('Check'));
 
         expect(component.getByText('100%')).toBeDefined();
     });
@@ -161,7 +162,7 @@ Some text that should be ignored.
         fireEvent.click(component.getByText('goto 0'));
 
         answerCorrectly(component);
-        fireEvent.click(component.getByText('Submit'));
+        fireEvent.click(component.getByText('Check'));
 
         fireEvent.click(component.getByText('goto filter'));
         fireEvent.click(component.getByText('goto 0'));
