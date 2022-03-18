@@ -5,6 +5,8 @@ import { fireEvent, render, RenderResult, screen, cleanup, act } from '@testing-
 import FilterLinkComponent from './FilterLinkComponent';
 import TaskSuggester, { TopicType } from "./TaskSuggester";
 
+import ruLang from './LanguageEn';
+
 describe('FilterLinkComponent', () => {
 
     let taskSuggester!: TaskSuggester;
@@ -86,8 +88,9 @@ describe('FilterLinkComponent', () => {
             topics={taskSuggester.getTopics()}
             isActive={false}
             onClicked={() => {}}
+            lang={ruLang}
         />);
-        expect(component.getByText('All')).toBeDefined();
+        expect(component.getByText('Study: all')).toBeDefined();
     });
 
     test('less than 3, no answers', () => {
@@ -96,8 +99,9 @@ describe('FilterLinkComponent', () => {
             topics={taskSuggester.getTopics()}
             isActive={false}
             onClicked={() => {}}
+            lang={ruLang}
         />);
-        expect(component.getByText('Topic 0, Topic 1 (partial)')).toBeDefined();
+        expect(component.getByText('Study: Topic 0, Topic 1 (partial)')).toBeDefined();
     });
 
     test('more than 3, no answers', () => {
@@ -106,8 +110,9 @@ describe('FilterLinkComponent', () => {
             topics={taskSuggester.getTopics()}
             isActive={false}
             onClicked={() => {}}
+            lang={ruLang}
         />);
-        expect(component.getByText('Topic 0 (partial), Topic 1, Topic 2... (total 4)')).toBeDefined();
+        expect(component.getByText('Study: Topic 0 (partial), Topic 1, Topic 2... (total 4)')).toBeDefined();
     });
 
     test('stats', () => {
@@ -118,6 +123,7 @@ describe('FilterLinkComponent', () => {
             topics={taskSuggester.getTopics()}
             isActive={false}
             onClicked={() => {}}
+            lang={ruLang}
         />);
         expect(component.getByText('50%')).toBeDefined();
     });
@@ -131,6 +137,7 @@ describe('FilterLinkComponent', () => {
             topics={taskSuggester.getTopics()}
             isActive={false}
             onClicked={() => {}}
+            lang={ruLang}
         />);
         expect(component.getByText('50%')).toBeDefined();
     });
@@ -141,8 +148,9 @@ describe('FilterLinkComponent', () => {
             topics={taskSuggester.getTopics()}
             isActive={true}
             onClicked={() => {}}
+            lang={ruLang}
         />);
-        expect(component.getByText('All').className).toBe('active');
+        expect(component.getByText('Study: all').className).toBe('active');
     });
 
     test('onClicked', () => {
@@ -152,8 +160,9 @@ describe('FilterLinkComponent', () => {
             topics={taskSuggester.getTopics()}
             isActive={true}
             onClicked={() => { clicked = true}}
+            lang={ruLang}
         />);
-        fireEvent.click(component.getByText('All'));
+        fireEvent.click(component.getByText('Study: all'));
         expect(clicked).toBeTruthy();
     });
 
