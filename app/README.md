@@ -2,11 +2,13 @@
 
 ### Building the user-facing website
 
-1. `cd app`
+1. `nvm use`
 
-2. `REACT_APP_LANG=ru yarn build`
+2. `cd app`
 
-3. deploy app/build to netlify
+3. `REACT_APP_LANG=ru yarn build`
+
+4. deploy app/build to netlify
 
 ### Building the vscode extention
 

@@ -2,7 +2,7 @@ import React from "react";
 import { expect } from '@jest/globals';
 import { fireEvent, render, RenderResult, screen, cleanup, act } from '@testing-library/react';
 import fetchMock from 'jest-fetch-mock';
-import TrainerAppComponent from './TrainerAppComponent';
+import TrainerAppComponent, {clearAnswersInLocalStorage} from './TrainerAppComponent';
 import { MemoryRouter } from 'react-router';
 import { Link, Route } from "react-router-dom";
 import lang from './LanguageEn';
@@ -47,6 +47,7 @@ describe('TrainerAppComponent', () => {
 
     beforeEach(() => {
         currentPath = '/'
+        clearAnswersInLocalStorage();
         fetchMock.enableMocks();
         fetchMock.mockResponse(`
 
@@ -106,13 +107,16 @@ Some text that should be ignored.
     });
 
     test('next records answer and opens another task', async () => {
+        console.log('here-------------------here-------------');
         const component = await renderAndWaitForData();
 
         const hasWorld1 = component.container.innerHTML.indexOf('world') >= 0;
+        console.log(component.container.innerHTML);
         answerCorrectly(component);
         fireEvent.click(component.getByText('Check'));
         fireEvent.click(component.getByText('Next task'));
         const hasWorld2 = component.container.innerHTML.indexOf('world') >= 0;
+        console.log(component.container.innerHTML);
         expect(new Set<boolean>([hasWorld1, hasWorld2])).toStrictEqual(new Set<boolean>([true, false]));
     });
 

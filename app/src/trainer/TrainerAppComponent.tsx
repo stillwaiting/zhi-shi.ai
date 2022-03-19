@@ -213,7 +213,7 @@ function addAnswerToLocalStorage(taskIdx: number, isCorrect: boolean) {
     }
     window.localStorage.setItem(LOCAL_STORAGE_KEY_ANSWERS, JSON.stringify(answers));
 }
-function clearAnswersInLocalStorage() {
+export function clearAnswersInLocalStorage() {
     window.localStorage.removeItem(LOCAL_STORAGE_KEY_ANSWERS);
 }
 

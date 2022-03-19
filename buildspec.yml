@@ -1,0 +1,27 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 12
+    commands:
+      - pwd
+      - . ./codebuild_nvm_wrapper.sh
+      - node --version
+      - npm install -g yarn
+  pre_build:
+    commands:
+      - node --version
+      - cd app
+      - yarn
+      - yarn test
+  build:
+    commands:
+      - node --version
+      - echo "Building zhi-shi.ai app"
+      - export REACT_APP_LANG=ru
+      - yarn build 
+cache:
+  paths:
+    - /root/.nvm
+    - app/node_modules
