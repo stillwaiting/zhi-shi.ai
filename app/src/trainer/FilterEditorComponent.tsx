@@ -168,7 +168,10 @@ export default function({ topics,  selectedRuleIdxs, onChanged, onClose, highlig
                         </td>
                     </tr>
                     {topics.map(topic => {
-                        return renderTopic(topic, topics, fixedSelectedRuleIdx, onChanged, isExpanded[topic.topicIdx], (newExpanded) => {
+                        return renderTopic(topic, topics, fixedSelectedRuleIdx, (newRuleIdxs: Set<number>) => {
+                            setIsEmpty(newRuleIdxs.size == 0);
+                            return onChanged(newRuleIdxs);
+                        }, isExpanded[topic.topicIdx], (newExpanded) => {
                             isExpanded[topic.topicIdx] = newExpanded;
                             setIsExpanded(JSON.parse(JSON.stringify(isExpanded)));
                             window.localStorage.setItem(LOCAL_STORAGE_KEY_EXPANDED, JSON.stringify(isExpanded));
