@@ -18,7 +18,8 @@ export type StatsType = {
     incorrectlyAnsweredTasks: number;
 }
 
-const ERROR_BUFFER_SIZE = 10; // the number of correct answers that must be given to "unstick" from a particual rule (when a error was made)
+const ERROR_BUFFER_SIZE = 10; // the number of correct answers that must be given to "unstick" from a particual rule 
+                             // (when a error was made)
 
 // Keep RuleType flat to avoid circular dependencies
 export type RuleType = {
@@ -89,6 +90,10 @@ export default class TaskSuggester {
 
     getTopics(): Array<TopicType> {
         return JSON.parse(JSON.stringify(this.topics));
+    }
+
+    getRuleTask(ruleIdx: number, ruleTaskIdx: number): TaskType {
+        return this.tasks[this.rules[ruleIdx].taskIdxs[ruleTaskIdx]];
     }
 
     isTaskInSelectedRules(taskIdx: number): boolean {

@@ -16,7 +16,7 @@ describe('TaskSuggester', () => {
 
 #### Task ignored task
 
-? 0 Hello (foo|bar)
+? -1 Hello (foo|bar)
 ! world
 
 ### Rule -1: empty rule, no tasks
@@ -302,15 +302,20 @@ Some text that should be ignored.
       expect(suggestedTaskIdxs).toStrictEqual(new Set([0,1,2,3,4,5,6,7]));
   });
 
-    test('When answered incorrectly and then correctly several times, the enforcement to answer only specific rule goes away', () => {
-        suggester.recordAnswer(2, false);
-        const suggestedTaskIdxs = new Set<number>();
-        for (let count = 0; count < 900; count ++ ) {
-            const nextTaskIdx = suggester.suggestNextTask().taskIdx;
-            suggester.recordAnswer(nextTaskIdx, true);
-            suggestedTaskIdxs.add(nextTaskIdx);
-        }
-        expect(suggestedTaskIdxs).toStrictEqual(new Set([0,1,2,3,5,4,6,7]));
-    });
+  test('When answered incorrectly and then correctly several times, the enforcement to answer only specific rule goes away', () => {
+      suggester.recordAnswer(2, false);
+      const suggestedTaskIdxs = new Set<number>();
+      for (let count = 0; count < 900; count ++ ) {
+          const nextTaskIdx = suggester.suggestNextTask().taskIdx;
+          suggester.recordAnswer(nextTaskIdx, true);
+          suggestedTaskIdxs.add(nextTaskIdx);
+      }
+      expect(suggestedTaskIdxs).toStrictEqual(new Set([0,1,2,3,5,4,6,7]));
+  });
+
+  test('getRuleTask returns correct data', () => {
+    const task = suggester.getRuleTask(1, 0);
+    expect(task.bodyChunk.question.text).toEqual("2 blah (a|b)");
+  });
 
 });                
