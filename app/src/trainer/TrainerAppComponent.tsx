@@ -5,7 +5,7 @@ import BrowserWarningComponent from "./BrowserWarningComponent";
 import DataProviderComponent from "./DataProviderComponent";
 import TaskSuggester, { TaskType } from "./TaskSuggester";
 import { BrowserRouter as Router, Route, Link, useHistory, useLocation } from "react-router-dom";
-import { buildPath, extractSelectedRuleIdxsFromPath } from "./pathutils";
+import { PathBuilder } from "./PathBuilder";
 import FilterLinkComponent from './FilterLinkComponent';
 import FilterEditorComponent from './FilterEditorComponent';
 import './TrainerAppComponent.scss';
@@ -18,15 +18,15 @@ export default function({ url, lang }: { url:string, lang: Language }) {
     const [rawData, setRawData] = useState<string | undefined>(undefined);
     const [taskSuggester, setTaskSuggester] = useState<TaskSuggester | null>(null);
     const [questionCounter, setQuestionCounter] = useState<number>(0);
-    const [selectedRuleIdxs, setSelectedRuleIdxs] = useState<Set<number>>(extractSelectedRuleIdxsFromPath(location.pathname));
+    const [selectedRuleIdxs, setSelectedRuleIdxs] = useState<Set<number>>(new PathBuilder(location.pathname).getRules());
     const [answeredIndices, setAnsweredIndices] = useState<Array<number>|undefined>(undefined);
     const [canShowNextButton, setCanShowNextButton] = useState<boolean>(true);
 
     const history = useHistory();
 
     useEffect(() => {
-        const newSelectedRules = extractSelectedRuleIdxsFromPath(location.pathname);
-        setSelectedRuleIdxs(extractSelectedRuleIdxsFromPath(location.pathname));
+        const newSelectedRules = new PathBuilder(location.pathname).getRules();
+        setSelectedRuleIdxs(newSelectedRules);
         if (taskSuggester) {
             taskSuggester.setSelectedRuleIdxs(newSelectedRules);
             if (!taskSuggester.isTaskInSelectedRules(task!.taskIdx)) {
@@ -41,19 +41,17 @@ export default function({ url, lang }: { url:string, lang: Language }) {
     }
 
     function getFilterHighlightedTopicIdx(): number {
-        const split = location.pathname.split('/');
-        if (split[split.length - 1] == 'filter') {
-            return -1;
+        if (task) {
+            return task.topicIdx;
         }
-        return parseInt(split[split.length-2]);
+        return -1;
     }
 
     function getFilterHighlightedRuleIdx(): number {
-        const split = location.pathname.split('/');
-        if (split[split.length - 1] == 'filter') {
-            return -1;
+        if (task) {
+            return task.ruleIdx;
         }
-        return parseInt(split[split.length-1]);
+        return -1;
     }
 
     return <div className='TrainerAppComponent'>
@@ -85,7 +83,7 @@ export default function({ url, lang }: { url:string, lang: Language }) {
                             key={questionCounter + (answeredIndices ? 'answered' : '')}
                             lang={lang}
                             onClicked={() => {
-                                history.push(buildPath(selectedRuleIdxs, 'filter'))
+                                history.push(new PathBuilder('').setSelection(selectedRuleIdxs).setScreen('filter').buildPath())
                             }}
                         />
                     </div>
@@ -105,11 +103,11 @@ export default function({ url, lang }: { url:string, lang: Language }) {
 
                             onChanged={(selectedRuleIdxs) => {
                                 setSelectedRuleIdxs(selectedRuleIdxs);
-                                history.push(buildPath(selectedRuleIdxs, 'filter'))
+                                history.push(new PathBuilder('').setSelection(selectedRuleIdxs).setScreen('filter').buildPath())
                             }} 
                             
                             onClose = {() => {
-                                history.push(buildPath(selectedRuleIdxs, ''));
+                                history.push(new PathBuilder('').setSelection(selectedRuleIdxs).buildPath());
                             }} 
                         />
 
@@ -167,11 +165,11 @@ export default function({ url, lang }: { url:string, lang: Language }) {
                             {
                                     taskSuggester!.getTopics()[task.topicIdx].rules.find(rule => rule.ruleIdx == task.ruleIdx)?.nodeTitle.replace("Rule:", "")
                                     }
-                                (<a href={buildPath(selectedRuleIdxs, "filter")}
+                                (<a href={new PathBuilder('').setSelection(selectedRuleIdxs).setScreen('filter').buildPath()}
                                     onClick={
                                         (e) => {
                                             e.preventDefault();
-                                            history.push(buildPath(selectedRuleIdxs, "filter") + '/' + task.topicIdx + '/' + task.ruleIdx);
+                                            history.push(new PathBuilder('').setSelection(selectedRuleIdxs).setScreen('filter').buildPath());
                                         }
                                     }
                                 >{lang.SHOW_IN_TREE}</a>)

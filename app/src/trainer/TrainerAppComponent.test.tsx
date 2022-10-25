@@ -34,8 +34,8 @@ describe('TrainerAppComponent', () => {
                     return null;
                 }}
             />
-            <Link data-testid='goto1' to='/1'>goto 1</Link>
-            <Link data-testid='goto0' to='/0'>goto 0</Link>
+            <Link data-testid='goto1' to='/rules/1'>goto 1</Link>
+            <Link data-testid='goto0' to='/rules/0'>goto 0</Link>
             <Link data-testid='gotofilter' to='/filter'>goto filter</Link>
             <Link data-testid='goto' to='/'>goto root</Link>
             
@@ -94,7 +94,7 @@ Some text that should be ignored.
     });
 
     test('gets selected rules from path', async() => {
-        currentPath = '/1';
+        currentPath = '/rules/1';
         
         const component = await renderAndWaitForData();
 
