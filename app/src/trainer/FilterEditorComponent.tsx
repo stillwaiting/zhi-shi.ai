@@ -64,12 +64,14 @@ function renderTopic(topic: TopicType,
     lang: Language
 ): any {
     const topicCheckState = calculateTopicCheckboxState(topic, selectedRuleIdxs);
+    const onTopicClick = (e?: any) => {
+        e?.preventDefault();
+        onChanged(mapAllToEmpty(recalculateSelectedRuleIdxsOnTopicClick(topics, topic, selectedRuleIdxs), topics))
+    };
     return <tr key={topic.topicIdx} className="topicRow">
         <td className="firstCol">
             <IndeterminateCheckbox state={topicCheckState} debug={topic.title}
-                onClick={() => {
-                    onChanged(mapAllToEmpty(recalculateSelectedRuleIdxsOnTopicClick(topics, topic, selectedRuleIdxs), topics))
-                }}
+                onClick={onTopicClick}
              /> 
                 {/* {topicCheckState == CheckboxState.CHECKED
                     ? "study all"
@@ -81,7 +83,7 @@ function renderTopic(topic: TopicType,
                 } */}
         </td>
         <td>
-            {topic.title} 
+            <span onClick={onTopicClick}>{topic.title}</span>
                 &nbsp; (<a href='#' className='expand' onClick={(e)=> {
                         e.preventDefault();
                         setIsExpanded(!isExpanded);
@@ -92,12 +94,13 @@ function renderTopic(topic: TopicType,
                             {topic.rules.map(rule => {
                                 const state = calculateRuleCheckboxState(rule, selectedRuleIdxs);
 
+                                const onClick = (e?: any) => {
+                                    e.preventDefault();
+                                    onChanged(mapAllToEmpty(recalculateSelectedRuleIdxsOnRuleClick(topics, rule, selectedRuleIdxs), topics))
+                                };
+
                                 return    <tr key={rule.ruleIdx} className={rule.ruleIdx == highlightedRuleIdx ? 'highlighted' : ''}>
-                                    <td><IndeterminateCheckbox state={state} onClick={
-                                        () => {
-                                            onChanged(mapAllToEmpty(recalculateSelectedRuleIdxsOnRuleClick(topics, rule, selectedRuleIdxs), topics))
-                                        } 
-                                    }
+                                    <td><IndeterminateCheckbox state={state} onClick={onClick}
                                     debug={rule.nodeTitle}
                                     /> 
                                         {/* {state == CheckboxState.CHECKED 
@@ -105,7 +108,7 @@ function renderTopic(topic: TopicType,
                                              : null
                                          } */}
                                     </td>
-                                    <td>
+                                    <td onClick={onClick}>
                                         {rule.nodeTitle.replace("Rule: ", "")}
                                     </td>
                                     <td>

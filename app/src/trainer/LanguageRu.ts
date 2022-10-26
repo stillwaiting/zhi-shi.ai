@@ -4,7 +4,7 @@ const LANGUAGE_RU: Language = {
     NEXT_BUTTON: 'Следующее задание',
     STUDY_LINK_PREFIX: 'Учим',
     SUCCESS_STATS_LINK_PREFIX: 'Правильно решено',
-    TOTAL_STATS_LINK_PREFIX: 'всего решено',
+    TOTAL_STATS_LINK_PREFIX: 'Всего решено',
     PARTIAL_LINK: 'выборочно',
     SUBMIT_BUTTON: 'Проверить',
     BACK_TO_STUDY_LINK: 'Назад к учебе',

@@ -63,12 +63,12 @@ export default function ({ selectedRuleIdxs, topics, isActive, onClicked, lang }
                 e.preventDefault();
                 onClicked();
             }
-        }>{lang.STUDY_LINK_PREFIX}: {topicsStr}
+        }>{lang.STUDY_LINK_PREFIX}: {topicsStr.toLocaleLowerCase()}
             <br /><span>
             {percentSuccess >= 0 
                 ? <span>
-                    {lang.SUCCESS_STATS_LINK_PREFIX}: <span className={caculatePercentClassName(percentSuccess)}>{percentSuccess}%</span>;&nbsp;
-                    {lang.TOTAL_STATS_LINK_PREFIX}: <span className={caculatePercentClassName(percentTotal)}>{percentTotal}%</span>;&nbsp;
+                    {lang.SUCCESS_STATS_LINK_PREFIX}: <span className={caculatePercentClassName(percentSuccess)}>{percentSuccess}%</span>.&nbsp;
+                    {lang.TOTAL_STATS_LINK_PREFIX}: <span className={caculatePercentClassName(percentTotal)}>{percentTotal}%</span>&nbsp;
                  </span>
                 : null
             }
