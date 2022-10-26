@@ -53,7 +53,7 @@ export const Context = React.createContext<ContextType>({
 });
 
 export default ( {data, answerIndices, onAnswered, submitLabel }: SentenceWithAnswers) => {
-    const context = useContext(Context);
+        const context = useContext(Context);
     const [dropdownIndices, setSubmittedDropdownIndices] = useState<Array<number>>(
         !!answerIndices 
             ? answerIndices 
@@ -65,15 +65,17 @@ export default ( {data, answerIndices, onAnswered, submitLabel }: SentenceWithAn
                 ? answerIndices 
                 : (context.expandQuestionAnswer ? data.answers.map(answer => 0) : [])
         )
-    , [data.question.text, data.answers.length, context.expandQuestionAnswer]);
+    , [data.question.text, data.answers.length, context.expandQuestionAnswer, answerIndices]);
     return <div key={Math.random()} className="BodyQuestionAnswerComponent">
         <div>
             <BodyQuestionComponent question={data.question.text} onSubmit={(indices) => {
-            setSubmittedDropdownIndices(indices);
-            if (onAnswered) {
-                onAnswered(indices);
-            }
-        }} indices={dropdownIndices} submitLabel={submitLabel} /></div>
+                setSubmittedDropdownIndices(indices);
+                if (onAnswered) {
+                    onAnswered(indices);
+                }
+                }} indices={dropdownIndices} submitLabel={submitLabel} 
+            />
+        </div>
         {dropdownIndices.length > 0 ? renderAnswers(context.currentNodeTitle, data.answers, dropdownIndices) : null}
     </div>
 }

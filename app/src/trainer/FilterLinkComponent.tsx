@@ -51,7 +51,7 @@ export default function ({ selectedRuleIdxs, topics, isActive, onClicked, lang }
             
 
     return <span className='FilterLinkComponent'>
-        <a className={isActive ? 'active' : 'inactive'} href='#' onClick={
+        <a className={isActive ? 'active' : 'inactive'} data-testid='filter-link' href='#' onClick={
             (e) => {
                 e.preventDefault();
                 onClicked();

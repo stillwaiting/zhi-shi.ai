@@ -31,7 +31,7 @@ export type RuleType = {
 
     stats: StatsType;
 
-    lastAnsweredTaskIdxs: {[nodeTitle: string]: Array<number>}; // purged when full for each nodeTitle
+    lastAnsweredTaskIdxs: {[taskNodeTitle: string]: Array<number>}; // purged when full for each nodeTitle
     lastAnsweredNodeTitles: Array<string>; // purged when full
 }
 
@@ -45,6 +45,7 @@ export type TopicType = {
 }
 
 export default class TaskSuggester {
+    
 
     // Each RuleType object has 2 references: one from the topic, another one from the
     // array (with index = RuleType.ruleIdx)
@@ -65,7 +66,7 @@ export default class TaskSuggester {
     private stickyRuleIdx: number = -1;
     private stickyRuleIdxCount: number = 0;
 
-    // When answered incorrecty, it will stick to the rule and set count and stick to it until count is 0
+    // When answered incorrecty, it will stick to the tasks from a particular node
     private stickyTaskNodeTitle: string = '';
     private stickyTaskNodeTitleCount: number = 0;
 
@@ -94,6 +95,10 @@ export default class TaskSuggester {
 
     getRuleTask(ruleIdx: number, ruleTaskIdx: number): TaskType {
         return this.tasks[this.rules[ruleIdx].taskIdxs[ruleTaskIdx]];
+    }
+
+    calculateRuleTaskIdx(nextSuggestedTask: TaskType): number {
+        return this.rules[nextSuggestedTask.ruleIdx].taskIdxs.indexOf(nextSuggestedTask.taskIdx);
     }
 
     isTaskInSelectedRules(taskIdx: number): boolean {
@@ -159,7 +164,7 @@ export default class TaskSuggester {
         }
         rule.lastAnsweredTaskIdxs[task.nodeTitle].push(task.taskIdx);
         this.answeredTaskIdxs.add(task.taskIdx);
-        console.log("Answered tasks of rule " + rule.ruleIdx +": " + 
+        this._debugLog("Answered tasks of rule " + rule.ruleIdx +": " + 
             rule.taskIdxs.filter(taskIdx => this.answeredTaskIdxs.has(taskIdx)).length + " of " + rule.taskIdxs.length
             );
         if (rule.lastAnsweredTaskIdxs[task.nodeTitle].length >= rule.taskIdxs.filter(taskIdx => this.tasks[taskIdx].nodeTitle == task.nodeTitle).length) {
@@ -234,18 +239,18 @@ export default class TaskSuggester {
         this._debugLog("------------");
         
         const suggestedRule = this.suggestNextRule();
-        this._debugLog("DSNT: picked rule " + suggestedRule.ruleIdx + " " + suggestedRule.nodeTitle + " tasks " + suggestedRule.taskIdxs.length);
+        this._debugLog("suggester: picked rule " + suggestedRule.ruleIdx + " " + suggestedRule.nodeTitle + " tasks " + suggestedRule.taskIdxs.length);
 
         const suggestedTitle = this.suggestRuleTaskNodeTitle(suggestedRule);
-        this._debugLog("DSNT: suggested title " + suggestedTitle);
+        this._debugLog("suggester: suggested task node title " + suggestedTitle);
 
         const titleTaskIdxs = suggestedRule.taskIdxs.filter(taskIdx => this.tasks[taskIdx].nodeTitle === suggestedTitle);
-        this._debugLog("DSNT: found " + titleTaskIdxs.length + " from the suggested title ");
+        this._debugLog("suggester: found " + titleTaskIdxs.length + " from the suggested title ");
 
         let notAnsweredTitleTaskIdxs = titleTaskIdxs.filter(taskIdx => 
             (suggestedRule.lastAnsweredTaskIdxs[suggestedTitle] || []).indexOf(taskIdx) < 0
         );
-        this._debugLog("DSNT: found " + notAnsweredTitleTaskIdxs.length + "  non answered tasks");
+        this._debugLog("suggester: found " + notAnsweredTitleTaskIdxs.length + "  non answered tasks");
         if (notAnsweredTitleTaskIdxs.length == 0) {
             notAnsweredTitleTaskIdxs = titleTaskIdxs;
         }

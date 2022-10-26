@@ -1,4 +1,5 @@
 import React from "react";
+import { History } from 'history';
 import { expect } from '@jest/globals';
 import { fireEvent, render, RenderResult, screen, cleanup, act } from '@testing-library/react';
 import fetchMock from 'jest-fetch-mock';
@@ -22,6 +23,7 @@ function answerCorrectly(component: RenderResult) {
 describe('TrainerAppComponent', () => {
 
     let currentPath: string = '/';
+    let currentHistory: History;
 
     async function renderAndWaitForData(): Promise<RenderResult> {
         const component = render(<MemoryRouter initialEntries={[currentPath]}> 
@@ -31,12 +33,12 @@ describe('TrainerAppComponent', () => {
                 path="*"
                 render={({ history, location }) => {
                     currentPath = location.pathname;
+                    currentHistory = history;
                     return null;
                 }}
             />
-            <Link data-testid='goto1' to='/rules/1'>goto 1</Link>
-            <Link data-testid='goto0' to='/rules/0'>goto 0</Link>
-            <Link data-testid='gotofilter' to='/filter'>goto filter</Link>
+            <Link data-testid='goto1' to='/rules/1/task/1-0'>goto 1</Link>
+            <Link data-testid='goto0' to='/rules/0/task/0-0'>goto 0</Link>
             <Link data-testid='goto' to='/'>goto root</Link>
             
             </MemoryRouter>)
@@ -107,16 +109,13 @@ Some text that should be ignored.
     });
 
     test('next records answer and opens another task', async () => {
-        console.log('here-------------------here-------------');
         const component = await renderAndWaitForData();
 
         const hasWorld1 = component.container.innerHTML.indexOf('world') >= 0;
-        console.log(component.container.innerHTML);
         answerCorrectly(component);
         fireEvent.click(component.getByText('Check'));
         fireEvent.click(component.getByText('Next task'));
         const hasWorld2 = component.container.innerHTML.indexOf('world') >= 0;
-        console.log(component.container.innerHTML);
         expect(new Set<boolean>([hasWorld1, hasWorld2])).toStrictEqual(new Set<boolean>([true, false]));
     });
 
@@ -147,7 +146,7 @@ Some text that should be ignored.
     test('filter link becomes active when clicked', async () => {
         const component = await renderAndWaitForData();
         fireEvent.click(component.getByText('Study: all'));
-        expect(currentPath).toBe('/filter');
+        expect(currentPath).toContain('/filter');
         expect(component.getByText('Study: all').className).toBe('active');
     });
 
@@ -168,9 +167,21 @@ Some text that should be ignored.
         answerCorrectly(component);
         fireEvent.click(component.getByText('Check'));
 
-        fireEvent.click(component.getByText('goto filter'));
+        fireEvent.click(component.getByTestId('filter-link'));
         fireEvent.click(component.getByText('goto 0'));
 
         expect(component.getByText('answer 0')).toBeDefined();
-    })
+    });
+
+    test('going back resets the task answer', async () => {
+        const component = await renderAndWaitForData();
+        fireEvent.click(component.getByText('goto 0'));
+        fireEvent.click(component.getByText('goto 1'));
+        answerCorrectly(component);
+        fireEvent.click(component.getByText('Check'));
+        expect(component.queryByText('Next task')).toBeDefined();
+        currentHistory.goBack();
+        await act(async () => { await sleep(1); });
+        expect(component.queryByText('Next task')).toBeNull();
+    });
 });

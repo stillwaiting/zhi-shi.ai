@@ -14,42 +14,66 @@ import { Language } from './LanguageType';
 
 export default function({ url, lang }: { url:string, lang: Language }) {
     const location = useLocation();
-    const [task, setCurrentTask] = useState<TaskType | null>(null);
-    const [rawData, setRawData] = useState<string | undefined>(undefined);
     const [taskSuggester, setTaskSuggester] = useState<TaskSuggester | null>(null);
-    const [questionCounter, setQuestionCounter] = useState<number>(0);
-    const [selectedRuleIdxs, setSelectedRuleIdxs] = useState<Set<number>>(new PathBuilder(location.pathname).getRules());
     const [answeredIndices, setAnsweredIndices] = useState<Array<number>|undefined>(undefined);
     const [canShowNextButton, setCanShowNextButton] = useState<boolean>(true);
+    const [path, setPath] = useState<PathBuilder>(new PathBuilder(location.pathname));
 
     const history = useHistory();
 
+    function getTaskFromPath(builder: PathBuilder) {
+        return (builder.getTask().ruleIdx >= 0 && taskSuggester)
+        ? taskSuggester.getRuleTask(builder.getTask().ruleIdx, builder.getTask().ruleTaskIdx)
+        : null;
+    }
+
+    const currentTask = getTaskFromPath(path);
+
+    function updatePathWithTask(builder: PathBuilder, task: TaskType) {
+        builder.setTask({
+            ruleIdx: task.ruleIdx,
+            ruleTaskIdx: taskSuggester!.calculateRuleTaskIdx(task)
+        })
+    }
+
     useEffect(() => {
-        const newSelectedRules = new PathBuilder(location.pathname).getRules();
-        setSelectedRuleIdxs(newSelectedRules);
+        const newPath = new PathBuilder(location.pathname);
         if (taskSuggester) {
-            taskSuggester.setSelectedRuleIdxs(newSelectedRules);
-            if (!taskSuggester.isTaskInSelectedRules(task!.taskIdx)) {
-                setCurrentTask(taskSuggester.suggestNextTask());
+            taskSuggester.setSelectedRuleIdxs(newPath.getRules());
+            const newPathTask = getTaskFromPath(newPath);
+
+            const newTaskOutsideSelection = newPathTask && !taskSuggester.isTaskInSelectedRules(newPathTask.taskIdx);
+            const newPathWithoutTask = !!!newPathTask;
+
+            if (newTaskOutsideSelection || newPathWithoutTask) {
+                const newTask = taskSuggester.suggestNextTask();
+                
+                updatePathWithTask(newPath, newTask);
                 setAnsweredIndices(undefined);
+                history.push(newPath.buildPath());
+            } else {
+                if (newPathTask && currentTask && currentTask.taskIdx != newPathTask.taskIdx) {
+                    setAnsweredIndices(undefined);
+                }
             }
         }
-    }, [location.pathname, task, taskSuggester, history]);
+        setPath(newPath);
+    }, [location, taskSuggester]);
 
     function isFilterScreen() {
-        return location.pathname.indexOf('filter') >= 0;
+        return path.getScreen() === 'filter';
     }
 
     function getFilterHighlightedTopicIdx(): number {
-        if (task) {
-            return task.topicIdx;
+        if (currentTask) {
+            return currentTask.topicIdx;
         }
         return -1;
     }
 
     function getFilterHighlightedRuleIdx(): number {
-        if (task) {
-            return task.ruleIdx;
+        if (currentTask) {
+            return currentTask.ruleIdx;
         }
         return -1;
     }
@@ -59,14 +83,12 @@ export default function({ url, lang }: { url:string, lang: Language }) {
             <DataProviderComponent url={process.env.PUBLIC_URL + url} onDataProvided={(data) => {
                 try {
                     const taskSuggester = new TaskSuggester(data);
-                    taskSuggester.setSelectedRuleIdxs(selectedRuleIdxs);
+                    setTaskSuggester(taskSuggester);
+                    taskSuggester.setSelectedRuleIdxs(path.getRules());
                     getAnswersFromLocalStorage().forEach((answer) => {
                         taskSuggester.recordAnswer(answer[0], answer[1]);
                     });
-                    taskSuggester.enableDebugLog();
-                    setCurrentTask(taskSuggester.suggestNextTask());
-                    setRawData(data);
-                    setTaskSuggester(taskSuggester);
+                    // taskSuggester.enableDebugLog();
                 } catch (ex) {
                     console.error(ex);
                     throw ex;
@@ -77,13 +99,14 @@ export default function({ url, lang }: { url:string, lang: Language }) {
             {taskSuggester 
                 ? <div className="menu">
                         <FilterLinkComponent 
-                            selectedRuleIdxs={selectedRuleIdxs} 
+                            selectedRuleIdxs={path.getRules()} 
                             topics={taskSuggester.getTopics()} 
                             isActive={isFilterScreen()}
-                            key={questionCounter + (answeredIndices ? 'answered' : '')}
+                            key={(answeredIndices ? 'answered' : '')}
                             lang={lang}
                             onClicked={() => {
-                                history.push(new PathBuilder('').setSelection(selectedRuleIdxs).setScreen('filter').buildPath())
+                                const newPath = new PathBuilder('').populate(path).setScreen('filter');
+                                history.push(newPath.buildPath());
                             }}
                         />
                     </div>
@@ -95,19 +118,20 @@ export default function({ url, lang }: { url:string, lang: Language }) {
                 <div className="FilterEditorComponentContainer">
                         <FilterEditorComponent 
                             topics={taskSuggester!.getTopics()} 
-                            selectedRuleIdxs={selectedRuleIdxs} 
+                            selectedRuleIdxs={path.getRules()} 
                             highlightedTopicIdx={getFilterHighlightedTopicIdx()}
                             highlightedRuleIdx={getFilterHighlightedRuleIdx()}
 
                             lang={lang}
 
                             onChanged={(selectedRuleIdxs) => {
-                                setSelectedRuleIdxs(selectedRuleIdxs);
-                                history.push(new PathBuilder('').setSelection(selectedRuleIdxs).setScreen('filter').buildPath())
+                                const newPath = new PathBuilder('').populate(path).setSelection(selectedRuleIdxs);
+                                history.push(newPath.buildPath())
                             }} 
                             
                             onClose = {() => {
-                                history.push(new PathBuilder('').setSelection(selectedRuleIdxs).buildPath());
+                                const newPath = new PathBuilder('').populate(path).setScreen(undefined);
+                                history.push(newPath.buildPath());
                             }} 
                         />
 
@@ -116,10 +140,7 @@ export default function({ url, lang }: { url:string, lang: Language }) {
                             (e) => {
                                 e.preventDefault();
                                 if (window.confirm(lang.CONFIRM)) {
-                                    setTaskSuggester(new TaskSuggester(rawData!));
-                                    taskSuggester.enableDebugLog();
-                                    taskSuggester.setSelectedRuleIdxs(selectedRuleIdxs);
-                                    setCurrentTask(taskSuggester.suggestNextTask());
+                                    taskSuggester.clearStats();
                                     clearAnswersInLocalStorage();
                                     history.push('/');
                                 }
@@ -133,13 +154,13 @@ export default function({ url, lang }: { url:string, lang: Language }) {
                 : null
             }
 
-            {!isFilterScreen() && task && taskSuggester
+            {!isFilterScreen() && taskSuggester && currentTask
                 ? <div className="questionAnswer">
-                        <BodyQuestionAnswerComponent key={questionCounter} data = {task.bodyChunk} onAnswered={
+                        <BodyQuestionAnswerComponent data = {currentTask.bodyChunk} onAnswered={
                                 (indices) => {
                                     const isCorrect = indices.filter(index => index == 0).length == indices.length;
-                                    taskSuggester!.recordAnswer(task.taskIdx, isCorrect);
-                                    addAnswerToLocalStorage(task.taskIdx, isCorrect);
+                                    taskSuggester.recordAnswer(currentTask.taskIdx, isCorrect);
+                                    addAnswerToLocalStorage(currentTask.taskIdx, isCorrect);
                                     setAnsweredIndices(indices);
                                     setCanShowNextButton(isCorrect);
                                     if (!isCorrect) {
@@ -156,20 +177,23 @@ export default function({ url, lang }: { url:string, lang: Language }) {
 
                         {answeredIndices && canShowNextButton
                             ? <div><button className="next" autoFocus onClick={() => {
-                                setCurrentTask(taskSuggester!.suggestNextTask());
-                                setQuestionCounter(questionCounter + 1);
+                                const nextSuggestedTask = taskSuggester!.suggestNextTask();
+                                const newPath = new PathBuilder('').populate(path);
+                                updatePathWithTask(newPath, nextSuggestedTask);
                                 setAnsweredIndices(undefined);
+                                history.push(newPath.buildPath());
                             }}>{lang.NEXT_BUTTON}</button>
                             
                             <div className="linkToRule">
                             {
-                                    taskSuggester!.getTopics()[task.topicIdx].rules.find(rule => rule.ruleIdx == task.ruleIdx)?.nodeTitle.replace("Rule:", "")
+                                    taskSuggester!.getTopics()[currentTask.topicIdx].rules.find(rule => rule.ruleIdx == currentTask.ruleIdx)?.nodeTitle.replace("Rule:", "")
                                     }
-                                (<a href={new PathBuilder('').setSelection(selectedRuleIdxs).setScreen('filter').buildPath()}
+                                (<a href={new PathBuilder('').populate(path).setScreen('filter').buildPath()}
                                     onClick={
                                         (e) => {
                                             e.preventDefault();
-                                            history.push(new PathBuilder('').setSelection(selectedRuleIdxs).setScreen('filter').buildPath());
+                                            const newPath = new PathBuilder('').populate(path).setScreen('filter');
+                                            history.push(newPath.buildPath());
                                         }
                                     }
                                 >{lang.SHOW_IN_TREE}</a>)

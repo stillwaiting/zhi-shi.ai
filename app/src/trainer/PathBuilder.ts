@@ -57,7 +57,7 @@ export interface SelectedTask{
 
 export class PathBuilder {
 
-    private selection: Set<number> = new Set<number>([]);
+    private rules: Set<number> = new Set<number>([]);
     private selectedTask: SelectedTask = { ruleIdx: -1, ruleTaskIdx: -1 };
     private screen?: string;
 
@@ -65,10 +65,17 @@ export class PathBuilder {
         this.parse(path);
     }
 
+    populate(path: PathBuilder) {
+        this.rules = path.getRules();
+        this.selectedTask = path.getTask();
+        this.screen = path.getScreen();
+        return this;
+    }
+
     buildPath() {
         let path = "";
-        if (this.selection.size > 0) {
-            path += "/rules/" + buildSelectionPathChunk(this.selection);
+        if (this.rules.size > 0) {
+            path += "/rules/" + buildSelectionPathChunk(this.rules);
         }
         if (this.selectedTask.ruleIdx >= 0) {
             path += `/task/${this.selectedTask.ruleIdx}-${this.selectedTask.ruleTaskIdx}`;
@@ -83,11 +90,11 @@ export class PathBuilder {
     }
 
     getRules(): Set<number> {
-        return new Set(JSON.parse(JSON.stringify([...this.selection])));
+        return new Set(JSON.parse(JSON.stringify([...this.rules])));
     }
 
     setSelection(selection: Set<number>) {
-        this.selection =new Set(JSON.parse(JSON.stringify([...selection])));
+        this.rules =new Set(JSON.parse(JSON.stringify([...selection])));
         return this;
     }
 
@@ -95,7 +102,7 @@ export class PathBuilder {
         return this.screen;
     }
 
-    setScreen(screen: string) {
+    setScreen(screen?: string) {
         this.screen = screen;
         return this;
     }
@@ -105,12 +112,12 @@ export class PathBuilder {
     }
 
     setTask(task: SelectedTask) {
-        this.selectedTask = JSON.parse(JSON.stringify(this.selectedTask));
+        this.selectedTask = JSON.parse(JSON.stringify(task));
         return this;
     }
 
     private parse(pathUnsanitised: string) {
-        this.selection.clear();
+        this.rules.clear();
         this.selectedTask = {
             ruleIdx: -1,
             ruleTaskIdx: -1
@@ -131,7 +138,7 @@ export class PathBuilder {
             const pathChunk = splitPath[splitPathIdx];
             const nextPathChunk = splitPath[splitPathIdx + 1];
             if (pathChunk == 'rules') {
-                this.selection = parseSelectionPathChunk(nextPathChunk);
+                this.rules = parseSelectionPathChunk(nextPathChunk);
             }
             if (pathChunk == 'task') {
                 const [ruleIdx, ruleTaskIdx] = nextPathChunk.split('-');

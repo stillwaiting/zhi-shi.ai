@@ -87,4 +87,13 @@ describe('pathutils', () => {
             });
         });
     });
+
+    describe('setters', () => {
+        it('should set all the things', () => {
+            const pathBuilder = new PathBuilder('');
+            expect(
+                pathBuilder.setScreen('foo').setSelection(new Set([1,2])).setTask({ruleIdx:3, ruleTaskIdx: 4}).buildPath()
+            ).toEqual('/rules/1-2/task/3-4/foo');
+        });
+    })
 });
