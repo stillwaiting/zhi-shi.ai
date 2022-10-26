@@ -95,7 +95,7 @@ function renderTopic(topic: TopicType,
                                 const state = calculateRuleCheckboxState(rule, selectedRuleIdxs);
 
                                 const onClick = (e?: any) => {
-                                    e.preventDefault();
+                                    e?.preventDefault();
                                     onChanged(mapAllToEmpty(recalculateSelectedRuleIdxsOnRuleClick(topics, rule, selectedRuleIdxs), topics))
                                 };
 
