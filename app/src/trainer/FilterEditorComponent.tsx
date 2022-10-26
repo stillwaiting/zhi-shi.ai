@@ -27,18 +27,29 @@ enum SortEnum {
 
 const LOCAL_STORAGE_KEY_EXPANDED = 'expanded';
 
-function statsToPct(stats: StatsType): number | undefined {
+function successfulRateStatsToPct(stats: StatsType): number | undefined {
     if (stats.correctlyAnsweredTaskIdxs.size + stats.incorrectlyAnsweredTaskIdxs.size > 0) {
         return Math.floor(100 * stats.correctlyAnsweredTaskIdxs.size / (stats.correctlyAnsweredTaskIdxs.size + stats.incorrectlyAnsweredTaskIdxs.size));
     } 
 }
 
+function totalStatsToPct(stats: StatsType): number | undefined {
+    if (stats.totalTasks) {
+        return Math.floor(100 * (stats.correctlyAnsweredTaskIdxs.size + stats.incorrectlyAnsweredTaskIdxs.size) / stats.totalTasks);
+    } 
+}
+
 
 function renderStats(stats: StatsType): React.ReactNode {
-    const maybePct = statsToPct(stats);
-    return <span>
-        {maybePct !== undefined ? <span className={caculatePercentClassName(maybePct)}>{maybePct}%</span> : ''}
-    </span>
+    const successRatePct = successfulRateStatsToPct(stats);
+    const totalPct = totalStatsToPct(stats);
+    return  (successRatePct !== undefined && totalPct !== undefined)
+            ? <span>
+                <span className={caculatePercentClassName(successRatePct)}>{successRatePct}%</span>&nbsp;/&nbsp;
+                <span className={caculatePercentClassName(totalPct)}>{totalPct}%</span>
+             </span>
+            : null; 
+
 }
 
 
@@ -127,7 +138,7 @@ export default function({ topics,  selectedRuleIdxs, onChanged, onClose, highlig
 
     if (sortOrder != SortEnum.NATURAL) {
         sortedTopics.sort((a, b) => 
-            (statsToPct(a.stats) || 0) - (statsToPct(b.stats) || 0)
+            (successfulRateStatsToPct(a.stats) || 0) - (successfulRateStatsToPct(b.stats) || 0)
         );
     }
 
@@ -160,6 +171,7 @@ export default function({ topics,  selectedRuleIdxs, onChanged, onClose, highlig
                             />
                         </td>
                         <td colSpan={2} className="sorting">
+                            {lang.SUCCESS_STATS_LINK_PREFIX} % / {lang.TOTAL_STATS_LINK_PREFIX} %
                                 {/* <select>
                                     <option value={SortEnum.NATURAL}>natural order</option>
                                     <option value={SortEnum.WORST_TO_BEST}>from worst to best</option>
