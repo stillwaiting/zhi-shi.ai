@@ -37,18 +37,25 @@ export default function ({ selectedRuleIdxs, topics, isActive, onClicked, lang }
 
     let correctlyAnswered = 0;
     let incorrectlyAnswered = 0;
+    let totalAnswered = 0;
+    let totalTasks = 0;
     selectedTopics.forEach(topic =>
         topic.rules.forEach(rule => {
             if (selectedRuleIdxs.size == 0 || selectedRuleIdxs.has(rule.ruleIdx)) {
                 correctlyAnswered += rule.stats.correctlyAnsweredTaskIdxs.size;
                 incorrectlyAnswered += rule.stats.incorrectlyAnsweredTaskIdxs.size;
+                totalAnswered += rule.stats.correctlyAnsweredTaskIdxs.size + rule.stats.incorrectlyAnsweredTaskIdxs.size;
             }
+            totalTasks += rule.stats.totalTasks;
         }));
 
     const percentSuccess = correctlyAnswered + incorrectlyAnswered > 0 
             ? Math.floor(correctlyAnswered * 100 / (correctlyAnswered + incorrectlyAnswered))
-            : -1;
+            : 0;
             
+    const percentTotal = totalTasks > 0
+            ? Math.floor(totalAnswered * 100 / totalTasks)
+            : 0;
 
     return <span className='FilterLinkComponent'>
         <a className={isActive ? 'active' : 'inactive'} data-testid='filter-link' href='#' onClick={
@@ -59,7 +66,10 @@ export default function ({ selectedRuleIdxs, topics, isActive, onClicked, lang }
         }>{lang.STUDY_LINK_PREFIX}: {topicsStr}
             <br /><span>
             {percentSuccess >= 0 
-                ? <span> {lang.STATS_LINK_PREFIX}: <span className={caculatePercentClassName(percentSuccess)}>{percentSuccess}%</span></span>
+                ? <span>
+                    {lang.SUCCESS_STATS_LINK_PREFIX}: <span className={caculatePercentClassName(percentSuccess)}>{percentSuccess}%</span>;&nbsp;
+                    {lang.TOTAL_STATS_LINK_PREFIX}: <span className={caculatePercentClassName(percentTotal)}>{percentTotal}%</span>;&nbsp;
+                 </span>
                 : null
             }
             &nbsp;</span>

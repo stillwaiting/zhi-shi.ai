@@ -3,7 +3,8 @@ export interface Language {
     TOTAL: string;
     NEXT_BUTTON: string,
     STUDY_LINK_PREFIX: string,
-    STATS_LINK_PREFIX: string,
+    SUCCESS_STATS_LINK_PREFIX: string,
+    TOTAL_STATS_LINK_PREFIX: string,
     PARTIAL_LINK: string
     SUBMIT_BUTTON: string,
     BACK_TO_STUDY_LINK: string,
