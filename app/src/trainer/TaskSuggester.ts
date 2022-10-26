@@ -1,6 +1,7 @@
 import { timeStamp } from 'node:console';
 import { threadId } from 'node:worker_threads';
 import mdParse from '../md/MarkdownParser';
+import * as _ from "lodash";
 import { isMarkdownBodyChunkQuestionAnswers, MarkdownBodyChunkQuestionAnswers, MarkdownNode } from '../md/types';
 
 // Keep TaskType flat to avoid circular dependencies
@@ -14,8 +15,8 @@ export type TaskType = {
 
 export type StatsType = {
     totalTasks: number;
-    correctlyAnsweredTasks: number;
-    incorrectlyAnsweredTasks: number;
+    correctlyAnsweredTaskIdxs: Set<number>;
+    incorrectlyAnsweredTaskIdxs: Set<number>;
 }
 
 const ERROR_BUFFER_SIZE = 10; // the number of correct answers that must be given to "unstick" from a particual rule 
@@ -90,7 +91,7 @@ export default class TaskSuggester {
     }
 
     getTopics(): Array<TopicType> {
-        return JSON.parse(JSON.stringify(this.topics));
+        return _.cloneDeep(this.topics);
     }
 
     getRuleTask(ruleIdx: number, ruleTaskIdx: number): TaskType {
@@ -181,22 +182,28 @@ export default class TaskSuggester {
 
     private recordAnswerStats(task: TaskType, rule: RuleType, topic: TopicType, isCorrect: boolean) {
         if (isCorrect) {
-            rule.stats.correctlyAnsweredTasks ++;
-            topic.stats.correctlyAnsweredTasks ++;
+            rule.stats.correctlyAnsweredTaskIdxs.add(task.taskIdx);
+            topic.stats.correctlyAnsweredTaskIdxs.add(task.taskIdx);
+
+            rule.stats.incorrectlyAnsweredTaskIdxs.delete(task.taskIdx);
+            topic.stats.incorrectlyAnsweredTaskIdxs.delete(task.taskIdx);
         } else {
-            rule.stats.incorrectlyAnsweredTasks ++;
-            topic.stats.incorrectlyAnsweredTasks ++; 
+            rule.stats.correctlyAnsweredTaskIdxs.delete(task.taskIdx);
+            topic.stats.correctlyAnsweredTaskIdxs.delete(task.taskIdx);
+
+            rule.stats.incorrectlyAnsweredTaskIdxs.add(task.taskIdx);
+            topic.stats.incorrectlyAnsweredTaskIdxs.add(task.taskIdx);; 
         }
     }
 
     clearStats() {
         this.topics.forEach((topic) => {
-            topic.stats.correctlyAnsweredTasks = 0;
-            topic.stats.incorrectlyAnsweredTasks = 0;
+            topic.stats.correctlyAnsweredTaskIdxs.clear();
+            topic.stats.incorrectlyAnsweredTaskIdxs.clear();
         });
         this.rules.forEach((rule) => {
-            rule.stats.correctlyAnsweredTasks = 0;
-            rule.stats.incorrectlyAnsweredTasks = 0;
+            rule.stats.correctlyAnsweredTaskIdxs.clear();
+            rule.stats.incorrectlyAnsweredTaskIdxs.clear();
             rule.lastAnsweredTaskIdxs = {};
             rule.lastAnsweredNodeTitles = [];
         });
@@ -341,8 +348,8 @@ export default class TaskSuggester {
                 title: node.title,
                 stats: {
                     totalTasks: 0,
-                    correctlyAnsweredTasks: 0,
-                    incorrectlyAnsweredTasks: 0
+                    correctlyAnsweredTaskIdxs: new Set(),
+                    incorrectlyAnsweredTaskIdxs: new Set()
                 },
                 rules: []
             };
@@ -365,8 +372,8 @@ export default class TaskSuggester {
             nodeTitle: ruleNode.title,
             stats: {
                 totalTasks: 0,
-                correctlyAnsweredTasks: 0,
-                incorrectlyAnsweredTasks: 0
+                correctlyAnsweredTaskIdxs: new Set(),
+                incorrectlyAnsweredTaskIdxs: new Set()
             },
             taskIdxs: [],
             lastAnsweredNodeTitles: [],

@@ -112,8 +112,8 @@ Some text that should be ignored.
             "title": "SubNode 1",
             "stats": {
               "totalTasks": 6,
-              "correctlyAnsweredTasks": 0,
-              "incorrectlyAnsweredTasks": 0
+              "correctlyAnsweredTaskIdxs": new Set([]),
+              "incorrectlyAnsweredTaskIdxs": new Set([])
             },
             "rules": [
               {
@@ -122,8 +122,8 @@ Some text that should be ignored.
                 "nodeTitle": "Rule 0: single tasks node",
                 "stats": {
                   "totalTasks": 2,
-                  "correctlyAnsweredTasks": 0,
-                  "incorrectlyAnsweredTasks": 0
+                  "correctlyAnsweredTaskIdxs": new Set([]),
+                  "incorrectlyAnsweredTaskIdxs": new Set([])
                 },
                 "taskIdxs": [
                   0,
@@ -138,8 +138,8 @@ Some text that should be ignored.
                 "nodeTitle": "Rule 1: several task nodes",
                 "stats": {
                   "totalTasks": 4,
-                  "correctlyAnsweredTasks": 0,
-                  "incorrectlyAnsweredTasks": 0
+                  "correctlyAnsweredTaskIdxs": new Set([]),
+                  "incorrectlyAnsweredTaskIdxs": new Set([])
                 },
                 "taskIdxs": [
                   2,
@@ -157,8 +157,8 @@ Some text that should be ignored.
             "title": "Root 2",
             "stats": {
               "totalTasks": 2,
-              "correctlyAnsweredTasks": 0,
-              "incorrectlyAnsweredTasks": 0
+              "correctlyAnsweredTaskIdxs": new Set([]),
+              "incorrectlyAnsweredTaskIdxs": new Set([])
             },
             "rules": [
               {
@@ -167,8 +167,8 @@ Some text that should be ignored.
                 "nodeTitle": "Rule 2: another root",
                 "stats": {
                   "totalTasks": 2,
-                  "correctlyAnsweredTasks": 0,
-                  "incorrectlyAnsweredTasks": 0
+                  "correctlyAnsweredTaskIdxs": new Set([]),
+                  "incorrectlyAnsweredTaskIdxs": new Set([])
                 },
                 "taskIdxs": [
                   6,
@@ -218,15 +218,15 @@ Some text that should be ignored.
 
     test('Answer updates statistis', () => {
         suggester.recordAnswer(0, true);
-        expect(suggester.getTopics()[0].stats.correctlyAnsweredTasks).toBe(1);
-        expect(suggester.getTopics()[0].rules[0].stats.correctlyAnsweredTasks).toBe(1);
+        expect(suggester.getTopics()[0].stats.correctlyAnsweredTaskIdxs.size).toBe(1);
+        expect(suggester.getTopics()[0].rules[0].stats.correctlyAnsweredTaskIdxs.size).toBe(1);
     });
 
     test('Clean statistics cleans statistis', () => {
       suggester.recordAnswer(0, true);
       suggester.clearStats();
-      expect(suggester.getTopics()[0].stats.correctlyAnsweredTasks).toBe(0);
-      expect(suggester.getTopics()[0].rules[1].stats.correctlyAnsweredTasks).toBe(0);
+      expect(suggester.getTopics()[0].stats.correctlyAnsweredTaskIdxs.size).toBe(0);
+      expect(suggester.getTopics()[0].rules[1].stats.correctlyAnsweredTaskIdxs.size).toBe(0);
     });
 
     test('Round-robins through rules', () => {

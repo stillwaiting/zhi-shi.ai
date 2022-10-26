@@ -40,8 +40,8 @@ export default function ({ selectedRuleIdxs, topics, isActive, onClicked, lang }
     selectedTopics.forEach(topic =>
         topic.rules.forEach(rule => {
             if (selectedRuleIdxs.size == 0 || selectedRuleIdxs.has(rule.ruleIdx)) {
-                correctlyAnswered += rule.stats.correctlyAnsweredTasks;
-                incorrectlyAnswered += rule.stats.incorrectlyAnsweredTasks;
+                correctlyAnswered += rule.stats.correctlyAnsweredTaskIdxs.size;
+                incorrectlyAnswered += rule.stats.incorrectlyAnsweredTaskIdxs.size;
             }
         }));
 

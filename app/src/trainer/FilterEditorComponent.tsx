@@ -28,8 +28,8 @@ enum SortEnum {
 const LOCAL_STORAGE_KEY_EXPANDED = 'expanded';
 
 function statsToPct(stats: StatsType): number | undefined {
-    if (stats.correctlyAnsweredTasks + stats.incorrectlyAnsweredTasks > 0) {
-        return Math.floor(100 * stats.correctlyAnsweredTasks / (stats.correctlyAnsweredTasks + stats.incorrectlyAnsweredTasks));
+    if (stats.correctlyAnsweredTaskIdxs.size + stats.incorrectlyAnsweredTaskIdxs.size > 0) {
+        return Math.floor(100 * stats.correctlyAnsweredTaskIdxs.size / (stats.correctlyAnsweredTaskIdxs.size + stats.incorrectlyAnsweredTaskIdxs.size));
     } 
 }
 
