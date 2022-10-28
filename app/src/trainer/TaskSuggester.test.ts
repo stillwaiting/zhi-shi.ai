@@ -302,6 +302,17 @@ Some text that should be ignored.
       expect(suggestedTaskIdxs).toStrictEqual(new Set([0,1,2,3,4,5,6,7]));
   });
 
+  test('Rule cleanup removes items only of the selected rule', () => {
+    suggester.recordAnswer(0, false);
+    suggester.recordAnswer(1, true);
+    suggester.recordAnswer(2, false);
+    suggester.recordAnswer(3, true);
+
+    suggester.clearStatsForRules(new Set([0]));
+    expect(suggester.getTopics()[0].stats.correctlyAnsweredTaskIdxs).toStrictEqual(new Set([3]));
+    expect(suggester.getTopics()[0].stats.incorrectlyAnsweredTaskIdxs).toStrictEqual(new Set([2]));
+});
+
   test('When answered incorrectly and then correctly several times, the enforcement to answer only specific rule goes away', () => {
       suggester.recordAnswer(2, false);
       const suggestedTaskIdxs = new Set<number>();

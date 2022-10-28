@@ -8,6 +8,7 @@ const LANGUAGE_RU: Language = {
     PARTIAL_LINK: 'выборочно',
     SUBMIT_BUTTON: 'Проверить',
     BACK_TO_STUDY_LINK: 'Назад к учебе',
+    RESET_STATS_LINK: 'Сбросить статистику для % правил.',
     RESET_ALL_STATS_LINK: 'Сбросить всю статистику!',
     SELECT_TOPICS_HEADER: 'Выберите темы для изучения',
     EXPAND: 'развернуть',

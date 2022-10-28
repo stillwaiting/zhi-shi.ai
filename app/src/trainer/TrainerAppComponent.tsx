@@ -136,6 +136,21 @@ export default function({ url, lang }: { url:string, lang: Language }) {
                         />
 
                     <div className="resetStats">
+                        {path.getRules().size == 0 ? null : 
+                            <div>
+                                <a href='#' onClick={
+                                    (e) => {
+                                        e.preventDefault();
+                                        if (window.confirm(lang.CONFIRM)) {
+                                            taskSuggester.clearStatsForRules(path.getRules());
+                                            clearAnswersInLocalStorageForRules(path.getRules(), taskSuggester);
+                                            history.push(location.pathname + "?_=" + Math.random());
+                                        }
+                                    }
+                                }>{lang.RESET_STATS_LINK.replace('%','' + path.getRules().size)}</a> <br /><br />
+                            </div>
+                        }
+                    
                         <a href='#' onClick={
                             (e) => {
                                 e.preventDefault();
@@ -237,6 +252,14 @@ function addAnswerToLocalStorage(taskIdx: number, isCorrect: boolean) {
 }
 export function clearAnswersInLocalStorage() {
     window.localStorage.removeItem(LOCAL_STORAGE_KEY_ANSWERS);
+}
+
+function clearAnswersInLocalStorageForRules(rules: Set<number>, taskSuggester: TaskSuggester) {
+    const answers = getAnswersFromLocalStorage().filter(answer => {
+        const ruleIdx = taskSuggester.getTaskRuleIdx(answer[0]);
+        return !rules.has(ruleIdx);
+    });
+    window.localStorage.setItem(LOCAL_STORAGE_KEY_ANSWERS, JSON.stringify(answers));
 }
 
 function getAnswersFromLocalStorage(): Array<[number, boolean]> {

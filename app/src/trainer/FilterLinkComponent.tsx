@@ -45,8 +45,8 @@ export default function ({ selectedRuleIdxs, topics, isActive, onClicked, lang }
                 correctlyAnswered += rule.stats.correctlyAnsweredTaskIdxs.size;
                 incorrectlyAnswered += rule.stats.incorrectlyAnsweredTaskIdxs.size;
                 totalAnswered += rule.stats.correctlyAnsweredTaskIdxs.size + rule.stats.incorrectlyAnsweredTaskIdxs.size;
+                totalTasks += rule.stats.totalTasks;
             }
-            totalTasks += rule.stats.totalTasks;
         }));
 
     const percentSuccess = correctlyAnswered + incorrectlyAnswered > 0 

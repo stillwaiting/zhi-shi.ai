@@ -8,6 +8,7 @@ export interface Language {
     PARTIAL_LINK: string
     SUBMIT_BUTTON: string,
     BACK_TO_STUDY_LINK: string,
+    RESET_STATS_LINK: string,
     RESET_ALL_STATS_LINK: string,
     SELECT_TOPICS_HEADER: string,
     EXPAND: string,

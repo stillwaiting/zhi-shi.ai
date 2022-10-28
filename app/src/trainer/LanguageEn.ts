@@ -8,6 +8,7 @@ const LANGUAGE_EN: Language = {
     PARTIAL_LINK: 'partial',
     SUBMIT_BUTTON: 'Check',
     BACK_TO_STUDY_LINK: 'Back to study',
+    RESET_STATS_LINK: 'Сбросить статистику для % правил.',
     RESET_ALL_STATS_LINK: 'Purge statistics!',
     SELECT_TOPICS_HEADER: 'Select themes for studying',
     EXPAND: 'expand',

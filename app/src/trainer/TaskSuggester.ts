@@ -46,6 +46,7 @@ export type TopicType = {
 }
 
 export default class TaskSuggester {
+
     
 
     // Each RuleType object has 2 references: one from the topic, another one from the
@@ -211,6 +212,20 @@ export default class TaskSuggester {
         this.stickyRuleIdx = -1;
         this.stickyTaskNodeTitle = '';
     }
+
+    clearStatsForRules(ruleIdxs: Set<number>) {
+        ruleIdxs.forEach((ruleIdx) => {
+            const rule = this.rules[ruleIdx];
+            rule.stats.correctlyAnsweredTaskIdxs.forEach(taskIdx => {
+                this.topics[rule.topicIdx].stats.correctlyAnsweredTaskIdxs.delete(taskIdx);
+            });
+            rule.stats.incorrectlyAnsweredTaskIdxs.forEach(taskIdx => {
+                this.topics[rule.topicIdx].stats.incorrectlyAnsweredTaskIdxs.delete(taskIdx);
+            })
+            rule.stats.correctlyAnsweredTaskIdxs.clear();
+            rule.stats.incorrectlyAnsweredTaskIdxs.clear();
+        });
+    }
     
     suggestNextTask(): TaskType {
         const task1 = this.doSuggestNextTask();
@@ -321,6 +336,9 @@ export default class TaskSuggester {
 
     enableDebugLog() {
         this.debugLog = true;
+    }
+    getTaskRuleIdx(taskIdx: number): number {
+        return this.tasks[taskIdx].ruleIdx;
     }
 
     private _debugLog(str: String) {
