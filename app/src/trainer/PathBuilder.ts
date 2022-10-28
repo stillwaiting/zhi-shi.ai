@@ -50,15 +50,10 @@ function parseSelectionPathChunk(path: string): Set<number> {
     return new Set<number>([]);
 }
 
-export interface SelectedTask{
-    ruleIdx: number;
-    ruleTaskIdx: number;
-}
-
 export class PathBuilder {
 
     private rules: Set<number> = new Set<number>([]);
-    private selectedTask: SelectedTask = { ruleIdx: -1, ruleTaskIdx: -1 };
+    private selectedTaskIdx: number = -1;
     private screen?: string;
 
     constructor(path: string) {
@@ -67,7 +62,7 @@ export class PathBuilder {
 
     populate(path: PathBuilder) {
         this.rules = path.getRules();
-        this.selectedTask = path.getTask();
+        this.selectedTaskIdx = path.getTaskIdx();
         this.screen = path.getScreen();
         return this;
     }
@@ -77,8 +72,8 @@ export class PathBuilder {
         if (this.rules.size > 0) {
             path += "/rules/" + buildSelectionPathChunk(this.rules);
         }
-        if (this.selectedTask.ruleIdx >= 0) {
-            path += `/task/${this.selectedTask.ruleIdx}-${this.selectedTask.ruleTaskIdx}`;
+        if (this.selectedTaskIdx >= 0) {
+            path += `/task/${this.selectedTaskIdx}`;
         }
         if (this.screen) {
             path += "/" + this.screen;
@@ -107,21 +102,22 @@ export class PathBuilder {
         return this;
     }
 
-    getTask(): SelectedTask {
-        return JSON.parse(JSON.stringify(this.selectedTask));
+    /**
+     * 
+     * @returns -1 when none selected
+     */
+    getTaskIdx(): number {
+        return this.selectedTaskIdx;
     }
 
-    setTask(task: SelectedTask) {
-        this.selectedTask = JSON.parse(JSON.stringify(task));
+    setTaskIdx(taskIdx: number) {
+        this.selectedTaskIdx = taskIdx;
         return this;
     }
 
     private parse(pathUnsanitised: string) {
         this.rules.clear();
-        this.selectedTask = {
-            ruleIdx: -1,
-            ruleTaskIdx: -1
-        };
+        this.selectedTaskIdx = -1;
         this.screen = undefined;
 
         let path = pathUnsanitised.toLowerCase().trim();
@@ -141,11 +137,7 @@ export class PathBuilder {
                 this.rules = parseSelectionPathChunk(nextPathChunk);
             }
             if (pathChunk == 'task') {
-                const [ruleIdx, ruleTaskIdx] = nextPathChunk.split('-');
-                this.selectedTask = {
-                    ruleIdx: Number(ruleIdx),
-                    ruleTaskIdx: Number(ruleTaskIdx)
-                };
+                this.selectedTaskIdx = Number(nextPathChunk);
             }
         }
         if ((splitPath.length%2) === 1) {

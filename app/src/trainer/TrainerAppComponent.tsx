@@ -22,18 +22,15 @@ export default function({ url, lang }: { url:string, lang: Language }) {
     const history = useHistory();
 
     function getTaskFromPath(builder: PathBuilder) {
-        return (builder.getTask().ruleIdx >= 0 && taskSuggester)
-        ? taskSuggester.getRuleTask(builder.getTask().ruleIdx, builder.getTask().ruleTaskIdx)
+        return (builder.getTaskIdx() >= 0 && taskSuggester)
+        ? taskSuggester.getTask(builder.getTaskIdx())
         : null;
     }
 
     const currentTask = getTaskFromPath(path);
 
     function updatePathWithTask(builder: PathBuilder, task: TaskType) {
-        builder.setTask({
-            ruleIdx: task.ruleIdx,
-            ruleTaskIdx: taskSuggester!.calculateRuleTaskIdx(task)
-        })
+        builder.setTaskIdx(task.taskIdx)
     }
 
     useEffect(() => {

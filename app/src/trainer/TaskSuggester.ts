@@ -95,8 +95,8 @@ export default class TaskSuggester {
         return _.cloneDeep(this.topics);
     }
 
-    getRuleTask(ruleIdx: number, ruleTaskIdx: number): TaskType {
-        return this.tasks[this.rules[ruleIdx].taskIdxs[ruleTaskIdx]];
+    getTask(taskIdx: number): TaskType {
+        return _.cloneDeep(this.tasks[taskIdx]);
     }
 
     calculateRuleTaskIdx(nextSuggestedTask: TaskType): number {

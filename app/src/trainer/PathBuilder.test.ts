@@ -81,10 +81,7 @@ describe('pathutils', () => {
         });
 
         test('parses task', () => {
-            expect(new PathBuilder('/task/1-2/settings').getTask()).toStrictEqual({
-                ruleIdx: 1,
-                ruleTaskIdx: 2
-            });
+            expect(new PathBuilder('/task/1/settings').getTaskIdx()).toStrictEqual(1);
         });
     });
 
@@ -92,8 +89,8 @@ describe('pathutils', () => {
         it('should set all the things', () => {
             const pathBuilder = new PathBuilder('');
             expect(
-                pathBuilder.setScreen('foo').setSelection(new Set([1,2])).setTask({ruleIdx:3, ruleTaskIdx: 4}).buildPath()
-            ).toEqual('/rules/1-2/task/3-4/foo');
+                pathBuilder.setScreen('foo').setSelection(new Set([1,2])).setTaskIdx(4).buildPath()
+            ).toEqual('/rules/1-2/task/4/foo');
         });
     })
 });
