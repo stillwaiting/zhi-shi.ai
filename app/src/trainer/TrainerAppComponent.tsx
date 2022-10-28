@@ -12,10 +12,10 @@ import './TrainerAppComponent.scss';
 import { config } from "node:process";
 import { Language } from './LanguageType';
 
-export default function({ url, lang }: { url:string, lang: Language }) {
+export function TrainerAppComponent({ lang, taskSuggester }: { lang: Language, taskSuggester: TaskSuggester }) {
     const location = useLocation();
-    const [taskSuggester, setTaskSuggester] = useState<TaskSuggester | null>(null);
     const [answeredIndices, setAnsweredIndices] = useState<Array<number>|undefined>(undefined);
+    const [answersReplayed, setAnswersReplayed] = useState<boolean>(false);
     const [canShowNextButton, setCanShowNextButton] = useState<boolean>(true);
     const [path, setPath] = useState<PathBuilder>(new PathBuilder(location.pathname));
 
@@ -34,24 +34,32 @@ export default function({ url, lang }: { url:string, lang: Language }) {
     }
 
     useEffect(() => {
+        if (!answersReplayed) {
+            getAnswersFromLocalStorage().forEach((answer) => {
+                taskSuggester.recordAnswer(answer[0], answer[1]);
+            });
+            setAnswersReplayed(true);
+        }
+    });
+
+    useEffect(() => {
         const newPath = new PathBuilder(location.pathname);
-        if (taskSuggester) {
-            taskSuggester.setSelectedRuleIdxs(newPath.getRules());
-            const newPathTask = getTaskFromPath(newPath);
 
-            const newTaskOutsideSelection = newPathTask && !taskSuggester.isTaskInSelectedRules(newPathTask.taskIdx);
-            const newPathWithoutTask = !!!newPathTask;
+        taskSuggester.setSelectedRuleIdxs(newPath.getRules());
+        const newPathTask = getTaskFromPath(newPath);
 
-            if (newTaskOutsideSelection || newPathWithoutTask) {
-                const newTask = taskSuggester.suggestNextTask();
-                
-                updatePathWithTask(newPath, newTask);
+        const newTaskOutsideSelection = newPathTask && !taskSuggester.isTaskInSelectedRules(newPathTask.taskIdx);
+        const newPathWithoutTask = !!!newPathTask;
+
+        if (newTaskOutsideSelection || newPathWithoutTask) {
+            const newTask = taskSuggester.suggestNextTask();
+            
+            updatePathWithTask(newPath, newTask);
+            setAnsweredIndices(undefined);
+            history.push(newPath.buildPath());
+        } else {
+            if (newPathTask && currentTask && currentTask.taskIdx != newPathTask.taskIdx) {
                 setAnsweredIndices(undefined);
-                history.push(newPath.buildPath());
-            } else {
-                if (newPathTask && currentTask && currentTask.taskIdx != newPathTask.taskIdx) {
-                    setAnsweredIndices(undefined);
-                }
             }
         }
         setPath(newPath);
@@ -75,42 +83,22 @@ export default function({ url, lang }: { url:string, lang: Language }) {
         return -1;
     }
 
-    return <div className='TrainerAppComponent'>
-            <BrowserWarningComponent />
-            <DataProviderComponent url={process.env.PUBLIC_URL + url} onDataProvided={(data) => {
-                try {
-                    const taskSuggester = new TaskSuggester(data);
-                    setTaskSuggester(taskSuggester);
-                    taskSuggester.setSelectedRuleIdxs(path.getRules());
-                    getAnswersFromLocalStorage().forEach((answer) => {
-                        taskSuggester.recordAnswer(answer[0], answer[1]);
-                    });
-                    // taskSuggester.enableDebugLog();
-                } catch (ex) {
-                    console.error(ex);
-                    throw ex;
-                }
-            }}
-            />
+    return <div>
+                <div className="menu">
+                    <FilterLinkComponent 
+                        selectedRuleIdxs={path.getRules()} 
+                        topics={taskSuggester.getTopics()} 
+                        isActive={isFilterScreen()}
+                        key={(answeredIndices ? 'answered' : '')}
+                        lang={lang}
+                        onClicked={() => {
+                            const newPath = new PathBuilder('').populate(path).setScreen('filter');
+                            history.push(newPath.buildPath());
+                        }}
+                    />
+                </div>
 
-            {taskSuggester 
-                ? <div className="menu">
-                        <FilterLinkComponent 
-                            selectedRuleIdxs={path.getRules()} 
-                            topics={taskSuggester.getTopics()} 
-                            isActive={isFilterScreen()}
-                            key={(answeredIndices ? 'answered' : '')}
-                            lang={lang}
-                            onClicked={() => {
-                                const newPath = new PathBuilder('').populate(path).setScreen('filter');
-                                history.push(newPath.buildPath());
-                            }}
-                        />
-                    </div>
-                : null
-            }
-
-            {isFilterScreen() && taskSuggester
+            {isFilterScreen()
                 ? 
                 <div className="FilterEditorComponentContainer">
                         <FilterEditorComponent 
@@ -166,7 +154,7 @@ export default function({ url, lang }: { url:string, lang: Language }) {
                 : null
             }
 
-            {!isFilterScreen() && taskSuggester && currentTask
+            {!isFilterScreen() && currentTask
                 ? <div className="questionAnswer">
                         <BodyQuestionAnswerComponent data = {currentTask.bodyChunk} onAnswered={
                                 (indices) => {
@@ -214,12 +202,33 @@ export default function({ url, lang }: { url:string, lang: Language }) {
                             </div>
                             : null
                         }
-
-                    
                         
                     </div>
                 : null
             }
+
+    </div>;
+}
+
+
+export default function({ url, lang }: { url:string, lang: Language }) {
+    const [taskSuggester, setTaskSuggester] = useState<TaskSuggester | null>(null);
+
+    return <div className='TrainerAppComponent'>
+            <BrowserWarningComponent />
+            <DataProviderComponent url={process.env.PUBLIC_URL + url} onDataProvided={(data) => {
+                try {
+                    const taskSuggester = new TaskSuggester(data);
+                    setTaskSuggester(taskSuggester);
+                    // taskSuggester.enableDebugLog();
+                } catch (ex) {
+                    console.error(ex);
+                    throw ex;
+                }
+            }}
+            />
+
+            {taskSuggester ? <TrainerAppComponent lang={lang} taskSuggester={taskSuggester} /> : null}
 
 
             

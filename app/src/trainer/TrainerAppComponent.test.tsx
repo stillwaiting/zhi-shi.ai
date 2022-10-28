@@ -37,8 +37,8 @@ describe('TrainerAppComponent', () => {
                     return null;
                 }}
             />
-            <Link data-testid='goto1' to='/rules/1/task/1-0'>goto 1</Link>
-            <Link data-testid='goto0' to='/rules/0/task/0-0'>goto 0</Link>
+            <Link data-testid='goto1' to='/rules/1/task/1'>goto 1</Link>
+            <Link data-testid='goto0' to='/rules/0/task/0'>goto 0</Link>
             <Link data-testid='goto' to='/'>goto root</Link>
             
             </MemoryRouter>)
@@ -167,8 +167,11 @@ Some text that should be ignored.
         answerCorrectly(component);
         fireEvent.click(component.getByText('Check'));
 
+        console.log("at 1");
         fireEvent.click(component.getByTestId('filter-link'));
+        console.log("at 2");
         fireEvent.click(component.getByText('goto 0'));
+        console.log("at 3");
 
         expect(component.getByText('answer 0')).toBeDefined();
     });
