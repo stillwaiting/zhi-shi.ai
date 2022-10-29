@@ -83,7 +83,7 @@ function renderTopic(topic: TopicType,
                 } */}
         </td>
         <td>
-            <span onClick={onTopicClick}>{topic.title}</span>
+            <span onClick={onTopicClick}>{topic.title} {renderStats(topic.stats)}</span>
                 &nbsp; (<a href='#' className='expand' onClick={(e)=> {
                         e.preventDefault();
                         setIsExpanded(!isExpanded);
