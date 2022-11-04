@@ -22,7 +22,10 @@ export default function ({ selectedRuleIdxs, topics, isActive, onClicked, lang }
         selectedTopics = topics.filter(topic => topic.rules.find(rule => selectedRuleIdxs.has(rule.ruleIdx)));
 
         const selectedTopicTitles = selectedTopics.map(topic => {
-            if (topic.rules.length > topic.rules.filter(rule => selectedRuleIdxs.has(rule.ruleIdx)).length) {
+            const selectedRules = topic.rules.filter(rule => selectedRuleIdxs.has(rule.ruleIdx));
+            if (selectedRules.length == 1) {
+                return selectedRules[0].nodeTitle.replace(/rule:/ig, "");
+            } else if (topic.rules.length > selectedRules.length) {
                 return topic.title + ` (${lang.PARTIAL_LINK})`;
             }
             return topic.title;
@@ -62,8 +65,9 @@ export default function ({ selectedRuleIdxs, topics, isActive, onClicked, lang }
             (e) => {
                 e.preventDefault();
                 onClicked();
-            }
-        }>{lang.STUDY_LINK_PREFIX}: {topicsStr.toLocaleLowerCase()}
+            }}>{lang.CHANGE}</a> <br /><br />
+        {lang.STUDY_LINK_PREFIX}: {topicsStr.toLocaleLowerCase()}
+        
             <br /><span>
             {percentSuccess >= 0 
                 ? <span>
@@ -73,7 +77,6 @@ export default function ({ selectedRuleIdxs, topics, isActive, onClicked, lang }
                 : null
             }
             &nbsp;</span>
-        </a>
     </span>
 }
 

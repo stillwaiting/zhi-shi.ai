@@ -145,9 +145,9 @@ Some text that should be ignored.
 
     test('filter link becomes active when clicked', async () => {
         const component = await renderAndWaitForData();
-        fireEvent.click(component.getByText('Study: all'));
+        fireEvent.click(component.getByText('Change'));
         expect(currentPath).toContain('/filter');
-        expect(component.getByText('Study: all').className).toBe('active');
+        expect(component.getByText('Change').className).toBe('active');
     });
 
     test('filter refreshes stats', async () => {

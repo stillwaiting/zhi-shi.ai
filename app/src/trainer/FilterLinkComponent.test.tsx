@@ -101,7 +101,7 @@ describe('FilterLinkComponent', () => {
             onClicked={() => {}}
             lang={ruLang}
         />);
-        expect(component.getByText('Study: Topic 0, Topic 1 (partial)')).toBeDefined();
+        expect(component.getByText('Study: topic 0, rule 2')).toBeDefined();
     });
 
     test('more than 3, no answers', () => {
@@ -112,7 +112,7 @@ describe('FilterLinkComponent', () => {
             onClicked={() => {}}
             lang={ruLang}
         />);
-        expect(component.getByText('Study: Topic 0 (partial), Topic 1, Topic 2... (total 4)')).toBeDefined();
+        expect(component.getByText('Study: rule 1, topic 1, topic 2... (total 4)')).toBeDefined();
     });
 
     test('stats', () => {
@@ -140,6 +140,7 @@ describe('FilterLinkComponent', () => {
             lang={ruLang}
         />);
         expect(component.getByText('50%')).toBeDefined();
+        expect(component.getByText('66%')).toBeDefined();
     });
 
     test('active', () => {
@@ -150,7 +151,7 @@ describe('FilterLinkComponent', () => {
             onClicked={() => {}}
             lang={ruLang}
         />);
-        expect(component.getByText('Study: all').className).toBe('active');
+        expect(component.getByTestId('filter-link').className).toBe('active');
     });
 
     test('onClicked', () => {
@@ -162,7 +163,7 @@ describe('FilterLinkComponent', () => {
             onClicked={() => { clicked = true}}
             lang={ruLang}
         />);
-        fireEvent.click(component.getByText('Study: all'));
+        fireEvent.click(component.getByTestId('filter-link'));
         expect(clicked).toBeTruthy();
     });
 

@@ -7,6 +7,7 @@ const LANGUAGE_EN: Language = {
     TOTAL_STATS_LINK_PREFIX: 'total solved',
     PARTIAL_LINK: 'partial',
     SUBMIT_BUTTON: 'Check',
+    CHANGE: 'Change',
     BACK_TO_STUDY_LINK: 'Back to study',
     RESET_STATS_LINK: 'Сбросить статистику для % правил.',
     RESET_ALL_STATS_LINK: 'Purge statistics!',
