@@ -32,8 +32,8 @@ export type RuleType = {
 
     stats: StatsType;
 
-    lastAnsweredTaskIdxs: {[taskNodeTitle: string]: Array<number>}; // purged when full for each nodeTitle
-    lastAnsweredNodeTitles: Array<string>; // purged when full
+    lastAnsweredTaskIdxs: {[taskNodeTitle: string]: Set<number>}; // purged when full for each nodeTitle
+    lastAnsweredNodeTitles: Set<string>; // purged when full
 }
 
 export type TopicType = {
@@ -59,7 +59,7 @@ export default class TaskSuggester {
     private tasks: Array<TaskType> = []; // taskIdx is the index in this array
 
     private selectedRuleIdxs: Set<number> = new Set<number>(); // empty means all
-    private lastAnsweredRuleIdxs: Array<number> = []; // purged when full
+    private lastAnsweredRuleIdxs: Set<number> = new Set<number>([]); // purged when full
 
     private reversedHistoryTaskIdxLog: Array<Number> = []; // new items come first
     private debugLog = false;
@@ -81,13 +81,19 @@ export default class TaskSuggester {
     }
 
     setSelectedRuleIdxs(ruleIdxs: Set<number>) {
-        this.selectedRuleIdxs = new Set<number>(JSON.parse(JSON.stringify(Array.from(ruleIdxs))));
+        this.selectedRuleIdxs = new Set<number>(ruleIdxs);
         if (ruleIdxs.size > 0) {
-            this.lastAnsweredRuleIdxs = this.lastAnsweredRuleIdxs.filter(ruleIdx => ruleIdxs.has(ruleIdx));
+            this.selectedRuleIdxs.forEach(ruleIdx => this.lastAnsweredRuleIdxs.delete(ruleIdx));
+            if (this.lastAnsweredRuleIdxs.size == this.selectedRuleIdxs.size) {
+                this.lastAnsweredRuleIdxs.clear();
+            }
         }
         if (ruleIdxs.size > 0 && this.stickyRuleIdx >= 0 && !ruleIdxs.has(this.stickyRuleIdx)) {
             this.stickyRuleIdx = -1;
+            this.stickyRuleIdxCount = 0;
+            
             this.stickyTaskNodeTitle = '';
+            this.stickyTaskNodeTitleCount = 0;
         }
     }
 
@@ -117,15 +123,9 @@ export default class TaskSuggester {
 
         this.recordAnswerStats(task, rule, topic, isCorrect);
         
-        this.recordAnswerStatsRule(rule, task);
+        this.recordLastAnsweredRoundRobin(rule, task);
 
         this.reversedHistoryTaskIdxLog.unshift(taskIdx);
-        
-        if (this.selectedRuleIdxs.size == 0 && this.lastAnsweredRuleIdxs.length >= this.rules.length) {
-            this.lastAnsweredRuleIdxs = [];
-        } else if (this.selectedRuleIdxs.size > 0 && this.lastAnsweredRuleIdxs.length >= this.selectedRuleIdxs.size) {
-            this.lastAnsweredRuleIdxs = [];
-        }
 
         this.recordAnswerStickyRules(rule, task, isCorrect);
     }
@@ -158,27 +158,40 @@ export default class TaskSuggester {
         this._debugLog("Sticky title: " + this.stickyTaskNodeTitle + " " + this.stickyTaskNodeTitleCount);
     }
 
-    private answeredTaskIdxs: Set<number> = new Set();
-
-    private recordAnswerStatsRule(rule: RuleType, task: TaskType) {
+    /**
+     * 
+     * Purging of the last* counters are happening here, on record,
+     * therefore no need to worry about it that "suggest" would have some
+     * overflown counter
+     */
+    private recordLastAnsweredRoundRobin(rule: RuleType, task: TaskType) {
         if (!rule.lastAnsweredTaskIdxs[task.nodeTitle]) {
-            rule.lastAnsweredTaskIdxs[task.nodeTitle] = [];
+            rule.lastAnsweredTaskIdxs[task.nodeTitle] = new Set<number>();
         }
-        rule.lastAnsweredTaskIdxs[task.nodeTitle].push(task.taskIdx);
-        this.answeredTaskIdxs.add(task.taskIdx);
-        this._debugLog("Answered tasks of rule " + rule.ruleIdx +": " + 
-            rule.taskIdxs.filter(taskIdx => this.answeredTaskIdxs.has(taskIdx)).length + " of " + rule.taskIdxs.length
-            );
-        if (rule.lastAnsweredTaskIdxs[task.nodeTitle].length >= rule.taskIdxs.filter(taskIdx => this.tasks[taskIdx].nodeTitle == task.nodeTitle).length) {
-            rule.lastAnsweredTaskIdxs[task.nodeTitle] = [];
+        rule.lastAnsweredTaskIdxs[task.nodeTitle].add(task.taskIdx);
+        if (rule.lastAnsweredTaskIdxs[task.nodeTitle].size >= this.getNodeTitleTaskIdxs(rule, task.nodeTitle).size) {
+            rule.lastAnsweredTaskIdxs[task.nodeTitle].clear();
         }
-        rule.lastAnsweredNodeTitles.push(task.nodeTitle);
-        if (rule.lastAnsweredNodeTitles.length >= new Set(rule.taskIdxs.map(taskIdx => this.tasks[taskIdx].nodeTitle)).size) {
-            rule.lastAnsweredNodeTitles = [];
+
+        rule.lastAnsweredNodeTitles.add(task.nodeTitle);
+        if (rule.lastAnsweredNodeTitles.size >= this.getRuleNodeTitles(rule).size) {
+            rule.lastAnsweredNodeTitles.clear();
         }
-        if (this.getLastAnsweredRule()?.ruleIdx != rule.ruleIdx) {
-            this.lastAnsweredRuleIdxs.push(rule.ruleIdx);
+
+        this.lastAnsweredRuleIdxs.add(rule.ruleIdx);
+        if (this.selectedRuleIdxs.size == 0 && this.lastAnsweredRuleIdxs.size >= this.rules.length) {
+            this.lastAnsweredRuleIdxs.clear();
+        } else if (this.selectedRuleIdxs.size > 0 && this.lastAnsweredRuleIdxs.size >= this.selectedRuleIdxs.size) {
+            this.lastAnsweredRuleIdxs.clear();
         }
+    }
+
+    private getRuleNodeTitles(rule: RuleType): Set<string> {
+        return new Set(rule.taskIdxs.map(taskIdx => this.tasks[taskIdx].nodeTitle));
+    }
+
+    private getNodeTitleTaskIdxs(rule: RuleType, nodeTitle: string): Set<number> {
+        return new Set(rule.taskIdxs.filter(taskIdx => this.tasks[taskIdx].nodeTitle == nodeTitle));
     }
 
     private recordAnswerStats(task: TaskType, rule: RuleType, topic: TopicType, isCorrect: boolean) {
@@ -206,9 +219,9 @@ export default class TaskSuggester {
             rule.stats.correctlyAnsweredTaskIdxs.clear();
             rule.stats.incorrectlyAnsweredTaskIdxs.clear();
             rule.lastAnsweredTaskIdxs = {};
-            rule.lastAnsweredNodeTitles = [];
+            rule.lastAnsweredNodeTitles.clear();
         });
-        this.lastAnsweredRuleIdxs = [];
+        this.lastAnsweredRuleIdxs.clear();
         this.stickyRuleIdx = -1;
         this.stickyTaskNodeTitle = '';
     }
@@ -228,8 +241,24 @@ export default class TaskSuggester {
     }
     
     suggestNextTask(): TaskType {
-        const task1 = this.doSuggestNextTask();
-        const task2 = this.doSuggestNextTask();
+        if (Math.random() < 0.33) {
+            let suggestedRuleIdxs: Set<number> | undefined;
+            if (this.stickyRuleIdx == -1) {
+                suggestedRuleIdxs = this.getSuitableRuleIdxs(false);
+            } else if (this.stickyRuleIdx && !this.stickyTaskNodeTitle) {
+                suggestedRuleIdxs = new Set<number>([this.stickyRuleIdx]);
+            }
+
+            if (suggestedRuleIdxs) {
+                const unansweredTask = this.doSuggestNextTaskUnanswered(suggestedRuleIdxs);
+                if (unansweredTask) {
+                    return unansweredTask;
+                }
+            }
+        }
+
+        const task1 = this.doSuggestNextTaskRoundRobin();
+        const task2 = this.doSuggestNextTaskRoundRobin();
 
         this._debugLog("SNT: 1st task from " + task1.nodeTitle + " " + JSON.stringify(task1.bodyChunk.question));
         this._debugLog("SNT: 2nd task from " + task2.nodeTitle + " " + JSON.stringify(task2.bodyChunk.question));
@@ -257,57 +286,70 @@ export default class TaskSuggester {
         return task1;
     }
 
-    private doSuggestNextTask(): TaskType {
+    doSuggestNextTaskUnanswered(suggestedRuleIdxs: Set<number>): TaskType | undefined {
+        const suggestedTaskIdxs: Array<number> = [];
+        suggestedRuleIdxs.forEach(ruleIdx => suggestedTaskIdxs.push(...this.rules[ruleIdx].taskIdxs.filter(taskIdx => 
+            !(this.rules[ruleIdx].stats.correctlyAnsweredTaskIdxs.has(taskIdx) ||
+            this.rules[ruleIdx].stats.incorrectlyAnsweredTaskIdxs.has(taskIdx))
+        )));
+        if (suggestedTaskIdxs.length > 0) {
+            return _.cloneDeep(
+                this.tasks[suggestedTaskIdxs[Math.floor(Math.random() * suggestedTaskIdxs.length)]]
+            );
+        }
+        return undefined;
+    }
+
+    /**
+     * 
+     * Suggests the next task in a round robin fashion:
+     * 
+     *  - sticky rules/tasks node titles have priorities
+     *  - going in round-robin with rules 
+     */
+    private doSuggestNextTaskRoundRobin(): TaskType {
         this._debugLog("------------");
         
-        const suggestedRule = this.suggestNextRule();
+        const suggestedRule = this.suggestNextRuleRoundRobin();
         this._debugLog("suggester: picked rule " + suggestedRule.ruleIdx + " " + suggestedRule.nodeTitle + " tasks " + suggestedRule.taskIdxs.length);
 
         const suggestedTitle = this.suggestRuleTaskNodeTitle(suggestedRule);
         this._debugLog("suggester: suggested task node title " + suggestedTitle);
 
-        const titleTaskIdxs = suggestedRule.taskIdxs.filter(taskIdx => this.tasks[taskIdx].nodeTitle === suggestedTitle);
-        this._debugLog("suggester: found " + titleTaskIdxs.length + " from the suggested title ");
+        const titleTaskIdxs = this.getNodeTitleTaskIdxs(suggestedRule, suggestedTitle);
+        this._debugLog("suggester: found " + titleTaskIdxs.size + " from the suggested title ");
 
-        let notAnsweredTitleTaskIdxs = titleTaskIdxs.filter(taskIdx => 
-            (suggestedRule.lastAnsweredTaskIdxs[suggestedTitle] || []).indexOf(taskIdx) < 0
-        );
-        this._debugLog("suggester: found " + notAnsweredTitleTaskIdxs.length + "  non answered tasks");
-        if (notAnsweredTitleTaskIdxs.length == 0) {
-            notAnsweredTitleTaskIdxs = titleTaskIdxs;
-        }
+        let notAnsweredTitleTaskIdxs = _.cloneDeep(titleTaskIdxs);
+        (suggestedRule.lastAnsweredTaskIdxs[suggestedTitle] || new Set<number>())
+            .forEach(taskIdx => notAnsweredTitleTaskIdxs.delete(taskIdx));
+        this._debugLog("suggester: found " + notAnsweredTitleTaskIdxs.size + "  non answered tasks");
 
-        const taskIdx = notAnsweredTitleTaskIdxs[Math.floor(Math.random() * notAnsweredTitleTaskIdxs.length)]; 
+        const candidates = Array.from(notAnsweredTitleTaskIdxs);
+        const taskIdx = candidates[Math.floor(Math.random() * candidates.length)]; 
 
         this._debugLog("------------");
-        return JSON.parse(JSON.stringify(
-            this.tasks[taskIdx]
-        ));
+        return _.cloneDeep(this.tasks[taskIdx]);
     }
 
-    private suggestNextRule(): RuleType {
+    /**
+     * 
+     * Sticky rule has a top priority.
+     * 
+     * Recently answered rules are excluded from consideration.
+     * 
+     * Returns a random rule if not sticky and not recently answered.
+     * 
+     */
+    private suggestNextRuleRoundRobin(): RuleType {
         const ruleIdxs: Array<number> = [];
 
         if (this.stickyRuleIdx >= 0 && this.stickyRuleIdxCount > 0) {
             this._debugLog("DSNT: stick to " + this.rules[this.stickyRuleIdx].nodeTitle);
             ruleIdxs.push(this.stickyRuleIdx);
-        } else if (this.selectedRuleIdxs.size > 0) {
-            this._debugLog("DSNT: filter by selected rules, excluding answered");
-            ruleIdxs.push(...Array.from(this.selectedRuleIdxs).filter(
-                ruleIdx => this.lastAnsweredRuleIdxs.indexOf(ruleIdx) == -1
-            ));
-            if (ruleIdxs.length == 0) {
-                ruleIdxs.push(...Array.from(this.selectedRuleIdxs));
-            }
-        } else {
-            this._debugLog("DSNT: get all rules that were not answered recently");
-            ruleIdxs.push(...this.rules
-                .filter(rule => this.lastAnsweredRuleIdxs.indexOf(rule.ruleIdx) == -1)
-                .map(rule => rule.ruleIdx));
-            if (ruleIdxs.length == 0) {
-                ruleIdxs.push(...this.rules.map(rule => rule.ruleIdx));
-            }
+        } else  {
+            ruleIdxs.push(...this.getSuitableRuleIdxs());
         }
+        
         if (ruleIdxs.length < 10) {
             this._debugLog("DSNT: selected " + JSON.stringify(ruleIdxs));
         } else {
@@ -318,19 +360,28 @@ export default class TaskSuggester {
         return this.rules[suggestedRuleIdx];
     }
 
+    /**
+     * 
+     * Sticky node title has priority.
+     * 
+     * Returns a node title that wasn't recently answered.
+     *  
+     */
     private suggestRuleTaskNodeTitle(suggestedRule: RuleType): string {
         if (this.stickyTaskNodeTitle && this.stickyTaskNodeTitleCount > 0) {
             this._debugLog("SRT: sticky " + this.stickyTaskNodeTitle);
             return this.stickyTaskNodeTitle;
         }
-        const ruleTaskNodeTitles = new Set<string>(suggestedRule.taskIdxs.map(taskIdx => this.tasks[taskIdx].nodeTitle));
-        const ruleTitles = Array.from(ruleTaskNodeTitles);
+        const suggestedNdodeTitles = this.getRuleNodeTitles(suggestedRule);
 
-        const notAnsweredRuleTitles = ruleTitles.filter(ruleTitle => suggestedRule.lastAnsweredNodeTitles.indexOf(ruleTitle) < 0);
+        suggestedRule.lastAnsweredNodeTitles.forEach((answeredNodeTitle) => {
+            suggestedNdodeTitles.delete(answeredNodeTitle);
+        });
 
-        this._debugLog("SRT: not answered rule titles " + JSON.stringify(notAnsweredRuleTitles));
+        this._debugLog("SRT: not answered rule titles " + JSON.stringify(suggestedNdodeTitles));
 
-        const suggestedTitle = notAnsweredRuleTitles[Math.floor(Math.random() * notAnsweredRuleTitles.length)];
+        const candidates = Array.from(suggestedNdodeTitles);
+        const suggestedTitle = candidates[Math.floor(Math.random() * candidates.length)];
         return suggestedTitle;
     }
 
@@ -344,14 +395,6 @@ export default class TaskSuggester {
     private _debugLog(str: String) {
         if (this.debugLog) {
             console.log(str);
-        }
-    }
-
-    private getLastAnsweredRule(): RuleType | undefined {
-        if (this.lastAnsweredRuleIdxs.length > 0) {
-            return this.rules[this.lastAnsweredRuleIdxs[this.lastAnsweredRuleIdxs.length - 1]];
-        } else {
-            return undefined;
         }
     }
 
@@ -394,7 +437,7 @@ export default class TaskSuggester {
                 incorrectlyAnsweredTaskIdxs: new Set()
             },
             taskIdxs: [],
-            lastAnsweredNodeTitles: [],
+            lastAnsweredNodeTitles: new Set<string>(),
             lastAnsweredTaskIdxs: {}
         };
         if (ruleNode.children.find(child => child.title.indexOf("Task") == 0)) {
@@ -425,4 +468,27 @@ export default class TaskSuggester {
             }
         })
     }
+
+    /**
+     * Returns an array of recently un-answered selected ruleIdxs that are suitable for being next suggested rule
+     */
+    private getSuitableRuleIdxs(removeRecentlyAnsered = true): Set<number> {
+        if (this.selectedRuleIdxs.size > 0) {
+            const suitableRuleIdxs = new Set<number>(this.selectedRuleIdxs);
+            if (removeRecentlyAnsered) {
+                this.lastAnsweredRuleIdxs.forEach(answeredRuleIdx => suitableRuleIdxs.delete(answeredRuleIdx));
+            }
+            return suitableRuleIdxs;
+        } else {
+            if (removeRecentlyAnsered) {
+                return new Set(this.rules
+                    .filter(rule => !this.lastAnsweredRuleIdxs.has(rule.ruleIdx))
+                    .map(rule => rule.ruleIdx));
+            } else {
+                return new Set(this.rules.map(rule => rule.ruleIdx));
+            }
+        }
+    }
+    
 }
+

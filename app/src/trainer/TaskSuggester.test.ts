@@ -129,7 +129,7 @@ Some text that should be ignored.
                   0,
                   1
                 ],
-                "lastAnsweredNodeTitles": [],
+                "lastAnsweredNodeTitles": new Set<string>(),
                 "lastAnsweredTaskIdxs": {}
               },
               {
@@ -147,7 +147,7 @@ Some text that should be ignored.
                   4,
                   5
                 ],
-                "lastAnsweredNodeTitles": [],
+                "lastAnsweredNodeTitles": new Set<string>(),
                 "lastAnsweredTaskIdxs": {}
               }
             ]
@@ -174,7 +174,7 @@ Some text that should be ignored.
                   6,
                   7
                 ],
-                "lastAnsweredNodeTitles": [],
+                "lastAnsweredNodeTitles": new Set<string>(),
                 "lastAnsweredTaskIdxs": {}
               }
             ]
@@ -229,14 +229,40 @@ Some text that should be ignored.
       expect(suggester.getTopics()[0].rules[1].stats.correctlyAnsweredTaskIdxs.size).toBe(0);
     });
 
-    test('Round-robins through rules', () => {
+    test('Doesn not suggest answered tasks while there are unanswered in the same node title', () => {
       suggester.recordAnswer(0, true);
       suggester.recordAnswer(2, true);
-      const suggestedTaskIdx = new Set<number>();
+      const suggestedTaskIdxStats: {[key: number]: number} = {};
       for (let attempts = 0; attempts < 100; attempts ++) {
-        suggestedTaskIdx.add(suggester.suggestNextTask().taskIdx);
+        const taskIdx = suggester.suggestNextTask().taskIdx;
+        if (!suggestedTaskIdxStats[taskIdx]) {
+          suggestedTaskIdxStats[taskIdx] = 1;
+        } else {
+          suggestedTaskIdxStats[taskIdx] ++;
+        }
       }
-      expect(suggestedTaskIdx).toStrictEqual(new Set<number>([6,7]));
+      expect(suggestedTaskIdxStats[0]).toBeUndefined();
+      expect(suggestedTaskIdxStats[2]).toBeUndefined();
+    });
+
+    test('Suggests tasks from unanswered, more for round-robin', () => {
+      suggester.recordAnswer(0, true);
+      suggester.recordAnswer(2, true);
+      const suggestedTaskIdxStats: {[key: number]: number} = {};
+      for (let attempts = 0; attempts < 1000; attempts ++) {
+        const taskIdx = suggester.suggestNextTask().taskIdx;
+        if (!suggestedTaskIdxStats[taskIdx]) {
+          suggestedTaskIdxStats[taskIdx] = 1;
+        } else {
+          suggestedTaskIdxStats[taskIdx] ++;
+        }
+      }
+      expect(suggestedTaskIdxStats[1] < 150).toBeTruthy();
+      expect(suggestedTaskIdxStats[3] < 150).toBeTruthy();
+      expect(suggestedTaskIdxStats[4] < 150).toBeTruthy();
+      expect(suggestedTaskIdxStats[5] < 150).toBeTruthy();
+      expect(suggestedTaskIdxStats[6] > 150).toBeTruthy();
+      expect(suggestedTaskIdxStats[7] > 150).toBeTruthy();
     });
 
     test('Cleanup drops answered rules memory', () => {
@@ -278,11 +304,9 @@ Some text that should be ignored.
 
     test('Incorrect answer forces to answer tasks from the same rule', () => {
       suggester.recordAnswer(2, false);
-      suggester.recordAnswer(3, true);
       suggester.recordAnswer(4, true);
-      suggester.recordAnswer(5, true);
-      suggester.recordAnswer(2, true);
       suggester.recordAnswer(3, true);
+      suggester.recordAnswer(5, true);  
       const suggestedTaskIdxs = new Set<number>();
       for (let count = 0; count < 90; count ++ ) {
           const nextTaskIdx = suggester.suggestNextTask().taskIdx;
@@ -308,6 +332,7 @@ Some text that should be ignored.
     suggester.recordAnswer(2, false);
     suggester.recordAnswer(3, true);
 
+    
     suggester.clearStatsForRules(new Set([0]));
     expect(suggester.getTopics()[0].stats.correctlyAnsweredTaskIdxs).toStrictEqual(new Set([3]));
     expect(suggester.getTopics()[0].stats.incorrectlyAnsweredTaskIdxs).toStrictEqual(new Set([2]));
@@ -322,11 +347,6 @@ Some text that should be ignored.
           suggestedTaskIdxs.add(nextTaskIdx);
       }
       expect(suggestedTaskIdxs).toStrictEqual(new Set([0,1,2,3,5,4,6,7]));
-  });
-
-  test('getRuleTask returns correct data', () => {
-    const task = suggester.getRuleTask(1, 0);
-    expect(task.bodyChunk.question.text).toEqual("2 blah (a|b)");
   });
 
 });                
