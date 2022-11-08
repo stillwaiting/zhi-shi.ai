@@ -61,7 +61,7 @@ export default class TaskSuggester {
     private selectedRuleIdxs: Set<number> = new Set<number>(); // empty means all
     private lastAnsweredRuleIdxs: Set<number> = new Set<number>([]); // purged when full
 
-    private reversedHistoryTaskIdxLog: Array<Number> = []; // new items come first
+    private reversedHistoryTaskIdxLog: {[taskIdx: number]: number} /* timestamp */ = {};
     private debugLog = false;
 
     // When answered incorrectly, it will stick to the rule and set count and stick to it until count is 0
@@ -125,7 +125,7 @@ export default class TaskSuggester {
         
         this.recordLastAnsweredRoundRobin(rule, task);
 
-        this.reversedHistoryTaskIdxLog.unshift(taskIdx);
+        this.reversedHistoryTaskIdxLog[taskIdx] = new Date().getTime();
 
         this.recordAnswerStickyRules(rule, task, isCorrect);
     }
@@ -263,27 +263,27 @@ export default class TaskSuggester {
         this._debugLog("SNT: 1st task from " + task1.nodeTitle + " " + JSON.stringify(task1.bodyChunk.question));
         this._debugLog("SNT: 2nd task from " + task2.nodeTitle + " " + JSON.stringify(task2.bodyChunk.question));
 
-        const task1HistoryPos = this.reversedHistoryTaskIdxLog.indexOf(task1.taskIdx);
-        const task2HistoryPos = this.reversedHistoryTaskIdxLog.indexOf(task2.taskIdx);
+        const task1HistoryPos = this.reversedHistoryTaskIdxLog[task1.taskIdx];
+        const task2HistoryPos = this.reversedHistoryTaskIdxLog[task2.taskIdx];
 
-        if (task1HistoryPos < 0) {
+        if (!task1HistoryPos) {
             this._debugLog("SNT: 1st task wasn't asked yet, returning");
             return task1;
         }
 
-        if (task2HistoryPos < 0) {
+        if (!task2HistoryPos) {
             this._debugLog("SNT: 2nd task wasn't asked yet, returning");
             return task2;
         }
 
         if (task1HistoryPos < task2HistoryPos) {
-            this._debugLog("SNT: 1st task was asked later, returning 2nd");
-            return task2;
+            this._debugLog("SNT: 2nd task was asked later, returning 1st");
+            return task1;
         }
 
-        this._debugLog("SNT: 2nd task was asked later, returning 1st one");
+        this._debugLog("SNT: 1st task was asked later, returning 2nd one");
 
-        return task1;
+        return task2;
     }
 
     doSuggestNextTaskUnanswered(suggestedRuleIdxs: Set<number>): TaskType | undefined {

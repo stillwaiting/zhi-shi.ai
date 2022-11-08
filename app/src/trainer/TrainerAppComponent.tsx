@@ -249,7 +249,9 @@ export default function({ url, lang }: { url:string, lang: Language }) {
 const LOCAL_STORAGE_KEY_ANSWERS = 'answers';
 
 function addAnswerToLocalStorage(taskIdx: number, isCorrect: boolean) {
-    const answers = getAnswersFromLocalStorage();
+    const oldAnswers = getAnswersFromLocalStorage();
+
+    const answers = oldAnswers.filter((item, index) => item[0] != taskIdx || index > oldAnswers.length - 500);
     answers.push([taskIdx, isCorrect]);
     if (answers.length > 1000) {
         answers.shift();
