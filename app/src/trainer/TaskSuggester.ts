@@ -30,6 +30,8 @@ export type RuleType = {
     nodeTitle: string;
     taskIdxs: Array<number>;
 
+    wasTested: boolean;
+
     stats: StatsType;
 
     lastAnsweredTaskIdxs: {[taskNodeTitle: string]: Set<number>}; // purged when full for each nodeTitle
@@ -430,7 +432,8 @@ export default class TaskSuggester {
         let rule: RuleType = {
             ruleIdx: this.rules.length,
             topicIdx: topic.topicIdx,
-            nodeTitle: ruleNode.title,
+            nodeTitle: ruleNode.title.replace("[OK!]", "").trim(),
+            wasTested: ruleNode.title.includes("[OK!]"),
             stats: {
                 totalTasks: 0,
                 correctlyAnsweredTaskIdxs: new Set(),

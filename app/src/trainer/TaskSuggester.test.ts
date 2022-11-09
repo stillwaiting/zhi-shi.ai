@@ -33,7 +33,7 @@ Some text that should be ignored.
 ? 1 Bar baz (hello|world)
 ! hello
 
-### Rule 1: several task nodes
+### Rule 1: several task nodes [OK!]
 
 #### Task node 1
 
@@ -119,6 +119,7 @@ Some text that should be ignored.
               {
                 "ruleIdx": 0,
                 "topicIdx": 0,
+                "wasTested": false,
                 "nodeTitle": "Rule 0: single tasks node",
                 "stats": {
                   "totalTasks": 2,
@@ -135,6 +136,7 @@ Some text that should be ignored.
               {
                 "ruleIdx": 1,
                 "topicIdx": 0,
+                "wasTested": true,
                 "nodeTitle": "Rule 1: several task nodes",
                 "stats": {
                   "totalTasks": 4,
@@ -164,6 +166,7 @@ Some text that should be ignored.
               {
                 "ruleIdx": 2,
                 "topicIdx": 1,
+                "wasTested": false,
                 "nodeTitle": "Rule 2: another root",
                 "stats": {
                   "totalTasks": 2,

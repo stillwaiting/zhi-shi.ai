@@ -108,7 +108,7 @@ function renderTopic(topic: TopicType,
                                              : null
                                          } */}
                                     </td>
-                                    <td onClick={onClick}>
+                                    <td onClick={onClick} className={rule.wasTested ? "tested" : ""}>
                                         {rule.nodeTitle.replace("Rule: ", "")}
                                     </td>
                                     <td>
