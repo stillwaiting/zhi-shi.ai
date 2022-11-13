@@ -1,4 +1,7 @@
 .FilterEditorComponent {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
     input[type="checkbox"][readonly]:checked {
         background-color: silver;
       }
@@ -9,12 +12,27 @@
 
     .highlighted {
         background-color: #efe;
-    } 
+    }
+    div.header {
+        display: flex;
+
+        .left {
+            flex-grow: 1;
+        }
+        .right {
+            flex-grow: 1;
+            visibility:hidden;
+        }
+    }
 
     table.mainFilterTable {
+        display: block;
+        flex-grow: 1;
+        height: 300px;
+        overflow-y: scroll;
         margin: 0px auto;
         text-align:left;
-        width:80%;
+        width:auto;
     }
 
     table.mainFilterTable {

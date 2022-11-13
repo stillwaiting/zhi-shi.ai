@@ -39,6 +39,20 @@ function totalStatsToPct(stats: StatsType): number | undefined {
     } 
 }
 
+let appended = false;
+
+setInterval(() => {
+    if (appended) {
+        return;
+    }
+    if (window.location.href.indexOf("debug") >= 0) {
+        var style=document.createElement('style');
+        style.type='text/css';
+        style.appendChild(document.createTextNode('.tested { background: yellow; } '));
+        document.getElementsByTagName('head')[0].appendChild(style);
+        appended = true;
+    }
+}, 1000);
 
 function renderStats(stats: StatsType): React.ReactNode {
     const successRatePct = successfulRateStatsToPct(stats);
@@ -152,13 +166,16 @@ export default function({ topics,  selectedRuleIdxs, onChanged, onClose, highlig
 
     return <div className='FilterEditorComponent'>
 
-            <div className="back">
-                <a href='#' onClick={(e) => {e.preventDefault(); onClose(); }}><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAOCAYAAABth09nAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA0UlEQVRIx9XUMU5CQRDG8Z8IBSQ2dBSUVHAACuzs6DyCDdQcwMoLUJvQcQmIN7CCK2htIpHGECweBTHPx8NHMvBPJruzO8X37WaGw9Ry1IRznXFXxRgNvEYL/S9tLLHFMFpMHkq/8isMJD/QiRZ3DOW9fR3PuI8WVcTILaZoptTcSPrknPmEO2wk/ZAWHxl35xKjMl7whMcMt+voJz/A137ygO8Utxc3tSboYxUtqqgRmKGH92hhRY3AAt3dejGU/jh/k4zkebTAU1FBK1pEHn4AnPxK6IraSqsAAAAASUVORK5CYII=' /></a>
-                &nbsp;
-                <a href='#' onClick={(e) => {e.preventDefault(); onClose(); }}>{lang.BACK_TO_STUDY_LINK}</a>
-            </div>
+            <div className="header">
+                <div className="back left">
+                    <a href='#' onClick={(e) => {e.preventDefault(); onClose(); }}><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAOCAYAAABth09nAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA0UlEQVRIx9XUMU5CQRDG8Z8IBSQ2dBSUVHAACuzs6DyCDdQcwMoLUJvQcQmIN7CCK2htIpHGECweBTHPx8NHMvBPJruzO8X37WaGw9Ry1IRznXFXxRgNvEYL/S9tLLHFMFpMHkq/8isMJD/QiRZ3DOW9fR3PuI8WVcTILaZoptTcSPrknPmEO2wk/ZAWHxl35xKjMl7whMcMt+voJz/A137ygO8Utxc3tSboYxUtqqgRmKGH92hhRY3AAt3dejGU/jh/k4zkebTAU1FBK1pEHn4AnPxK6IraSqsAAAAASUVORK5CYII=' /></a>
+                    <br />
+                    <a href='#' onClick={(e) => {e.preventDefault(); onClose(); }}>{lang.BACK_TO_STUDY_LINK}</a>
+                </div>
 
-            <h1>{lang.SELECT_TOPICS_HEADER}:</h1>
+                <h1>{lang.SELECT_TOPICS_HEADER}:</h1>
+                <div className="right">&nbsp; {lang.BACK_TO_STUDY_LINK} &nbsp;</div>
+            </div>
         
 
             <table className="mainFilterTable">

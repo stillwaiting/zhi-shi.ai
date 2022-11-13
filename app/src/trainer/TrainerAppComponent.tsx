@@ -83,7 +83,7 @@ export function TrainerAppComponent({ lang, taskSuggester }: { lang: Language, t
         return -1;
     }
 
-    return <div>
+    return <div className="TrainerAppComponent">
                 <div className="menu">
                     <FilterLinkComponent 
                         selectedRuleIdxs={path.getRules()} 
@@ -207,6 +207,10 @@ export function TrainerAppComponent({ lang, taskSuggester }: { lang: Language, t
                 : null
             }
 
+<div className='foundError'>
+                <a href='https://github.com/stillwaiting/zhi-shi.ai/issues/new' target='_blank'>{lang.FOUND_ERROR}</a>
+            </div>
+
     </div>;
 }
 
@@ -232,9 +236,6 @@ export default function({ url, lang }: { url:string, lang: Language }) {
 
 
             
-            <div className='foundError'>
-                <a href='https://github.com/stillwaiting/zhi-shi.ai/issues/new' target='_blank'>{lang.FOUND_ERROR}</a>
-            </div>
             
 
 
