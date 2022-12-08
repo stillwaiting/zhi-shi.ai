@@ -18,7 +18,8 @@ const LANGUAGE_EN: Language = {
     ALL: 'all',
     TOTAL: 'total',
     FOUND_ERROR: 'Found error?',
-    SHOW_IN_TREE: 'show in tree'
+    SHOW_IN_TREE: 'show in tree',
+    CORRECT_LABEL: "correct"
 }
 
 export default LANGUAGE_EN;

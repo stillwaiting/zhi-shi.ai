@@ -1,11 +1,12 @@
 import React, { useRef, useState } from 'react';
 import './BodyQuestionComponent.scss';
 import BodyTextParagraphComponent from './BodyTextParagraphComponent';
+import _ from 'lodash';
 
 // Searches for "(blah|foo)" dropdown representative strings
 const DROPDOWN_REGEXP = /(\(.+?\|.*?\))/g;
 
-const parseDropdownString = (dropdownString: string) => 
+const parseDropdownString = (dropdownString: string): Array<string> => 
     dropdownString.substr(1, dropdownString.length - 2).split('|')
 
 const countDropdowns = (splitSentence: Array<string>) => 
@@ -14,11 +15,13 @@ const countDropdowns = (splitSentence: Array<string>) =>
 type BodyQuestionComponentProps = {
     onSubmit: (indices: Array<number>) => void, 
     question: string,
-    indices: Array<number>,
-    submitLabel?: string
+    answeredIndices: Array<number>,
+    submitLabel: string,
+    correctLabel: string
 }
 
-function shuffleArray(array: Array<any>) {
+function shuffleArray(origArray: Array<string>) {
+    const array = _.cloneDeep(origArray);
     if (Math.random() === 0) {
         return array; // tests
     }
@@ -29,10 +32,10 @@ function shuffleArray(array: Array<any>) {
     return array;
 }
 
-export default ({ onSubmit, question, indices, submitLabel }: BodyQuestionComponentProps) => {
+export default ({ onSubmit, question, answeredIndices, submitLabel, correctLabel }: BodyQuestionComponentProps) => {
     const [selectedDropdownIndices, setSelectedDropdownIndices] = useState<Array<number>>(
-        indices.length > 0 
-            ? indices : 
+        answeredIndices.length > 0 
+            ? answeredIndices : 
             (question.match(DROPDOWN_REGEXP) || []).map(question => -1)
     );
 
@@ -42,7 +45,7 @@ export default ({ onSubmit, question, indices, submitLabel }: BodyQuestionCompon
     const splitQuestion = question.split(DROPDOWN_REGEXP) || [];
 
     const dropdownClassName = (dropdownIdx: number): string => {
-        if (indices.length > 0) {
+        if (answeredIndices.length > 0) {
             if (selectedDropdownIndices[dropdownIdx] == 0) {
                 return 'success';
             } else {
@@ -65,7 +68,7 @@ export default ({ onSubmit, question, indices, submitLabel }: BodyQuestionCompon
                                     ref={subSentenceIdx == 1 ? firstDropdownRef : null}
                                     autoFocus={subSentenceIdx == 1}
                                     className={dropdownClassName(dropdownIdx)}
-                                    disabled={indices.length > 0}
+                                    disabled={answeredIndices.length > 0}
                                     value={selectedDropdownIndices[dropdownIdx]}
                                     onChange={e => {
                                         const newIndices = [...selectedDropdownIndices];
@@ -73,15 +76,19 @@ export default ({ onSubmit, question, indices, submitLabel }: BodyQuestionCompon
                                         setSelectedDropdownIndices(newIndices);
                                     }}
                                 >
-                                    <option key="-1" value="-1">{indices.length > 0 ? options[0] : '?'}</option>
-                                {shuffleArray(options.map((option, idx) => (
-                                    <option key={idx} value={idx}>
+                                    <option key="-1" value="-1">{answeredIndices.length > 0 ? options[0] : '?'}</option>
+                                {shuffleArray(options).map((option, idx) => (
+                                    // not super efficient, but the list is small, no need to optimize now
+                                    <option key={idx} value={options.indexOf(option)}>
                                         {option}
                                     </option>
-                                )))}
+                                ))}
                                 </select>
                             </span>,
-                            indices.length > 0 ? <sup key={`index${subSentenceIdx}`} className={dropdownClassName(dropdownIdx)}>({dropdownIdx + 1})</sup> : null,
+                            answeredIndices.length > 0 ? <sup key={`index${subSentenceIdx}`} className={dropdownClassName(dropdownIdx)}>({dropdownIdx + 1})</sup> : null,
+                            answeredIndices.length > 0 && selectedDropdownIndices[dropdownIdx] > 0 && options.length > 0
+                                    ? <span className='hint'>&nbsp; ({correctLabel}: "{options[0]}")</span>
+                                    : null,
                         ];
                     } else {
                         return <BodyTextParagraphComponent key={subSentenceIdx} data={{text: subSentence}} inline={true} />;
@@ -89,7 +96,7 @@ export default ({ onSubmit, question, indices, submitLabel }: BodyQuestionCompon
                 })}
                 <sup style={{visibility:'hidden'}}>A{/*adjust height to prevent jumps when answer is revealed*/}</sup>
             </div>
-            {indices.length > 0 
+            {answeredIndices.length > 0 
                 ? null 
                 :  <button className="button" onClick={() => {
                         onSubmit(selectedDropdownIndices);

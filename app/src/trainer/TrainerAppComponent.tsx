@@ -83,7 +83,13 @@ export function TrainerAppComponent({ lang, taskSuggester }: { lang: Language, t
         return -1;
     }
 
-    return <div className="TrainerAppComponent">
+    return <Context.Provider value={{
+        expandQuestionAnswer: false,
+        currentNodeTitle: '',
+        submitLabel: lang.SUBMIT_BUTTON,
+        correctLabel: lang.CORRECT_LABEL
+    }}>
+        <div className="TrainerAppComponent">
                 <div className="menu">
                     <FilterLinkComponent 
                         selectedRuleIdxs={path.getRules()} 
@@ -171,7 +177,6 @@ export function TrainerAppComponent({ lang, taskSuggester }: { lang: Language, t
                                 }
                             } 
                             answerIndices={answeredIndices}
-                            submitLabel={lang.SUBMIT_BUTTON}
                         />
 
 
@@ -211,7 +216,8 @@ export function TrainerAppComponent({ lang, taskSuggester }: { lang: Language, t
                 <a href='https://github.com/stillwaiting/zhi-shi.ai/issues/new' target='_blank'>{lang.FOUND_ERROR}</a>
             </div>
 
-    </div>;
+    </div>
+    </Context.Provider>;
 }
 
 

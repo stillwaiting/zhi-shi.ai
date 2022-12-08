@@ -1,4 +1,5 @@
 export interface Language {
+    CORRECT_LABEL: string;
     FOUND_ERROR: string;
     TOTAL: string;
     NEXT_BUTTON: string,

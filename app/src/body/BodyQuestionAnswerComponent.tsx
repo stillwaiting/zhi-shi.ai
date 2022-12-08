@@ -8,8 +8,7 @@ import './BodyQuestionAnswerComponent.scss'
 type SentenceWithAnswers = {
     data: MarkdownBodyChunkQuestionAnswers,
     answerIndices?: Array<number>,
-    onAnswered?: (answerIndices: Array<number>) => void,
-    submitLabel?: string
+    onAnswered?: (answerIndices: Array<number>) => void
 }
 
 const RED_CROSS = <img className="error" src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAA3NCSVQICAjb4U/gAAAACXBIWXMAAAjFAAAIxQEgMaV3AAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAAt0RVh0VGl0bGUARXJyb3KmAto4AAAADHRFWHRBdXRob3IAbHBlbnoMVi/xAAAAIXRFWHRDcmVhdGlvbiBUaW1lADIwMTItMDgtMDFUMTk6NDM6MjCCecQvAAAAQnRFWHRTb3VyY2UAaHR0cHM6Ly9vcGVuY2xpcGFydC5vcmcvZGV0YWlsLzE3MTM5MC9lcnJvci1ieS1scGVuei0xNzEzOTC80y2ZAAAAWHRFWHRDb3B5cmlnaHQAQ0MwIFB1YmxpYyBEb21haW4gRGVkaWNhdGlvbiBodHRwOi8vY3JlYXRpdmVjb21tb25zLm9yZy9wdWJsaWNkb21haW4vemVyby8xLjAvxuO9+QAAAFdQTFRFAAAAAAAAAAAAIQAAIAAAIwAAIQAAIgAAJgAAJAAAJQAAJAAAJwAAJwAAIQAAJAAAJgAAigAAiwAAiwAAkgAAjAAAywAAzwAA0AAA1gAA0AAA0QAA/wAADRPQ0gAAABx0Uk5TAAoMhIiKjI3Fx8fIycrLy8zt7e7u7/z8/Pz9/XWh3NgAAAFtSURBVFjDpZfZUsMwDEUdaNyyBQqlLYn//ztpdi/StWzp1XPOZDL2lWRMWG3XGFBN1xpYz+e/jyfAn+6XI+adG75YQ/N2dQ4ZRh4YJh4ZZp41LDxvWHnGsPGcYedJg8fTBp8nDAFPGUI+MUR8aoj5yJDwsSHlAwPBhwaK9wwk7xtofjMw/G7g+MXA8quB5ycD4GfD4duB6t9fb+j8tzXd4KChh8dDZ+An5ir3k0S8wpC7KGK+0pB7LEV8haFPAuPlquILDf0nFZpyA8kXGBhebGB5oQHwIgPkHwb8/MeAgO1fLRBcSND9hRc6Nz8oDOIHlZsfKg1FDzo3P1QYigNFG0j6SNSHsr4t6BvT2hpP9/rmOk7m6vauGzB+WjziPPILptzF4iFpyj9gmHnesOQna1h5zrDlL2PYedrg5Tdp8HnKEOQ/YQh5YtwP+0diiPnihcMqVx6rXLqscu2zysXTKldfi5fnXPPEfMX6/w+D8BH1dVpAtgAAAABJRU5ErkJggg==' width='32' />
@@ -44,15 +43,19 @@ function renderAnswers(nodeTitle: string, answers: Array<MarkdownBodyChunkTextPa
 
 export type ContextType = {
     expandQuestionAnswer: boolean,
-    currentNodeTitle: string
+    currentNodeTitle: string,
+    submitLabel: string
+    correctLabel: string
 };
 
 export const Context = React.createContext<ContextType>({
     expandQuestionAnswer: false,
-    currentNodeTitle: ''
+    currentNodeTitle: '',
+    submitLabel: '',
+    correctLabel: ''
 });
 
-export default ( {data, answerIndices, onAnswered, submitLabel }: SentenceWithAnswers) => {
+export default ( {data, answerIndices, onAnswered }: SentenceWithAnswers) => {
         const context = useContext(Context);
     const [dropdownIndices, setSubmittedDropdownIndices] = useState<Array<number>>(
         !!answerIndices 
@@ -73,7 +76,7 @@ export default ( {data, answerIndices, onAnswered, submitLabel }: SentenceWithAn
                 if (onAnswered) {
                     onAnswered(indices);
                 }
-                }} indices={dropdownIndices} submitLabel={submitLabel} 
+                }} answeredIndices={dropdownIndices} submitLabel={context.submitLabel} correctLabel={context.correctLabel}
             />
         </div>
         {dropdownIndices.length > 0 ? renderAnswers(context.currentNodeTitle, data.answers, dropdownIndices) : null}

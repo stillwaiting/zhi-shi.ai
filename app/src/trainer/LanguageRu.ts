@@ -18,7 +18,8 @@ const LANGUAGE_RU: Language = {
     ALL: 'все',
     TOTAL: 'всего',
     FOUND_ERROR: 'Нашли ошибку?',
-    SHOW_IN_TREE: 'показать в дереве'
+    SHOW_IN_TREE: 'показать в дереве',
+    CORRECT_LABEL: "правильно"
 }
 
 export default LANGUAGE_RU;

@@ -223,6 +223,8 @@ function Browser() {
     <QuestionAsnwerContext.Provider value={{
       currentNodeTitle: currentNodeTitle,
       expandQuestionAnswer: expandQuestions,
+      submitLabel: 'Check',
+      correctLabel: 'correct'
     }}>
 
     <TextParagraphContext.Provider value={{

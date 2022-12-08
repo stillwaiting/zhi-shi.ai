@@ -33,14 +33,14 @@ describe('BodyQuestionComponent', () => {
     })
 
     test('renders without dropdowns', () => {
-        const component = render(<BodyQuestionComponent question="Hello, world!" onSubmit={() => {}} indices={[]} />);
+        const component = render(<BodyQuestionComponent question="Hello, world!" onSubmit={() => {}} answeredIndices={[]} submitLabel="" correctLabel='' />);
         const text = screen.getByText(/Hello, world!/i);
         expect(text).toBeInTheDocument();
         expect(getDropdowns(component)).toHaveLength(0);
     });
 
     test('renders with dropdowns', () => {
-        const component = render(<BodyQuestionComponent question="(Hello|blah|baz), (world|foo)(!|.)" onSubmit={() => {}} indices={[]} />);
+        const component = render(<BodyQuestionComponent question="(Hello|blah|baz), (world|foo)(!|.)" onSubmit={() => {}} answeredIndices={[]} submitLabel="" correctLabel=''  />);
         const dropdowns = getDropdowns(component);
         expect(dropdowns).toHaveLength(3);
         const expected = [
@@ -56,7 +56,7 @@ describe('BodyQuestionComponent', () => {
     });
 
     test('highlights selected regions', () => {
-        const component = render(<BodyQuestionComponent question="this **should be highlighted** (Hello|blah|baz), (world|foo)(!|.)" onSubmit={() => {}} indices={[]} />);
+        const component = render(<BodyQuestionComponent question="this **should be highlighted** (Hello|blah|baz), (world|foo)(!|.)" onSubmit={() => {}} answeredIndices={[]} submitLabel="" correctLabel=''  />);
         expect(component.getByText("should be highlighted").outerHTML.indexOf('<b>')).toBe(0);
     });
 
@@ -64,7 +64,7 @@ describe('BodyQuestionComponent', () => {
         let caughtValue;
         const component = render(<BodyQuestionComponent question="Hello, world!" onSubmit={(submitted) => {
             caughtValue = submitted;
-        }} indices={[]} />);
+        }} answeredIndices={[]}  submitLabel="" correctLabel='' />);
         fireEvent.click(getButton(component));
         expect(caughtValue).toHaveLength(0);
     });
@@ -73,7 +73,7 @@ describe('BodyQuestionComponent', () => {
         let caughtValue;
         const component = render(<BodyQuestionComponent question="(Hello|blah|baz), (world|foo)(!|.)" onSubmit={(submitted) => {
             caughtValue = submitted;
-        }} indices={[]} />);
+        }} answeredIndices={[]}  submitLabel="" correctLabel='' />);
         fireEvent.click(getButton(component));
         expect(caughtValue).toEqual([-1, -1, -1]);
     });
@@ -82,7 +82,7 @@ describe('BodyQuestionComponent', () => {
         let caughtValue;
         const component = render(<BodyQuestionComponent question="(Hello|blah|baz), (world|foo)(!|.)" onSubmit={(submitted) => {
             caughtValue = submitted;
-        }} indices={[]} />);
+        }} answeredIndices={[]} submitLabel="" correctLabel=''  />);
         const firstSelect = getDropdowns(component)[1]
         fireEvent.change(firstSelect, {
             target: {value: getOptions(firstSelect)[2].value}
@@ -93,34 +93,40 @@ describe('BodyQuestionComponent', () => {
 
     test('in answer mode dropdowns are disabled', () => {
         const component = render(<BodyQuestionComponent question="(Hello|blah|baz), (world|foo)(!|.)" 
-            onSubmit={(submitted) => {}} indices={[0, 0, 0]} />);
+            onSubmit={(submitted) => {}} answeredIndices={[0, 0, 0]} submitLabel="" correctLabel=''  />);
         const firstSelect = getDropdowns(component)[1];
         expect(firstSelect.disabled).toBeTruthy()
     });
 
     test('in answer mode replaces ? with anser', () => {
         const component = render(<BodyQuestionComponent question="(Hello|blah|baz), (world|foo)(!|.)" 
-            onSubmit={(submitted) => {}} indices={[-1, -1, -1]} />);
+            onSubmit={(submitted) => {}} answeredIndices={[-1, -1, -1]} submitLabel="" correctLabel=''  />);
         const firstSelect = (getDropdowns(component)[0].children[0] as HTMLOptionElement).innerHTML.trim();
         expect(firstSelect).toEqual("Hello")
     });
 
     test('in answer mode button disappears', () => {
         const component = render(<BodyQuestionComponent question="(Hello|blah|baz), (world|foo)(!|.)" 
-            onSubmit={(submitted) => {}} indices={[0, 0, 0]} />);
+            onSubmit={(submitted) => {}} answeredIndices={[0, 0, 0]} submitLabel="" correctLabel=''  />);
         expect(hasButton(component)).toBeFalsy()
     });
 
     test('in answer mode error answer is red and correct answer is green', () => {
         const component = render(<BodyQuestionComponent question="(Hello|blah|baz), (world|foo)(!|.)" 
-                onSubmit={(submitted) => {}} indices={[0, 1, 0]} />);
+                onSubmit={(submitted) => {}} answeredIndices={[0, 1, 0]} submitLabel="" correctLabel=''  />);
         expect(getDropdowns(component)[0].className).toBe("success")
         expect(getDropdowns(component)[1].className).toBe("error")
     });
 
+    test('on error renders a hint with correct answer', async () => {
+        const component = render(<BodyQuestionComponent question="(Hello|blah|baz), (world|foo)(!|.)" 
+                onSubmit={(submitted) => {}} answeredIndices={[0, 1, 0]} submitLabel="" correctLabel='correct'  />);
+        await component.findByText('(correct: "world")');
+    });
+
     test('in answer mode draws the number near the answer', () => {
         const component = render(<BodyQuestionComponent question="(Hello|blah|baz), (world|foo)(!|.)" 
-            onSubmit={(submitted) => {}} indices={[0,1,0]} />);
+            onSubmit={(submitted) => {}} answeredIndices={[0,1,0]} submitLabel="" correctLabel=''  />);
         expect(component.queryAllByText('(1)')).toHaveLength(1);
         expect(component.queryAllByText('(2)')).toHaveLength(1);
         expect(component.queryAllByText('(3)')).toHaveLength(1);
@@ -130,7 +136,7 @@ describe('BodyQuestionComponent', () => {
 
     test('in question mode does not draw the number near the answer', () => {
         const component = render(<BodyQuestionComponent question="(Hello|blah|baz), (world|foo)(!|.)" 
-            onSubmit={(submitted) => {}} indices={[]} />);
+            onSubmit={(submitted) => {}} answeredIndices={[]} submitLabel="" correctLabel=''  />);
         expect(component.queryAllByText('(1)')).toHaveLength(0);
         expect(component.queryAllByText('(2)')).toHaveLength(0);
         expect(component.queryAllByText('(3)')).toHaveLength(0);
@@ -142,7 +148,7 @@ describe('BodyQuestionComponent', () => {
         const valuesOfFirstSelect: { [key:string]: number } = {};
         for (let i =0; i < 100; i++ ) {
             const component = render(<BodyQuestionComponent question="(Hello|blah|baz), (world|foo)(!|.)" 
-                onSubmit={(submitted) => {}} indices={[]} />);
+                onSubmit={(submitted) => {}} answeredIndices={[]} submitLabel="" correctLabel=''  />);
             const value = (getDropdowns(component)[0].children[0] as HTMLOptionElement).value;
             valuesOfFirstSelect[value] = 1;
         }
@@ -155,7 +161,7 @@ describe('BodyQuestionComponent', () => {
         const valuesOfFirstSelect: { [key:string]: number } = {};
         for (let i =0; i < 100; i++ ) {
             const component = render(<BodyQuestionComponent question="(Hello|blah|baz), (world|foo)(!|.)" 
-                onSubmit={(submitted) => {}} indices={[]} />);
+                onSubmit={(submitted) => {}} answeredIndices={[]} submitLabel="" correctLabel=''  />);
             const value = (getDropdowns(component)[0].children[1] as HTMLOptionElement).value;
             valuesOfFirstSelect[value] = 1;
         }
