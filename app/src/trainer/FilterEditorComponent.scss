@@ -13,6 +13,8 @@
     .highlighted {
         background-color: #efe;
     }
+
+    
     div.header {
         display: flex;
 
@@ -25,21 +27,32 @@
         }
     }
 
-    table.mainFilterTable {
-        display: block;
-        flex-grow: 1;
-        height: 300px;
-        overflow-y: scroll;
+    div.tableContainer {
         margin: 0px auto;
-        text-align:left;
-        width:auto;
-    }
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
 
-    table.mainFilterTable {
-        table {
-            background-color: #eee;
+        div.mainFilterTableContainer {
+            flex-grow: 1;
+            overflow-y: scroll;
+            height: 300px;
+
+            table.mainFilterTable {        
+                text-align:left;
+
+                table {
+                    background-color: #eee;
+                }
+            }
         }
     }
+
+    div.tableHeader {
+        display: flex;
+        flex-direction: row;
+    }
+
 
     .sorting {
         text-align: right;
@@ -69,6 +82,7 @@
         
 
     .firstCol {
-        width: 10px;
+        text-align: left;
+        flex-grow: 1;
     }
 }

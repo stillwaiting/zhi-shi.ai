@@ -178,40 +178,44 @@ export default function({ topics,  selectedRuleIdxs, onChanged, onClose, highlig
             </div>
         
 
-            <table className="mainFilterTable">
-                <tbody>
-                    <tr>
-                        <td className="firstCol">
-                            <IndeterminateCheckbox state={calcuateAllCheckboxState(topics, fixedSelectedRuleIdx)} debug={'All'} 
-                                onClick={() => {
-                                    const newSelectedRuleIdx = recalculateSelectedRuleIdxsOnAllClicked(topics, fixedSelectedRuleIdx);
-                                    setIsEmpty(newSelectedRuleIdx.size == 0);
-                                    onChanged(mapAllToEmpty(newSelectedRuleIdx, topics));
-                                }}
-                            />
-                        </td>
-                        <td colSpan={2} className="sorting">
-                            {lang.SUCCESS_STATS_LINK_PREFIX} % / {lang.TOTAL_STATS_LINK_PREFIX} %
-                                {/* <select>
-                                    <option value={SortEnum.NATURAL}>natural order</option>
-                                    <option value={SortEnum.WORST_TO_BEST}>from worst to best</option>
-                                    <option value={SortEnum.BEST_TO_WORST}>from best to worst</option>
-                                </select> */}
-                        </td>
-                    </tr>
-                    {topics.map(topic => {
-                        return renderTopic(topic, topics, fixedSelectedRuleIdx, (newRuleIdxs: Set<number>) => {
-                            setIsEmpty(newRuleIdxs.size == 0);
-                            return onChanged(newRuleIdxs);
-                        }, isExpanded[topic.topicIdx], (newExpanded) => {
-                            isExpanded[topic.topicIdx] = newExpanded;
-                            setIsExpanded(JSON.parse(JSON.stringify(isExpanded)));
-                            window.localStorage.setItem(LOCAL_STORAGE_KEY_EXPANDED, JSON.stringify(isExpanded));
-                        }, sortOrder, highlightedRuleIdx, lang);
-                    })}
-                </tbody>
-            </table>
+            <div className="tableContainer">
+                <div className="tableHeader">
+                    <div className="firstCol">
+                        <IndeterminateCheckbox state={calcuateAllCheckboxState(topics, fixedSelectedRuleIdx)} debug={'All'} 
+                            onClick={() => {
+                                const newSelectedRuleIdx = recalculateSelectedRuleIdxsOnAllClicked(topics, fixedSelectedRuleIdx);
+                                setIsEmpty(newSelectedRuleIdx.size == 0);
+                                onChanged(mapAllToEmpty(newSelectedRuleIdx, topics));
+                            }}
+                        />
+                    </div>
+                    <div className="sorting">
+                        {lang.SUCCESS_STATS_LINK_PREFIX} % / {lang.TOTAL_STATS_LINK_PREFIX} %
+                            {/* <select>
+                                <option value={SortEnum.NATURAL}>natural order</option>
+                                <option value={SortEnum.WORST_TO_BEST}>from worst to best</option>
+                                <option value={SortEnum.BEST_TO_WORST}>from best to worst</option>
+                            </select> */}
+                    </div>
+                </div>
 
+                <div className="mainFilterTableContainer">
+                    <table className="mainFilterTable">
+                        <tbody>
+                            {topics.map(topic => {
+                                return renderTopic(topic, topics, fixedSelectedRuleIdx, (newRuleIdxs: Set<number>) => {
+                                    setIsEmpty(newRuleIdxs.size == 0);
+                                    return onChanged(newRuleIdxs);
+                                }, isExpanded[topic.topicIdx], (newExpanded) => {
+                                    isExpanded[topic.topicIdx] = newExpanded;
+                                    setIsExpanded(JSON.parse(JSON.stringify(isExpanded)));
+                                    window.localStorage.setItem(LOCAL_STORAGE_KEY_EXPANDED, JSON.stringify(isExpanded));
+                                }, sortOrder, highlightedRuleIdx, lang);
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>;
 
 }
