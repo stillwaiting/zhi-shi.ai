@@ -98,11 +98,11 @@ describe('BodyQuestionComponent', () => {
         expect(firstSelect.disabled).toBeTruthy()
     });
 
-    test('in answer mode replaces ? with anser', () => {
+    test('in answer mode does not replaces ? with anser', () => {
         const component = render(<BodyQuestionComponent question="(Hello|blah|baz), (world|foo)(!|.)" 
             onSubmit={(submitted) => {}} answeredIndices={[-1, -1, -1]} submitLabel="" correctLabel=''  />);
         const firstSelect = (getDropdowns(component)[0].children[0] as HTMLOptionElement).innerHTML.trim();
-        expect(firstSelect).toEqual("Hello")
+        expect(firstSelect).toEqual("?")
     });
 
     test('in answer mode button disappears', () => {

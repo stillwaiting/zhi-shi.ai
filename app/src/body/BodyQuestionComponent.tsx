@@ -76,7 +76,7 @@ export default ({ onSubmit, question, answeredIndices, submitLabel, correctLabel
                                         setSelectedDropdownIndices(newIndices);
                                     }}
                                 >
-                                    <option key="-1" value="-1">{answeredIndices.length > 0 ? options[0] : '?'}</option>
+                                    <option key="-1" value="-1">?</option>
                                 {shuffleArray(options).map((option, idx) => (
                                     // not super efficient, but the list is small, no need to optimize now
                                     <option key={idx} value={options.indexOf(option)}>
@@ -86,7 +86,7 @@ export default ({ onSubmit, question, answeredIndices, submitLabel, correctLabel
                                 </select>
                             </span>,
                             answeredIndices.length > 0 ? <sup key={`index${subSentenceIdx}`} className={dropdownClassName(dropdownIdx)}>({dropdownIdx + 1})</sup> : null,
-                            answeredIndices.length > 0 && selectedDropdownIndices[dropdownIdx] > 0 && options.length > 0
+                            answeredIndices.length > 0 && selectedDropdownIndices[dropdownIdx] != 0 && options.length > 0
                                     ? <span className='hint'>&nbsp; ({correctLabel}: "{options[0]}")</span>
                                     : null,
                         ];
