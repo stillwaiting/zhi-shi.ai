@@ -115,8 +115,11 @@ export function TrainerAppComponent({ lang, taskSuggester }: { lang: Language, t
 
                             lang={lang}
 
-                            onChanged={(selectedRuleIdxs) => {
+                            onChanged={(selectedRuleIdxs, shouldClose) => {
                                 const newPath = new PathBuilder('').populate(path).setSelection(selectedRuleIdxs);
+                                if (shouldClose) {
+                                    newPath.setScreen(undefined);
+                                }
                                 history.push(newPath.buildPath())
                             }} 
                             

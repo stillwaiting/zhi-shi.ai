@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { MutableRefObject, RefObject, useEffect, useRef, useState } from 'react';
 
 import { RuleType, StatsType, TopicType } from './TaskSuggester';
 
@@ -11,7 +11,7 @@ import { Language  } from './LanguageType';
 export type TopicSelectorComponentProps = {
     topics: Array<TopicType>,
     selectedRuleIdxs: Set<number>,
-    onChanged: (newRuleIdxs: Set<number>) => void,
+    onChanged: (newRuleIdxs: Set<number>, shouldClose: boolean) => void,
     onClose: () => void,
     lang: Language,
 
@@ -24,8 +24,6 @@ enum SortEnum {
     WORST_TO_BEST,
     BEST_TO_WORST
 };
-
-const LOCAL_STORAGE_KEY_EXPANDED = 'expanded';
 
 function successfulRateStatsToPct(stats: StatsType): number | undefined {
     if (stats.correctlyAnsweredTaskIdxs.size + stats.incorrectlyAnsweredTaskIdxs.size > 0) {
@@ -67,12 +65,10 @@ function renderStats(stats: StatsType): React.ReactNode {
 }
 
 
-function renderTopic(topic: TopicType, 
+function renderTopic(highlightedRef: RefObject<HTMLTableRowElement>, topic: TopicType, 
     topics: Array<TopicType>,
     selectedRuleIdxs: Set<number>, 
-    onChanged: (newRuleIdxs: Set<number>) => void,
-    isExpanded: boolean,
-    setIsExpanded: (newIsExpanded: boolean) => void,
+    onChanged: (newRuleIdxs: Set<number>, shouldClose: boolean) => void,
     sortOrder: SortEnum,
     highlightedRuleIdx: number,
     lang: Language
@@ -80,8 +76,14 @@ function renderTopic(topic: TopicType,
     const topicCheckState = calculateTopicCheckboxState(topic, selectedRuleIdxs);
     const onTopicClick = (e?: any) => {
         e?.preventDefault();
-        onChanged(mapAllToEmpty(recalculateSelectedRuleIdxsOnTopicClick(topics, topic, selectedRuleIdxs), topics))
+        onChanged(mapAllToEmpty(recalculateSelectedRuleIdxsOnTopicClick(topics, topic, selectedRuleIdxs), topics), false)
     };
+
+    const onTopicStudy = (e?: any) => {
+        e?.preventDefault();
+        onChanged(new Set(topic.rules.map(rule => rule.ruleIdx)), true);
+    };
+
     return <tr key={topic.topicIdx} className="topicRow">
         <td className="firstCol">
             <IndeterminateCheckbox state={topicCheckState} debug={topic.title}
@@ -97,46 +99,51 @@ function renderTopic(topic: TopicType,
                 } */}
         </td>
         <td>
-            <span onClick={onTopicClick}>{topic.title} {renderStats(topic.stats)}</span>
-                &nbsp; (<a href='#' className='expand' onClick={(e)=> {
-                        e.preventDefault();
-                        setIsExpanded(!isExpanded);
-                    }}>{isExpanded ? lang.COLLAPSE : lang.EXPAND}</a>)
-            {isExpanded
-                ?   <table>
-                        <tbody>
-                            {topic.rules.map(rule => {
-                                const state = calculateRuleCheckboxState(rule, selectedRuleIdxs);
+            <span onClick={onTopicClick}>{topic.title}</span> (<a href="#" onClick={onTopicStudy}>{lang.STUDY_ACTION}</a>)
+                
+            <table>
+                <tbody>
+                    {topic.rules.map(rule => {
+                        const state = calculateRuleCheckboxState(rule, selectedRuleIdxs);
 
-                                const onClick = (e?: any) => {
-                                    e?.preventDefault();
-                                    onChanged(mapAllToEmpty(recalculateSelectedRuleIdxsOnRuleClick(topics, rule, selectedRuleIdxs), topics))
-                                };
+                        const onClick = (e?: any) => {
+                            e?.preventDefault();
+                            onChanged(mapAllToEmpty(recalculateSelectedRuleIdxsOnRuleClick(topics, rule, selectedRuleIdxs), topics), false)
+                        };
 
-                                return    <tr key={rule.ruleIdx} className={rule.ruleIdx == highlightedRuleIdx ? 'highlighted' : ''}>
-                                    <td><IndeterminateCheckbox state={state} onClick={onClick}
-                                    debug={rule.nodeTitle}
-                                    /> 
-                                        {/* {state == CheckboxState.CHECKED 
-                                             ? "study"
-                                             : null
-                                         } */}
-                                    </td>
-                                    <td onClick={onClick} className={rule.wasTested ? "tested" : ""}>
-                                        {rule.nodeTitle.replace("Rule: ", "")}
-                                    </td>
-                                    <td>
-                                        {renderStats(rule.stats)}
-                                    </td>
-                                </tr>
-                            })}
-                        </tbody>
+                        const doStudy = (e?: any) => {
+                            e?.preventDefault();
+                            onChanged(new Set([rule.ruleIdx]), true);
+                        };
 
-                    </table>
+                        return    <tr 
+                                key={rule.ruleIdx} 
+                                className={rule.ruleIdx == highlightedRuleIdx ? 'highlighted' : ''}
+                                ref={rule.ruleIdx == highlightedRuleIdx ? highlightedRef : null}
+                        >
+                            <td><IndeterminateCheckbox state={state} onClick={onClick}
+                            debug={rule.nodeTitle}
+                            /> 
+                                {/* {state == CheckboxState.CHECKED 
+                                        ? "study"
+                                        : null
+                                    } */}
+                            </td>
+                            <td onClick={onClick} className={rule.wasTested ? "tested" : ""}>
+                                {rule.nodeTitle.replace("Rule: ", "")}
+                            </td>
+                            <td>
+                                <a href='#' onClick={doStudy}>{lang.STUDY_ACTION}</a>
+                            </td>
+                            <td>
+                                {renderStats(rule.stats)}
+                            </td>
+                        </tr>
+                    })}
+                </tbody>
 
-                : null
-            }
-        </td>
+            </table>
+       </td>
         <td>
             {renderStats(topic.stats)}
         </td>
@@ -150,8 +157,17 @@ export default function({ topics,  selectedRuleIdxs, onChanged, onClose, highlig
     let sortedTopics = topics;
 
     const [sortOrder, setSortOrder] = useState<SortEnum>(SortEnum.NATURAL);
-    const [isExpanded, setIsExpanded] = useState<Array<boolean>>(initialiseExpanded(topics.map(topic => false), highlightedTopicIdx));
     const [isEmpty, setIsEmpty] = useState<boolean>(false);
+    const [isScrolledIntoView, setIsScrolledIntoView] = useState<boolean>(false);
+
+    const highlightedRef: MutableRefObject<HTMLTableRowElement | null> = useRef<HTMLTableRowElement>(null);
+
+    useEffect(() => {
+        if (highlightedRef && highlightedRef.current && highlightedRef.current.scrollIntoView && !isScrolledIntoView) {
+            highlightedRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            setIsScrolledIntoView(true);
+        }
+      }, [highlightedRef, highlightedRef?.current]);
 
     if (sortOrder != SortEnum.NATURAL) {
         sortedTopics.sort((a, b) => 
@@ -185,7 +201,7 @@ export default function({ topics,  selectedRuleIdxs, onChanged, onClose, highlig
                             onClick={() => {
                                 const newSelectedRuleIdx = recalculateSelectedRuleIdxsOnAllClicked(topics, fixedSelectedRuleIdx);
                                 setIsEmpty(newSelectedRuleIdx.size == 0);
-                                onChanged(mapAllToEmpty(newSelectedRuleIdx, topics));
+                                onChanged(mapAllToEmpty(newSelectedRuleIdx, topics), false);
                             }}
                         />
                     </div>
@@ -203,13 +219,9 @@ export default function({ topics,  selectedRuleIdxs, onChanged, onClose, highlig
                     <table className="mainFilterTable">
                         <tbody>
                             {topics.map(topic => {
-                                return renderTopic(topic, topics, fixedSelectedRuleIdx, (newRuleIdxs: Set<number>) => {
+                                return renderTopic(highlightedRef, topic, topics, fixedSelectedRuleIdx, (newRuleIdxs: Set<number>, shouldClose: boolean) => {
                                     setIsEmpty(newRuleIdxs.size == 0);
-                                    return onChanged(newRuleIdxs);
-                                }, isExpanded[topic.topicIdx], (newExpanded) => {
-                                    isExpanded[topic.topicIdx] = newExpanded;
-                                    setIsExpanded(JSON.parse(JSON.stringify(isExpanded)));
-                                    window.localStorage.setItem(LOCAL_STORAGE_KEY_EXPANDED, JSON.stringify(isExpanded));
+                                    onChanged(newRuleIdxs, shouldClose);
                                 }, sortOrder, highlightedRuleIdx, lang);
                             })}
                         </tbody>
@@ -298,21 +310,5 @@ function caculatePercentClassName(percentSuccess: number): string  {
         return 'yellowPct';
     }
     return 'redPct';
-}
-function initialiseExpanded(fallbackValue: boolean[], highlightedTopicIdx: number): boolean[] {
-    if (window.localStorage.getItem(LOCAL_STORAGE_KEY_EXPANDED)) {
-        const candidate = (JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_KEY_EXPANDED)!) as boolean[]);
-        if (candidate.length == fallbackValue.length) {
-            if (highlightedTopicIdx >= 0) {
-                candidate[highlightedTopicIdx] = true;
-            }
-
-            return candidate;
-        }
-    }
-    if (highlightedTopicIdx >= 0) {
-        fallbackValue[highlightedTopicIdx] = true;
-    }
-    return fallbackValue;
 }
 

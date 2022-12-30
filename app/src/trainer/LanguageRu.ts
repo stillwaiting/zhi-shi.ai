@@ -3,6 +3,7 @@ import { Language } from "./LanguageType";
 const LANGUAGE_RU: Language = {
     NEXT_BUTTON: 'Следующее задание',
     STUDY_LINK_PREFIX: 'Учим',
+    STUDY_ACTION: 'учить',
     SUCCESS_STATS_LINK_PREFIX: 'Правильно решено',
     TOTAL_STATS_LINK_PREFIX: 'Всего решено',
     PARTIAL_LINK: 'выборочно',

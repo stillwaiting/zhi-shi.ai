@@ -4,6 +4,7 @@ export interface Language {
     TOTAL: string;
     NEXT_BUTTON: string,
     STUDY_LINK_PREFIX: string,
+    STUDY_ACTION: string,
     SUCCESS_STATS_LINK_PREFIX: string,
     CHANGE: string,
     TOTAL_STATS_LINK_PREFIX: string,

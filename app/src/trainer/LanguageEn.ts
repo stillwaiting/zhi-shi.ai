@@ -3,6 +3,7 @@ import { Language } from "./LanguageType";
 const LANGUAGE_EN: Language = {
     NEXT_BUTTON: 'Next task',
     STUDY_LINK_PREFIX: 'Study',
+    STUDY_ACTION: 'study',
     SUCCESS_STATS_LINK_PREFIX: 'Correctly solved',
     TOTAL_STATS_LINK_PREFIX: 'total solved',
     PARTIAL_LINK: 'partial',
