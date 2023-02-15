@@ -49,7 +49,7 @@ export function TrainerAppComponent({ lang, taskSuggester }: { lang: Language, t
 
     useEffect(() => {
         if (!answersReplayed) {
-            getAnswersFromLocalStorage().forEach((answer) => {
+            getAnswersFromLocalStorage(hasher).forEach((answer) => {
                 taskSuggester.recordAnswer(answer[0], answer[1]);
             });
             setAnswersReplayed(true);
@@ -151,7 +151,7 @@ export function TrainerAppComponent({ lang, taskSuggester }: { lang: Language, t
                                         e.preventDefault();
                                         if (window.confirm(lang.CONFIRM)) {
                                             taskSuggester.clearStatsForRules(path.getRules());
-                                            clearAnswersInLocalStorageForRules(path.getRules(), taskSuggester);
+                                            clearAnswersInLocalStorageForRules(path.getRules(), hasher, taskSuggester);
                                             history.push(location.pathname + "?_=" + Math.random());
                                         }
                                     }
@@ -183,7 +183,7 @@ export function TrainerAppComponent({ lang, taskSuggester }: { lang: Language, t
                                 (indices) => {
                                     const isCorrect = indices.filter(index => index == 0).length == indices.length;
                                     taskSuggester.recordAnswer(currentTask.taskIdx, isCorrect);
-                                    addAnswerToLocalStorage(currentTask.taskIdx, isCorrect);
+                                    addAnswerToLocalStorage(currentTask.taskIdx, hasher, isCorrect);
                                     setAnsweredIndices(indices);
                                     setCanShowNextButton(isCorrect);
                                     if (!isCorrect) {
@@ -272,31 +272,38 @@ export default function({ url, lang }: { url:string, lang: Language }) {
 
 const LOCAL_STORAGE_KEY_ANSWERS = 'answers';
 
-function addAnswerToLocalStorage(taskIdx: number, isCorrect: boolean) {
-    const oldAnswers = getAnswersFromLocalStorage();
+function addAnswerToLocalStorage(taskIdx: number, hasher: Hasher, isCorrect: boolean) {
+    const oldAnswers = getAnswersFromLocalStorage(hasher);
 
     const answers = oldAnswers.filter((item, index) => item[0] != taskIdx || index > oldAnswers.length - 500);
     answers.push([taskIdx, isCorrect]);
     if (answers.length > 1000) {
         answers.shift();
     }
-    window.localStorage.setItem(LOCAL_STORAGE_KEY_ANSWERS, JSON.stringify(answers));
+    window.localStorage.setItem(LOCAL_STORAGE_KEY_ANSWERS, JSON.stringify(answers.map(answer => 
+        [hasher.taskIdxToHash(answer[0]), answer[1]]
+    )));
 }
 export function clearAnswersInLocalStorage() {
     window.localStorage.removeItem(LOCAL_STORAGE_KEY_ANSWERS);
 }
 
-function clearAnswersInLocalStorageForRules(rules: Set<number>, taskSuggester: TaskSuggester) {
-    const answers = getAnswersFromLocalStorage().filter(answer => {
+function clearAnswersInLocalStorageForRules(rules: Set<number>, hasher: Hasher, taskSuggester: TaskSuggester) {
+    const answers = getAnswersFromLocalStorage(hasher).filter(answer => {
         const ruleIdx = taskSuggester.getTaskRuleIdx(answer[0]);
         return !rules.has(ruleIdx);
     });
-    window.localStorage.setItem(LOCAL_STORAGE_KEY_ANSWERS, JSON.stringify(answers));
+    window.localStorage.setItem(LOCAL_STORAGE_KEY_ANSWERS, JSON.stringify(answers.map(answer => 
+        [hasher.taskIdxToHash(answer[0]), answer[1]]
+    )));
 }
 
-function getAnswersFromLocalStorage(): Array<[number, boolean]> {
+function getAnswersFromLocalStorage(hasher: Hasher): Array<[number, boolean]> {
     if (window.localStorage.getItem(LOCAL_STORAGE_KEY_ANSWERS)) {
-        return JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_KEY_ANSWERS)!);
+        // @ts-ignore
+        return JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_KEY_ANSWERS) || '[]').map((answer) => 
+            [hasher.hashToTaskIdx(answer[0]), answer[1]]
+        );
     }
     return [];
 }
