@@ -11,13 +11,27 @@ import FilterEditorComponent from './FilterEditorComponent';
 import './TrainerAppComponent.scss';
 import { config } from "node:process";
 import { Language } from './LanguageType';
+import Hasher from "./Hasher";
+import { has } from "lodash";
 
 export function TrainerAppComponent({ lang, taskSuggester }: { lang: Language, taskSuggester: TaskSuggester }) {
     const location = useLocation();
     const [answeredIndices, setAnsweredIndices] = useState<Array<number>|undefined>(undefined);
     const [answersReplayed, setAnswersReplayed] = useState<boolean>(false);
     const [canShowNextButton, setCanShowNextButton] = useState<boolean>(true);
-    const [path, setPath] = useState<PathBuilder>(new PathBuilder(location.pathname));
+    const [hasher, setHasher] = useState<Hasher>(() => {
+        const hasher = new Hasher();
+        taskSuggester.getTopics().forEach(topic => {
+            topic.rules.forEach(rule => {
+                hasher.addRule(rule);
+                rule.taskIdxs.forEach(taskIdx => {
+                    hasher.addTask(taskSuggester.getTask(taskIdx));
+                })
+            });
+        });
+        return hasher;
+    });
+    const [path, setPath] = useState<PathBuilder>(new PathBuilder(location.pathname, hasher));
 
     const history = useHistory();
 
@@ -43,7 +57,7 @@ export function TrainerAppComponent({ lang, taskSuggester }: { lang: Language, t
     });
 
     useEffect(() => {
-        const newPath = new PathBuilder(location.pathname);
+        const newPath = new PathBuilder(location.pathname, hasher);
 
         taskSuggester.setSelectedRuleIdxs(newPath.getRules());
         const newPathTask = getTaskFromPath(newPath);
@@ -98,7 +112,7 @@ export function TrainerAppComponent({ lang, taskSuggester }: { lang: Language, t
                         key={(answeredIndices ? 'answered' : '')}
                         lang={lang}
                         onClicked={() => {
-                            const newPath = new PathBuilder('').populate(path).setScreen('filter');
+                            const newPath = new PathBuilder('', hasher).populate(path).setScreen('filter');
                             history.push(newPath.buildPath());
                         }}
                     />
@@ -116,7 +130,7 @@ export function TrainerAppComponent({ lang, taskSuggester }: { lang: Language, t
                             lang={lang}
 
                             onChanged={(selectedRuleIdxs, shouldClose) => {
-                                const newPath = new PathBuilder('').populate(path).setSelection(selectedRuleIdxs);
+                                const newPath = new PathBuilder('', hasher).populate(path).setSelection(selectedRuleIdxs);
                                 if (shouldClose) {
                                     newPath.setScreen(undefined);
                                 }
@@ -124,7 +138,7 @@ export function TrainerAppComponent({ lang, taskSuggester }: { lang: Language, t
                             }} 
                             
                             onClose = {() => {
-                                const newPath = new PathBuilder('').populate(path).setScreen(undefined);
+                                const newPath = new PathBuilder('', hasher).populate(path).setScreen(undefined);
                                 history.push(newPath.buildPath());
                             }} 
                         />
@@ -186,7 +200,7 @@ export function TrainerAppComponent({ lang, taskSuggester }: { lang: Language, t
                         {answeredIndices && canShowNextButton
                             ? <div><button className="next" autoFocus onClick={() => {
                                 const nextSuggestedTask = taskSuggester!.suggestNextTask();
-                                const newPath = new PathBuilder('').populate(path);
+                                const newPath = new PathBuilder('', hasher).populate(path);
                                 updatePathWithTask(newPath, nextSuggestedTask);
                                 setAnsweredIndices(undefined);
                                 history.push(newPath.buildPath());
@@ -196,11 +210,11 @@ export function TrainerAppComponent({ lang, taskSuggester }: { lang: Language, t
                             {
                                     taskSuggester!.getTopics()[currentTask.topicIdx].rules.find(rule => rule.ruleIdx == currentTask.ruleIdx)?.nodeTitle.replace("Rule:", "")
                                     }
-                                (<a href={new PathBuilder('').populate(path).setScreen('filter').buildPath()}
+                                (<a href={new PathBuilder('', hasher).populate(path).setScreen('filter').buildPath()}
                                     onClick={
                                         (e) => {
                                             e.preventDefault();
-                                            const newPath = new PathBuilder('').populate(path).setScreen('filter');
+                                            const newPath = new PathBuilder('', hasher).populate(path).setScreen('filter');
                                             history.push(newPath.buildPath());
                                         }
                                     }

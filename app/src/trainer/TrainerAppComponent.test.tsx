@@ -7,6 +7,8 @@ import TrainerAppComponent, {clearAnswersInLocalStorage} from './TrainerAppCompo
 import { MemoryRouter } from 'react-router';
 import { Link, Route } from "react-router-dom";
 import lang from './LanguageEn';
+import TaskSuggester from "./TaskSuggester";
+import Hasher from "./Hasher";
 
 function sleep(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -25,33 +27,7 @@ describe('TrainerAppComponent', () => {
     let currentPath: string = '/';
     let currentHistory: History;
 
-    async function renderAndWaitForData(): Promise<RenderResult> {
-        const component = render(<MemoryRouter initialEntries={[currentPath]}> 
-            <TrainerAppComponent url='/foo' lang={lang} />
-    
-            <Route
-                path="*"
-                render={({ history, location }) => {
-                    currentPath = location.pathname;
-                    currentHistory = history;
-                    return null;
-                }}
-            />
-            <Link data-testid='goto1' to='/rules/1/task/1'>goto 1</Link>
-            <Link data-testid='goto0' to='/rules/0/task/0'>goto 0</Link>
-            <Link data-testid='goto' to='/'>goto root</Link>
-            
-            </MemoryRouter>)
-        await act(async () => { await sleep(1); });
-        return component;
-    }
-
-
-    beforeEach(() => {
-        currentPath = '/'
-        clearAnswersInLocalStorage();
-        fetchMock.enableMocks();
-        fetchMock.mockResponse(`
+    const data = `
 
 # Root
 
@@ -71,7 +47,47 @@ Some text that should be ignored.
 ? 7 (hello|world)
 ! answer 1
 
-        `);
+            `;
+    const taskSuggester = new TaskSuggester(data);
+    const hasher = new Hasher();
+    taskSuggester.getTopics().forEach(topic => {
+        topic.rules.forEach(rule => {
+            hasher.addRule(rule);
+            rule.taskIdxs.forEach(taskIdx => {
+                hasher.addTask(taskSuggester.getTask(taskIdx));
+            })
+        });
+    });
+    
+
+    async function renderAndWaitForData(): Promise<RenderResult> {
+        const component = render(<MemoryRouter initialEntries={[currentPath]}> 
+            <TrainerAppComponent url='/foo' lang={lang} />
+    
+            <Route
+                path="*"
+                render={({ history, location }) => {
+                    currentPath = location.pathname;
+                    currentHistory = history;
+                    return null;
+                }}
+            />
+            <Link data-testid='goto1' to={`/rules/${hasher.ruleIdxToHash(1)}/task/${hasher.taskIdxToHash(1)}`}>goto 1</Link>
+            <Link data-testid='goto0' to={`/rules/${hasher.ruleIdxToHash(0)}/task/${hasher.taskIdxToHash(0)}`}>goto 0</Link>
+            <Link data-testid='goto' to='/'>goto root</Link>
+            
+            </MemoryRouter>)
+        await act(async () => { await sleep(1); });
+        return component;
+    }
+
+
+    beforeEach(() => {
+        currentPath = '/'
+        clearAnswersInLocalStorage();
+        fetchMock.enableMocks();
+        
+        fetchMock.mockResponse(data);
     });
 
     afterEach(() => {
@@ -96,7 +112,7 @@ Some text that should be ignored.
     });
 
     test('gets selected rules from path', async() => {
-        currentPath = '/rules/1';
+        currentPath = '/rules/' + hasher.ruleIdxToHash(1);
         
         const component = await renderAndWaitForData();
 
