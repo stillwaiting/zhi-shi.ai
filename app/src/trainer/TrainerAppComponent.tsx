@@ -36,9 +36,9 @@ export function TrainerAppComponent({ lang, taskSuggester }: { lang: Language, t
     const history = useHistory();
 
     function getTaskFromPath(builder: PathBuilder) {
-        return (builder.getTaskIdx() >= 0 && taskSuggester)
+        return (builder.getTaskIdx() >= 0)
         ? taskSuggester.getTask(builder.getTaskIdx())
-        : null;
+        : taskSuggester.suggestNextTask();
     }
 
     const currentTask = getTaskFromPath(path);
@@ -301,9 +301,11 @@ function clearAnswersInLocalStorageForRules(rules: Set<number>, hasher: Hasher, 
 function getAnswersFromLocalStorage(hasher: Hasher): Array<[number, boolean]> {
     if (window.localStorage.getItem(LOCAL_STORAGE_KEY_ANSWERS)) {
         // @ts-ignore
-        return JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_KEY_ANSWERS) || '[]').map((answer) => 
-            [hasher.hashToTaskIdx(answer[0]), answer[1]]
-        );
+        return JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_KEY_ANSWERS) || '[]')
+            .filter((answer: Array<any>) => !!hasher.hashToTaskIdx(answer[0]))
+            .map((answer: Array<any>) => 
+                [hasher.hashToTaskIdx(answer[0]), answer[1]]
+            );
     }
     return [];
 }

@@ -9,8 +9,12 @@ export default class Hasher {
     private _hashToTaskIdx: {[key: string]: number} = {};    
 
     public addRule(rule: RuleType) {
+        const hash = this.calculateHash(rule.nodeTitle);
+        if (this._hashToRuleIdx[hash]) {
+            console.error("Hash collision!", rule, hash, this._hashToRuleIdx[hash]);
+        }
         this._ruleIdxToHash[rule.ruleIdx] = this.calculateHash(rule.nodeTitle);
-        this._hashToRuleIdx[this._ruleIdxToHash[rule.ruleIdx]] = rule.ruleIdx;
+        this._hashToRuleIdx[hash] = rule.ruleIdx;
     }
 
     public ruleIdxToHash(ruleIdx: number) {
@@ -22,8 +26,12 @@ export default class Hasher {
     }
 
     public addTask(task: TaskType) {
-        this._taskIdxToHash[task.taskIdx] = this.calculateHash(task.bodyChunk.question.text);
-        this._hashToTaskIdx[this._taskIdxToHash[task.taskIdx]] = task.taskIdx;
+        const hash = this.calculateHash(task.bodyChunk.question.text + task.nodeTitle);
+        if (this._hashToTaskIdx[hash]) {
+            console.log("Hash collision task!", task, hash, this._hashToTaskIdx[hash]);
+        }
+        this._taskIdxToHash[task.taskIdx] = hash;
+        this._hashToTaskIdx[hash] = task.taskIdx;
     }
 
     public taskIdxToHash(taskIdx: number) {

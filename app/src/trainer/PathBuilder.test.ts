@@ -74,7 +74,7 @@ describe('pathutils', () => {
                 .setSelection(new Set([6, 7, 8, 10, 14, 15]))
                 .setTaskIdx(1)
                 .setScreen('blah')
-            .buildPath()).toBe('/rules/2b0a82-31f84b,941c4b,e936f1-f48506/task/1f5087/blah');
+            .buildPath()).toBe('/rules/2b0a82-31f84b,941c4b,e936f1-f48506/task/ec1d2a/blah');
         });
         
     });
@@ -123,7 +123,7 @@ describe('pathutils', () => {
             const pathBuilder = new PathBuilder('', hasher);
             expect(
                 pathBuilder.setScreen('foo').setSelection(new Set([5,6])).setTaskIdx(1).buildPath()
-            ).toEqual('/rules/35cbe8-2b0a82/task/1f5087/foo');
+            ).toEqual('/rules/35cbe8-2b0a82/task/ec1d2a/foo');
         });
     })
 });
