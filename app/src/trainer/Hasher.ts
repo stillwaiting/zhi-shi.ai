@@ -32,6 +32,8 @@ export default class Hasher {
         }
         this._taskIdxToHash[task.taskIdx] = hash;
         this._hashToTaskIdx[hash] = task.taskIdx;
+        const hash2 = this.calculateHash(task.bodyChunk.question.text);
+        this._hashToTaskIdx[hash2] = task.taskIdx;
     }
 
     public taskIdxToHash(taskIdx: number) {
