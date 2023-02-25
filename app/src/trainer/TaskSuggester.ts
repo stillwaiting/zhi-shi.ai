@@ -416,10 +416,12 @@ export default class TaskSuggester {
                 },
                 rules: []
             };
-            this.topics.push(topic);
             node.children.forEach(ruleNode => {
                 this.parseRuleNode(topic, ruleNode);
             });
+            if (topic.rules.length > 0) {
+                this.topics.push(topic);
+            }
         } else {
             node.children.map(childNode => this.parseMarkdown(childNode));
         }
