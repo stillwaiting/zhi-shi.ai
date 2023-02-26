@@ -30,8 +30,6 @@ export type RuleType = {
     nodeTitle: string;
     taskIdxs: Array<number>;
 
-    wasTested: boolean;
-
     stats: StatsType;
 
     lastAnsweredTaskIdxs: {[taskNodeTitle: string]: Set<number>}; // purged when full for each nodeTitle
@@ -64,7 +62,6 @@ export default class TaskSuggester {
     private lastAnsweredRuleIdxs: Set<number> = new Set<number>([]); // purged when full
 
     private reversedHistoryTaskIdxLog: {[taskIdx: number]: number} /* timestamp */ = {};
-    private debugLog = false;
 
     // When answered incorrectly, it will stick to the rule and set count and stick to it until count is 0
     private stickyRuleIdx: number = -1;
@@ -387,15 +384,16 @@ export default class TaskSuggester {
         return suggestedTitle;
     }
 
-    enableDebugLog() {
-        this.debugLog = true;
-    }
     getTaskRuleIdx(taskIdx: number): number {
         return this.tasks[taskIdx].ruleIdx;
     }
 
+    private debugMode() {
+        return window && window.localStorage && window.localStorage.getItem("debug");
+    }
+
     private _debugLog(str: String) {
-        if (this.debugLog) {
+        if (this.debugMode()) {
             console.log(str);
         }
     }
@@ -431,11 +429,13 @@ export default class TaskSuggester {
         if (ruleNode.title.indexOf("NR") == 0 || ruleNode.title.indexOf("TODO") == 0) {
             return;
         }
+        if (!this.debugMode() && ruleNode.title.indexOf("[debug]") >= 0) {
+            return;
+        }
         let rule: RuleType = {
             ruleIdx: this.rules.length,
             topicIdx: topic.topicIdx,
             nodeTitle: ruleNode.title.replace("[OK!]", "").trim(),
-            wasTested: ruleNode.title.includes("[OK!]"),
             stats: {
                 totalTasks: 0,
                 correctlyAnsweredTaskIdxs: new Set(),

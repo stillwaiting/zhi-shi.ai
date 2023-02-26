@@ -3,9 +3,8 @@ import TaskSuggester from './TaskSuggester';
 describe('TaskSuggester', () => {
 
     let suggester!: TaskSuggester;
-
-    beforeEach(() => {
-        suggester = new TaskSuggester(`
+    function initSuggester() {
+      suggester = new TaskSuggester(`
    
 # Root 1
 
@@ -13,6 +12,13 @@ describe('TaskSuggester', () => {
 
 
 ### NR: ignore
+
+#### Task ignored task
+
+? -1 Hello (foo|bar)
+! world
+
+### Rule: not verified [debug]
 
 #### Task ignored task
 
@@ -100,7 +106,25 @@ Some text that should be ignored.
 
 
         
-`)
+`);
+    }
+
+    beforeEach(() => {
+      // mock window.localStorage
+      const localStorageMock = {
+        getItem: jest.fn(),
+      };
+  
+      global.window = Object.create(window);
+      Object.defineProperty(window, 'localStorage', {
+        value: localStorageMock,
+      });
+      // @ts-ignore
+      window.localStorage.getItem.mockReturnValue(undefined);
+    });
+
+    beforeEach(() => {
+        initSuggester();
     });
 
 
@@ -119,7 +143,6 @@ Some text that should be ignored.
               {
                 "ruleIdx": 0,
                 "topicIdx": 0,
-                "wasTested": false,
                 "nodeTitle": "Rule 0: single tasks node",
                 "stats": {
                   "totalTasks": 2,
@@ -136,7 +159,6 @@ Some text that should be ignored.
               {
                 "ruleIdx": 1,
                 "topicIdx": 0,
-                "wasTested": true,
                 "nodeTitle": "Rule 1: several task nodes",
                 "stats": {
                   "totalTasks": 4,
@@ -166,7 +188,6 @@ Some text that should be ignored.
               {
                 "ruleIdx": 2,
                 "topicIdx": 1,
-                "wasTested": false,
                 "nodeTitle": "Rule 2: another root",
                 "stats": {
                   "totalTasks": 2,
@@ -184,6 +205,17 @@ Some text that should be ignored.
           }
         ]);
     });
+
+    test('includes not verified nodes in debug mode', () => {
+
+      expect(suggester.getTopics()[0].rules.length).toStrictEqual(2);
+
+      // @ts-ignore
+      window.localStorage.getItem.mockReturnValue('true');
+      initSuggester();
+
+      expect(suggester.getTopics()[0].rules.length).toStrictEqual(3);
+  });
 
     test('Selected rules limit the choice of tasks', () => {
         suggester.setSelectedRuleIdxs(new Set<number>([2]));

@@ -37,20 +37,6 @@ function totalStatsToPct(stats: StatsType): number | undefined {
     } 
 }
 
-let appended = false;
-
-setInterval(() => {
-    if (appended) {
-        return;
-    }
-    if (window.location.href.indexOf("debug") >= 0) {
-        var style=document.createElement('style');
-        style.type='text/css';
-        style.appendChild(document.createTextNode('.tested { background: yellow; } '));
-        document.getElementsByTagName('head')[0].appendChild(style);
-        appended = true;
-    }
-}, 1000);
 
 function renderStats(stats: StatsType): React.ReactNode {
     const successRatePct = successfulRateStatsToPct(stats);
@@ -129,7 +115,7 @@ function renderTopic(highlightedRef: RefObject<HTMLTableRowElement>, topic: Topi
                                         : null
                                     } */}
                             </td>
-                            <td onClick={onClick} className={rule.wasTested ? "tested" : ""}>
+                            <td onClick={onClick} className={rule.nodeTitle.indexOf("debug") > 0 ? "debug" : ""}>
                                 {rule.nodeTitle.replace("Rule: ", "")}
                             </td>
                             <td>
