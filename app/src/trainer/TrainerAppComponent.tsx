@@ -16,7 +16,10 @@ import { has } from "lodash";
 
 export function TrainerAppComponent({ lang, taskSuggester }: { lang: Language, taskSuggester: TaskSuggester }) {
     const location = useLocation();
+
     const [answeredIndices, setAnsweredIndices] = useState<Array<number>|undefined>(undefined);
+    const [currentlyAnsweredTaskIdx, setCurrentlyAnsweredTaskIdx] = useState<number | undefined>(undefined);
+
     const [answersReplayed, setAnswersReplayed] = useState<boolean>(false);
     const [canShowNextButton, setCanShowNextButton] = useState<boolean>(true);
     const [hasher, setHasher] = useState<Hasher>(() => {
@@ -31,21 +34,12 @@ export function TrainerAppComponent({ lang, taskSuggester }: { lang: Language, t
         });
         return hasher;
     });
-    const [path, setPath] = useState<PathBuilder>(new PathBuilder(location.pathname, hasher));
 
     const history = useHistory();
+    const path = new PathBuilder(location.pathname, hasher);
+    taskSuggester.setSelectedRuleIdxs(path.getRules());
 
-    function getTaskFromPath(builder: PathBuilder) {
-        return (builder.getTaskIdx() >= 0)
-        ? taskSuggester.getTask(builder.getTaskIdx())
-        : taskSuggester.suggestNextTask();
-    }
-
-    const currentTask = getTaskFromPath(path);
-
-    function updatePathWithTask(builder: PathBuilder, task: TaskType) {
-        builder.setTaskIdx(task.taskIdx)
-    }
+    const currentTask = path.getTaskIdx() >= 0 ? taskSuggester.getTask(path.getTaskIdx()) : taskSuggester.suggestNextTask();
 
     useEffect(() => {
         if (!answersReplayed) {
@@ -58,25 +52,38 @@ export function TrainerAppComponent({ lang, taskSuggester }: { lang: Language, t
 
     useEffect(() => {
         const newPath = new PathBuilder(location.pathname, hasher);
+        console.log("useEffect", location.pathname, "pathTaskIdx=", newPath.getTaskIdx());
+        console.log("currentTask", currentTask.taskIdx);
+        if (newPath.getTaskIdx() == -1 || newPath.getTaskIdx() != currentTask.taskIdx) {
+            
+            newPath.setTaskIdx(currentTask.taskIdx);
+            setAnsweredIndices(undefined);
+            setCurrentlyAnsweredTaskIdx(undefined);
+            history.replace(newPath.buildPath());
+            console.log("Correcting to target current task", newPath.buildPath());
+            return;
+        }
 
         taskSuggester.setSelectedRuleIdxs(newPath.getRules());
-        const newPathTask = getTaskFromPath(newPath);
 
-        const newTaskOutsideSelection = newPathTask && !taskSuggester.isTaskInSelectedRules(newPathTask.taskIdx);
-        const newPathWithoutTask = !!!newPathTask;
-
-        if (newTaskOutsideSelection || newPathWithoutTask) {
+        if (!taskSuggester.isTaskInSelectedRules(newPath.getTaskIdx())) {
             const newTask = taskSuggester.suggestNextTask();
             
-            updatePathWithTask(newPath, newTask);
+            newPath.setTaskIdx(newTask.taskIdx);
             setAnsweredIndices(undefined);
-            history.push(newPath.buildPath());
-        } else {
-            if (newPathTask && currentTask && currentTask.taskIdx != newPathTask.taskIdx) {
-                setAnsweredIndices(undefined);
-            }
+            setCurrentlyAnsweredTaskIdx(undefined);
+            history.replace(newPath.buildPath());
+            console.log("Correcting to be in selection", newPath.buildPath());
+            return;
         }
-        setPath(newPath);
+
+        if (currentlyAnsweredTaskIdx !== undefined && currentlyAnsweredTaskIdx != newPath.getTaskIdx()) {
+            setAnsweredIndices(undefined);
+            setCurrentlyAnsweredTaskIdx(undefined);
+            console.log("Dropping answer as the task changed");
+            return;
+        }
+
     }, [location, taskSuggester]);
 
     function isFilterScreen() {
@@ -185,6 +192,7 @@ export function TrainerAppComponent({ lang, taskSuggester }: { lang: Language, t
                                     taskSuggester.recordAnswer(currentTask.taskIdx, isCorrect);
                                     addAnswerToLocalStorage(currentTask.taskIdx, hasher, isCorrect);
                                     setAnsweredIndices(indices);
+                                    setCurrentlyAnsweredTaskIdx(currentTask.taskIdx);
                                     setCanShowNextButton(isCorrect);
                                     if (!isCorrect) {
                                         setTimeout(() => {
@@ -201,8 +209,9 @@ export function TrainerAppComponent({ lang, taskSuggester }: { lang: Language, t
                             ? <div><button className="next" autoFocus onClick={() => {
                                 const nextSuggestedTask = taskSuggester!.suggestNextTask();
                                 const newPath = new PathBuilder('', hasher).populate(path);
-                                updatePathWithTask(newPath, nextSuggestedTask);
+                                newPath.setTaskIdx(nextSuggestedTask.taskIdx);
                                 setAnsweredIndices(undefined);
+                                setCurrentlyAnsweredTaskIdx(undefined);
                                 history.push(newPath.buildPath());
                             }}>{lang.NEXT_BUTTON}</button>
                             

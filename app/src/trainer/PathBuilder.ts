@@ -90,7 +90,10 @@ export class PathBuilder {
                 this.rules = this.parseSelectionPathChunk(nextPathChunk);
             }
             if (pathChunk == 'task') {
-                this.selectedTaskIdx = this.hasher.hashToTaskIdx(nextPathChunk) || -1;
+                this.selectedTaskIdx = this.hasher.hashToTaskIdx(nextPathChunk);
+                if (this.selectedTaskIdx === undefined) {
+                    this.selectedTaskIdx = -1;
+                }
             }
         }
         if ((splitPath.length%2) === 1) {
