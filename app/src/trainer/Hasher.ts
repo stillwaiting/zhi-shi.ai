@@ -9,11 +9,12 @@ export default class Hasher {
     private _hashToTaskIdx: {[key: string]: number} = {};    
 
     public addRule(rule: RuleType) {
-        const hash = this.calculateHash(rule.nodeTitle);
-        if (this._hashToRuleIdx[hash]) {
+        let hash = this.calculateHash(rule.nodeTitle);
+        while (this._hashToRuleIdx[hash]) {
             console.error("Hash collision!", rule, hash, this._hashToRuleIdx[hash]);
+            hash += "0";
         }
-        this._ruleIdxToHash[rule.ruleIdx] = this.calculateHash(rule.nodeTitle);
+        this._ruleIdxToHash[rule.ruleIdx] = hash;
         this._hashToRuleIdx[hash] = rule.ruleIdx;
     }
 
@@ -26,13 +27,18 @@ export default class Hasher {
     }
 
     public addTask(task: TaskType) {
-        const hash = this.calculateHash(task.bodyChunk.question.text + task.nodeTitle);
-        if (this._hashToTaskIdx[hash]) {
+        let hash = this.calculateHash(task.bodyChunk.question.text + task.nodeTitle);
+        while (this._hashToTaskIdx[hash]) {
             console.log("Hash collision task!", task, hash, this._hashToTaskIdx[hash]);
+            hash = hash + "0";
         }
         this._taskIdxToHash[task.taskIdx] = hash;
         this._hashToTaskIdx[hash] = task.taskIdx;
-        const hash2 = this.calculateHash(task.bodyChunk.question.text);
+        
+        let hash2 = this.calculateHash(task.bodyChunk.question.text);
+        while (this._hashToTaskIdx[hash2]) {
+            hash2 = hash2 + "0";
+        }
         this._hashToTaskIdx[hash2] = task.taskIdx;
     }
 
