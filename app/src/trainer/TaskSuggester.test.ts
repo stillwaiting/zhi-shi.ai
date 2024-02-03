@@ -11,7 +11,7 @@ describe('TaskSuggester', () => {
 ## SubNode 1
 
 
-### NR: ignore
+### Rule: ignore [nr]
 
 #### Task ignored task
 
@@ -59,7 +59,7 @@ Some text that should be ignored.
 
 # Root 2
 
-## NR: some rule that is not ready yet
+## Rule: some rule that is not ready yet [nr]
 
 ### Task should not be there
 
@@ -79,7 +79,7 @@ Some text that should be ignored.
 ? 7 (Cat|Dog)
 ! cat
 
-## TODO: not visib
+## Rule: not visib [todo]
 
 ### Task blahblah
 
@@ -87,7 +87,7 @@ Some text that should be ignored.
 ! hello
 
 
-## NR: not visible too
+## Rule: not visible too [nr]
 
 ### Task foo blah
 
@@ -95,7 +95,7 @@ Some text that should be ignored.
 ! hello
 
 
-# TODO: fooo
+# Blahblah [todo]
 
 ## Rule: not visible
 

@@ -398,12 +398,22 @@ export default class TaskSuggester {
         }
     }
 
+    private isIgnored(nodeTitle: string) {
+        if (nodeTitle.indexOf("[nr]") >= 0 || nodeTitle.indexOf("[todo]") >= 0) {
+            return true;
+        }
+        if (!this.debugMode() && nodeTitle.indexOf("[debug]") >= 0) {
+            return true;
+        }
+        return false;
+    }
+
     private parseMarkdown(node: MarkdownNode) {
-        if (node.title.indexOf("NR") == 0 || node.title.indexOf("TODO") == 0) {
+        if (this.isIgnored(node.title)) {
             return;
         }
         
-        if (node.children[0].title.indexOf("Rule") == 0 || node.children[0].title.indexOf("NR") == 0) {
+        if (node.children[0].title.indexOf("Rule") == 0) {
             let topic: TopicType = {
                 topicIdx: this.topics.length,
                 title: node.title,
@@ -426,12 +436,10 @@ export default class TaskSuggester {
     }
 
     private parseRuleNode(topic: TopicType, ruleNode: MarkdownNode) {
-        if (ruleNode.title.indexOf("NR") == 0 || ruleNode.title.indexOf("TODO") == 0) {
+        if (this.isIgnored(ruleNode.title)) {
             return;
         }
-        if (!this.debugMode() && ruleNode.title.indexOf("[debug]") >= 0) {
-            return;
-        }
+        
         let rule: RuleType = {
             ruleIdx: this.rules.length,
             topicIdx: topic.topicIdx,

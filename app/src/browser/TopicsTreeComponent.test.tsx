@@ -18,6 +18,13 @@ const WITH_NESTED_CHILDREN = [
                 children: [], 
                 path: ['hello1', 'hello2'], 
                 childrenByTitleIndex: {}
+            },
+            {
+                title: 'hello3 [debug]', 
+                body: {content: [{'text':''}]}, 
+                children: [], 
+                path: ['hello1', 'hello2'], 
+                childrenByTitleIndex: {}
             }
         ], 
         childrenByTitleIndex: {
@@ -52,11 +59,13 @@ describe('TopicsTreeComponent', () => {
     test('renders nested titles', async () => {
         const component = render(<TopicsTreeComponent nodes={WITH_NESTED_CHILDREN} onNodeClicked={() => {}} />);
         expect(component.container.getElementsByTagName('ul')).toHaveLength(2);
-        expect(component.container.getElementsByTagName('li')).toHaveLength(2);
+        expect(component.container.getElementsByTagName('li')).toHaveLength(3);
         const node1 = await component.findByText('hello1');
         const node2 = await component.findByText('hello2');
+        const node3 = await component.findByText('hello3 [debug]');
         expect(node1).toBeInstanceOf(HTMLElement);
         expect(node2).toBeInstanceOf(HTMLElement);
+        expect(node3).toBeInstanceOf(HTMLElement);
         // @ts-ignore
         expect(component.getByText('hello2').parentNode.parentNode.parentNode.children[0].innerHTML).toBe('hello1')
     });
@@ -70,12 +79,23 @@ describe('TopicsTreeComponent', () => {
             </Context.Provider>
         
         );
-        expect(component.container.getElementsByTagName('ul')).toHaveLength(2);
-        expect(component.container.getElementsByTagName('li')).toHaveLength(2);
         const node1 = component.getByText('hello1');
         const node2 = component.getByText('hello2');
-        expect(node1.className).toBe('plainNode');
-        expect(node2.className).toBe('selectedNode');
+        expect(node1.className).toBe('plainNode ');
+        expect(node2.className).toBe('selectedNode ');
+    });
+
+    test('highlights node', async () => {
+        const component = render(
+            <Context.Provider value={{
+                currentNodeTitle: 'hello2',
+            }}>
+                <TopicsTreeComponent nodes={WITH_NESTED_CHILDREN} onNodeClicked={() => {}} />
+            </Context.Provider>
+        
+        );
+        const node3 = component.getByText('hello3 [debug]');
+        expect(node3.className).toBe('plainNode debugHl');
     });
 
     test('passes over the clicked node', async () => {

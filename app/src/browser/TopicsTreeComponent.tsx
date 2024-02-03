@@ -6,7 +6,7 @@ import './TopicsTreeComponent.scss';
 
 type TopicsTreeComponent = {
     nodes: MarkdownNode[],
-    onNodeClicked: (node: MarkdownNode) => any
+    onNodeClicked: (node: MarkdownNode) => any,
 }
 
 
@@ -20,8 +20,12 @@ const renderNodes = (nodes: MarkdownNode[], currentNodeTitle: string, onNodeClic
     }
     return <ul>
         {nodes.map((node, nodeIdx) => {
-            let title = node.title.indexOf('Task') >= 0 
-                ? node.title + ' (' + calculateNumberOfQuestions(node.body) + ')'
+            const isTaskNode = node.title.indexOf('Task') >= 0;
+            let numberOfTaskQuestions = isTaskNode ? calculateNumberOfQuestions(node.body) : -1;
+
+    
+            let title = isTaskNode
+                ? node.title + ` (${numberOfTaskQuestions})`
                 : node.title;
 
             const error = (node.body.content.map(item => {
@@ -33,10 +37,20 @@ const renderNodes = (nodes: MarkdownNode[], currentNodeTitle: string, onNodeClic
                 return '';
             })).filter(item => item.length > 0);
 
-            let className = (node.title === currentNodeTitle) ? "selectedNode" : "plainNode";
+            let selectedClassName = (node.title === currentNodeTitle) ? "selectedNode" : "plainNode";
             if (error.length) {
                 title += ' error: ' + error[0];
-                className = 'error';
+                selectedClassName = 'error';
+            }
+
+            let highlightedClassName = "";
+            if (node.title.indexOf("[") >= 0 && node.title.indexOf("]") >= 0) {
+                const hl = node.title.split("[")[1].split("]")[0];
+                highlightedClassName = `${hl}Hl`;
+            } else if (isTaskNode && numberOfTaskQuestions < 10) {
+                highlightedClassName = `smallNumbeOfQuestionsHl`;
+            } else if (node.title.indexOf('Rule') >= 0) {
+                highlightedClassName = `ruleHl`;
             }
 
             return <li key={`node${nodeIdx}`}>
@@ -45,7 +59,7 @@ const renderNodes = (nodes: MarkdownNode[], currentNodeTitle: string, onNodeClic
                     onNodeClicked(node);
                 }}
                 
-                className={className}
+                className={`${selectedClassName} ${highlightedClassName}`}
                 
                 >{title}</a> <br />
                 {renderNodes(node.children, currentNodeTitle, onNodeClicked)}

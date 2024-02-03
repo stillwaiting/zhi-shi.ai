@@ -31,7 +31,7 @@ See [vscode-ext readme](../vscode-ext/zhishimd/README.md)
 
 ##### Rule: The name of the rule that is visible on the website, "Rule:" prefix is removed
 
-/* Alternatively, the prefix could be "NR:" or "TODO:", which means the rule will be ignored */
+/* Nodes with titles containing [nr] or [todo] are ignored.  */
 
 /* Also, the rule name might contain [debug] flag, in this case the rule will appear on website
    only in debug mode:

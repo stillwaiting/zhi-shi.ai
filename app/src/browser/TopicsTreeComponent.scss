@@ -4,6 +4,7 @@
         white-space: nowrap;
         text-align: left;
         line-height: 20px;
+        padding-inline-start: 10px;
     }
     a.selectedNode {
         color: red;
@@ -11,5 +12,22 @@
     }
     .error {
         color: red;
+    }
+    .ruleHl {
+        background-color: lightgreen;
+    }
+    .debugHl {
+        background-color: yellow;
+    }
+    .nrHl {
+        background-color: orange;
+    }
+    .todoHl {
+        background-color: red;
+        color: white !important;
+    }
+    .smallNumbeOfQuestionsHl {
+        background-color: red;
+        color: white !important;
     }
 }
