@@ -254,96 +254,110 @@ function Browser() {
     }}>
       <div className="Browser">
 
-        <div className="topics" style={{width: topicsWidth + 'px' }} data-testid='menu-container'>
+        <div className="col">
+          <div className="cell">
+            <a href='#' onClick={(e) => {
+              e.preventDefault();
+              onIncreseWidthClick();
+            }} data-testid='plus'>+ width</a> |
 
-          <a href='#' onClick={(e) => {
-            e.preventDefault();
-            onIncreseWidthClick();
-          }} data-testid='plus'>+ width</a> |
+            <a href='#' onClick={(e) => {
+              e.preventDefault();
+              onDecreaseWidthClick();
+            }} data-testid='minus'>- width</a> <br />
+          </div>
+          
+          <div className="topics cell" style={{width: topicsWidth + 'px' }} data-testid='menu-container'>
+            <TopicsTreeComponent nodes={nodes} onNodeClicked={(node) => {
+              history.push(nodeLinkToHttpPath(node.title, []));
+            }} />
 
-          <a href='#' onClick={(e) => {
-            e.preventDefault();
-            onDecreaseWidthClick();
-          }} data-testid='minus'>- width</a> <br />
+            <hr />
+            <textarea data-testid='textarea' onChange={onDataChange} value={String(unsubmittedData)} placeholder="Paste your data"></textarea>
+            <hr />
+            <button data-testid='submit' onClick={onSubmitClicked}>Submit</button>
+          </div>
+        </div> 
 
-      
+        <div className="col colContent">
 
-          <TopicsTreeComponent nodes={nodes} onNodeClicked={(node) => {
-            history.push(nodeLinkToHttpPath(node.title, []));
-          }} />
-        </div>
-
-        <div className="content">
-
+          <div className="cell">
             <div>
-                <a href='#' onClick={(e) => {
-                e.preventDefault();
-                window.history.back()
-              }} data-testid='back'>back</a> |
-
               <a href='#' onClick={(e) => {
-                e.preventDefault();
-                window.history.forward();
-              }} data-testid='forward'>forward</a> <br />
-            </div>
-            <div>
-              <input type="checkbox" data-testid='expandAnswers' checked={expandQuestions} onChange={e => 
-                  setExpandQuestions(!expandQuestions)} 
-              /> expand questions
-            </div>
+                  e.preventDefault();
+                  window.history.back()
+                }} data-testid='back'>back</a> |
 
-            {Object.entries(nodesByTitle).filter(entity => entity[1].length > 1).map(badNodeEntity => 
-                <div className='error' key={badNodeEntity[0]} data-testid='error'>
-                  {badNodeEntity[0]} has {badNodeEntity[1].length} nodes!
-                </div>
-            )}
+                <a href='#' onClick={(e) => {
+                  e.preventDefault();
+                  window.history.forward();
+                }} data-testid='forward'>forward</a> <br />
+              </div>
+              <div>
+                <input type="checkbox" data-testid='expandAnswers' checked={expandQuestions} onChange={e => 
+                    setExpandQuestions(!expandQuestions)} 
+                /> expand questions
+              </div>
 
-            {currentNode 
-              ? <div>
-                    <NodeHeaderComponent path={currentNode.path} onTitleClicked={(title) => 
-                      history.push(nodeLinkToHttpPath(title, [])) 
-                    } />
-                    {window.externalGotoEditor && currentNode ? 
-                      <div>
-                          <a href='#' onClick={(e) => { 
+              {Object.entries(nodesByTitle).filter(entity => entity[1].length > 1).map(badNodeEntity => 
+                  <div className='error' key={badNodeEntity[0]} data-testid='error'>
+                    {badNodeEntity[0]} has {badNodeEntity[1].length} nodes!
+                  </div>
+              )}
+
+
+              {currentNode 
+                ? <div>
+                      <NodeHeaderComponent path={currentNode.path} onTitleClicked={(title) => 
+                        history.push(nodeLinkToHttpPath(title, [])) 
+                      } />
+                      {window.externalGotoEditor && currentNode ? 
+                        <div>
+                            <a href='#' onClick={(e) => { 
+                                e.preventDefault();
+                                window.externalGotoEditor!(currentNode.title);
+                            }}>goto in editor</a>
+                        </div> : null
+                      }
+
+                      {currentNodeTitle 
+                        ? <div>
+                            <a href='#' onClick={(e) => {
                               e.preventDefault();
-                              window.externalGotoEditor!(currentNode.title);
-                          }}>goto in editor</a>
-                      </div> : null
-                    }
+                              copy(currentNodeTitle + (currentNodeAnchor ? '#' + currentNodeAnchor : '') );
+                            }}>copy link</a> 
+                            | |
+                            <a href='#' onClick={(e) => {
+                              e.preventDefault();
+                              const selectedNodes = document.getElementsByClassName('selectedNode');
+                              if (selectedNodes.length > 0) {
+                                  const oldScrollY = window.scrollY;
+                                  selectedNodes[0].scrollIntoView();
+                                  window.scrollTo({
+                                      left: window.scrollX,
+                                      top: oldScrollY
+                                  });
+                              }
+                            }}>focus in tree</a>
+                          </div>
+                        : null}
 
-                    {currentNodeTitle 
-                      ? <div>
-                          <a href='#' onClick={(e) => {
-                            e.preventDefault();
-                            copy(currentNodeTitle + (currentNodeAnchor ? '#' + currentNodeAnchor : '') );
-                          }}>copy link</a> 
-                          | |
-                          <a href='#' onClick={(e) => {
-                            e.preventDefault();
-                            const selectedNodes = document.getElementsByClassName('selectedNode');
-                            if (selectedNodes.length > 0) {
-                                const oldScrollY = window.scrollY;
-                                selectedNodes[0].scrollIntoView();
-                                window.scrollTo({
-                                    left: window.scrollX,
-                                    top: oldScrollY
-                                });
-                            }
-                           }}>focus in tree</a>
-                        </div>
-                      : null}
+                      
+                  </div>
+                : 'Not selected'
+              }
+          </div>
+          
 
-                    
-                    <BodyComponent body={currentNode.body} />
-                </div>
-              : 'Not selected'
-            }
+          <div className="content cell">              
+              {currentNode 
+                ? <BodyComponent body={currentNode.body} />
+                : 'Not selected'
+              }
+          </div>
+
         </div>
-        <hr />
-        <textarea data-testid='textarea' onChange={onDataChange} value={String(unsubmittedData)} placeholder="Paste your data"></textarea>
-        <hr />
-        <button data-testid='submit' onClick={onSubmitClicked}>Submit</button>
+      
       </div>
     </TextParagraphContext.Provider>
     </QuestionAsnwerContext.Provider>

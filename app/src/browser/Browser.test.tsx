@@ -97,7 +97,7 @@ describe('App', () => {
         fireEvent.click(component.getByTestId('submit'));
 
         const lookupNodes = await component.findAllByText('another one');
-        expect(lookupNodes.find(item => item.className === 'selectedNode')).toBeTruthy();
+        expect(lookupNodes.find(item => item.className.trim() === 'selectedNode')).toBeTruthy();
     });
 
     test('renders content of a top-level node', async() => {
