@@ -47,6 +47,8 @@ describe('App', () => {
         });
         await digestEvents()
         jest.useFakeTimers();
+        window.localStorage.clear();
+    
     });
 
     afterEach(() => {

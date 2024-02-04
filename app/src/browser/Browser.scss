@@ -21,6 +21,9 @@ body, html {
     border: 1px solid #ccc;
     box-sizing: border-box;
     padding: 0px;
+  }
+
+  .scrollable {
     overflow: auto; /* Enable cell-level scrollbar */
   }
 

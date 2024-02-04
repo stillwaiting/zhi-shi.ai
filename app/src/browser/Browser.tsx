@@ -148,11 +148,27 @@ function isValidNodeLink(nodesByTitle: {[key: string]: Array<MarkdownNode>}, cur
   return nodesByTitle[link] && nodesByTitle[link].length > 0;
 }
 
+function saveTreeWidth(topicsWidth: number) {
+    if (window.localStorage) {
+      window.localStorage.setItem("treeWidth", "" + topicsWidth);
+    }
+}
+
+function getSavedTopicWidth() {
+  if (window.localStorage) {
+    const savedWidth = window.localStorage.getItem("treeWidth");
+    if (savedWidth) {
+      return parseInt(savedWidth);
+    }
+  }
+  return 300;
+}
+
 function Browser() {
   const [unsubmittedData, setUnsubmittedData] = useState<string>("");
   const [nodes, setNodes] = useState<MarkdownNode[]>([]);
   const [nodesByTitle, setNodesByTitle] = useState<{[key: string]: Array<MarkdownNode>}>({});
-  const [topicsWidth, setTopicsWidth] = useState<number>(300);
+  const [topicsWidth, setTopicsWidth] = useState<number>(getSavedTopicWidth());
   const [expandQuestions, setExpandQuestions] = useState<boolean>(false);
 
   const [externalText, setExternalText] = useState<string>("");
@@ -207,10 +223,12 @@ function Browser() {
 
   const onIncreseWidthClick = () => {
     setTopicsWidth(topicsWidth + 50);
+    saveTreeWidth(topicsWidth + 50);
   }
 
   const onDecreaseWidthClick = () => {
     setTopicsWidth(topicsWidth - 50);
+    saveTreeWidth(topicsWidth - 50);
   }
 
   const currentNode = nodesByTitle[currentNodeTitle] ? nodesByTitle[currentNodeTitle][0] : undefined;
@@ -267,7 +285,7 @@ function Browser() {
             }} data-testid='minus'>- width</a> <br />
           </div>
           
-          <div className="topics cell" style={{width: topicsWidth + 'px' }} data-testid='menu-container'>
+          <div className="topics cell scrollable" style={{width: topicsWidth + 'px' }} data-testid='menu-container'>
             <TopicsTreeComponent nodes={nodes} onNodeClicked={(node) => {
               history.push(nodeLinkToHttpPath(node.title, []));
             }} />
@@ -349,7 +367,7 @@ function Browser() {
           </div>
           
 
-          <div className="content cell">              
+          <div className="content cell scrollable">              
               {currentNode 
                 ? <BodyComponent body={currentNode.body} />
                 : 'Not selected'

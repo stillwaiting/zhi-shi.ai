@@ -44,16 +44,18 @@ const renderNodes = (nodes: MarkdownNode[], currentNodeTitle: string, onNodeClic
             }
 
             let highlightedClassName = "";
+            let isSmallNumberOfQuestions = false;
             if (node.title.indexOf("[") >= 0 && node.title.indexOf("]") >= 0) {
                 const hl = node.title.split("[")[1].split("]")[0];
                 highlightedClassName = `${hl}Hl`;
             } else if (isTaskNode && numberOfTaskQuestions < 10) {
-                highlightedClassName = `smallNumbeOfQuestionsHl`;
+                isSmallNumberOfQuestions = true;
             } else if (node.title.indexOf('Rule') >= 0) {
                 highlightedClassName = `ruleHl`;
             }
 
             return <li key={`node${nodeIdx}`}>
+                {isSmallNumberOfQuestions ? <strong>! </strong> : null}
                 <a href='#' onClick={(e) => {
                     e.preventDefault();
                     onNodeClicked(node);
