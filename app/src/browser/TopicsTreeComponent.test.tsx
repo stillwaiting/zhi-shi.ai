@@ -33,6 +33,7 @@ const WITH_NESTED_CHILDREN = [
     },
 ];
 
+/// TODO: add tests for expanding/collapsing
 describe('TopicsTreeComponent', () => {
     test('renders empty set of nodes', () => {
         const component = render(<TopicsTreeComponent nodes={[]} onNodeClicked={() => {}} />);

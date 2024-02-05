@@ -5,6 +5,7 @@
         text-align: left;
         line-height: 20px;
         padding-inline-start: 10px;
+        list-style-type: none;
     }
     a.selectedNode {
         color: red;
@@ -14,14 +15,16 @@
         color: red;
     }
     .ruleHl {
-        background-color: lightgreen;
-    }
-    .debugHl {
-        background-color: yellow;
-    }
-    .nrHl {
-        background-color: orange;
-    }
+        background-color: rgba(204, 255, 204); /* lightgreen with 70% opacity */
+      }
+      
+      .debugHl {
+        background-color: rgba(255, 255, 105); /* yellow with 70% opacity */
+      }
+      
+      .nrHl {
+        background-color: rgba(255, 185, 0); /* orange with 70% opacity */
+      }
     .todoHl {
         background-color: red;
         color: white !important;
