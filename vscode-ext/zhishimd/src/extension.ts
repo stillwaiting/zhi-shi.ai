@@ -185,25 +185,25 @@ function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionCon
 	// yarn vsce package
 	const manifest = {
 		"files": {
-		  "main.css": "/static/css/main.97c3b7fa.chunk.css",
-		  "main.js": "/static/js/main.2a35ed15.chunk.js",
-		  "main.js.map": "/static/js/main.2a35ed15.chunk.js.map",
-		  "runtime-main.js": "/static/js/runtime-main.4a94e718.js",
-		  "runtime-main.js.map": "/static/js/runtime-main.4a94e718.js.map",
-		  "static/js/2.072437a5.chunk.js": "/static/js/2.072437a5.chunk.js",
-		  "static/js/2.072437a5.chunk.js.map": "/static/js/2.072437a5.chunk.js.map",
-		  "static/js/3.2d767a97.chunk.js": "/static/js/3.2d767a97.chunk.js",
-		  "static/js/3.2d767a97.chunk.js.map": "/static/js/3.2d767a97.chunk.js.map",
-		  "index.html": "/index.html",
-		  "static/css/main.97c3b7fa.chunk.css.map": "/static/css/main.97c3b7fa.chunk.css.map",
-		  "static/js/2.072437a5.chunk.js.LICENSE.txt": "/static/js/2.072437a5.chunk.js.LICENSE.txt"
-		},
-		"entrypoints": [
-		  "static/js/runtime-main.4a94e718.js",
-		  "static/js/2.072437a5.chunk.js",
-		  "static/css/main.97c3b7fa.chunk.css",
-		  "static/js/main.2a35ed15.chunk.js"
-		]
+			"main.css": "/static/css/main.0d2aadaa.chunk.css",
+			"main.js": "/static/js/main.5d973ccc.chunk.js",
+			"main.js.map": "/static/js/main.5d973ccc.chunk.js.map",
+			"runtime-main.js": "/static/js/runtime-main.a7fcf716.js",
+			"runtime-main.js.map": "/static/js/runtime-main.a7fcf716.js.map",
+			"static/js/2.a8cb5904.chunk.js": "/static/js/2.a8cb5904.chunk.js",
+			"static/js/2.a8cb5904.chunk.js.map": "/static/js/2.a8cb5904.chunk.js.map",
+			"static/js/3.bcae73e3.chunk.js": "/static/js/3.bcae73e3.chunk.js",
+			"static/js/3.bcae73e3.chunk.js.map": "/static/js/3.bcae73e3.chunk.js.map",
+			"index.html": "/index.html",
+			"static/css/main.0d2aadaa.chunk.css.map": "/static/css/main.0d2aadaa.chunk.css.map",
+			"static/js/2.a8cb5904.chunk.js.LICENSE.txt": "/static/js/2.a8cb5904.chunk.js.LICENSE.txt"
+		  },
+		  "entrypoints": [
+			"static/js/runtime-main.a7fcf716.js",
+			"static/js/2.a8cb5904.chunk.js",
+			"static/css/main.0d2aadaa.chunk.css",
+			"static/js/main.5d973ccc.chunk.js"
+		  ]
 	  };
 
 	return `

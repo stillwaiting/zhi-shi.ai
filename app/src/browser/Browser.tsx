@@ -13,6 +13,7 @@ import copy from 'copy-to-clipboard';
 
  // @ts-ignore
 import replaceAllInserter from 'string.prototype.replaceall';
+import DataProviderComponent from '../DataProviderComponent';
 replaceAllInserter.shim();
 
 
@@ -164,8 +165,8 @@ function getSavedTopicWidth() {
   return 300;
 }
 
-function Browser() {
-  const [unsubmittedData, setUnsubmittedData] = useState<string>("");
+function Browser(props: { providedData: string | undefined }) {
+  const [unsubmittedData, setUnsubmittedData] = useState<string>(props.providedData || '');
   const [nodes, setNodes] = useState<MarkdownNode[]>([]);
   const [nodesByTitle, setNodesByTitle] = useState<{[key: string]: Array<MarkdownNode>}>({});
   const [topicsWidth, setTopicsWidth] = useState<number>(getSavedTopicWidth());
@@ -382,5 +383,23 @@ function Browser() {
   );
 }
 
-export default Browser;
+export default (props: { url: string }) => {
+  const [providedData, setProvidedData] = useState<string | undefined>(undefined);
+
+  if (!props.url) {
+    return <Browser providedData={undefined} />
+  } else {
+    return providedData 
+      ? <Browser providedData={providedData} />
+      : <DataProviderComponent url={process.env.PUBLIC_URL + props.url} onDataProvided={(data) => {
+                try {
+                    setProvidedData(data);
+                } catch (ex) {
+                    console.error(ex);
+                    throw ex;
+                }
+            }}
+        />;
+  }
+};
 

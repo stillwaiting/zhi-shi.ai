@@ -20,7 +20,7 @@ if (window.vscode) {
       <Router>
         <Switch>
             <Route >
-              <Browser />
+              <Browser url='' />
             </Route>
           </Switch>
       </Router>

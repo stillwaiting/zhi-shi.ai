@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import BodyQuestionAnswerComponent, { Context } from "../body/BodyQuestionAnswerComponent";
 import BrowserWarningComponent from "./BrowserWarningComponent";
-import DataProviderComponent from "./DataProviderComponent";
+import DataProviderComponent from "./../DataProviderComponent";
 import TaskSuggester, { TaskType } from "./TaskSuggester";
 import { BrowserRouter as Router, Route, Link, useHistory, useLocation } from "react-router-dom";
 import { PathBuilder } from "./PathBuilder";
