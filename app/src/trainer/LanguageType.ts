@@ -18,5 +18,7 @@ export interface Language {
     COLLAPSE: string,
     CONFIRM: string,
     ALL: string,
-    SHOW_IN_TREE: string
+    SHOW_IN_TREE: string,
+    MODE_LIGHT: string,
+    MODE_DARK: string,
 }

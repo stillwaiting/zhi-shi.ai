@@ -20,7 +20,9 @@ const LANGUAGE_RU: Language = {
     TOTAL: 'всего',
     FOUND_ERROR: 'Нашли ошибку?',
     SHOW_IN_TREE: 'показать в дереве',
-    CORRECT_LABEL: "правильно"
+    CORRECT_LABEL: "правильно",
+    MODE_DARK: '🌔 Темная гамма',
+    MODE_LIGHT: '🌞 Светлая гамма'
 }
 
 export default LANGUAGE_RU;

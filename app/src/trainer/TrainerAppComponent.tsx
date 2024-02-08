@@ -13,12 +13,14 @@ import { config } from "node:process";
 import { Language } from './LanguageType';
 import Hasher from "./Hasher";
 import { has } from "lodash";
+import { DarkModeManager } from "./DarkModeManager";
 
-export function TrainerAppComponent({ lang, taskSuggester }: { lang: Language, taskSuggester: TaskSuggester }) {
+export function TrainerAppComponent({ lang, taskSuggester, darkModeManager }: { lang: Language, taskSuggester: TaskSuggester, darkModeManager: DarkModeManager }) {
     const location = useLocation();
 
     const [answeredIndices, setAnsweredIndices] = useState<Array<number>|undefined>(undefined);
     const [currentlyAnsweredTaskIdx, setCurrentlyAnsweredTaskIdx] = useState<number | undefined>(undefined);
+    const [darkMode, setDarkMode] = useState<boolean>(darkModeManager.isDarkMode());
 
     const [answersReplayed, setAnswersReplayed] = useState<boolean>(false);
     const [canShowNextButton, setCanShowNextButton] = useState<boolean>(true);
@@ -243,12 +245,22 @@ export function TrainerAppComponent({ lang, taskSuggester }: { lang: Language, t
             </div>
 
     </div>
+
+    <div className='darkMode'>
+                <a href='#' onClick={(e) => {
+                    e.preventDefault();
+                    setDarkMode(!darkMode);
+                    darkModeManager.setDarkMode(!darkModeManager.isDarkMode());
+                }}>{darkMode ? lang.MODE_LIGHT : lang.MODE_DARK}</a>
+            </div>
+
     </Context.Provider>;
 }
 
 
 export default function({ url, lang }: { url:string, lang: Language }) {
     const [taskSuggester, setTaskSuggester] = useState<TaskSuggester | null>(null);
+    const darkModeManager = new DarkModeManager();
 
     return <div className='TrainerAppComponent'>
             <BrowserWarningComponent />
@@ -264,7 +276,7 @@ export default function({ url, lang }: { url:string, lang: Language }) {
             }}
             />
 
-            {taskSuggester ? <TrainerAppComponent lang={lang} taskSuggester={taskSuggester} /> : null}
+            {taskSuggester ? <TrainerAppComponent lang={lang} taskSuggester={taskSuggester} darkModeManager={darkModeManager} /> : null}
 
 
             

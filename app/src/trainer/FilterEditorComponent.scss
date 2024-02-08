@@ -42,13 +42,7 @@
             overflow-y: scroll;
             height: 300px;
 
-            table.mainFilterTable {        
-                text-align:left;
-
-                table {
-                    background-color: #eee;
-                }
-            }
+        
         }
     }
 
@@ -89,4 +83,36 @@
         text-align: left;
         flex-grow: 1;
     }
+
+
+    table.mainFilterTable {        
+        text-align:left;
+
+        table {
+            background-color: #eee;
+        }
+    }
+}
+
+
+.dark {
+    .FilterEditorComponent {
+        table.mainFilterTable {        
+         
+            table {
+                background-color: #333237;
+            }
+        }
+
+        .highlighted {
+            background-color: #535559;
+        }
+    }   
+
+    .left {
+        img {
+            filter: invert(1);
+        }
+    }
+    
 }

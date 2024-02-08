@@ -32,8 +32,13 @@ html {
     }
 
     .foundError {
+        padding-bottom: 1%;
+    }
+
+    .darkMode {
         padding-bottom: 2%;
     }
+
 
     .FilterEditorComponentContainer {
         flex-grow: 1;
@@ -84,4 +89,11 @@ html {
     .linkToRule, a {
         color: grey;
     }
+}
+
+
+
+.dark {
+    background-color: #2d2a2d;
+    color: #b2b4b5;
 }

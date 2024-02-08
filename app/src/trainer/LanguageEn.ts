@@ -20,7 +20,9 @@ const LANGUAGE_EN: Language = {
     TOTAL: 'total',
     FOUND_ERROR: 'Found error?',
     SHOW_IN_TREE: 'show in tree',
-    CORRECT_LABEL: "correct"
+    CORRECT_LABEL: "correct",
+    MODE_LIGHT: '🌞 Light mode',
+    MODE_DARK: '🌔 Dark mode',
 }
 
 export default LANGUAGE_EN;

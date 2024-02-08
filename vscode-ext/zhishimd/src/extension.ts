@@ -2,6 +2,8 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
+import * as fs from 'fs';
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -10,6 +12,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// This line of code will only be executed once when your extension is activated
 	console.log('Congratulations, your extension "zhishimd" is now active!');
 
+	
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json
@@ -174,37 +177,26 @@ export function activate(context: vscode.ExtensionContext) {
 export function deactivate() {}
 
 function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionContext) {
-	// cd ~/dev/zhi-shi.ai/app
-	// INLINE_RUNTIME_CHUNK=false yarn build
-	// rm -rf ../vscode-ext/zhishimd/media/*
-	// cp -r build/* ../vscode-ext/zhishimd/media/
-	// geany build/asset-manifest.json
-	// update the manufest below from the content of opened file
-	// bump version in package.json
-	// cd ~/dev/zhi-shi.ai/vscode-ext/zhishimd
-	// yarn vsce package
-	const manifest = {
-		"files": {
-			"main.css": "/static/css/main.0d2aadaa.chunk.css",
-			"main.js": "/static/js/main.5d973ccc.chunk.js",
-			"main.js.map": "/static/js/main.5d973ccc.chunk.js.map",
-			"runtime-main.js": "/static/js/runtime-main.a7fcf716.js",
-			"runtime-main.js.map": "/static/js/runtime-main.a7fcf716.js.map",
-			"static/js/2.a8cb5904.chunk.js": "/static/js/2.a8cb5904.chunk.js",
-			"static/js/2.a8cb5904.chunk.js.map": "/static/js/2.a8cb5904.chunk.js.map",
-			"static/js/3.bcae73e3.chunk.js": "/static/js/3.bcae73e3.chunk.js",
-			"static/js/3.bcae73e3.chunk.js.map": "/static/js/3.bcae73e3.chunk.js.map",
-			"index.html": "/index.html",
-			"static/css/main.0d2aadaa.chunk.css.map": "/static/css/main.0d2aadaa.chunk.css.map",
-			"static/js/2.a8cb5904.chunk.js.LICENSE.txt": "/static/js/2.a8cb5904.chunk.js.LICENSE.txt"
-		  },
-		  "entrypoints": [
-			"static/js/runtime-main.a7fcf716.js",
-			"static/js/2.a8cb5904.chunk.js",
-			"static/css/main.0d2aadaa.chunk.css",
-			"static/js/main.5d973ccc.chunk.js"
-		  ]
-	  };
+
+	const manifestStr = fs.readFileSync(context.extensionPath + '/media/asset-manifest.json').toString();
+	console.log(fs.readFileSync(context.extensionPath + '/media/asset-manifest.json').toString());
+
+	const manifest = JSON.parse(manifestStr);
+
+	const cssTags = manifest.entrypoints
+		.filter((item: string) => item.endsWith('.css'))
+		.map((cssEntryPoint: string) => 
+			`<link href="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/' + cssEntryPoint))}" rel="stylesheet">`
+			)
+		.join("\n");
+
+
+	const jsTags = manifest.entrypoints
+		.filter((item: string) => item.endsWith('.js'))
+		.map((jsEntryPoint: string) => 
+			`<script src="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/' + jsEntryPoint))}"></script>`
+			)
+		.join("\n");
 
 	return `
 	<!doctype html>
@@ -218,7 +210,7 @@ function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionCon
 		  <link rel="apple-touch-icon" href="/logo192.png"/>
 		  <link rel="manifest" href="/manifest.json"/>
 		  <title>React App</title>
-		  <link href="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/' + manifest.entrypoints[2]))}" rel="stylesheet">
+		  ${cssTags}
 	   </head>
 	   <body style='background: white; color: black'>
 		  <noscript>You need to enable JavaScript to run this app.</noscript>
@@ -252,9 +244,7 @@ function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionCon
 
 
 		  <div id="root"></div>
-		  <script src="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/' + manifest.entrypoints[0]))}"></script>
-		  <script src="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/' + manifest.entrypoints[1]))}"></script>
-		  <script src="${webview.asWebviewUri(vscode.Uri.file(context.extensionPath + '/media/' + manifest.entrypoints[3]))}"></script>
+		  ${jsTags}
 
 		
 
