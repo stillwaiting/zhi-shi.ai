@@ -35,6 +35,10 @@ const WITH_NESTED_CHILDREN = [
 
 /// TODO: add tests for expanding/collapsing
 describe('TopicsTreeComponent', () => {
+    beforeEach(() => {
+        window.localStorage.clear();
+    });
+
     test('renders empty set of nodes', () => {
         const component = render(<TopicsTreeComponent nodes={[]} onNodeClicked={() => {}} />);
         expect(component.container.getElementsByTagName('ul')).toHaveLength(0);
@@ -59,6 +63,7 @@ describe('TopicsTreeComponent', () => {
 
     test('renders nested titles', async () => {
         const component = render(<TopicsTreeComponent nodes={WITH_NESTED_CHILDREN} onNodeClicked={() => {}} />);
+        fireEvent.click(component.container.getElementsByTagName('a')[0]);
         expect(component.container.getElementsByTagName('ul')).toHaveLength(2);
         expect(component.container.getElementsByTagName('li')).toHaveLength(3);
         const node1 = await component.findByText('hello1');
@@ -68,7 +73,7 @@ describe('TopicsTreeComponent', () => {
         expect(node2).toBeInstanceOf(HTMLElement);
         expect(node3).toBeInstanceOf(HTMLElement);
         // @ts-ignore
-        expect(component.getByText('hello2').parentNode.parentNode.parentNode.children[0].innerHTML).toBe('hello1')
+        expect(component.getByText('hello2').parentNode.parentNode.parentNode.children[1].innerHTML).toBe('hello1')
     });
 
     test('selects the current node', async () => {
@@ -102,6 +107,7 @@ describe('TopicsTreeComponent', () => {
     test('passes over the clicked node', async () => {
         let clickedNode: MarkdownNode;
         const component = render(<TopicsTreeComponent nodes={WITH_NESTED_CHILDREN} onNodeClicked={(node) => { clickedNode = node; }} />);
+        fireEvent.click(component.getByText('++'));
         const node2 = component.getByText('hello2');
         fireEvent.click(node2);
         expect(clickedNode!.title).toBe("hello2");
@@ -122,6 +128,7 @@ describe('TopicsTreeComponent', () => {
 `, []
         )
         const component = render(<TopicsTreeComponent nodes={nodes} onNodeClicked={() => {}} />);
+        fireEvent.click(component.getByText('++'));
         expect(component.getByText('Task (1)')).toBeDefined();
         expect(component.getByText('Task another (0)')).toBeDefined();
     });
