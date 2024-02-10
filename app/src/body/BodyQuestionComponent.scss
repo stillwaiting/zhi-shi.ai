@@ -41,9 +41,13 @@
       box-shadow: 0 0 3pt 2pt red;    
     }
 
-    select:focus {
-      margin: 0px 4px;
+    select {
+      box-shadow: 0 0 3pt 2pt transparent;
     }
+
+     select {
+       margin: 0px 2pt;
+     }
 
     button {
       background-color: darkslategray; /* Green */
