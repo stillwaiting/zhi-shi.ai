@@ -90,7 +90,7 @@ https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/tipyi-skloneniya-imen-sush
 
 ### Части речи
 
-#### Rule: Самостоятельные части речи. [debug]
+#### Rule: Самостоятельные части речи.
 
 ##### Task: Существительное
 
@@ -534,7 +534,7 @@ https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/tipyi-skloneniya-imen-sush
 ? {определите} В фильмах о вампирах всегда *темно*. {выбор}
 ! {объяснение}
 
-? {определите} Море сегодня *спокойно*. {выбор}
+? {определите} На море сегодня *спокойно*. {выбор}
 ! {объяснение}
 
 ##### Task: Местоимение
