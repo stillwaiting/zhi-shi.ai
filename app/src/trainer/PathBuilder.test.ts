@@ -94,8 +94,16 @@ describe('pathutils', () => {
             expect(new PathBuilder('/rules/' + hasher.ruleIdxToHash(5) + '/settings', hasher).getScreen()).toStrictEqual('settings');
         });
 
+        test('ignores uknown individual hashes', () => {
+            expect(new PathBuilder('/rules/foobar/settings', hasher).getRules()).toStrictEqual(new Set());
+        });
+
         test('parses simple region of ruleIdxs', () => {
             expect(new PathBuilder('rules/' + hasher.ruleIdxToHash(5) + '-' + hasher.ruleIdxToHash(7), hasher).getRules()).toStrictEqual(new Set([5, 6, 7]));
+        });
+
+        test('ignores region of unknown ruleIdxs', () => {
+            expect(new PathBuilder('rules/foo-bar', hasher).getRules()).toStrictEqual(new Set([]));
         });
 
         test('parses combination of regions and single numbers', () => {

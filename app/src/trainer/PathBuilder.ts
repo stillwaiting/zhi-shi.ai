@@ -145,7 +145,7 @@ export class PathBuilder {
                             .filter(region => region.indexOf('-') >= 0)
                             .map(region => this.parseSelectionRegion(region)).reduce((prevValue, currentValue) => 
                                 prevValue.concat(currentValue), []);
-            ret.push(...regionsSplit.filter(region => region.indexOf('-') < 0).map(item => this.hasher.hashToRuleIds(item)));
+            ret.push(...regionsSplit.filter(region => region.indexOf('-') < 0).map(item => this.hasher.hashToRuleIds(item)).filter(item => item !== undefined));
             return new Set<number>(ret);
         
         }
