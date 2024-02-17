@@ -627,7 +627,7 @@ https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/tipyi-skloneniya-imen-sush
 ? {определите} *сто* {выбор}
 ! {объяснение}
 
-#### Rule: Служебные части речи, междометие. [debug]
+#### Rule: Служебные части речи, междометие.
 
 ##### Task: Предлог
 
