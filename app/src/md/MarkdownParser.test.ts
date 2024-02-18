@@ -220,13 +220,13 @@ multiline
 ## child
 
   {set:world}
-  baz
-  blah
+  baz $1
+  blah $2
   {/set}
   
   
   {hello}
-  {world}
+  {world|first|second}
   `, []);
         expect(parsedBody).toStrictEqual([
             {
@@ -254,13 +254,13 @@ multiline
                   "body": {
                     "content": [
                       {
-                        "text": "foo bar baz blah"
+                        "text": "foo bar baz first blah second"
                       }
                     ]
                   },
                   "nodeTemplateVariables": {
                     "hello": "\n  foo\n  bar\n  ",
-                    "world": "\n  baz\n  blah\n  "
+                    "world": "\n  baz $1\n  blah $2\n  "
                   },
                   "children": [],
                   "childrenByTitleIndex": {}

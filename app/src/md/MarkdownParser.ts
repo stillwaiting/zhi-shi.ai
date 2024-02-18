@@ -44,13 +44,36 @@ function extractNewVariables(body: string): [string, { [name: string]: string }]
  * "abc {foo} def" -> {foo: bar} -> "abs bar def"
  * 
  */
+
+const cachedRegex: {[key: string]: RegExp} = {};
+
 function insertVariables(body: string, variables: { [name: string]: string}): string {
     const randomStr1 = "" + Math.random() + "" + new Date().getTime();
     const randomStr2 = "" + Math.random() + "" + new Date().getTime();
     body = body.replaceAll("\\{", randomStr1);
     body = body.replaceAll("\\}", randomStr2);
     Object.keys(variables).forEach(key => {
-        body = body.replaceAll("{" + key + "}", variables[key].trim());
+        const re = cachedRegex[key] ? cachedRegex[key] : new RegExp("{" + key + ".*?}", "g");
+        cachedRegex[key] = re;
+
+        const matches = body.matchAll(re);
+        do {
+            const next = matches.next();
+            if (next && next.value) {
+                const fullMatchSubstr = next.value[0];
+                const argsplit = fullMatchSubstr.substr(1, fullMatchSubstr.length - 2).split('|');
+                let replacement = variables[key].trim();
+                for (let idx = 0; idx < argsplit.length; idx++) {
+                    const arg = argsplit[idx];
+                    replacement = replacement.replaceAll("$" + idx, arg);
+                }
+                body = body.replaceAll(fullMatchSubstr, replacement);
+            } else {
+                break;
+            }
+        } while (true);
+
+        // body = body.replaceAll("{" + key + "}", variables[key].trim());
     });
     body = body.replaceAll(randomStr1, "\\{");
     body = body.replaceAll(randomStr2, "\\}");
