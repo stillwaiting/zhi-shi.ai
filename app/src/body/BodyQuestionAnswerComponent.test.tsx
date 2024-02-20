@@ -78,7 +78,7 @@ describe('BodyQuestionAnswerComponent', () => {
         });
         const secondSelect = component.container.getElementsByTagName('select')[1]
         fireEvent.change(secondSelect, {
-            target: {value: secondSelect.getElementsByTagName('option')[2].value}
+            target: {value: secondSelect.getElementsByTagName('option')[1].value}
         });
         fireEvent.click(component.container.getElementsByTagName('button')[0]);
         expect(capturedIsCorrect).toBeTruthy();
