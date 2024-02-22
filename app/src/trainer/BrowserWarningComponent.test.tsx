@@ -4,6 +4,7 @@ import BrowserWarningComponent from "./BrowserWarningComponent";
 
 describe('BrowserWarningComponent', () => {
     afterEach(() => {
+        // @ts-ignore
         delete document.fragmentDirective;
     })
 
@@ -13,6 +14,7 @@ describe('BrowserWarningComponent', () => {
     });
 
     test('should not render when fragmentDirective exists', () => {
+        // @ts-ignore
         document.fragmentDirective = '';
         const component = render(<BrowserWarningComponent />);
         expect(component.queryByText('Expand.')).toBeNull();

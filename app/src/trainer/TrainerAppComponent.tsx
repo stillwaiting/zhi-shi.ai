@@ -9,10 +9,8 @@ import { PathBuilder } from "./PathBuilder";
 import FilterLinkComponent from './FilterLinkComponent';
 import FilterEditorComponent from './FilterEditorComponent';
 import './TrainerAppComponent.scss';
-import { config } from "node:process";
 import { Language } from './LanguageType';
 import Hasher from "./Hasher";
-import { has } from "lodash";
 import { DarkModeManager } from "./DarkModeManager";
 
 export function TrainerAppComponent({ lang, taskSuggester, darkModeManager }: { lang: Language, taskSuggester: TaskSuggester, darkModeManager: DarkModeManager }) {

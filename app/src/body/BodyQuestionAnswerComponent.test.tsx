@@ -49,6 +49,8 @@ describe('BodyQuestionAnswerComponent', () => {
         const component = render(<Context.Provider value={{
                 currentNodeTitle: 'doit ::to!',
                 expandQuestionAnswer: false,
+                submitLabel: 'submit',
+                correctLabel: 'correct'
             }}>
             <BodyQuestionAnswerComponent  data={{
                 question: {text: "(Hello|blah|baz), (world|foo)"},
@@ -64,6 +66,8 @@ describe('BodyQuestionAnswerComponent', () => {
         const component = render(<Context.Provider value={{
                 currentNodeTitle: 'doit ::to!',
                 expandQuestionAnswer: false,
+                submitLabel: 'submit',
+                correctLabel: 'correct'
             }}>
             <BodyQuestionAnswerComponent  data={{
                 question: {text: "(Hello|blah|baz), (world|foo)"},
@@ -90,6 +94,8 @@ describe('BodyQuestionAnswerComponent', () => {
         const component = render(<Context.Provider value={{
                 currentNodeTitle: 'doit ::to!',
                 expandQuestionAnswer: false,
+                submitLabel: 'submit',
+                correctLabel: 'correct'
             }}>
             <BodyQuestionAnswerComponent  data={{
                 question: {text: "(Hello|blah|baz), (world|foo)"},
@@ -106,6 +112,8 @@ describe('BodyQuestionAnswerComponent', () => {
         const component = render(<Context.Provider value={{
                 currentNodeTitle: 'doit ::to!',
                 expandQuestionAnswer: false,
+                submitLabel: 'submit',
+                correctLabel: 'correct'
             }}>
             <BodyQuestionAnswerComponent  data={{
                 question: {text: "(Hello|blah|baz), (world|foo)"},
@@ -129,6 +137,8 @@ describe('BodyQuestionAnswerComponent', () => {
         const component = render(<Context.Provider value={{
                 currentNodeTitle: 'doit ::to!',
                 expandQuestionAnswer: true,
+                submitLabel: 'submit',
+                correctLabel: 'correct'
             }}>
             <BodyQuestionAnswerComponent  data={{
                 question: {text: "(Hello|blah|baz), (world|foo)"},

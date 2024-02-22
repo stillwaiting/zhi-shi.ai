@@ -17,19 +17,22 @@ const WITH_NESTED_CHILDREN = [
                 body: {content: [{'text':''}]}, 
                 children: [], 
                 path: ['hello1', 'hello2'], 
-                childrenByTitleIndex: {}
+                childrenByTitleIndex: {},
+                nodeTemplateVariables: {}
             },
             {
                 title: 'hello3 [debug]', 
                 body: {content: [{'text':''}]}, 
                 children: [], 
                 path: ['hello1', 'hello2'], 
-                childrenByTitleIndex: {}
+                childrenByTitleIndex: {},
+                nodeTemplateVariables: {}
             }
         ], 
         childrenByTitleIndex: {
             'hello2': 0
-        }
+        },
+        nodeTemplateVariables: {}
     },
 ];
 
@@ -47,8 +50,8 @@ describe('TopicsTreeComponent', () => {
     test('renders titles', async () => {
         const component = render(<TopicsTreeComponent 
             nodes={[
-                {title: 'hello1', body: {content: [{text: ''}]}, children: [], childrenByTitleIndex: {}, path: ['hello1']},
-                {title: 'hello2', body: {content: [{text: ''}]}, children: [], childrenByTitleIndex: {}, path: ['hello1']}
+                {title: 'hello1', body: {content: [{text: ''}]}, children: [], childrenByTitleIndex: {}, path: ['hello1'], nodeTemplateVariables: {}},
+                {title: 'hello2', body: {content: [{text: ''}]}, children: [], childrenByTitleIndex: {}, path: ['hello1'], nodeTemplateVariables: {}}
             ]} 
             onNodeClicked={() => {}} 
         />);
@@ -80,6 +83,9 @@ describe('TopicsTreeComponent', () => {
         const component = render(
             <Context.Provider value={{
                 currentNodeTitle: 'hello2',
+                expandQuestionAnswer: false,
+                submitLabel: 'submit',
+                correctLabel: 'correct',
             }}>
                 <TopicsTreeComponent nodes={WITH_NESTED_CHILDREN} onNodeClicked={() => {}} />
             </Context.Provider>
@@ -95,6 +101,9 @@ describe('TopicsTreeComponent', () => {
         const component = render(
             <Context.Provider value={{
                 currentNodeTitle: 'hello2',
+                expandQuestionAnswer: false,
+                submitLabel: 'submit',
+                correctLabel: 'correct',
             }}>
                 <TopicsTreeComponent nodes={WITH_NESTED_CHILDREN} onNodeClicked={() => {}} />
             </Context.Provider>

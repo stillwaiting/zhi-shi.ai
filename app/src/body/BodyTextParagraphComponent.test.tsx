@@ -41,6 +41,31 @@ describe('BodyTextParagraphComponent', () => {
         expect(capturedLink).toBe('blah/test test""/another one#anchor');
     });
 
+    test('default link rendere replaces localhost links correctly', () => {
+        const origLoc = window.location;
+        try {
+            // @ts-ignore
+            Object.defineProperty(window, 'location', {
+                configurable: true,
+                enumerable: true,
+                value: new URL("https://google.com/blah"),
+              });
+            const text = `
+                hello [world](http://localhost:456/foo/bar)
+            `
+            const view = render(
+                <BodyTextParagraphComponent data={{text: text}}   />
+            );
+            expect(view.container.innerHTML).toContain("<a href=\"https://google.com/foo/bar\" ");
+        } finally {
+            Object.defineProperty(window, 'location', {
+                configurable: true,
+                enumerable: true,
+                value: origLoc,
+              });
+        }
+    });
+
     test('renders http links with underscores', () => {
         const text = `
             hello [world](http://blah.com_hello_)

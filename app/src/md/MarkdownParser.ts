@@ -47,7 +47,7 @@ function extractNewVariables(body: string): [string, { [name: string]: string }]
 
 const cachedRegex: {[key: string]: RegExp} = {};
 
-function escapeRegex(string) {
+function escapeRegex(string: string) {
     return string.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
 }
 

@@ -126,6 +126,10 @@ export const Context = React.createContext<ContextType>({
     currentNodeAnchor: '',
     currentSelectedText: '',
     linkRenderer: (link, text) => { 
+        if (link.indexOf('http://localhost') >= 0) {
+            const parsedLink = new URL(link);
+            link = window.location.origin + parsedLink.pathname + parsedLink.search + parsedLink.hash;
+        }
         return `<a href="${link.split('"').join('&quot;')}" target="_blank">${text}</a>`; 
     },
     onLinkClicked: (link) => {},

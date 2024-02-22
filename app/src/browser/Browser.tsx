@@ -401,7 +401,7 @@ function Browser(props: { providedData: string | undefined }) {
   );
 }
 
-export default (props: { url: string }) => {
+export default (props: { url?: string }) => {
   const [providedData, setProvidedData] = useState<string | undefined>(undefined);
 
   if (!props.url) {
