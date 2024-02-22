@@ -47,13 +47,18 @@ function extractNewVariables(body: string): [string, { [name: string]: string }]
 
 const cachedRegex: {[key: string]: RegExp} = {};
 
+function escapeRegex(string) {
+    return string.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
+}
+
 function insertVariables(body: string, variables: { [name: string]: string}): string {
     const randomStr1 = "" + Math.random() + "" + new Date().getTime();
     const randomStr2 = "" + Math.random() + "" + new Date().getTime();
     body = body.replaceAll("\\{", randomStr1);
     body = body.replaceAll("\\}", randomStr2);
     Object.keys(variables).forEach(key => {
-        const re = cachedRegex[key] ? cachedRegex[key] : new RegExp("{" + key + ".*?}", "g");
+        const regexStr = "\\{" + escapeRegex(key) + "(\\|.*?){0,}\\}";
+        const re = cachedRegex[key] ? cachedRegex[key] : new RegExp(regexStr, "g");
         cachedRegex[key] = re;
 
         const matches = body.matchAll(re);

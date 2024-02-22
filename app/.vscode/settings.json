@@ -1,4 +1,4 @@
 {
     "typescript.tsdk": "node_modules/typescript/lib",
-    "jest.autoRun": "false"
+    "jest.runMode": "on-demand"
 }

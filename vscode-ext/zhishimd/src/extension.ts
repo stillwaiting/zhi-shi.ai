@@ -289,7 +289,7 @@ function extractTemplateText(line: string, position: vscode.Position) {
 	}
 	let right = '';
 	for (let pos = position.character + 1; pos < line.length; pos ++) {
-		if (line[pos] == '}') {
+		if (line[pos] == '}' || line[pos] == '|') {
 			right = right + '}';
 			break;
 		}

@@ -215,6 +215,11 @@ multiline
   bar
   {/set}
 
+  {set:hello-2}
+  foo2
+  bar2
+  {/set}
+
   {hello}
   
 ## child
@@ -226,6 +231,7 @@ multiline
   
   
   {hello}
+  {hello-2}
   {world|first|second}
   `, []);
         expect(parsedBody).toStrictEqual([
@@ -242,7 +248,8 @@ multiline
                 ]
               },
               "nodeTemplateVariables": {
-                "hello": "\n  foo\n  bar\n  "
+                "hello": "\n  foo\n  bar\n  ",
+                "hello-2": "\n  foo2\n  bar2\n  "
               },
               "children": [
                 {
@@ -254,12 +261,13 @@ multiline
                   "body": {
                     "content": [
                       {
-                        "text": "foo bar baz first blah second"
+                        "text": "foo bar foo2 bar2 baz first blah second"
                       }
                     ]
                   },
                   "nodeTemplateVariables": {
                     "hello": "\n  foo\n  bar\n  ",
+                    "hello-2": "\n  foo2\n  bar2\n  ",
                     "world": "\n  baz $1\n  blah $2\n  "
                   },
                   "children": [],

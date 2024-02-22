@@ -172,10 +172,10 @@ function Browser(props: { providedData: string | undefined }) {
   const [topicsWidth, setTopicsWidth] = useState<number>(getSavedTopicWidth());
   const [expandQuestions, setExpandQuestions] = useState<boolean>(false);
 
-  const [externalText, setExternalText] = useState<string>("");
-  const [externalNodeLine, setExternalNodeLine] = useState<number>(-1);
-  const [externalSelectedText, setExternalSelectedText] = useState<string>("");
-
+  let [externalText, setExternalText] = useState<string>("");
+  let [externalNodeLine, setExternalNodeLine] = useState<number>(-1);
+  let [externalSelectedText, setExternalSelectedText] = useState<string>("");
+  
   const history = useHistory();
   const location = useLocation();
 
@@ -188,6 +188,12 @@ function Browser(props: { providedData: string | undefined }) {
           setNodes(nodes);
           setNodesByTitle(indexNodesByTitle(nodes));
           setExternalText(window.externalText);
+          // For some reason, sometimes in tests setState doesn't 
+          // trigger update, and when the 2nd time setInterval is exeuted
+          // the body of "if" is executed multiple times. Most likely
+          // react-testing-lib bug
+          // TODO: try to remove later after bumping the version of the lib
+          externalText = window.externalText;
         }
 
         // must handle externalNodeLine === 0, therefore "!== undefined"
@@ -197,11 +203,23 @@ function Browser(props: { providedData: string | undefined }) {
             history.push(nodeLinkToHttpPath(node.title, []));
           }
           setExternalNodeLine(window.externalNodeLine);
+          // For some reason, sometimes in tests setState doesn't 
+          // trigger update, and when the 2nd time setInterval is exeuted
+          // the body of "if" is executed multiple times. Most likely
+          // react-testing-lib bug
+          // TODO: try to remove later after bumping the version of the lib
+          externalNodeLine = window.externalNodeLine;
         }
 
         // must handle externalSelectedText === '' (drop of selection), therefore "!== undefined"
         if (window.externalSelectedText !== undefined && window.externalSelectedText !== externalSelectedText) {
             setExternalSelectedText(window.externalSelectedText);
+            // For some reason, sometimes in tests setState doesn't 
+            // trigger update, and when the 2nd time setInterval is exeuted
+            // the body of "if" is executed multiple times. Most likely
+            // react-testing-lib bug
+            // TODO: try to remove later after bumping the version of the lib
+            externalSelectedText = window.externalSelectedText;
         }
 
       }, 500);
