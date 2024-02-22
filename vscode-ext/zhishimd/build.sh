@@ -6,7 +6,8 @@ cd $dir
 cd ../../app && INLINE_RUNTIME_CHUNK=false yarn build
 cd $dir
 pwd
-rm -rf ./media/*
+rm -rf ./media
+mkdir media
 cp -r ../../app/build/* ./media/
 npm version patch
 yarn vsce package

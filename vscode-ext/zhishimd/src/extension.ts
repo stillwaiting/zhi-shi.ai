@@ -50,10 +50,10 @@ export function activate(context: vscode.ExtensionContext) {
 		{
 			provideDefinition(document, position, token) {
 				const line = document.lineAt(position).text;
-				const template = extractTemplateText(line, position);
-				if (template) {
+				const templateKey = extractTemplateKey(line, position);
+				if (templateKey) {
 					const directParentsText = stripNonParents(document.getText(), document.lineAt(position).lineNumber);
-					const templateDefinitionLine =directParentsText.find(line => line.lineText.indexOf("{set:" + template + "}") >= 0);
+					const templateDefinitionLine =directParentsText.find(line => line.lineText.indexOf("{set:" + templateKey + "}") >= 0);
 					if (templateDefinitionLine) {
 						return {
 							uri: document.uri,
@@ -275,7 +275,7 @@ function stripNonParents(text: string, startLine: number): Array<{lineNo: number
 	return strippedText;
 }
 
-function extractTemplateText(line: string, position: vscode.Position) {
+function extractTemplateKey(line: string, position: vscode.Position) {
 	let left = '';
 	for (let pos = position.character; pos >= 0; pos --) {
 		if (line[pos] == '{') {

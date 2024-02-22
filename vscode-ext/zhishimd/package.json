@@ -3,7 +3,7 @@
 	"displayName": "zhishimd",
 	"publisher": "bgvozdev",
 	"description": "",
-	"version": "0.1.7",
+	"version": "0.1.11",
 	"engines": {
 		"vscode": "^1.57.0"
 	},
