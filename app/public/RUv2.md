@@ -990,7 +990,7 @@ https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/tipyi-skloneniya-imen-sush
 ! (располагаются *что?* гардеробные) {объяснение}
 
 
-#### Rule: Различение отглагольных прилательных и причастий. [nr]
+#### Rule: Различение отглагольных прилательных и причастий.
 
 ##### Task: Отгагольное прилагат. без прист. несов вид
 
@@ -1003,7 +1003,7 @@ https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/tipyi-skloneniya-imen-sush
 {/set}
 
 {set:объяснение}
-слово образовано от без приставочного глагола несовершенного вида (~что делать?~ $1), нет зависимых слов, поэтому является отглагольным прилагательным. [Правило](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%BF%D1%80%D0%B8%D0%B7%D0%BD%D0%B0%D0%BA%20%D0%BE%D1%82%D0%B3%D0%BB%D0%B0%D0%B3%D0%BE%D0%BB%D1%8C%D0%BD%D0%BE%D0%B3%D0%BE%20%D0%BF%D1%80%D0%B8%D0%BB%D0%B0%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D0%B3%D0%BE)
+слово образовано от беcприставочного глагола несовершенного вида (~что делать?~ $1), нет зависимых слов, поэтому является отглагольным прилагательным. [Правило](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%BF%D1%80%D0%B8%D0%B7%D0%BD%D0%B0%D0%BA%20%D0%BE%D1%82%D0%B3%D0%BB%D0%B0%D0%B3%D0%BE%D0%BB%D1%8C%D0%BD%D0%BE%D0%B3%D0%BE%20%D0%BF%D1%80%D0%B8%D0%BB%D0%B0%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D0%B3%D0%BE). [Схема](http://localhost:3000/diagrams/ru/01/otgagolnoe_prilagat__bez_prist__nesov_vid.png)
 {/set}
 
 ? {определите} В тронном зале стоял большой *кованый* светильник. {выбор}
@@ -1081,7 +1081,7 @@ https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/tipyi-skloneniya-imen-sush
 ##### Task: Отгагольное прилагат. суффикс -л-
 
 {set:выбор}
-(прилагательное|причастие)
+(отглагольное прилагательное|причастие)
 {/set}
 
 {set:определите}
@@ -1089,7 +1089,7 @@ https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/tipyi-skloneniya-imen-sush
 {/set}
 
 {set:объяснение-суффикс-л}
-[Отглагольное прилагательное](https://skysmart.ru/articles/russian/otglagolnye-prilagatelnye-i-prichastiya), поскольку образовано от глагола ("$1") с помощью суффикса -л-. Не является причастием, поскольку суффикс -л- не входит в [суффиксы причастий](https://maximumtest.ru/uchebnik/10-klass/russky-yazyk/pravopisaniye-suffiksov-prichasty) ("ащ", "ящ", "ущ", "ющ", "вш", "ш", "им", "ом", "ем", "нн", "н"), [а является суффиксом прилагательного](http://zimakov.ucoz.ru/index/suffiksy_prilagatelnykh/0-184#:~:text=%D0%A1%D1%83%D1%84%D1%84%D0%B8%D0%BA%D1%81%20%2D-,%D0%BB,-%2D%20%D0%BE%D0%B1%D1%80%D0%B0%D0%B7%D1%83%D0%B5%D1%82%20%D0%BF%D1%80%D0%B8%D0%BB)
+[Отглагольное прилагательное](https://skysmart.ru/articles/russian/otglagolnye-prilagatelnye-i-prichastiya), поскольку образовано от глагола ("$1") с помощью суффикса -л-. Не является причастием, поскольку суффикс -л- не входит в [суффиксы причастий](https://maximumtest.ru/uchebnik/10-klass/russky-yazyk/pravopisaniye-suffiksov-prichasty) ("ащ", "ящ", "ущ", "ющ", "вш", "ш", "им", "ом", "ем", "нн", "н"). [Правило](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%BE%D0%B1%D1%80%D0%B0%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%BE%20%D0%BE%D1%82%20%D0%B3%D0%BB%D0%B0%D0%B3%D0%BE%D0%BB%D0%B0-,%D0%B1%D0%B5%D0%B7%20%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F%20%D1%81%D1%83%D1%84%D1%84%D0%B8%D0%BA%D1%81%D0%BE%D0%B2%20%D0%BF%D1%80%D0%B8%D1%87%D0%B0%D1%81%D1%82%D0%B8%D1%8F,-(%D1%81%D1%83%D1%84%D1%84%D0%B8%D0%BA%D1%81%D1%8B%20%D0%BF%D1%80%D0%B8%D1%87%D0%B0%D1%81%D1%82%D0%B8%D1%8F%3A%20%22%D0%B0%D1%89). [Схема](http://localhost:3000/diagrams/ru/01/otgagolnoe_prilagat__suffiks__l_.png)
 {/set}
 
 ? {определите} Сегодня пирог *подгорелый*. {выбор}
@@ -1131,7 +1131,7 @@ https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/tipyi-skloneniya-imen-sush
 ##### Task: Отгагольное прилагат. суффикс -тельн-
 
 {set:выбор}
-(прилагательное|причастие)
+(отглагольное прилагательное|причастие)
 {/set}
 
 {set:определите}
@@ -1139,7 +1139,7 @@ https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/tipyi-skloneniya-imen-sush
 {/set}
 
 {set:объяснение}
-[Отглагольное прилагательное](https://skysmart.ru/articles/russian/otglagolnye-prilagatelnye-i-prichastiya), поскольку образовано от глагола ("$1") с помощью суффикса -тельн-. Не является причастием, поскольку суффикс -тельн- не входит в [суффиксы причастий](https://maximumtest.ru/uchebnik/10-klass/russky-yazyk/pravopisaniye-suffiksov-prichasty) ("ащ", "ящ", "ущ", "ющ", "вш", "ш", "им", "ом", "ем", "нн", "н"), [а является суффиксом прилагательного](https://rus.stackexchange.com/a/46864/202665)
+[Отглагольное прилагательное](https://skysmart.ru/articles/russian/otglagolnye-prilagatelnye-i-prichastiya), поскольку образовано от глагола ("$1") с помощью суффикса -тельн-. Не является причастием, поскольку суффикс -тельн- не входит в [суффиксы причастий](https://maximumtest.ru/uchebnik/10-klass/russky-yazyk/pravopisaniye-suffiksov-prichasty) ("ащ", "ящ", "ущ", "ющ", "вш", "ш", "им", "ом", "ем", "нн", "н"). [Правило](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%BE%D0%B1%D1%80%D0%B0%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%BE%20%D0%BE%D1%82%20%D0%B3%D0%BB%D0%B0%D0%B3%D0%BE%D0%BB%D0%B0-,%D0%B1%D0%B5%D0%B7%20%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F%20%D1%81%D1%83%D1%84%D1%84%D0%B8%D0%BA%D1%81%D0%BE%D0%B2%20%D0%BF%D1%80%D0%B8%D1%87%D0%B0%D1%81%D1%82%D0%B8%D1%8F,-(%D1%81%D1%83%D1%84%D1%84%D0%B8%D0%BA%D1%81%D1%8B%20%D0%BF%D1%80%D0%B8%D1%87%D0%B0%D1%81%D1%82%D0%B8%D1%8F%3A%20%22%D0%B0%D1%89). [Схема](http://localhost:3000/diagrams/ru/01/otgagolnoe_prilagat__suffiks__l_.png)
 {/set}
 
 ? {определите} *Вычислительные* мощности современных компьютеров поражают воображение. {выбор}
@@ -1176,7 +1176,7 @@ https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/tipyi-skloneniya-imen-sush
 ##### Task: Отгагольное прилагат. искл с приставк []
 
 {set:выбор}
-(прилагательное|причастие)
+(отглагольное прилагательное|причастие)
 {/set}
 
 {set:определите}
@@ -1184,14 +1184,14 @@ https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/tipyi-skloneniya-imen-sush
 {/set}
 
 {set:объяснение}
-отглагольное прилагательное – исключение, необходимо запомнить (*придáное, смышленый, назвáный, посаже́ный*). [Правило](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%BF%D0%BE%D1%8F%D0%B2%D0%BB%D1%8F%D1%8E%D1%82%D1%81%D1%8F%20%D0%B7%D0%B0%D0%B2%D0%B8%D1%81%D0%B8%D0%BC%D1%8B%D0%B5%20%D1%81%D0%BB%D0%BE%D0%B2%D0%B0.-,%D0%97%D0%B0%D0%BC%D0%B5%D1%87%D0%B0%D0%BD%D0%B8%D0%B5%202,-%3A%20%D1%81%D0%BB%D0%BE%D0%B2%D0%B0%20%22%D0%BF%D1%80%D0%B8%D0%B4%D0%B0%D0%BD%D0%BE%D0%B5)
+отглагольное прилагательное – исключение, необходимо запомнить (*"придáное", "смышленый", "назвáный", "посаже́ный", "прощеное" из словосочетания "прощеное воскресенье" – церковный праздник*). [Правило](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%BF%D0%BE%D1%8F%D0%B2%D0%BB%D1%8F%D1%8E%D1%82%D1%81%D1%8F%20%D0%B7%D0%B0%D0%B2%D0%B8%D1%81%D0%B8%D0%BC%D1%8B%D0%B5%20%D1%81%D0%BB%D0%BE%D0%B2%D0%B0.-,%D0%97%D0%B0%D0%BC%D0%B5%D1%87%D0%B0%D0%BD%D0%B8%D0%B5%202,-%3A%20%D1%81%D0%BB%D0%BE%D0%B2%D0%B0%20%22%D0%BF%D1%80%D0%B8%D0%B4%D0%B0%D0%BD%D0%BE%D0%B5). [Схема](http://localhost:3000/diagrams/ru/01/otgagolnoe_prilagat__iskl_s_pristavk___.png).
 {/set}
 
 
-? {определите} За дочерью своей дам большое *приданое*. (существительное|причастие)
-! Образовано от глагола "придавать" (что делать? несовершенный вид), [перешедшее в категорию существительных отглагольное прилагательное](https://orfoschool.ru/page_81830_copy109). Является словом – исключением (*приданое, смышленый, названый, посаженый*). [Правило](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%BF%D0%BE%D1%8F%D0%B2%D0%BB%D1%8F%D1%8E%D1%82%D1%81%D1%8F%20%D0%B7%D0%B0%D0%B2%D0%B8%D1%81%D0%B8%D0%BC%D1%8B%D0%B5%20%D1%81%D0%BB%D0%BE%D0%B2%D0%B0.-,%D0%97%D0%B0%D0%BC%D0%B5%D1%87%D0%B0%D0%BD%D0%B8%D0%B5%202,-%3A%20%D1%81%D0%BB%D0%BE%D0%B2%D0%B0%20%22%D0%BF%D1%80%D0%B8%D0%B4%D0%B0%D0%BD%D0%BE%D0%B5)
+? {определите} За дочерью своей дам большое *приданое*. (существительное|прилагательное|причастие)
+! Образовано от глагола "придавать" (что делать? несовершенный вид), [перешедшее в категорию существительных отглагольное прилагательное](https://orfoschool.ru/page_81830_copy109). Является словом – исключением (*"приданое", "смышленый", "названый", "посаже́ный", "прощеное" из словосочетания "прощеное воскресенье" – церковный праздник*). [Правило](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%BF%D0%BE%D1%8F%D0%B2%D0%BB%D1%8F%D1%8E%D1%82%D1%81%D1%8F%20%D0%B7%D0%B0%D0%B2%D0%B8%D1%81%D0%B8%D0%BC%D1%8B%D0%B5%20%D1%81%D0%BB%D0%BE%D0%B2%D0%B0.-,%D0%97%D0%B0%D0%BC%D0%B5%D1%87%D0%B0%D0%BD%D0%B8%D0%B5%202,-%3A%20%D1%81%D0%BB%D0%BE%D0%B2%D0%B0%20%22%D0%BF%D1%80%D0%B8%D0%B4%D0%B0%D0%BD%D0%BE%D0%B5). [Схема](http://localhost:3000/diagrams/ru/01/otgagolnoe_prilagat__iskl_s_pristavk___.png).
 
-? {определите} В соседнем подъезде очень смышленая девчонка. {выбор}
+? {определите} В соседнем подъезде очень *смышленая* девчонка. {выбор}
 !  {объяснение}
 
 ? {определите} А вы будете мне *назвáными* братьями. {выбор}
@@ -1200,11 +1200,14 @@ https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/tipyi-skloneniya-imen-sush
 ? {определите} Перед алтарём, будучи *посажёным* отцом, он представлял мне примеры замужеств, расходившихся во время самого обряда венчания, и подстрекал меня поступить таким же образом. {выбор}
 ! {объяснение}
 
+? {определите} *Прощеное* воскресенье – это последний день Масленицы и, соответственно, последний день перед Великим постом. {выбор}
+! {объяснение}
+
 
 ##### Task: Отгагольное прилагат. искл. раненый, конченый []
 
 {set:выбор}
-(прилагательное|причастие)
+(отглагольное прилагательное|причастие)
 {/set}
 
 {set:определите}
@@ -1212,7 +1215,7 @@ https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/tipyi-skloneniya-imen-sush
 {/set}
 
 {set:объяснение}
-Принято считать отглагольным прилагательным (*раненый*, *конченый* – в значении "пропащий, ни на что больше не способный"). [Правило](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%BF%D1%80%D0%BE%D0%BF%D0%B0%D1%89%D0%B8%D0%B9%22%29%20%D1%82%D0%B0%D0%BA%20%D0%B6%D0%B5-,%D0%BF%D1%80%D0%B8%D0%BD%D1%8F%D1%82%D0%BE%20%D1%81%D1%87%D0%B8%D1%82%D0%B0%D1%82%D1%8C%20%D0%BE%D1%82%D0%B3%D0%B0%D0%B3%D0%BE%D0%BB%D1%8C%D0%BD%D1%8B%D0%BC%D0%B8%20%D0%BF%D1%80%D0%B8%D0%BB%D0%B0%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D0%BC%D0%B8,-%D0%BD%D0%B5%D1%81%D0%BC%D0%BE%D1%82%D1%80%D1%8F%20%D0%BD%D0%B0%20%D1%82%D0%BE)
+Принято считать отглагольным прилагательным (*раненый*, *конченый* – в значении "пропащий, ни на что больше не способный"). [Правило](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%BF%D1%80%D0%BE%D0%BF%D0%B0%D1%89%D0%B8%D0%B9%22%29%20%D1%82%D0%B0%D0%BA%20%D0%B6%D0%B5-,%D0%BF%D1%80%D0%B8%D0%BD%D1%8F%D1%82%D0%BE%20%D1%81%D1%87%D0%B8%D1%82%D0%B0%D1%82%D1%8C%20%D0%BE%D1%82%D0%B3%D0%B0%D0%B3%D0%BE%D0%BB%D1%8C%D0%BD%D1%8B%D0%BC%D0%B8%20%D0%BF%D1%80%D0%B8%D0%BB%D0%B0%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D0%BC%D0%B8,-%D0%BD%D0%B5%D1%81%D0%BC%D0%BE%D1%82%D1%80%D1%8F%20%D0%BD%D0%B0%20%D1%82%D0%BE). [Схема](http://localhost:3000/diagrams/ru/01/otgagolnoe_prilagat__iskl_s_pristavk___.png).
 {/set}
 
 ? {определите} *Раненый* солдат лежал на поле боя. {выбор}
@@ -1224,7 +1227,7 @@ https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/tipyi-skloneniya-imen-sush
 ##### Task: Отглаг прил суффикс прич НН искл.
 
 {set:выбор}
-(причастие|прилагательное)
+(отглагольное прилагательное|причастие)
 {/set}
 
 {set:определите}
@@ -1232,7 +1235,7 @@ https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/tipyi-skloneniya-imen-sush
 {/set}
 
 {set:объяснение}
-Слово является отглагольным прилагательным несмотря на суффиксы причастия с -НН-, исключение, нужно запомнить. *Деланный, долгожданный, желанный, медленный, невиданный, негаданный, нежданный, неслыханный, нечаянный, священный, ставленный* (но *ставленая грамота* – устойчивое выражение). [Правило](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%BF%D1%80%D0%B8%D1%87%D0%B0%D1%81%D1%82%D0%B8%D1%8F%D0%BC%D0%B8%20%D0%BD%D0%B5%20%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D1%8F%D1%82%D1%81%D1%8F.-,%D0%97%D0%B0%D0%BC%D0%B5%D1%87%D0%B0%D0%BD%D0%B8%D0%B5%203,-%3A%20%D1%81%D0%BB%D0%BE%D0%B2%D0%B0%20%22%D0%B4%D0%B5%D0%BB%D0%B0%D0%BD%D0%BD%D1%8B%D0%B9)
+Слово является отглагольным прилагательным несмотря на суффиксы причастия с -НН-, исключение, нужно запомнить. *Деланный, долгожданный, желанный, медленный, невиданный, негаданный, нежданный, неслыханный, нечаянный, священный, ставленный* (но *ставленая грамота* – устойчивое выражение). [Правило](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%BF%D1%80%D0%B8%D1%87%D0%B0%D1%81%D1%82%D0%B8%D1%8F%D0%BC%D0%B8%20%D0%BD%D0%B5%20%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D1%8F%D1%82%D1%81%D1%8F.-,%D0%97%D0%B0%D0%BC%D0%B5%D1%87%D0%B0%D0%BD%D0%B8%D0%B5%203,-%3A%20%D1%81%D0%BB%D0%BE%D0%B2%D0%B0%20%22%D0%B4%D0%B5%D0%BB%D0%B0%D0%BD%D0%BD%D1%8B%D0%B9). [Схема](http://localhost:3000/diagrams/ru/01/otgagolnoe_prilagat__iskl_s_pristavk___.png).
 {/set}
 
 ? {определите} *Нежданный* гость хуже татарина. {выбор}  
@@ -1265,7 +1268,7 @@ https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/tipyi-skloneniya-imen-sush
 ? {определите} Это мой *священный* долг! {выбор}  
 ! {объяснение}
 
-? {определите} Еелел привезти *ставленного* боярского меда! {выбор}  
+? {определите} Велели привезти *ставленного* боярского меда! {выбор}  
 ! {объяснение}
 
 
@@ -1273,7 +1276,7 @@ https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/tipyi-skloneniya-imen-sush
 ##### Task: Отглаг прил сов вид МНОЙ
 
 {set:выбор}
-(прилагательное|причастие)
+(отглагольное прилагательное|причастие)
 {/set}
 
 {set:определите}
@@ -1281,13 +1284,13 @@ https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/tipyi-skloneniya-imen-sush
 {/set}
 
 {set:объяснение}
-Слово образовано от глагола совершенного вида "что сделать? $1", отвечает на вопрос $2. Не является причастием, так как нет зависимых слов и нельзя вставить местоимение "мной" ($3). Поэтому – отглагольное прилагательное. [Правило](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%BD%D1%83%D0%B6%D0%BD%D0%BE%20%D0%BF%D0%BE%D0%BF%D1%80%D0%BE%D0%B1%D0%BE%D0%B2%D0%B0%D1%82%D1%8C%20%D0%B2%D1%81%D1%82%D0%B0%D0%B2%D0%B8%D1%82%D1%8C%20%D0%BC%D0%B5%D1%81%D1%82%D0%BE%D0%B8%D0%BC%D0%B5%D0%BD%D0%B8%D0%B5%20%22%D0%BC%D0%BD%D0%BE%D0%B9%22)
+Слово образовано от глагола совершенного вида "что сделать? $1", отвечает на вопрос $2. Не является причастием, так как нет зависимых слов и нельзя вставить местоимение "мной" ($3). Поэтому – отглагольное прилагательное. [Правило](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%BD%D1%83%D0%B6%D0%BD%D0%BE%20%D0%BF%D0%BE%D0%BF%D1%80%D0%BE%D0%B1%D0%BE%D0%B2%D0%B0%D1%82%D1%8C%20%D0%B2%D1%81%D1%82%D0%B0%D0%B2%D0%B8%D1%82%D1%8C%20%D0%BC%D0%B5%D1%81%D1%82%D0%BE%D0%B8%D0%BC%D0%B5%D0%BD%D0%B8%D0%B5%20%22%D0%BC%D0%BD%D0%BE%D0%B9%22). [Схема](http://localhost:3000/diagrams/ru/01/otglag_pril_sov_vid_mnoy.png)
 {/set}
 
 ? {определите} Иди умой свое *размалеванное* лицо. {выбор}
 ! {объяснение|размалевать|какое?|"размалеванное МНОЙ лицо" – так не говорят!}
 
-? {определите} Производит впечателение организованного человека. {выбор}
+? {определите} Производит впечателение *организованного* человека. {выбор}
 ! {объяснение|организовать|какого?|"организованного МНОЙ человека" – искажается смысл}
 
 
@@ -1306,7 +1309,7 @@ https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/tipyi-skloneniya-imen-sush
 ? {определите} *утомленное* лицо {выбор}
 ! {объяснение|утомить|какое?|"утомленное МНОЙ лицо" – так не говорят!}
 
-? {определите} И вижу берег *очарованный* и *очарованную* даль. {выбор}
+? {определите} И вижу берег *очарованный*, и *очарованную* даль. {выбор}
 ! {объяснение|очаровать|какой? какую?|"очарованный МНОЙ берег" – так не говорят!}
 
 ? {определите} *сломанная* рука {выбор}
@@ -1317,7 +1320,7 @@ https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/tipyi-skloneniya-imen-sush
 
 ##### Task: Прич сов вида МНОЮ
 {set:выбор}
-(причастие|прилагательное)
+(причастие|отглагольное прилагательное)
 {/set}
 
 {set:определите}
@@ -1325,7 +1328,7 @@ https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/tipyi-skloneniya-imen-sush
 {/set}
 
 {set:объяснение}
-Слово отвечает на вопрос причастия "$1", образовано от глагола "$2", возможно вставить местоимение "мной" ("$3"), поэтому является причастием, перехода в отглагольное прилагательное не произошло. [Правило](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%BD%D1%83%D0%B6%D0%BD%D0%BE%20%D0%BF%D0%BE%D0%BF%D1%80%D0%BE%D0%B1%D0%BE%D0%B2%D0%B0%D1%82%D1%8C%20%D0%B2%D1%81%D1%82%D0%B0%D0%B2%D0%B8%D1%82%D1%8C%20%D0%BC%D0%B5%D1%81%D1%82%D0%BE%D0%B8%D0%BC%D0%B5%D0%BD%D0%B8%D0%B5%20%22%D0%BC%D0%BD%D0%BE%D0%B9%22)
+Слово отвечает на вопрос причастия "$1", образовано от глагола совершенного вида (что сделать? $2), возможно вставить местоимение "мной" ("$3"), поэтому является причастием, перехода в отглагольное прилагательное не произошло. [Правило](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%BD%D1%83%D0%B6%D0%BD%D0%BE%20%D0%BF%D0%BE%D0%BF%D1%80%D0%BE%D0%B1%D0%BE%D0%B2%D0%B0%D1%82%D1%8C%20%D0%B2%D1%81%D1%82%D0%B0%D0%B2%D0%B8%D1%82%D1%8C%20%D0%BC%D0%B5%D1%81%D1%82%D0%BE%D0%B8%D0%BC%D0%B5%D0%BD%D0%B8%D0%B5%20%22%D0%BC%D0%BD%D0%BE%D0%B9%22). [Схема](http://localhost:3000/diagrams/ru/01/prich_sov_vida_mnoyu.png)
 {/set}
 
 ? {определите} *Раскрытая* книга. {выбор}
@@ -1361,7 +1364,7 @@ https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/tipyi-skloneniya-imen-sush
 ##### Task: Прич. с завис. словом
 
 {set:выбор}
-(причастие|прилагательное)
+(причастие|отглагольное прилагательное)
 {/set}
 
 {set:определите}
@@ -1369,8 +1372,11 @@ https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/tipyi-skloneniya-imen-sush
 {/set}
 
 {set:объяснение}
-[самостоятельная часть речи](https://russkiiyazyk.ru/chasti-rechi/samostoyatelnye.html), можно задать вопрос "что делающий?"/"что сделавший?"/"что сделанный?", образуется от глагола ("$1") с помощью суффиксов "ащ", "ящ", "ущ", "ющ", "вш", "ш", "им", "ом", "ем", "нн", "н"; также отвечает на вопросы прилагательного  "какой?"/"какая?"/"какое?"/"какие?", обозначает признак предмета по действию, поэтому является [причастием](https://foxford.ru/wiki/russkiy-yazyk/chto-takoe-prichastie). Не является [отглагольным прилагательным](https://kakpishem.ru/chasti-rechi/prilagatelnoe/otlichiya-otglagolnogo-imeni-prilagatelnogo-ot-prichastiya.html), так как есть зависимые слова ("$2"). [Правило](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=1.-,%D0%97%D0%B0%D0%B2%D0%B8%D1%81%D0%B8%D0%BC%D1%8B%D0%B5%20%D1%81%D0%BB%D0%BE%D0%B2%D0%B0,-%E2%80%93%C2%A0%D0%BF%D1%80%D0%B8%D0%B7%D0%BD%D0%B0%D0%BA%20%D0%BF%D1%80%D0%B8%D1%87%D0%B0%D1%81%D1%82%D0%B8%D1%8F)
+[самостоятельная часть речи](https://russkiiyazyk.ru/chasti-rechi/samostoyatelnye.html), можно задать вопрос "что делающий?"/"что сделавший?"/"что сделанный?", образуется от глагола ("$1") с помощью суффиксов "ащ", "ящ", "ущ", "ющ", "вш", "ш", "им", "ом", "ем", "нн", "н"; также отвечает на вопросы прилагательного  "какой?"/"какая?"/"какое?"/"какие?", обозначает признак предмета по действию, поэтому является [причастием](https://foxford.ru/wiki/russkiy-yazyk/chto-takoe-prichastie). Не является [отглагольным прилагательным](https://kakpishem.ru/chasti-rechi/prilagatelnoe/otlichiya-otglagolnogo-imeni-prilagatelnogo-ot-prichastiya.html), так как есть зависимые слова ("$2"). [Правило](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=1.-,%D0%97%D0%B0%D0%B2%D0%B8%D1%81%D0%B8%D0%BC%D1%8B%D0%B5%20%D1%81%D0%BB%D0%BE%D0%B2%D0%B0,-%E2%80%93%C2%A0%D0%BF%D1%80%D0%B8%D0%B7%D0%BD%D0%B0%D0%BA%20%D0%BF%D1%80%D0%B8%D1%87%D0%B0%D1%81%D1%82%D0%B8%D1%8F) [Схема](http://localhost:3000/diagrams/ru/01/prich__s_zavis__slovom.png)
 {/set}
+
+? {определите} *Раненный* осколком. {выбор}
+! {объяснение|ранить|раненный чем? осколком}
 
 ? {определите} *Убаюканный* песней. {выбор}
 ! {объяснение|убаюкать|убаюканный чем? песней}
@@ -1396,7 +1402,7 @@ https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/tipyi-skloneniya-imen-sush
 ? {определите} Ученик, *сомневающийся* в своих знаниях, не достигнет успеха. {выбор}
 ! {объяснение|сомневаться|сомневающийся *в чем?* в знаниях}
 
-? {определите} *Воодушевленный* новой идеей, Безумный ученый сел за создание плана по захвату мира. {выбор}
+? {определите} *Воодушевленный* новой идеей, безумный ученый сел за создание плана по захвату мира. {выбор}
 ! {объяснение|воодушевить|воодушевленный *чем?* идеей}
 
 ? {определите} Пол, *крашенный* еще старым дедом, практически выцвел, и оттенок краски было уже не разобрать. {выбор}
@@ -1411,8 +1417,8 @@ https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/tipyi-skloneniya-imen-sush
 ? {определите} В России с каждым годом увеличивается число давно *непаханных* полей. {выбор}
 ! {объяснение|не пахать|непаханных *как долго?* давно}
 
-? {определите} Картофель, *печеный* в золе, - самое вкусное, что помнил из детства Митрошка. {выбор}
-! {объяснение|печь|печеный *в чем?* в золе}
+? {определите} Картофель, *печенный* в золе, - самое вкусное, что помнил из детства Митрошка. {выбор}
+! {объяснение|печь|печенный *в чем?* в золе}
 
 ? {определите} Лань, *утомленная* солнцем, отлеживалась в тени дерева. {выбор}
 ! {объяснение|утомить|утомленная *чем?* солнцем}
@@ -1430,11 +1436,11 @@ https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/tipyi-skloneniya-imen-sush
 {/set}
 
 {set:объяснение}
-Поскольку полная форма – отглагольное прилагательное, то и краткая – тоже. [Правило](https://www.yaklass.ru/p/russky-yazik/4-klass/imia-prilagatelnoe-kak-chast-rechi-202451/polnaia-i-kratkaia-formy-imen-prilagatelnykh-obrazovanie-i-pravopisanie-_-202452/re-89a639ae-ca19-46bf-9458-bac07abebd2c)
+Поскольку полная форма – отглагольное прилагательное, то и краткая – тоже. [Правило](https://www.yaklass.ru/p/russky-yazik/4-klass/imia-prilagatelnoe-kak-chast-rechi-202451/polnaia-i-kratkaia-formy-imen-prilagatelnykh-obrazovanie-i-pravopisanie-_-202452/re-89a639ae-ca19-46bf-9458-bac07abebd2c). [Схема](http://localhost:3000/diagrams/ru/01/kratkoe_.png)
 {/set}
 
 {set:несов}
-Краткая форма слова "$1" – [отглагольное прилагательное](https://skysmart.ru/articles/russian/otglagolnye-prilagatelnye-i-prichastiya), так как [образовано от,бесприставочного глагола несовершенного вида "$2" (что делать?), нет зависимых слов](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=2.%20%D0%9E%D0%B1%D1%80%D0%B0%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%BE%20%D0%BE%D1%82-,%D0%B1%D0%B5%D1%81%D0%BF%D1%80%D0%B8%D1%81%D1%82%D0%B0%D0%B2%D0%BE%D1%87%D0%BD%D0%BE%D0%B3%D0%BE%20%D0%B3%D0%BB%D0%B0%D0%B3%D0%BE%D0%BB%D0%B0%20%D0%BD%D0%B5%D1%81%D0%BE%D0%B2%D0%B5%D1%80%D1%88%D0%B5%D0%BD%D0%BD%D0%BE%D0%B3%D0%BE%20%D0%B2%D0%B8%D0%B4%D0%B0,-%E2%80%93%C2%A0%D0%BF%D1%80%D0%B8%D0%B7%D0%BD%D0%B0%D0%BA%20%D0%BE%D1%82%D0%B3%D0%BB%D0%B0%D0%B3%D0%BE%D0%BB%D1%8C%D0%BD%D0%BE%D0%B3%D0%BE%20%D0%BF%D1%80%D0%B8%D0%BB%D0%B0%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D0%B3%D0%BE).
+Краткая форма слова "$1" – [отглагольное прилагательное](https://skysmart.ru/articles/russian/otglagolnye-prilagatelnye-i-prichastiya), так как [образовано от бесприставочного глагола несовершенного вида "$2" (что делать?), нет зависимых слов](http://127.0.0.1:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%B2%D0%BE%D0%BF%D1%80%D0%BE%D1%81%D1%8B%20%D0%BF%D1%80%D0%B8%D0%BB%D0%B0%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D0%B3%D0%BE%2C%20%D0%BE%D0%B1%D1%80%D0%B0%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%BE-,%D0%BE%D1%82%20%D0%B1%D0%B5%D1%81%D0%BF%D1%80%D0%B8%D1%81%D1%82%D0%B0%D0%B2%D0%BE%D1%87%D0%BD%D0%BE%D0%B3%D0%BE%20%D0%B3%D0%BB%D0%B0%D0%B3%D0%BE%D0%BB%D0%B0%20%D0%BD%D0%B5%D1%81%D0%BE%D0%B2%D0%B5%D1%80%D1%88%D0%B5%D0%BD%D0%BD%D0%BE%D0%B3%D0%BE%20%D0%B2%D0%B8%D0%B4%D0%B0,-%D1%81%20%D0%BF%D0%BE%D0%BC%D0%BE%D1%89%D1%8C%D1%8E%20%D1%81%D1%83%D1%84%D1%84%D0%B8%D0%BA%D1%81%D0%BE%D0%B2).
 {/set}
  
 
@@ -1442,7 +1448,7 @@ https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/tipyi-skloneniya-imen-sush
 ! {несов|золоченая|золотить}  {объяснение}
 
 ? {определите} Ваш вид надменен, взгляд *рассеян*. {выбор}
-! Краткая форма слова "рассеянный" – [отглагольное прилагательное](https://skysmart.ru/articles/russian/otglagolnye-prilagatelnye-i-prichastiya), так как [нельзя сказать "взгляд, который рассеяли/рассеялся"](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%BF%D1%80%D0%B8%D1%87%D0%B0%D1%81%D1%82%D0%B8%D1%8F%2C%20%D0%B0-,%D0%BD%D0%B5%D0%B2%D0%BE%D0%B7%D0%BC%D0%BE%D0%B6%D0%BD%D0%BE%D1%81%D1%82%D1%8C,-%E2%80%93%20%D0%BF%D1%80%D0%B8%D0%BB%D0%B0%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D0%B3%D0%BE). {объяснение}
+! Краткая форма слова "рассеянный" – [отглагольное прилагательное](https://skysmart.ru/articles/russian/otglagolnye-prilagatelnye-i-prichastiya), так как [от глагола совершенного вида (что сделать? рассеять), нельзя подставить местоимение МНОЙ ("рассеянный МНОЙ взгляд" – так не говорят!)](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%BF%D1%80%D0%B8%D1%87%D0%B0%D1%81%D1%82%D0%B8%D1%8F%2C%20%D0%B0-,%D0%BD%D0%B5%D0%B2%D0%BE%D0%B7%D0%BC%D0%BE%D0%B6%D0%BD%D0%BE%D1%81%D1%82%D1%8C,-%E2%80%93%20%D0%BF%D1%80%D0%B8%D0%BB%D0%B0%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D0%B3%D0%BE). {объяснение}
 
 ? {определите} *Восхитителен* Ваш ответ. {выбор}
 ! (От "восхитительный" – [отглагольное прилагательное](https://skysmart.ru/articles/russian/otglagolnye-prilagatelnye-i-prichastiya), образованное от глагола "восхитить", суффикс прилагательного -тельн-, нет суффиксов причастия) {объяснение}
@@ -1450,8 +1456,8 @@ https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/tipyi-skloneniya-imen-sush
 ? {определите} Мама сегодня *грустна*. {выбор}
 ! {несов|грустная|грустить} {объяснение}
 
-? {определите} В школе требования *едины* для всех. {выбор}
-! {несов|единые|единить} {объяснение}
+? {определите} Сам замысел его строительства был очень *дерзок* и смел. {выбор}
+! {несов|дерзкий|дерзить} {объяснение}
 
 ? {определите} Апельсин на самой верхней ветке *спел*. {выбор}
 ! {несов|спелый|спеть} {объяснение}
@@ -1480,7 +1486,7 @@ https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/tipyi-skloneniya-imen-sush
 {/set}
 
 {set:объяснение}
-поэтому является [причастием](https://skysmart.ru/articles/russian/otglagolnye-prilagatelnye-i-prichastiya). Раз полная форма слова является причастием, значит и краткая – тоже. [Правило](https://gramotnosty.ru/russkiy-yazyk/morphologiya/prichastie/kratkaya-forma.html#i-2)
+поэтому является [причастием](https://skysmart.ru/articles/russian/otglagolnye-prilagatelnye-i-prichastiya). Раз полная форма слова является причастием, значит и краткая – тоже. [Правило](https://gramotnosty.ru/russkiy-yazyk/morphologiya/prichastie/kratkaya-forma.html#i-2).[Схема](http://localhost:3000/diagrams/ru/01/kratkoe_.png)
 {/set}
 
 ? {определите} А меч-то *кован* хорошим кузнецом. {выбор}
@@ -6838,11 +6844,8 @@ https://russkiiyazyk.ru/sostav-slova/suffiks/suffiks-shchik-primery.html#:~:text
 ? Хочу закрасить низ листа (не коричневым|некоричневым) карандашом.
 ! {объяснение}
 
-#### Rule: Правописание "н" и "нн" прилагательных [debug]
+#### Rule: Правописание "н" и "нн" прилагательных
 
-{set:ссылка-прил-отглаг}
-https://kakpishem.ru/chasti-rechi/prilagatelnoe/otlichiya-otglagolnogo-imeni-prilagatelnogo-ot-prichastiya.html
-{/set}
 
 ##### Task: н - сущ. + ин/ан/ян
 
@@ -6925,7 +6928,7 @@ https://kakpishem.ru/chasti-rechi/prilagatelnoe/otlichiya-otglagolnogo-imeni-pri
 ? ос(ин|инн)ая талия
 ! (от сущ. "оса" + суффикс -ин-) {объяснение}
 
-##### Task: нн - cущ + ин/ан/ян исключ
+##### Task: нн - cущ + ин/ан/ян исключ []
 
 {set:объяснение}
 словарное слово, исключение (оловянный, стеклянный, деревянный), нужно запомнить. [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D0%97%D0%B0%D0%BF%D0%BE%D0%BC%D0%BD%D0%B8%D0%BC%20%D0%BD%D0%B0%D0%BF%D0%B8%C2%AD%D1%81%D0%B0%C2%AD%D0%BD%D0%B8%D0%B5%20%D1%81%D0%BB%D0%BE%D0%B2%2D%D0%B8%D1%81%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B9)
@@ -7050,7 +7053,7 @@ https://kakpishem.ru/chasti-rechi/prilagatelnoe/otlichiya-otglagolnogo-imeni-pri
 
 
 
-##### Task: н - сущ, н в корне, нет суффикса
+##### Task: н - сущ, н в корне, нет суффикса []
 
 {set:объяснение}
 одна буква "н" в корне прилагательного, слово нужно запомнить (зеленый, синий, румяный, багряный, пряный, юный, единый, рьяный, пьяный). [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D1%87%D1%82%D0%BE%20%D0%BA%D0%BE%D1%80%D0%B5%D0%BD%C2%AD%D0%BD%D0%BE%D0%B5%20%C2%AB%D0%BD%C2%BB%20%D0%BF%D0%B8%D1%88%D0%B5%D1%82%C2%AD%D1%81%D1%8F%20%D0%B2%20%D0%BF%D1%80%D0%B8%D0%BB%D0%B0%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D1%85)
@@ -7084,7 +7087,7 @@ https://kakpishem.ru/chasti-rechi/prilagatelnoe/otlichiya-otglagolnogo-imeni-pri
 ! ("багрец" - корень) {объяснение}
 
 
-##### Task: н - сущ, притяж основа н (животные)
+##### Task: н - сущ, притяж основа н (животные) []
 
 {set:объяснение}
 пишется одна "н", так как притяжательное прилагательное с основой на "н". [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D0%BF%D1%80%D0%B8%D1%82%D1%8F%D0%B6%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D0%BF%D1%80%D0%B8%D0%BB%D0%B0%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%C2%A0%D1%81%20%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%BE%D0%B9%20%D0%BD%D0%B0%20%D0%B1%D1%83%D0%BA%D0%B2%D1%83%20%C2%AB%D0%BD%C2%BB)
@@ -7117,12 +7120,12 @@ https://kakpishem.ru/chasti-rechi/prilagatelnoe/otlichiya-otglagolnogo-imeni-pri
 ? зуб пито(н|нн)ий
 ! ("питон" - корень) {объяснение}
 
-##### Task: н - сущ, исключ ветреный
+##### Task: н - сущ, исключ ветреный []
 
 ? ветре(н|нн)ый день
 ! словарное слово, исключение, нужно запомнить. [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D0%98%D1%81%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B5%20%D1%81%D0%BE%D1%81%D1%82%D0%B0%D0%B2%C2%AD%D0%BB%D1%8F%C2%AD%D0%B5%D1%82%20%D1%81%D0%BB%D0%BE%C2%AD%D0%B2%D0%BE%20%C2%AB-,%D0%B2%D0%B5%D1%82%C2%AD%D1%80%D0%B5%D0%BD%D1%8B%D0%B9,-%C2%BB%20(%D0%B4%D0%B5%D0%BD%D1%8C%2C%20%D1%87%D0%B5%D0%BB%D0%BE%C2%AD%D0%B2%D0%B5%D0%BA%2C%20%D0%BF%D1%80%D0%B8%C2%AD%D1%8F%C2%AD%D1%82%D0%B5%D0%BB%D1%8C)
 
-##### Task: нн - сущ, приставка + ветреный
+##### Task: нн - сущ, приставка + ветреный []
 
 {set:объяснение}
 если к прилагательному "ветреный" добавляется приставка, то пишется две "нн". [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D0%9E%D0%B4%D0%BD%D0%B0%D0%BA%D0%BE%20%D0%BF%D1%80%D0%B8%C2%AD%D1%81%D1%82%D0%B0%C2%AD%D0%B2%D0%BE%D1%87%C2%AD%D0%BD%D1%8B%D0%B5%20%D0%BE%D0%B1%D1%80%D0%B0%C2%AD%D0%B7%D0%BE%C2%AD%D0%B2%D0%B0%C2%AD%D0%BD%D0%B8%D1%8F%20%D1%8D%D1%82%D0%BE%C2%AD%D0%B3%D0%BE%20%D0%BF%D1%80%D0%B8%C2%AD%D0%BB%D0%B0%C2%AD%D0%B3%D0%B0%C2%AD%D1%82%D0%B5%D0%BB%D1%8C%C2%AD%D0%BD%D0%BE%C2%AD%D0%B3%D0%BE%20%D0%BF%D0%B8%D1%88%D1%83%D1%82%C2%AD%D1%81%D1%8F%20%D1%81%20%2D%D0%9D%D0%9D%2D)
@@ -7152,46 +7155,46 @@ https://kakpishem.ru/chasti-rechi/prilagatelnoe/otlichiya-otglagolnogo-imeni-pri
 ? наветр(енн|ен)ое положение корабля
 ! {объяснение}
 
-##### Task: н - отглаг прил несоверш вида
+##### Task: н - отглаг прил несоверш вида без прист. без завис слов
 
 {set:объяснение}
- – что делать? – несоверш. вид) одна буква "н", так как [отглагольное прилагательное/причастие]({ссылка-прил-отглаг}), образовано от глагола несовершенного вида, поэтому пишется одна Н. [Правило](https://kakpishem.ru/chasti-rechi/prilagatelnoe/otlichiya-otglagolnogo-imeni-prilagatelnogo-ot-prichastiya.html)
+прилагательное образовано от бесприставочного глагола несовершенного вида (что делать? $1), [значит перед нами отглагольное прилагательное](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%9D%D0%B5%D1%82%20%D0%B7%D0%B0%D0%B2%D0%B8%D1%81%D0%B8%D0%BC%D1%8B%D1%85%20%D1%81%D0%BB%D0%BE%D0%B2%2C%20%D0%BE%D0%B1%D1%80%D0%B0%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%BE%20%D0%BE%D1%82%20%D0%B1%D0%B5%D1%81%D0%BF%D1%80%D0%B8%D1%81%D1%82%D0%B0%D0%B2%D0%BE%D1%87%D0%BD%D0%BE%D0%B3%D0%BE%20%D0%B3%D0%BB%D0%B0%D0%B3%D0%BE%D0%BB%D0%B0%20%D0%BD%D0%B5%D1%81%D0%BE%D0%B2%D0%B5%D1%80%D1%88%D0%B5%D0%BD%D0%BD%D0%BE%D0%B3%D0%BE%20%D0%B2%D0%B8%D0%B4%D0%B0), пишется одна Н. [Правило](https://www.yaklass.ru/p/russky-yazik/10-klass/razdel-morfologii-samostoiatelnye-chasti-rechi-10908/pravopisanie-prichastii-11368/re-e1890f63-9087-4d2d-92d9-671647eed81a)
 {/set}
 
-? ребенок смышлё(н|нн)ый
-! (от "смыслить" {объяснение}
+? резаный(н|нн) хлеб
+! {объяснение|резать}
 
 ? гружё(н|нн)ый вол
-! (от "грузить" {объяснение}
+! {объяснение|грузить}
 
 ? лосось мороже(н|нн)ый
-! (от "морозить" {объяснение}
+! {объяснение|морозить}
 
 ? печё(н|нн)ые яблоки
-! (от "печь" {объяснение}
+! {объяснение|печь}
 
 ? суше(н|нн)ый гриб
-! (от "сушить" {объяснение}
+! {объяснение|сушить}
 
 ? огурец соле(н|нн)ый
-! (от "солить" {объяснение}
+! {объяснение|солить}
 
 ? жаре(н|нн)ый картофель
-! (от "жарить" {объяснение}
+! {объяснение|жарить}
 
 ? топлё(н|нн)ое молоко
-! (от "топить" {объяснение}
+! {объяснение|топить}
 
 ? ребенок бережё(н|нн)ый
-! (от "беречь" {объяснение}
+! {объяснение|беречь}
 
 ? кручё(н|нн)ый канат 
-! (от "крутить" {объяснение}
+! {объяснение|крутить}
 
 ##### Task: нн - отглаг прил несоверш вида искл
 
 {set:объяснение}
-– *что делать?*, глагол несовершенного вида), пишется две "нн", так как словарное слово (*"медленный, желанный, отчаянный, деланный, священный, читанный, данный, чеканный, окаянный, жеманный, нежданный, негаданный, неслыханный, невиданный, нечаянный, неожиданный"*). [Правило](https://tetrika-school.ru/blog/pravopisanie-n-i-nn/#:~:text=%D0%B2%D0%B0%D1%80%D1%91%D0%BD%D1%8B%D0%B9%2C%20%D0%B6%D0%B0%D1%80%D0%B8%D1%82%D1%8C%20%E2%80%94%20%D0%B6%D0%B0%D1%80%D0%B5%D0%BD%D1%8B%D0%B9.-,%D0%9D%D0%B5%D0%BE%D0%B1%D1%85%D0%BE%D0%B4%D0%B8%D0%BC%D0%BE%20%D0%B7%D0%B0%D0%BF%D0%BE%D0%BC%D0%BD%D0%B8%D1%82%D1%8C,-%3A%20%D0%BD%D0%B0%D0%B7%D0%B2%D0%B0%D0%BD%D1%8B%D0%B9%20(%D0%B1%D1%80%D0%B0%D1%82)
+– *что делать?*, глагол несовершенного вида) несмотря на то, что глагол несовершенного вида и не имеет приставки, пишется две "нн", так как слово-исключение, нужно запомнить (*"медленный, желанный, отчаянный, деланный, священный, читанный, данный, чеканный, окаянный, жеманный, нежданный, негаданный, неслыханный, невиданный, нечаянный, неожиданный"*). [Правило](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%BF%D1%80%D0%B8%D1%87%D0%B0%D1%81%D1%82%D0%B8%D1%8F%D0%BC%D0%B8%20%D0%BD%D0%B5%20%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D1%8F%D1%82%D1%81%D1%8F.-,%D0%97%D0%B0%D0%BC%D0%B5%D1%87%D0%B0%D0%BD%D0%B8%D0%B5%203,-%3A%20%D1%81%D0%BB%D0%BE%D0%B2%D0%B0%20%22%D0%B4%D0%B5%D0%BB%D0%B0%D0%BD%D0%BD%D1%8B%D0%B9)
 {/set}
 
 ? медле(нн|н)ый автобус
@@ -7242,90 +7245,108 @@ https://kakpishem.ru/chasti-rechi/prilagatelnoe/otlichiya-otglagolnogo-imeni-pri
 ? неожида(нн|н)ое событие
 ! (от "ожидать" {объяснение}
 
-##### Task: нн - отглаг прил соверш вида
+##### Task: нн - отглаг прил соверш вида перешедш
 
 {set:объяснение}
-– что сделать? – глагол совершенного вида) [отглагольное прилагательное/причастие](https://kakpishem.ru/chasti-rechi/prilagatelnoe/otlichiya-otglagolnogo-imeni-prilagatelnogo-ot-prichastiya.html#:~:text=%D0%94%D0%BB%D1%8F%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B2%D0%BE%D0%BF%D1%80%D0%BE%D1%81%D0%B0%20%C2%AB-,who%20is%20who,-%C2%BB%20%D0%BF%D1%80%D0%B8%D0%B4%D0%B5%D1%82%D1%81%D1%8F%20%D0%BF%D1%80%D0%BE%D0%B2%D0%BE%D0%B4%D0%B8%D1%82%D1%8C%20%D1%80%D0%B0%D1%81%D1%81%D0%BB%D0%B5%D0%B4%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5) от глагола совершенного вида, поэтому пишется две Н. [Правило](https://skysmart.ru/articles/russian/n-i-nn-v-raznyh-chastyah-rechi#:~:text=%D0%BE%D0%B1%D1%80%D0%B0%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%BE%20%D0%BE%D1%82%20%D0%B3%D0%BB%D0%B0%D0%B3%D0%BE%D0%BB%D0%B0%20%D1%81%D0%BE%D0%B2%D0%B5%D1%80%D1%88%D0%B5%D0%BD%D0%BD%D0%BE%D0%B3%D0%BE%20%D0%B2%D0%B8%D0%B4%D0%B0)
+[это причастие (от глагола совершенного вида "$1" - что сделать?)](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%BE%D0%B1%D1%80%D0%B0%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%BE%20%D0%BE%D1%82%20%D0%B3%D0%BB%D0%B0%D0%B3%D0%BE%D0%BB%D0%B0%20%D1%81%20%D0%BF%D1%80%D0%B8%D1%81%D1%82%D0%B0%D0%B2%D0%BA%D0%BE%D0%B9%20%D0%B8%D0%BB%D0%B8%20%D0%B3%D0%BB%D0%B0%D0%B3%D0%BE%D0%BB%D0%B0%20%D1%81%D0%BE%D0%B2%D0%B5%D1%80%D1%88%D0%B5%D0%BD%D0%BD%D0%BE%D0%B3%D0%BE%20%D0%B2%D0%B8%D0%B4%D0%B0), которое [перешло в отглагольное прилагательное](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%B8%20%D1%81%D0%BB%D0%BE%D0%B2%D0%BE%20%D1%81%D1%82%D0%B0%D0%BB%D0%BE%20%D0%BE%D1%82%D0%B3%D0%BB%D0%B0%D0%B3%D0%BE%D0%BB%D1%8C%D0%BD%D1%8B%D0%BC%20%D0%BF%D1%80%D0%B8%D0%BB%D0%B0%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D0%BC), так как нельзя подставить местоимение "мной" ($2). Причастия пишутся с двумя Н, а переход в прилагательное не влияет на написание полной формы. [Правило](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%92%20%D1%8D%D1%82%D0%BE%D0%BC%20%D1%81%D0%BB%D1%83%D1%87%D0%B0%D0%B5%20%D0%BD%D0%B0%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5%20%D0%BE%D1%81%D1%82%D0%B0%D0%B5%D1%82%D1%81%D1%8F%20%D0%BF%D1%80%D0%B5%D0%B6%D0%BD%D0%B8%D0%BC)
 {/set}
 
 ? удруч(енн|ен)ый толстяк
-! (от глагола "удручить" [с помощью суффикса "енн"](https://xn--80abl6aqcjc8ic.xn--p1ai/suffiksy-an-ann-yan-yann-en-enn-v-prichastiyakh-i-v-otprichastnykh-obrazovaniyakh) {объяснение}
+! {объяснение|удручить|"удрученный МНОЙ толстяк" – так не говорят!}
 
 ? заплака(нн|н)ая девочка
-! (от "заплакать" {объяснение}
-
-? смаза(нн|н)ый механизм
-! (от "смазать" {объяснение}
-
-? сваре(нн|н)ые яйца
-! (от "сварить" {объяснение}
+! {объяснение|заплакать|"заплаканная МНОЙ девочка" – так не говорят!}
 
 ? рассея(нн|н)ый старик
-! (от глагола "рассеять" [с помощью суффикса "янн"](https://xn--80abl6aqcjc8ic.xn--p1ai/suffiksy-an-ann-yan-yann-en-enn-v-prichastiyakh-i-v-otprichastnykh-obrazovaniyakh) {объяснение}
+! {объяснение|рассеять|"рассеянный МНОЙ старик" – так не говорят!}
 
 ? рассерже(нн|н)ый взгляд
-! (от глагола "рассердить" [с помощью суффикса "енн"](https://xn--80abl6aqcjc8ic.xn--p1ai/suffiksy-an-ann-yan-yann-en-enn-v-prichastiyakh-i-v-otprichastnykh-obrazovaniyakh) {объяснение}
+! {объяснение|рассердить|"рассерженный МНОЙ взгляд" – так не говорят!}
 
-? удивле(нн|н)ая мартышка
-! (от глагола  "удивить" [с помощью суффикса "енн"](https://xn--80abl6aqcjc8ic.xn--p1ai/suffiksy-an-ann-yan-yann-en-enn-v-prichastiyakh-i-v-otprichastnykh-obrazovaniyakh) {объяснение}
+? удивле(нн|н)ый взляд
+! {объяснение|удивить|"удивленный МНОЙ взгляд" – так не говорят!}
 
 ? возмуще(нн|н)ое лицо
-! (от глагола "возмутить" [с помощью суффикса "енн"](https://xn--80abl6aqcjc8ic.xn--p1ai/suffiksy-an-ann-yan-yann-en-enn-v-prichastiyakh-i-v-otprichastnykh-obrazovaniyakh) {объяснение}
+! {объяснение|возмутить|"возмущенное МНОЙ лицо" – так не говорят!}
 
 ? раскова(нн|н)ое поведение
-! (от "расковать" {объяснение}
+! {объяснение|расковать|"раскованное МНОЙ поведение" – так не говорят!}
 
 ? изыска(нн|н)ый вкус
-! (от "изыскать" {объяснение}
+! {объяснение|изыскать|"изысканный МНОЙ вкус" – так не говорят!}
 
+? очарова(нн|н)ая даль
+! {объяснение|очаровать|"очарованная МНОЙ даль" – так не говорят!}
 
+? слома(нн|н)ая рука
+! {объяснение|сломать|"сломанная МНОЙ рука" – так не говорят!}
 
-##### Task: н - отглаг прил соверш вида искл раненый
+##### Task: н - отглаг прил соверш вида искл раненый конченый []
 
 {set:объяснение}
-– *что сделать?* глагол совершенного вида) несмотря на то, что это [отглагольное прилагательное](https://kakpishem.ru/chasti-rechi/prilagatelnoe/otlichiya-otglagolnogo-imeni-prilagatelnogo-ot-prichastiya.html) образованное от глагола совершенного вида, пишется одна Н, так как является словом-исключением (*названый (брат), посажёный (отец), раненый, прощёное (воскресенье)*). [Правило](https://tetrika-school.ru/blog/pravopisanie-n-i-nn/#:~:text=%D0%B2%D0%B0%D1%80%D1%91%D0%BD%D1%8B%D0%B9%2C%20%D0%B6%D0%B0%D1%80%D0%B8%D1%82%D1%8C%20%E2%80%94%20%D0%B6%D0%B0%D1%80%D0%B5%D0%BD%D1%8B%D0%B9.-,%D0%9D%D0%B5%D0%BE%D0%B1%D1%85%D0%BE%D0%B4%D0%B8%D0%BC%D0%BE%20%D0%B7%D0%B0%D0%BF%D0%BE%D0%BC%D0%BD%D0%B8%D1%82%D1%8C,-%3A%20%D0%BD%D0%B0%D0%B7%D0%B2%D0%B0%D0%BD%D1%8B%D0%B9%20(%D0%B1%D1%80%D0%B0%D1%82)
+несмотря на то, образовано от глагола совершенного вида (что сделать? $1), является отглагольным прилагательным, слово-исключение, пишется с одной Н. [Правило](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%BD%D0%B0%D0%BC%D0%B8%20%D0%BE%D1%82%D0%B3%D0%BB%D0%B0%D0%B3%D0%BE%D0%BB%D1%8C%D0%BD%D0%BE%D0%B5%20%D0%BF%D1%80%D0%B8%D0%BB%D0%B0%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D0%B5.-,%D0%97%D0%B0%D0%BC%D0%B5%D1%87%D0%B0%D0%BD%D0%B8%D0%B5%201,-%3A%20%D1%81%D0%BB%D0%BE%D0%B2%D0%B0%20%22%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D1%8B%D0%B9)
 {/set}
 
 ? солдат ране(н|нн)ый   
-! (от "ранить" {объяснение}
+! {объяснение|ранить}
+
+? солдат ране(н|нн)ый   
+! {объяснение|кончить}
+
+##### Task: н - отглаг прил соверш вида искл названый []
+
+{set:объяснение-сов}
+несмотря на то, что образовано от глагола совершенного вида (что сделать? $1), является отглагольным прилагательным, слово-исключение, пишется с одной Н. [Правило](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%BD%D0%B0%D0%BC%D0%B8%20%D0%BE%D1%82%D0%B3%D0%BB%D0%B0%D0%B3%D0%BE%D0%BB%D1%8C%D0%BD%D0%BE%D0%B5%20%D0%BF%D1%80%D0%B8%D0%BB%D0%B0%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D0%B5.-,%D0%97%D0%B0%D0%BC%D0%B5%D1%87%D0%B0%D0%BD%D0%B8%D0%B5%201,-%3A%20%D1%81%D0%BB%D0%BE%D0%B2%D0%B0%20%22%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D1%8B%D0%B9)
+{/set}
+
+{set:объяснение-прис}
+несмотря на то, что образовано от глагола с приставкой ($1), является отглагольным прилагательным, слово-исключение, пишется с одной Н. [Правило](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%BD%D0%B0%D0%BC%D0%B8%20%D0%BE%D1%82%D0%B3%D0%BB%D0%B0%D0%B3%D0%BE%D0%BB%D1%8C%D0%BD%D0%BE%D0%B5%20%D0%BF%D1%80%D0%B8%D0%BB%D0%B0%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D0%B5.-,%D0%97%D0%B0%D0%BC%D0%B5%D1%87%D0%B0%D0%BD%D0%B8%D0%B5%201,-%3A%20%D1%81%D0%BB%D0%BE%D0%B2%D0%B0%20%22%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D1%8B%D0%B9)
+{/set}
 
 ? назва(н|нн)ый брат
-! (от "назвать" {объяснение}
+! {объяснение-сов|назвать}
 
 ? посажё(н|нн)ый отец
-! (от "посадить" {объяснение}
+! {объяснение-сов|посадить}
 
 ? прощё(н|нн)ое воскресенье
-! (от "простить" {объяснение}
+! {объяснение-сов|простить}
+
+? смышле(н|нн)ый кот
+! {объяснение-прис|смыслить – приставка с-}
+
+
+? прида(н|нн)ое невесты
+! ([слово перешло из прилагательных в категорию существительных](https://russkiiyazyk.ru/orfografiya/pravopisanie/pridanoe-ili-pridannoe-udarenie-v-slove.html)) {объяснение|придать}
+
+##### Task: н - отглаг кованый жеваный []
+
+{set:объяснение}
+прилагательное образовано от бесприставочного глагола несовершенного вида (что делать? $1), нет зависимых слов, [поэтому является отглагольным прилагательным](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D1%82%D0%BE%20%D1%8D%D1%82%D0%BE%20%E2%80%93%C2%A0%D0%BE%D1%82%D0%B3%D0%BB%D0%B0%D0%B3%D0%BE%D0%BB%D1%8C%D0%BD%D0%BE%D0%B5%20%D0%BF%D1%80%D0%B8%D0%BB%D0%B0%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D0%B5). (Суффиксов -ова-/-ева- тоже нет, "$2" – часть корня.) По правилу написания отглагольных прилагательных пишется одна Н. [Правило](https://www.yaklass.ru/p/russky-yazik/10-klass/razdel-morfologii-samostoiatelnye-chasti-rechi-10908/pravopisanie-prichastii-11368/re-e1890f63-9087-4d2d-92d9-671647eed81a)
+{/set}
+
+? кова(н|нн)ый сундук
+! {объяснение|ковать|ов}
+
+? жёва(н|нн)ый гудрон
+! {объяснение|жевать|ев}
+
+? клёва(н|нн)ый хлеб
+! {объяснение|клевать|ев}
 
 ##### Task: нн - ова/ева/ирова
 
 {set:объяснение}
-в прилагательном/причастии есть суффикс "-ова-"/"-ева-"/"-ирова-", поэтому пишется две "нн". [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D1%81%D1%83%D1%84%C2%AD%D1%84%D0%B8%D0%BA%C2%AD%D1%81%D1%8B%20%2D%D0%BE%D0%B2%D0%B0%2D/%D0%B5%D0%B2%D0%B0%2D%2C%20%2D%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%2D%2C%20%D0%BF%D0%B8%D1%88%D0%B5%D1%82%C2%AD%D1%81%D1%8F%20%2D%D0%9D%D0%9D%2D)
+в прилагательном есть суффикс "-ова-"/"-ева-"/"-ирова-", поэтому пишется две "нн". [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D1%81%D1%83%D1%84%C2%AD%D1%84%D0%B8%D0%BA%C2%AD%D1%81%D1%8B%20%2D%D0%BE%D0%B2%D0%B0%2D/%D0%B5%D0%B2%D0%B0%2D%2C%20%2D%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%2D%2C%20%D0%BF%D0%B8%D1%88%D0%B5%D1%82%C2%AD%D1%81%D1%8F%20%2D%D0%9D%D0%9D%2D)
 {/set}
 
-? имущество застрахова(нн|н)ое
-! {объяснение}
-
 ? ардесова(нн|н)ое письмо
-! {объяснение}
-
-? нарисова(нн|н)ый портрет
 ! {объяснение}
 
 ? очарова(нн|н)ый странник
 ! {объяснение}
 
 ? прыжок рискова(нн|н)ый
-! {объяснение}
-
-? заколдова(нн|н)ый смех
-! {объяснение}
-
-? замаскирова(нн|н)ый снайпер
-! {объяснение}
-
-? использова(нн|н)ый пакет
 ! {объяснение}
 
 ? перец фарширова(нн|н)ый
@@ -7338,9 +7359,6 @@ https://kakpishem.ru/chasti-rechi/prilagatelnoe/otlichiya-otglagolnogo-imeni-pri
 ! {объяснение}
 
 ? межёва(нн|н)ый участок
-! {объяснение}
-
-? отгорёва(нн|н)ая смерть
 ! {объяснение}
 
 ? врачёва(нн|н)ая болезнь
@@ -7370,26 +7388,9 @@ https://kakpishem.ru/chasti-rechi/prilagatelnoe/otlichiya-otglagolnogo-imeni-pri
 ? кодифицирова(нн|н)ый вариант
 ! {объяснение}
 
-? сформулирова(нн|н)ый вопрос
-! {объяснение}
-
 ? квалифицирова(нн|н)ый сотрудник
 ! {объяснение}
 
-##### Task: н - кованый жеваный
-
-{set:объяснение}
-- часть корня, а не суффикс, поэтому пишется одна "н", как у [отглагольного прилагательного](https://kakpishem.ru/chasti-rechi/prilagatelnoe/otlichiya-otglagolnogo-imeni-prilagatelnogo-ot-prichastiya.html)/причастия, образованного от бесприставочного глагола несовершенного вида. [Правило](https://studfile.net/preview/7306656/page:33/#:~:text=%D0%A1%D0%BB%D0%B5%D0%B4%D1%83%D0%B5%D1%82%20%D0%BE%D1%82%D0%BB%D0%B8%D1%87%D0%B0%D1%82%D1%8C%20%D1%81%D0%BB%D0%BE%D0%B2%D0%B0-,%D0%BA%D0%BE%D0%B2%D0%B0%D0%BD%D1%8B%D0%B9%2C%20%D0%B6%D1%91%D0%B2%D0%B0%D0%BD%D1%8B%D0%B9%2C,-%D0%B2%20%D0%BA%D0%BE%D1%82%D0%BE%D1%80%D1%8B%D1%85%20%2D)
-{/set}
-
-? кова(н|нн)ый сундук
-! (от глагола "ковать?" – *что делать?*, несовершенный вид) Не смотря на то, что оканчивается на "-ованый", в данном случае "ов" {объяснение}
-
-? жёва(н|нн)ый гудрон
-! (от глагола "жевать?" – *что делать?*, несовершенный вид) Не смотря на то, что оканчивается на "-еваный", в данном случае "ев" {объяснение}
-
-? клёва(н|нн)ый хлеб
-! (от глагола "клевать?" – *что делать?*, несовершенный вид) Не смотря на то, что оканчивается на "-еваный", в данном случае "ев" {объяснение}
 
 ##### Task: н/нн приставка не
 
@@ -7403,17 +7404,18 @@ https://kakpishem.ru/chasti-rechi/prilagatelnoe/otlichiya-otglagolnogo-imeni-pri
 ? немедле(нн|н)ое действие
 ! (приставка "не" + "медленный". В прилагательном "медленный" пишется две "нн", так как [словарное слово](https://skysmart.ru/articles/russian/n-i-nn-v-raznyh-chastyah-rechi#:~:text=%D0%98%D1%81%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D1%8F%3A-,%D0%BC%D0%B5%D0%B4%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B9,-%2C%20%D0%B6%D0%B5%D0%BB%D0%B0%D0%BD%D0%BD%D1%8B%D0%B9%2C%20%D0%BE%D1%82%D1%87%D0%B0%D1%8F%D0%BD%D0%BD%D1%8B%D0%B9%2C%20%D0%B4%D0%B5%D0%BB%D0%B0%D0%BD%D0%BD%D1%8B%D0%B9)). {объяснение}
 
-? несоле(н|нн)ый огурец
-! (приставка "не" + "соленый". В прилагательном "соленый" пишется одна "н", так как [отглагольное прилагательное](https://kakpishem.ru/chasti-rechi/prilagatelnoe/otlichiya-otglagolnogo-imeni-prilagatelnogo-ot-prichastiya.html)/причастие от бесприставочного глагола несовершенного вида "солить".) {объяснение}
+{set:отглаг}
+Приставка "не" + "$1". В прилагательном "$1" пишется одна "н", так как [отглагольное прилагательное, которое образовано от бесприставочного глагола несовершенного вида, зависимых слов нет](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%B5%D0%BC%22%2C%20%22%D0%BD%D0%BD%22%2C%20%22%D0%BD%22%29%2C-,%D1%82%D0%BE%20%D1%8D%D1%82%D0%BE%C2%A0%D0%BE%D1%82%D0%B3%D0%BB%D0%B0%D0%B3%D0%BE%D0%BB%D1%8C%D0%BD%D0%BE%D0%B5%20%D0%BF%D1%80%D0%B8%D0%BB%D0%B0%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D0%B5,-.), а в [отглагольных прилагательных пишется одна Н](https://www.yaklass.ru/p/russky-yazik/10-klass/razdel-morfologii-samostoiatelnye-chasti-rechi-10908/pravopisanie-prichastii-11368/re-e1890f63-9087-4d2d-92d9-671647eed81a). 
+{/set}
 
-? незастрахова(нн|н)ый клиент
-! (приставка "не" + "застрахованный". В прилагательном "застрахованный" пишется две "нн", так как [отглагольное прилагательное](https://kakpishem.ru/chasti-rechi/prilagatelnoe/otlichiya-otglagolnogo-imeni-prilagatelnogo-ot-prichastiya.html)/причастие от глагола "застраховать" совершенного вида.) {объяснение}
+? несоле(н|нн)ый огурец
+! {отглаг|соленый} {объяснение}
 
 ? неискусстве(нн|н)ый зуб
 ! (приставка "не" + "искусственный". В прилагательном "искусственный" пишется две "нн", так как образовано от существительного "искусство" с помощью суффикса "енн". [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D0%BE%D0%B1%D1%80%D0%B0%C2%AD%D0%B7%D1%83%C2%AD%D1%8E%D1%82%C2%AD%D1%81%D1%8F%20%D0%BE%D1%82%20%D1%81%D1%83%D1%89%D0%B5%C2%AD%D1%81%D1%82%D0%B2%D0%B8%C2%AD%D1%82%D0%B5%D0%BB%D1%8C%C2%AD%D0%BD%D1%8B%D1%85%20%D1%81%20%D0%BF%D0%BE%D0%BC%D0%BE%C2%AD%D1%89%D1%8C%D1%8E%20%D1%81%D1%83%D1%84%C2%AD%D1%84%D0%B8%D0%BA%C2%AD%D1%81%D0%BE%D0%B2%20%2D%D0%BE%D0%BD%D0%BD%2D%20%D0%B8%20%2D%D0%B5%D0%BD%D0%BD%2D)) {объяснение}
 
 ? кот несмышле(н|нн)ый
-! (приставка "не" + "смышленый". В прилагательном "смышленый" пишется одна "н", так как является [отглагольным прилагательным](https://kakpishem.ru/chasti-rechi/prilagatelnoe/otlichiya-otglagolnogo-imeni-prilagatelnogo-ot-prichastiya.html)/причастием от глагола "смыслить" несовершенного вида.) {объяснение}
+! (приставка "не" + "смышленый". В отглагьном прилагательном "смышленый" пишется одна "н", [так как является исключением](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%BF%D1%80%D0%B8%D1%87%D0%B0%D1%81%D1%82%D0%B8%D1%8F%D0%BC%D0%B8%20%D0%BD%D0%B5%20%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D1%8F%D1%82%D1%81%D1%8F.-,%D0%97%D0%B0%D0%BC%D0%B5%D1%87%D0%B0%D0%BD%D0%B8%D0%B5%203,-%3A%20%D1%81%D0%BB%D0%BE%D0%B2%D0%B0%20%22%D0%B4%D0%B5%D0%BB%D0%B0%D0%BD%D0%BD%D1%8B%D0%B9).) {объяснение}
 
 ? нерискова(нн|н)ый выбор
 ! (приставка "не" + "рискованный". В прилагательном "рискованный" пишется две "н", так как есть суффик "ова". [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D1%81%D1%83%D1%84%C2%AD%D1%84%D0%B8%D0%BA%C2%AD%D1%81%D1%8B%20%2D%D0%BE%D0%B2%D0%B0%2D/%D0%B5%D0%B2%D0%B0%2D%2C%20%2D%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%2D%2C%20%D0%BF%D0%B8%D1%88%D0%B5%D1%82%C2%AD%D1%81%D1%8F%20%2D%D0%9D%D0%9D%2D)) {объяснение}
@@ -7421,10 +7423,19 @@ https://kakpishem.ru/chasti-rechi/prilagatelnoe/otlichiya-otglagolnogo-imeni-pri
 ? документ неце(нн|н)ый
 ! (приставка "не" + "ценный". В прилагательном "ценный" пишется две "н", так стык морфем: корень "цен" + суффикс "н". [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D0%B5%D1%81%D0%BB%D0%B8%20%D1%81%D1%83%D1%84%C2%AD%D1%84%D0%B8%D0%BA%D1%81%20%2D%D0%BD%2D%20%D0%BF%D1%80%D0%B8%C2%AD%D1%81%D0%BE%C2%AD%D0%B5%D0%B4%D0%B8%C2%AD%D0%BD%D1%8F%C2%AD%D0%B5%D1%82%C2%AD%D1%81%D1%8F%20%D0%BA%20%D0%BE%D1%81%D0%BD%D0%BE%C2%AD%D0%B2%D0%B5%20%D1%81%D1%83%D1%89%D0%B5%C2%AD%D1%81%D1%82%D0%B2%D0%B8%C2%AD%D1%82%D0%B5%D0%BB%D1%8C%C2%AD%D0%BD%D0%BE%C2%AD%D0%B3%D0%BE%2C%20%D0%B7%D0%B0%D0%BA%D0%B0%D0%BD%C2%AD%D1%87%D0%B8%C2%AD%D0%B2%D0%B0%C2%AD%D1%8E%C2%AD%D1%89%D0%B5%D0%B9%C2%AD%D1%81%D1%8F%20%D1%82%D0%BE%D0%B6%D0%B5%20%D0%BD%D0%B0%20%C2%AB%D0%BD%C2%BB)) {объяснение}
 
+? Абстрактные существительные обозначают невеществе(нн|н)ые явления.
+! (приставка "не" + "вещественный". В прилагательным "вещественный" пишется две "нн", так как образовано от существительного "вещество" с помощью суффикса "енн". [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D0%BE%D0%B1%D1%80%D0%B0%C2%AD%D0%B7%D1%83%C2%AD%D1%8E%D1%82%C2%AD%D1%81%D1%8F%20%D0%BE%D1%82%20%D1%81%D1%83%D1%89%D0%B5%C2%AD%D1%81%D1%82%D0%B2%D0%B8%C2%AD%D1%82%D0%B5%D0%BB%D1%8C%C2%AD%D0%BD%D1%8B%D1%85%20%D1%81%20%D0%BF%D0%BE%D0%BC%D0%BE%C2%AD%D1%89%D1%8C%D1%8E%20%D1%81%D1%83%D1%84%C2%AD%D1%84%D0%B8%D0%BA%C2%AD%D1%81%D0%BE%D0%B2%20%2D%D0%BE%D0%BD%D0%BD%2D%20%D0%B8%20%2D%D0%B5%D0%BD%D0%BD%2D)) {объяснение}
+
+? небереж(н|нн)ое отношение
+! {отглаг|бережное|бережное} {объяснение}
+
+? нежела(нн|н)ый гость
+! (приставка "не" + "желанный". В отглагьном прилагательном "желанный" пишется две "нн", [так как является исключением](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%BF%D1%80%D0%B8%D1%87%D0%B0%D1%81%D1%82%D0%B8%D1%8F%D0%BC%D0%B8%20%D0%BD%D0%B5%20%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D1%8F%D1%82%D1%81%D1%8F.-,%D0%97%D0%B0%D0%BC%D0%B5%D1%87%D0%B0%D0%BD%D0%B8%D0%B5%203,-%3A%20%D1%81%D0%BB%D0%BE%D0%B2%D0%B0%20%22%D0%B4%D0%B5%D0%BB%D0%B0%D0%BD%D0%BD%D1%8B%D0%B9).) {объяснение} 
+
 ##### Task: н/нн крат прил
 
 {set:объяснение}
-в [кратком прилагательном](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/kratkie.html) пишется столько же "н", сколько и в полном. [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D1%81%D0%BE%D1%85%D1%80%D0%B0%C2%AD%D0%BD%D1%8F%C2%AD%D1%8E%D1%82%20%D0%BD%D0%B0%D0%BF%D0%B8%C2%AD%D1%81%D0%B0%C2%AD%D0%BD%D0%B8%D0%B5)
+В [кратком прилагательном](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/kratkie.html) пишется столько же "н", сколько и в полном. [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D1%81%D0%BE%D1%85%D1%80%D0%B0%C2%AD%D0%BD%D1%8F%C2%AD%D1%8E%D1%82%20%D0%BD%D0%B0%D0%BF%D0%B8%C2%AD%D1%81%D0%B0%C2%AD%D0%BD%D0%B8%D0%B5)
 {/set}
 
 ? мальчик (юн|юнн)
@@ -7436,14 +7447,18 @@ https://kakpishem.ru/chasti-rechi/prilagatelnoe/otlichiya-otglagolnogo-imeni-pri
 ? девочка адекват(н|нн)а
 ! ("адекватный" - одна "н") {объяснение}
 
+{set:отгл-сов}
+От "$1" – две "нн", полная форма – перешедшее в разряд прилагательных причастие, [так как от глагола совершенного вида, и нельзя сказать "$2"](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%B8%20%D1%81%D0%BB%D0%BE%D0%B2%D0%BE%20%D1%81%D1%82%D0%B0%D0%BB%D0%BE%20%D0%BE%D1%82%D0%B3%D0%BB%D0%B0%D0%B3%D0%BE%D0%BB%D1%8C%D0%BD%D1%8B%D0%BC%20%D0%BF%D1%80%D0%B8%D0%BB%D0%B0%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D0%BC), а в причастиях пишется две НН.
+{/set}
+
 ? подруга очень воспита(нн|н)а
-! ("воспитанный" – две "нн", [так как образовано от глагола совершенного вида "воспитать"](https://skysmart.ru/articles/russian/n-i-nn-v-raznyh-chastyah-rechi#:~:text=%D0%BE%D0%B1%D1%80%D0%B0%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%BE%20%D0%BE%D1%82%20%D0%B3%D0%BB%D0%B0%D0%B3%D0%BE%D0%BB%D0%B0%20%D1%81%D0%BE%D0%B2%D0%B5%D1%80%D1%88%D0%B5%D0%BD%D0%BD%D0%BE%D0%B3%D0%BE%20%D0%B2%D0%B8%D0%B4%D0%B0)) {объяснение}
+! {отгл-сов|воспитанная|очень воспитанная МНОЙ} {объяснение}
 
 ? информация це(нн|н)а
 ! ("ценный" – две "нн", так как от существительного "цена" + суффикс "н", стык морфем. [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D0%B5%D1%81%D0%BB%D0%B8%20%D1%81%D1%83%D1%84%C2%AD%D1%84%D0%B8%D0%BA%D1%81%20%2D%D0%BD%2D%20%D0%BF%D1%80%D0%B8%C2%AD%D1%81%D0%BE%C2%AD%D0%B5%D0%B4%D0%B8%C2%AD%D0%BD%D1%8F%C2%AD%D0%B5%D1%82%C2%AD%D1%81%D1%8F%20%D0%BA%20%D0%BE%D1%81%D0%BD%D0%BE%C2%AD%D0%B2%D0%B5%20%D1%81%D1%83%D1%89%D0%B5%C2%AD%D1%81%D1%82%D0%B2%D0%B8%C2%AD%D1%82%D0%B5%D0%BB%D1%8C%C2%AD%D0%BD%D0%BE%C2%AD%D0%B3%D0%BE%2C%20%D0%B7%D0%B0%D0%BA%D0%B0%D0%BD%C2%AD%D1%87%D0%B8%C2%AD%D0%B2%D0%B0%C2%AD%D1%8E%C2%AD%D1%89%D0%B5%D0%B9%C2%AD%D1%81%D1%8F%20%D1%82%D0%BE%D0%B6%D0%B5%20%D0%BD%D0%B0%20%C2%AB%D0%BD%C2%BB)) {объяснение}
 
 ? лицо взволнова(нн|н)о
-! ("взволнованный" – две "нн", так [отглагольное прилагательное](https://kakpishem.ru/chasti-rechi/prilagatelnoe/otlichiya-otglagolnogo-imeni-prilagatelnogo-ot-prichastiya.html)/причастие от глагола "взволновать" совершенного вида. [Правило](https://skysmart.ru/articles/russian/n-i-nn-v-raznyh-chastyah-rechi)) {объяснение}
+! {отгл-сов|воспитанное|очень воспитанное МНОЙ} {объяснение}
 
 ? утро пасмур(н|нн)о
 ! (от "пасмурный") {объяснение}
