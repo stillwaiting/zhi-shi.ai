@@ -6853,7 +6853,7 @@ https://russkiiyazyk.ru/sostav-slova/suffiks/suffiks-shchik-primery.html#:~:text
 ##### Task: н - сущ. + ин/ан/ян
 
 {set:объяснение}
-прилагательное образовано от существительного с помощью суффикса -ин-/-ан-/-ян-, поэтому пишется одна "н". [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D1%82%D0%BE%20%D1%8D%D1%82%D0%B8%20%D1%81%D1%83%D1%84%C2%AD%D1%84%D0%B8%D0%BA%C2%AD%D1%81%D1%8B%20%D0%BF%D0%B8%D1%88%D1%83%D1%82%C2%AD%D1%81%D1%8F%20%D1%81%20%D0%BE%D0%B4%D0%BD%D0%BE%D0%B9%20%D0%B1%D1%83%D0%BA%C2%AD%D0%B2%D0%BE%D0%B9)
+прилагательное образовано от существительного с помощью суффикса -ин-/-ан-/-ян-, поэтому пишется одна "н". [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D1%82%D0%BE%20%D1%8D%D1%82%D0%B8%20%D1%81%D1%83%D1%84%C2%AD%D1%84%D0%B8%D0%BA%C2%AD%D1%81%D1%8B%20%D0%BF%D0%B8%D1%88%D1%83%D1%82%C2%AD%D1%81%D1%8F%20%D1%81%20%D0%BE%D0%B4%D0%BD%D0%BE%D0%B9%20%D0%B1%D1%83%D0%BA%C2%AD%D0%B2%D0%BE%D0%B9). [Ссылка](http://localhost:3000/diagrams/ru/02/n___susch____in_an_yan.png)
 {/set}
 
 ? серебр(ян|янн)ый браслет
@@ -6934,7 +6934,7 @@ https://russkiiyazyk.ru/sostav-slova/suffiks/suffiks-shchik-primery.html#:~:text
 ##### Task: нн - cущ + ин/ан/ян исключ []
 
 {set:объяснение}
-словарное слово, исключение (оловянный, стеклянный, деревянный), нужно запомнить. [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D0%97%D0%B0%D0%BF%D0%BE%D0%BC%D0%BD%D0%B8%D0%BC%20%D0%BD%D0%B0%D0%BF%D0%B8%C2%AD%D1%81%D0%B0%C2%AD%D0%BD%D0%B8%D0%B5%20%D1%81%D0%BB%D0%BE%D0%B2%2D%D0%B8%D1%81%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B9)
+словарное слово, исключение (оловянный, стеклянный, деревянный), нужно запомнить. [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D0%97%D0%B0%D0%BF%D0%BE%D0%BC%D0%BD%D0%B8%D0%BC%20%D0%BD%D0%B0%D0%BF%D0%B8%C2%AD%D1%81%D0%B0%C2%AD%D0%BD%D0%B8%D0%B5%20%D1%81%D0%BB%D0%BE%D0%B2%2D%D0%B8%D1%81%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B9). [Ссылка](http://localhost:3000/diagrams/ru/02/nn____usch___in_an_yan_isklyuch___.png)
 {/set}
 
 ? олов(янн|ян)ый солдатик
@@ -6949,7 +6949,7 @@ https://russkiiyazyk.ru/sostav-slova/suffiks/suffiks-shchik-primery.html#:~:text
 ##### Task: нн - сущ + онн/енн
 
 {set:объяснение}
-в суффиксах "-онн-"/"-енн-" прилагательного, образованного от существительного, пишутся две "нн". [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D0%BE%D0%B1%D1%80%D0%B0%C2%AD%D0%B7%D1%83%C2%AD%D1%8E%D1%82%C2%AD%D1%81%D1%8F%20%D0%BE%D1%82%20%D1%81%D1%83%D1%89%D0%B5%C2%AD%D1%81%D1%82%D0%B2%D0%B8%C2%AD%D1%82%D0%B5%D0%BB%D1%8C%C2%AD%D0%BD%D1%8B%D1%85%20%D1%81%20%D0%BF%D0%BE%D0%BC%D0%BE%C2%AD%D1%89%D1%8C%D1%8E%20%D1%81%D1%83%D1%84%C2%AD%D1%84%D0%B8%D0%BA%C2%AD%D1%81%D0%BE%D0%B2%20%2D%D0%BE%D0%BD%D0%BD%2D%20%D0%B8%20%2D%D0%B5%D0%BD%D0%BD%2D)
+в суффиксах "-онн-"/"-енн-" прилагательного, образованного от существительного, пишутся две "нн". [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D0%BE%D0%B1%D1%80%D0%B0%C2%AD%D0%B7%D1%83%C2%AD%D1%8E%D1%82%C2%AD%D1%81%D1%8F%20%D0%BE%D1%82%20%D1%81%D1%83%D1%89%D0%B5%C2%AD%D1%81%D1%82%D0%B2%D0%B8%C2%AD%D1%82%D0%B5%D0%BB%D1%8C%C2%AD%D0%BD%D1%8B%D1%85%20%D1%81%20%D0%BF%D0%BE%D0%BC%D0%BE%C2%AD%D1%89%D1%8C%D1%8E%20%D1%81%D1%83%D1%84%C2%AD%D1%84%D0%B8%D0%BA%C2%AD%D1%81%D0%BE%D0%B2%20%2D%D0%BE%D0%BD%D0%BD%2D%20%D0%B8%20%2D%D0%B5%D0%BD%D0%BD%2D). [Схема](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D0%97%D0%B0%D0%BF%D0%BE%D0%BC%D0%BD%D0%B8%D0%BC%20%D0%BD%D0%B0%D0%BF%D0%B8%C2%AD%D1%81%D0%B0%C2%AD%D0%BD%D0%B8%D0%B5%20%D1%81%D0%BB%D0%BE%D0%B2%2D%D0%B8%D1%81%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B9). [Ссылка](http://localhost:3000/diagrams/ru/02/_nn___susch___onn_enn.png)
 {/set}
 
 ? солом(енн|ен)ая шляпа
@@ -7015,7 +7015,7 @@ https://russkiiyazyk.ru/sostav-slova/suffiks/suffiks-shchik-primery.html#:~:text
 ##### Task: нн - cущ + суффикс н, стык морфем
 
 {set:объяснение}
-две "нн" пишутся на стыке морфем, так как одна находится в корне, а при образовании прилагательного добавляется суффикс "н". [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D0%B5%D1%81%D0%BB%D0%B8%20%D1%81%D1%83%D1%84%C2%AD%D1%84%D0%B8%D0%BA%D1%81%20%2D%D0%BD%2D%20%D0%BF%D1%80%D0%B8%C2%AD%D1%81%D0%BE%C2%AD%D0%B5%D0%B4%D0%B8%C2%AD%D0%BD%D1%8F%C2%AD%D0%B5%D1%82%C2%AD%D1%81%D1%8F%20%D0%BA%20%D0%BE%D1%81%D0%BD%D0%BE%C2%AD%D0%B2%D0%B5%20%D1%81%D1%83%D1%89%D0%B5%C2%AD%D1%81%D1%82%D0%B2%D0%B8%C2%AD%D1%82%D0%B5%D0%BB%D1%8C%C2%AD%D0%BD%D0%BE%C2%AD%D0%B3%D0%BE%2C%20%D0%B7%D0%B0%D0%BA%D0%B0%D0%BD%C2%AD%D1%87%D0%B8%C2%AD%D0%B2%D0%B0%C2%AD%D1%8E%C2%AD%D1%89%D0%B5%D0%B9%C2%AD%D1%81%D1%8F%20%D1%82%D0%BE%D0%B6%D0%B5%20%D0%BD%D0%B0%20%C2%AB%D0%BD%C2%BB)
+две "нн" пишутся на стыке морфем, так как одна находится в корне, а при образовании прилагательного добавляется суффикс "н". [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D0%B5%D1%81%D0%BB%D0%B8%20%D1%81%D1%83%D1%84%C2%AD%D1%84%D0%B8%D0%BA%D1%81%20%2D%D0%BD%2D%20%D0%BF%D1%80%D0%B8%C2%AD%D1%81%D0%BE%C2%AD%D0%B5%D0%B4%D0%B8%C2%AD%D0%BD%D1%8F%C2%AD%D0%B5%D1%82%C2%AD%D1%81%D1%8F%20%D0%BA%20%D0%BE%D1%81%D0%BD%D0%BE%C2%AD%D0%B2%D0%B5%20%D1%81%D1%83%D1%89%D0%B5%C2%AD%D1%81%D1%82%D0%B2%D0%B8%C2%AD%D1%82%D0%B5%D0%BB%D1%8C%C2%AD%D0%BD%D0%BE%C2%AD%D0%B3%D0%BE%2C%20%D0%B7%D0%B0%D0%BA%D0%B0%D0%BD%C2%AD%D1%87%D0%B8%C2%AD%D0%B2%D0%B0%C2%AD%D1%8E%C2%AD%D1%89%D0%B5%D0%B9%C2%AD%D1%81%D1%8F%20%D1%82%D0%BE%D0%B6%D0%B5%20%D0%BD%D0%B0%20%C2%AB%D0%BD%C2%BB). [Схема](http://localhost:3000/diagrams/ru/02/nn____usch___suffiks_n__styk_morfem.png)
 {/set}
 
 ? гост(инн|ин)ая мебель
@@ -7059,7 +7059,7 @@ https://russkiiyazyk.ru/sostav-slova/suffiks/suffiks-shchik-primery.html#:~:text
 ##### Task: н - сущ, н в корне, нет суффикса []
 
 {set:объяснение}
-одна буква "н" в корне прилагательного, слово нужно запомнить (зеленый, синий, румяный, багряный, пряный, юный, единый, рьяный, пьяный). [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D1%87%D1%82%D0%BE%20%D0%BA%D0%BE%D1%80%D0%B5%D0%BD%C2%AD%D0%BD%D0%BE%D0%B5%20%C2%AB%D0%BD%C2%BB%20%D0%BF%D0%B8%D1%88%D0%B5%D1%82%C2%AD%D1%81%D1%8F%20%D0%B2%20%D0%BF%D1%80%D0%B8%D0%BB%D0%B0%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D1%85)
+одна буква "н" в корне прилагательного, слово нужно запомнить (зеленый, синий, румяный, багряный, пряный, юный, единый, рьяный, пьяный). [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D1%87%D1%82%D0%BE%20%D0%BA%D0%BE%D1%80%D0%B5%D0%BD%C2%AD%D0%BD%D0%BE%D0%B5%20%C2%AB%D0%BD%C2%BB%20%D0%BF%D0%B8%D1%88%D0%B5%D1%82%C2%AD%D1%81%D1%8F%20%D0%B2%20%D0%BF%D1%80%D0%B8%D0%BB%D0%B0%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D1%85). [Схема](http://localhost:3000/diagrams/ru/02/_n___susch__n_v_korne__net_suffiksa___.png)
 {/set}
 
 ? трава зеле(н|нн)ая
@@ -7093,7 +7093,7 @@ https://russkiiyazyk.ru/sostav-slova/suffiks/suffiks-shchik-primery.html#:~:text
 ##### Task: н - сущ, притяж основа н (животные) []
 
 {set:объяснение}
-пишется одна "н", так как притяжательное прилагательное с основой на "н". [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D0%BF%D1%80%D0%B8%D1%82%D1%8F%D0%B6%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D0%BF%D1%80%D0%B8%D0%BB%D0%B0%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%C2%A0%D1%81%20%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%BE%D0%B9%20%D0%BD%D0%B0%20%D0%B1%D1%83%D0%BA%D0%B2%D1%83%20%C2%AB%D0%BD%C2%BB)
+пишется одна "н", так как притяжательное прилагательное с основой на "н". [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D0%BF%D1%80%D0%B8%D1%82%D1%8F%D0%B6%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D0%BF%D1%80%D0%B8%D0%BB%D0%B0%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%C2%A0%D1%81%20%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%BE%D0%B9%20%D0%BD%D0%B0%20%D0%B1%D1%83%D0%BA%D0%B2%D1%83%20%C2%AB%D0%BD%C2%BB). [Схема](http://localhost:3000/diagrams/ru/02/_n___susch__prityazh_osnova_n__zhivotnye____.png)
 {/set}
 
 ? сви(н|нн)ой грипп
@@ -7126,12 +7126,12 @@ https://russkiiyazyk.ru/sostav-slova/suffiks/suffiks-shchik-primery.html#:~:text
 ##### Task: н - сущ, исключ ветреный []
 
 ? ветре(н|нн)ый день
-! словарное слово, исключение, нужно запомнить. [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D0%98%D1%81%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B5%20%D1%81%D0%BE%D1%81%D1%82%D0%B0%D0%B2%C2%AD%D0%BB%D1%8F%C2%AD%D0%B5%D1%82%20%D1%81%D0%BB%D0%BE%C2%AD%D0%B2%D0%BE%20%C2%AB-,%D0%B2%D0%B5%D1%82%C2%AD%D1%80%D0%B5%D0%BD%D1%8B%D0%B9,-%C2%BB%20(%D0%B4%D0%B5%D0%BD%D1%8C%2C%20%D1%87%D0%B5%D0%BB%D0%BE%C2%AD%D0%B2%D0%B5%D0%BA%2C%20%D0%BF%D1%80%D0%B8%C2%AD%D1%8F%C2%AD%D1%82%D0%B5%D0%BB%D1%8C)
+! словарное слово, исключение, нужно запомнить. [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D0%98%D1%81%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B5%20%D1%81%D0%BE%D1%81%D1%82%D0%B0%D0%B2%C2%AD%D0%BB%D1%8F%C2%AD%D0%B5%D1%82%20%D1%81%D0%BB%D0%BE%C2%AD%D0%B2%D0%BE%20%C2%AB-,%D0%B2%D0%B5%D1%82%C2%AD%D1%80%D0%B5%D0%BD%D1%8B%D0%B9,-%C2%BB%20(%D0%B4%D0%B5%D0%BD%D1%8C%2C%20%D1%87%D0%B5%D0%BB%D0%BE%C2%AD%D0%B2%D0%B5%D0%BA%2C%20%D0%BF%D1%80%D0%B8%C2%AD%D1%8F%C2%AD%D1%82%D0%B5%D0%BB%D1%8C). [Схема](http://localhost:3000/diagrams/ru/02/n___susch__isklyuch_vetrenyy___.png)
 
 ##### Task: нн - сущ, приставка + ветреный []
 
 {set:объяснение}
-если к прилагательному "ветреный" добавляется приставка, то пишется две "нн". [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D0%9E%D0%B4%D0%BD%D0%B0%D0%BA%D0%BE%20%D0%BF%D1%80%D0%B8%C2%AD%D1%81%D1%82%D0%B0%C2%AD%D0%B2%D0%BE%D1%87%C2%AD%D0%BD%D1%8B%D0%B5%20%D0%BE%D0%B1%D1%80%D0%B0%C2%AD%D0%B7%D0%BE%C2%AD%D0%B2%D0%B0%C2%AD%D0%BD%D0%B8%D1%8F%20%D1%8D%D1%82%D0%BE%C2%AD%D0%B3%D0%BE%20%D0%BF%D1%80%D0%B8%C2%AD%D0%BB%D0%B0%C2%AD%D0%B3%D0%B0%C2%AD%D1%82%D0%B5%D0%BB%D1%8C%C2%AD%D0%BD%D0%BE%C2%AD%D0%B3%D0%BE%20%D0%BF%D0%B8%D1%88%D1%83%D1%82%C2%AD%D1%81%D1%8F%20%D1%81%20%2D%D0%9D%D0%9D%2D)
+если к прилагательному "ветреный" добавляется приставка, то пишется две "нн". [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D0%9E%D0%B4%D0%BD%D0%B0%D0%BA%D0%BE%20%D0%BF%D1%80%D0%B8%C2%AD%D1%81%D1%82%D0%B0%C2%AD%D0%B2%D0%BE%D1%87%C2%AD%D0%BD%D1%8B%D0%B5%20%D0%BE%D0%B1%D1%80%D0%B0%C2%AD%D0%B7%D0%BE%C2%AD%D0%B2%D0%B0%C2%AD%D0%BD%D0%B8%D1%8F%20%D1%8D%D1%82%D0%BE%C2%AD%D0%B3%D0%BE%20%D0%BF%D1%80%D0%B8%C2%AD%D0%BB%D0%B0%C2%AD%D0%B3%D0%B0%C2%AD%D1%82%D0%B5%D0%BB%D1%8C%C2%AD%D0%BD%D0%BE%C2%AD%D0%B3%D0%BE%20%D0%BF%D0%B8%D1%88%D1%83%D1%82%C2%AD%D1%81%D1%8F%20%D1%81%20%2D%D0%9D%D0%9D%2D). [Схема](http://localhost:3000/diagrams/ru/02/nn___susch__pristavka___vetrenyy___.png)
 {/set}
 
 ? безветр(енн|ен)ая ночь
@@ -7161,7 +7161,7 @@ https://russkiiyazyk.ru/sostav-slova/suffiks/suffiks-shchik-primery.html#:~:text
 ##### Task: н - отглаг прил несоверш вида без прист. без завис слов
 
 {set:объяснение}
-прилагательное образовано от бесприставочного глагола несовершенного вида (что делать? $1), [значит не причастие](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%9D%D0%B5%D1%82%20%D0%B7%D0%B0%D0%B2%D0%B8%D1%81%D0%B8%D0%BC%D1%8B%D1%85%20%D1%81%D0%BB%D0%BE%D0%B2%2C%20%D0%BE%D0%B1%D1%80%D0%B0%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%BE%20%D0%BE%D1%82%20%D0%B1%D0%B5%D1%81%D0%BF%D1%80%D0%B8%D1%81%D1%82%D0%B0%D0%B2%D0%BE%D1%87%D0%BD%D0%BE%D0%B3%D0%BE%20%D0%B3%D0%BB%D0%B0%D0%B3%D0%BE%D0%BB%D0%B0%20%D0%BD%D0%B5%D1%81%D0%BE%D0%B2%D0%B5%D1%80%D1%88%D0%B5%D0%BD%D0%BD%D0%BE%D0%B3%D0%BE%20%D0%B2%D0%B8%D0%B4%D0%B0) ([схема](http://localhost:3000/diagrams/ru/01/otgagolnoe_prilagat__bez_prist__nesov_vid.png)), пишется одна Н. [Правило](https://www.yaklass.ru/p/russky-yazik/10-klass/razdel-morfologii-samostoiatelnye-chasti-rechi-10908/pravopisanie-prichastii-11368/re-e1890f63-9087-4d2d-92d9-671647eed81a) (Замечание: с зависимым словом стало бы причастием и писалось бы с двумя Н!)
+прилагательное образовано от бесприставочного глагола несовершенного вида (что делать? $1), [значит не причастие](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%9D%D0%B5%D1%82%20%D0%B7%D0%B0%D0%B2%D0%B8%D1%81%D0%B8%D0%BC%D1%8B%D1%85%20%D1%81%D0%BB%D0%BE%D0%B2%2C%20%D0%BE%D0%B1%D1%80%D0%B0%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%BE%20%D0%BE%D1%82%20%D0%B1%D0%B5%D1%81%D0%BF%D1%80%D0%B8%D1%81%D1%82%D0%B0%D0%B2%D0%BE%D1%87%D0%BD%D0%BE%D0%B3%D0%BE%20%D0%B3%D0%BB%D0%B0%D0%B3%D0%BE%D0%BB%D0%B0%20%D0%BD%D0%B5%D1%81%D0%BE%D0%B2%D0%B5%D1%80%D1%88%D0%B5%D0%BD%D0%BD%D0%BE%D0%B3%D0%BE%20%D0%B2%D0%B8%D0%B4%D0%B0) ([схема](http://localhost:3000/diagrams/ru/01/otgagolnoe_prilagat__bez_prist__nesov_vid.png)), пишется одна Н. [Правило](https://www.yaklass.ru/p/russky-yazik/10-klass/razdel-morfologii-samostoiatelnye-chasti-rechi-10908/pravopisanie-prichastii-11368/re-e1890f63-9087-4d2d-92d9-671647eed81a) (Замечание: с зависимым словом стало бы причастием и писалось бы с двумя Н!. [Схема](http://localhost:3000/diagrams/ru/02/n___otglag_pril_nesoversh_vida_bez_prist__bez_zavis_slov.png)
 {/set}
 
 ? резаный(н|нн) хлеб
@@ -7197,7 +7197,7 @@ https://russkiiyazyk.ru/sostav-slova/suffiks/suffiks-shchik-primery.html#:~:text
 ##### Task: нн - отглаг прил несоверш вида искл
 
 {set:объяснение}
-– *что делать?*, глагол несовершенного вида) несмотря на то, что глагол несовершенного вида и не имеет приставки, пишется две "нн", так как слово-исключение, нужно запомнить (*"медленный, желанный, отчаянный, деланный, священный, читанный, данный, чеканный, окаянный, жеманный, нежданный, негаданный, неслыханный, невиданный, нечаянный, неожиданный"*). [Правило](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%BF%D1%80%D0%B8%D1%87%D0%B0%D1%81%D1%82%D0%B8%D1%8F%D0%BC%D0%B8%20%D0%BD%D0%B5%20%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D1%8F%D1%82%D1%81%D1%8F.-,%D0%97%D0%B0%D0%BC%D0%B5%D1%87%D0%B0%D0%BD%D0%B8%D0%B5%203,-%3A%20%D1%81%D0%BB%D0%BE%D0%B2%D0%B0%20%22%D0%B4%D0%B5%D0%BB%D0%B0%D0%BD%D0%BD%D1%8B%D0%B9)
+– *что делать?*, глагол несовершенного вида) несмотря на то, что глагол несовершенного вида и не имеет приставки, пишется две "нн", так как слово-исключение, нужно запомнить (*"медленный, желанный, отчаянный, деланный, священный, читанный, данный, чеканный, окаянный, жеманный, нежданный, негаданный, неслыханный, невиданный, нечаянный, неожиданный"*). [Правило](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%BF%D1%80%D0%B8%D1%87%D0%B0%D1%81%D1%82%D0%B8%D1%8F%D0%BC%D0%B8%20%D0%BD%D0%B5%20%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D1%8F%D1%82%D1%81%D1%8F.-,%D0%97%D0%B0%D0%BC%D0%B5%D1%87%D0%B0%D0%BD%D0%B8%D0%B5%203,-%3A%20%D1%81%D0%BB%D0%BE%D0%B2%D0%B0%20%22%D0%B4%D0%B5%D0%BB%D0%B0%D0%BD%D0%BD%D1%8B%D0%B9). [Схема](http://localhost:3000/diagrams/ru/02/_nn___otglag_pril_nesoversh_vida_iskl.png)
 {/set}
 
 ? медле(нн|н)ый автобус
@@ -7251,7 +7251,7 @@ https://russkiiyazyk.ru/sostav-slova/suffiks/suffiks-shchik-primery.html#:~:text
 ##### Task: нн - отглаг прил соверш вида перешедш
 
 {set:объяснение}
-это причастие (от глагола совершенного вида "$1" - что сделать?, которе перешло в отглагольное прилагательное, [так как нельзя подставить местоимение "мной"](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%B8%20%D1%81%D0%BB%D0%BE%D0%B2%D0%BE%20%D1%81%D1%82%D0%B0%D0%BB%D0%BE%20%D0%BE%D1%82%D0%B3%D0%BB%D0%B0%D0%B3%D0%BE%D0%BB%D1%8C%D0%BD%D1%8B%D0%BC%20%D0%BF%D1%80%D0%B8%D0%BB%D0%B0%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D0%BC) ($2). Причастия пишутся с двумя Н, а его переход в прилагательное не влияет на написание полной формы. [Правило](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%92%20%D1%8D%D1%82%D0%BE%D0%BC%20%D1%81%D0%BB%D1%83%D1%87%D0%B0%D0%B5%20%D0%BD%D0%B0%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5%20%D0%BE%D1%81%D1%82%D0%B0%D0%B5%D1%82%D1%81%D1%8F%20%D0%BF%D1%80%D0%B5%D0%B6%D0%BD%D0%B8%D0%BC)
+это причастие (от глагола совершенного вида "$1" - что сделать?, которе перешло в отглагольное прилагательное, [так как нельзя подставить местоимение "мной"](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%B8%20%D1%81%D0%BB%D0%BE%D0%B2%D0%BE%20%D1%81%D1%82%D0%B0%D0%BB%D0%BE%20%D0%BE%D1%82%D0%B3%D0%BB%D0%B0%D0%B3%D0%BE%D0%BB%D1%8C%D0%BD%D1%8B%D0%BC%20%D0%BF%D1%80%D0%B8%D0%BB%D0%B0%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D0%BC) ($2). Причастия пишутся с двумя Н, а его переход в прилагательное не влияет на написание полной формы. [Правило](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%92%20%D1%8D%D1%82%D0%BE%D0%BC%20%D1%81%D0%BB%D1%83%D1%87%D0%B0%D0%B5%20%D0%BD%D0%B0%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5%20%D0%BE%D1%81%D1%82%D0%B0%D0%B5%D1%82%D1%81%D1%8F%20%D0%BF%D1%80%D0%B5%D0%B6%D0%BD%D0%B8%D0%BC). [Схема](http://localhost:3000/diagrams/ru/02/nn___otglag_pril_soversh_vida_pereshedsh.png)
 {/set}
 
 ? удруч(енн|ен)ый толстяк
@@ -7287,7 +7287,7 @@ https://russkiiyazyk.ru/sostav-slova/suffiks/suffiks-shchik-primery.html#:~:text
 ##### Task: н - отглаг прил соверш вида искл раненый конченый []
 
 {set:объяснение}
-несмотря на то, образовано от глагола совершенного вида (что сделать? $1), является отглагольным прилагательным, слово-исключение, пишется с одной Н. [Правило](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%BD%D0%B0%D0%BC%D0%B8%20%D0%BE%D1%82%D0%B3%D0%BB%D0%B0%D0%B3%D0%BE%D0%BB%D1%8C%D0%BD%D0%BE%D0%B5%20%D0%BF%D1%80%D0%B8%D0%BB%D0%B0%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D0%B5.-,%D0%97%D0%B0%D0%BC%D0%B5%D1%87%D0%B0%D0%BD%D0%B8%D0%B5%201,-%3A%20%D1%81%D0%BB%D0%BE%D0%B2%D0%B0%20%22%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D1%8B%D0%B9) (Замечание: с зависимым словом стало бы причастием и писалось бы с двумя Н!)
+несмотря на то, образовано от глагола совершенного вида (что сделать? $1), является отглагольным прилагательным, слово-исключение, пишется с одной Н. [Правило](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%BD%D0%B0%D0%BC%D0%B8%20%D0%BE%D1%82%D0%B3%D0%BB%D0%B0%D0%B3%D0%BE%D0%BB%D1%8C%D0%BD%D0%BE%D0%B5%20%D0%BF%D1%80%D0%B8%D0%BB%D0%B0%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D0%B5.-,%D0%97%D0%B0%D0%BC%D0%B5%D1%87%D0%B0%D0%BD%D0%B8%D0%B5%201,-%3A%20%D1%81%D0%BB%D0%BE%D0%B2%D0%B0%20%22%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D1%8B%D0%B9) (Замечание: с зависимым словом стало бы причастием и писалось бы с двумя Н!). [Схема](http://localhost:3000/diagrams/ru/02/n___otglag_pril_soversh_vida_iskl_ranenyy_konchenyy___.png)
 {/set}
 
 ? солдат ране(н|нн)ый   
@@ -7299,7 +7299,7 @@ https://russkiiyazyk.ru/sostav-slova/suffiks/suffiks-shchik-primery.html#:~:text
 ##### Task: н - отглаг прил соверш вида искл названый []
 
 {set:объяснение-сов}
-несмотря на то, что образовано от глагола совершенного вида (что сделать? $1), является отглагольным прилагательным, слово-исключение, пишется с одной Н. Назвáный (брат), посажéный (отец), смышленый, приданое (невесты). [Правило](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%BF%D0%BE%D1%8F%D0%B2%D0%BB%D1%8F%D1%8E%D1%82%D1%81%D1%8F%20%D0%B7%D0%B0%D0%B2%D0%B8%D1%81%D0%B8%D0%BC%D1%8B%D0%B5%20%D1%81%D0%BB%D0%BE%D0%B2%D0%B0.-,%D0%97%D0%B0%D0%BC%D0%B5%D1%87%D0%B0%D0%BD%D0%B8%D0%B5%202,-%3A%20%D1%81%D0%BB%D0%BE%D0%B2%D0%B0%20%22%D0%BF%D1%80%D0%B8%D0%B4%D0%B0%D0%BD%D0%BE%D0%B5) 
+несмотря на то, что образовано от глагола совершенного вида (что сделать? $1), является отглагольным прилагательным, слово-исключение, пишется с одной Н. Назвáный (брат), посажéный (отец), смышленый, приданое (невесты). [Правило](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D0%BF%D0%BE%D1%8F%D0%B2%D0%BB%D1%8F%D1%8E%D1%82%D1%81%D1%8F%20%D0%B7%D0%B0%D0%B2%D0%B8%D1%81%D0%B8%D0%BC%D1%8B%D0%B5%20%D1%81%D0%BB%D0%BE%D0%B2%D0%B0.-,%D0%97%D0%B0%D0%BC%D0%B5%D1%87%D0%B0%D0%BD%D0%B8%D0%B5%202,-%3A%20%D1%81%D0%BB%D0%BE%D0%B2%D0%B0%20%22%D0%BF%D1%80%D0%B8%D0%B4%D0%B0%D0%BD%D0%BE%D0%B5). [Схема](http://localhost:3000/diagrams/ru/02/n___otglag_pril_soversh_vida_iskl_nazvanyy___.png) 
 {/set}
 
 {set:объяснение-прис}
@@ -7328,7 +7328,7 @@ https://russkiiyazyk.ru/sostav-slova/suffiks/suffiks-shchik-primery.html#:~:text
 ##### Task: н - отглаг кованый жеваный []
 
 {set:объяснение}
-прилагательное образовано от бесприставочного глагола несовершенного вида (что делать? $1), нет зависимых слов, [поэтому является отглагольным прилагательным](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D1%82%D0%BE%20%D1%8D%D1%82%D0%BE%20%E2%80%93%C2%A0%D0%BE%D1%82%D0%B3%D0%BB%D0%B0%D0%B3%D0%BE%D0%BB%D1%8C%D0%BD%D0%BE%D0%B5%20%D0%BF%D1%80%D0%B8%D0%BB%D0%B0%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D0%B5). (Суффиксов -ова-/-ева- тоже нет, "$2" – часть корня.) По правилу написания отглагольных прилагательных пишется одна Н. [Правило](https://www.yaklass.ru/p/russky-yazik/10-klass/razdel-morfologii-samostoiatelnye-chasti-rechi-10908/pravopisanie-prichastii-11368/re-e1890f63-9087-4d2d-92d9-671647eed81a)
+прилагательное образовано от бесприставочного глагола несовершенного вида (что делать? $1), нет зависимых слов, [поэтому является отглагольным прилагательным](http://localhost:3000/ru-algo-pril-vs-prich.html#:~:text=%D1%82%D0%BE%20%D1%8D%D1%82%D0%BE%20%E2%80%93%C2%A0%D0%BE%D1%82%D0%B3%D0%BB%D0%B0%D0%B3%D0%BE%D0%BB%D1%8C%D0%BD%D0%BE%D0%B5%20%D0%BF%D1%80%D0%B8%D0%BB%D0%B0%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D0%B5). (Суффиксов -ова-/-ева- тоже нет, "$2" – часть корня.) По правилу написания отглагольных прилагательных пишется одна Н. [Правило](https://www.yaklass.ru/p/russky-yazik/10-klass/razdel-morfologii-samostoiatelnye-chasti-rechi-10908/pravopisanie-prichastii-11368/re-e1890f63-9087-4d2d-92d9-671647eed81a). [Схема](http://localhost:3000/diagrams/ru/02/n___otglag_kovanyy_zhevanyy___.png) 
 {/set}
 
 ? кова(н|нн)ый сундук
@@ -7343,7 +7343,7 @@ https://russkiiyazyk.ru/sostav-slova/suffiks/suffiks-shchik-primery.html#:~:text
 ##### Task: нн - ова/ева/ирова
 
 {set:объяснение}
-в прилагательном есть суффикс "-ова-"/"-ева-"/"-ирова-", поэтому пишется две "нн". [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D1%81%D1%83%D1%84%C2%AD%D1%84%D0%B8%D0%BA%C2%AD%D1%81%D1%8B%20%2D%D0%BE%D0%B2%D0%B0%2D/%D0%B5%D0%B2%D0%B0%2D%2C%20%2D%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%2D%2C%20%D0%BF%D0%B8%D1%88%D0%B5%D1%82%C2%AD%D1%81%D1%8F%20%2D%D0%9D%D0%9D%2D)
+в прилагательном есть суффикс "-ова-"/"-ева-"/"-ирова-", поэтому пишется две "нн". [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D1%81%D1%83%D1%84%C2%AD%D1%84%D0%B8%D0%BA%C2%AD%D1%81%D1%8B%20%2D%D0%BE%D0%B2%D0%B0%2D/%D0%B5%D0%B2%D0%B0%2D%2C%20%2D%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%2D%2C%20%D0%BF%D0%B8%D1%88%D0%B5%D1%82%C2%AD%D1%81%D1%8F%20%2D%D0%9D%D0%9D%2D). [Схема](http://localhost:3000/diagrams/ru/02/nn___ova_eva_irova.png) 
 {/set}
 
 ? ардесова(нн|н)ое письмо
@@ -7401,7 +7401,7 @@ https://russkiiyazyk.ru/sostav-slova/suffiks/suffiks-shchik-primery.html#:~:text
 ##### Task: н/нн приставка не
 
 {set:объяснение}
-В прилагательных с приставкой "не" пишется столько же "н", сколько и в прилагательном без приставки "не". [Правило](http://raal100.narod.ru/index/0-102#:~:text=%D0%9F%D0%A0%D0%98%D0%9C%D0%95%D0%A7%D0%90%D0%9D%D0%98%D0%95%3A-,%D0%9F%D1%80%D0%B8%D1%81%D1%82%D0%B0%D0%B2%D0%BA%D0%B0%20%D0%BD%D0%B5%2D,-%D0%BD%D0%B0%20%D0%BD%D0%B0%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5%20%2D%D0%9D)
+В прилагательных с приставкой "не" пишется столько же "н", сколько и в прилагательном без приставки "не". [Правило](http://raal100.narod.ru/index/0-102#:~:text=%D0%9F%D0%A0%D0%98%D0%9C%D0%95%D0%A7%D0%90%D0%9D%D0%98%D0%95%3A-,%D0%9F%D1%80%D0%B8%D1%81%D1%82%D0%B0%D0%B2%D0%BA%D0%B0%20%D0%BD%D0%B5%2D,-%D0%BD%D0%B0%20%D0%BD%D0%B0%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5%20%2D%D0%9D). [Схема](http://localhost:3000/diagrams/ru/02/n_nn_pristavka_ne.png) 
 {/set}
 
 ? невеществе(нн|н)ая ценность
@@ -7441,7 +7441,7 @@ https://russkiiyazyk.ru/sostav-slova/suffiks/suffiks-shchik-primery.html#:~:text
 ##### Task: н/нн крат прил
 
 {set:объяснение}
-В [кратком прилагательном](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/kratkie.html) пишется столько же "н", сколько и в полном. [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D1%81%D0%BE%D1%85%D1%80%D0%B0%C2%AD%D0%BD%D1%8F%C2%AD%D1%8E%D1%82%20%D0%BD%D0%B0%D0%BF%D0%B8%C2%AD%D1%81%D0%B0%C2%AD%D0%BD%D0%B8%D0%B5)
+В [кратком прилагательном](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/kratkie.html) пишется столько же "н", сколько и в полном (кроме мужского рода в единственном числе, там всегда одна Н). [Правило](https://russkiiyazyk.ru/chasti-rechi/prilagatelnoe/prilagatelnyih-pishetsya-n-ili-nn.html#:~:text=%D1%81%D0%BE%D1%85%D1%80%D0%B0%C2%AD%D0%BD%D1%8F%C2%AD%D1%8E%D1%82%20%D0%BD%D0%B0%D0%BF%D0%B8%C2%AD%D1%81%D0%B0%C2%AD%D0%BD%D0%B8%D0%B5). [Схема](http://localhost:3000/diagrams/ru/02/n_nn_krat_pril.png) 
 {/set}
 
 ? мальчик (юн|юнн)
@@ -7481,7 +7481,7 @@ https://russkiiyazyk.ru/sostav-slova/suffiks/suffiks-shchik-primery.html#:~:text
 ##### Task: н кратк прил мужск род
 
 {set:объяснение}
-Краткое прилагательное в единственном числе мужского рода, всегда пишется одна Н.  [Правило](http://russkiy-na-5.ru/rules/74#:~:text=%D0%9A%D1%80%D0%B0%D1%82%D0%BA%D0%B8%D0%B5%20%D0%BF%D1%80%D0%B8%D0%BB%D0%B0%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D0%B2-,%D1%84%D0%BE%D1%80%D0%BC%D0%B5,-%D0%B5%D0%B4%D0%B8%D0%BD%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D0%BE%D0%B3%D0%BE%20%D1%87%D0%B8%D1%81%D0%BB%D0%B0%20%D0%BC%D1%83%D0%B6%D1%81%D0%BA%D0%BE%D0%B3%D0%BE)
+Краткое прилагательное в единственном числе мужского рода, всегда пишется одна Н.  [Правило](http://russkiy-na-5.ru/rules/74#:~:text=%D0%9A%D1%80%D0%B0%D1%82%D0%BA%D0%B8%D0%B5%20%D0%BF%D1%80%D0%B8%D0%BB%D0%B0%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D0%B2-,%D1%84%D0%BE%D1%80%D0%BC%D0%B5,-%D0%B5%D0%B4%D0%B8%D0%BD%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D0%BE%D0%B3%D0%BE%20%D1%87%D0%B8%D1%81%D0%BB%D0%B0%20%D0%BC%D1%83%D0%B6%D1%81%D0%BA%D0%BE%D0%B3%D0%BE). [Схема](http://localhost:3000/diagrams/ru/02/_n_kratk_pril_muzhsk_rod.png) 
 {/set}
 
 ? Добавлю, что гость был таинстве(н|нн), мал ростом и дряхл, словно прожил много веков.

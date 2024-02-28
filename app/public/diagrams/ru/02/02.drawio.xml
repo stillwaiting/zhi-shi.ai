@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mxfile host="app.diagrams.net" modified="2024-02-28T03:58:14.946Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" etag="EgCCBDxi59t1kn5mRAmh" version="23.1.6">
+<mxfile host="app.diagrams.net" modified="2024-02-28T17:08:12.564Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" etag="X7cGGH6nra7Eg_667dyj" version="23.1.6">
   <diagram name="Page-1" id="PXM_Jw4y6hQSdZ__SsZJ">
     <mxGraphModel dx="1038" dy="627" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="0" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -116,7 +116,7 @@
         <mxCell id="KmusC3RSYSPFzZCOgLkZ-20" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;Приставка НЕ&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=middle;dashed=1;" vertex="1" parent="1">
           <mxGeometry x="460" y="30" width="120" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="KmusC3RSYSPFzZCOgLkZ-21" value="&lt;p style=&quot;line-height: 70%;&quot;&gt;&lt;span style=&quot;font-size: 8px;&quot;&gt;Не влияет на написание, столько же Н, сколько без приставки / в полной форме&lt;/span&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=middle;dashed=1;" vertex="1" parent="1">
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-21" value="&lt;p style=&quot;line-height: 70%;&quot;&gt;&lt;span style=&quot;font-size: 8px;&quot;&gt;Не влияет на написание, столько же Н, сколько без приставки НЕ/ в полной форме&lt;/span&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=middle;dashed=1;" vertex="1" parent="1">
           <mxGeometry x="300" y="20" width="120" height="40" as="geometry" />
         </mxCell>
         <mxCell id="KmusC3RSYSPFzZCOgLkZ-32" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-22" target="KmusC3RSYSPFzZCOgLkZ-24">
