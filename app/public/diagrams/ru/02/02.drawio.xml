@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2024-02-28T01:46:10.444Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" etag="BKNmGELF_GBZsYjtoXuH" version="23.1.6">
+  <diagram name="Page-1" id="PXM_Jw4y6hQSdZ__SsZJ">
+    <mxGraphModel dx="912" dy="551" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0;exitY=0.75;exitDx=0;exitDy=0;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-1" target="KmusC3RSYSPFzZCOgLkZ-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-1" value="&lt;font style=&quot;font-size: 8px;&quot;&gt;От существительного&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="220" y="110" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-68" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-2" target="KmusC3RSYSPFzZCOgLkZ-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-72" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-2" target="KmusC3RSYSPFzZCOgLkZ-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-2" value="&lt;font style=&quot;font-size: 8px;&quot;&gt;От глагола&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="630" y="110" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-59" value="да" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-4" target="KmusC3RSYSPFzZCOgLkZ-31">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-4" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;Суффикс -ова-/-ева-/-ирова-?&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="430" y="80" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-47" value="да" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-6">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="100" y="167.78787878787887" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-6" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;Суффикс ин/ан/ян?&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="140" y="157.5" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-49" value="да" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-7">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="100" y="295" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-7" value="&lt;p style=&quot;line-height: 70%;&quot;&gt;&lt;font style=&quot;font-size: 8px;&quot;&gt;Исключение?&lt;br&gt;- ветреный&lt;/font&gt;&lt;br&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="145" y="275" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-45" value="&lt;font style=&quot;font-size: 8px;&quot;&gt;нет&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-8" target="KmusC3RSYSPFzZCOgLkZ-7">
+          <mxGeometry x="-0.0077" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-48" value="да" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-8">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="100" y="223.54545454545462" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-8" value="&lt;p style=&quot;line-height: 70%;&quot;&gt;&lt;font style=&quot;font-size: 8px;&quot;&gt;Одна Н в корне, нужно запомнить?&lt;br&gt;-&amp;nbsp;зеленый, синий, румяный, багряный, пряный, юный, единый, рьяный, пьяный&lt;/font&gt;&lt;br&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="140" y="202.5" width="140" height="42.5" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-61" value="да" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-9">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="490" y="212.63636363636363" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-66" value="&lt;font style=&quot;font-size: 8px;&quot;&gt;нет&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-9" target="KmusC3RSYSPFzZCOgLkZ-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-9" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;Корень на Н + суффикс -Н-?&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="320" y="202.5" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-60" value="да" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-10">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="490" y="167.78787878787887" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-65" value="&lt;font style=&quot;font-size: 8px;&quot;&gt;нет&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-10" target="KmusC3RSYSPFzZCOgLkZ-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-10" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;Суффикс -онн-/-енн-&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="320" y="157.5" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-62" value="да" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-11">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="490" y="264.75757575757575" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-67" value="&lt;font style=&quot;font-size: 8px;&quot;&gt;нет&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-11" target="KmusC3RSYSPFzZCOgLkZ-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-11" value="&lt;p style=&quot;line-height: 80%;&quot;&gt;&lt;span style=&quot;font-size: 8px;&quot;&gt;Притяжательное с основой на Н?&lt;/span&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="320" y="250" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-63" value="да" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-12">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="490" y="330.21212121212125" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-64" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;strokeColor=default;endArrow=none;endFill=0;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-12">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="300" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-12" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;Приставка + ветреный?&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="320" y="310" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-75" value="да" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-13" target="KmusC3RSYSPFzZCOgLkZ-30">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-13" value="&lt;p style=&quot;line-height: 80%;&quot;&gt;&lt;span style=&quot;font-size: 8px;&quot;&gt;Без приставки, от глагола несовершенного вида&lt;br&gt;(включая слова &quot;кованый, жеваный, клеваный&quot;)?&lt;/span&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="740" y="157.5" width="120" height="72.5" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-79" value="да" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-14" target="KmusC3RSYSPFzZCOgLkZ-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-80" value="нет" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-14">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="710" y="300" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-14" value="&lt;p style=&quot;line-height: 80%;&quot;&gt;&lt;span style=&quot;font-size: 8px;&quot;&gt;Причастие? (зависимые слова, или приставка/совершенный вид глагола и можно вставить МНОЙ)&lt;br&gt;&lt;/span&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="570" y="360" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-15" value="&lt;p style=&quot;line-height: 80%;&quot;&gt;&lt;span style=&quot;font-size: 8px;&quot;&gt;См. правило &quot;правописание Н/НН в причастиях&quot;&lt;br&gt;&lt;/span&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="740" y="420" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-69" value="да" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-16">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="490" y="217.4848484848485" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-16" value="&lt;p style=&quot;line-height: 80%;&quot;&gt;&lt;font style=&quot;font-size: 8px;&quot;&gt;Исключения: &lt;br&gt;- медленный, желанный, отчаянный, деланный, священный, читанный, данный, чеканный, окаянный, жеманный, нежданный, негаданный, неслыханный, невиданный, нечаянный, неожиданный&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 8px;&quot;&gt;- раненый, конченый (человек)&lt;br&gt;-Назвáный (брат), посажéный (отец), смышленый, приданое (невесты)&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="520" y="157.5" width="170" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-71" value="да" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-17">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="490" y="315.0606060606061" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-74" value="нет" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-17">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="710" y="130" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-77" value="нет" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-17" target="KmusC3RSYSPFzZCOgLkZ-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-17" value="&lt;p style=&quot;line-height: 80%;&quot;&gt;&lt;span style=&quot;font-size: 8px;&quot;&gt;Перешло из причастий в разряд прилагательных?&lt;/span&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="570" y="300" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-39" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-20" target="KmusC3RSYSPFzZCOgLkZ-21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-40" value="да" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="KmusC3RSYSPFzZCOgLkZ-39">
+          <mxGeometry x="-0.3361" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-20" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;Приставка НЕ&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="460" y="30" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-21" value="&lt;p style=&quot;line-height: 70%;&quot;&gt;&lt;span style=&quot;font-size: 8px;&quot;&gt;Не влияет на написание, столько же Н, сколько без приставки / в полной форме&lt;/span&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="300" y="20" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-32" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-22" target="KmusC3RSYSPFzZCOgLkZ-24">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-34" value="да" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="KmusC3RSYSPFzZCOgLkZ-32">
+          <mxGeometry x="0.2871" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-22" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;Краткая форма&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="30" y="30" width="90" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-33" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-24" target="KmusC3RSYSPFzZCOgLkZ-21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-35" value="нет" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="KmusC3RSYSPFzZCOgLkZ-33">
+          <mxGeometry x="0.0322" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-36" value="да" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-24" target="KmusC3RSYSPFzZCOgLkZ-30">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="195" y="110" />
+              <mxPoint x="100" y="110" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-24" value="&lt;span style=&quot;font-size: 8px;&quot;&gt;Мужской род?&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="150" y="30" width="90" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-28" value="&lt;p style=&quot;line-height: 70%;&quot;&gt;&lt;font style=&quot;font-size: 8px;&quot;&gt;Исключение?&lt;br&gt;- оловянный, стеклянный, деревянный&lt;/font&gt;&lt;br&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="150" y="350" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-30" value="Пишется Н" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="410" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-31" value="Пишется НН" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="440" y="410" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-46" value="&lt;font style=&quot;font-size: 8px;&quot;&gt;нет&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.334;entryY=-0.123;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-7" target="KmusC3RSYSPFzZCOgLkZ-28">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-52" value="да" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.001;entryY=0.579;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-28" target="KmusC3RSYSPFzZCOgLkZ-31">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="205" y="440" />
+              <mxPoint x="350" y="440" />
+              <mxPoint x="350" y="445" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-53" value="&lt;font style=&quot;font-size: 8px;&quot;&gt;нет&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.702;entryY=0.95;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-28" target="KmusC3RSYSPFzZCOgLkZ-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-56" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.556;entryY=0.03;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-1" target="KmusC3RSYSPFzZCOgLkZ-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-70" value="нет" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.306;entryY=0.055;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-16" target="KmusC3RSYSPFzZCOgLkZ-17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-73" value="нет" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.647;entryY=1.038;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-13" target="KmusC3RSYSPFzZCOgLkZ-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="KmusC3RSYSPFzZCOgLkZ-81" value="нет" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.445;entryY=0.045;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="KmusC3RSYSPFzZCOgLkZ-6" target="KmusC3RSYSPFzZCOgLkZ-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
