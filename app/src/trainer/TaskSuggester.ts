@@ -75,6 +75,9 @@ export default class TaskSuggester {
         tree.forEach(node => {
             this.parseMarkdown(node);
         });
+
+
+        console.log(this.calculateStats());
     }
 
     setSelectedRuleIdxs(ruleIdxs: Set<number>) {
@@ -235,6 +238,36 @@ export default class TaskSuggester {
             rule.stats.correctlyAnsweredTaskIdxs.clear();
             rule.stats.incorrectlyAnsweredTaskIdxs.clear();
         });
+    }
+
+    calculateStats() {
+        let totalTasks = 0;
+        let totalRules = 0;
+        let totalDebugTasks = 0;
+        let totalDebugRules = 0;
+
+        this.tasks.forEach((task) => {
+            if (this.rules[task.ruleIdx].nodeTitle.indexOf('debug') >= 0) {
+                totalDebugTasks += 1;
+            } else {
+                totalTasks += 1;
+            }
+        });
+
+        this.rules.forEach((rule) => {
+            if (rule.nodeTitle.indexOf('debug') >= 0) {
+                totalDebugRules += 1;
+            } else {
+                totalRules += 1;
+            }
+        });
+
+        return {
+            totalTasks,
+            totalRules,
+            totalDebugTasks,
+            totalDebugRules
+        };
     }
     
     suggestNextTask(): TaskType {
