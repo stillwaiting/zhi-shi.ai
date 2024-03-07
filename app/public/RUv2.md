@@ -9285,7 +9285,7 @@ https://russkiiyazyk.ru/sostav-slova/suffiks/suffiks-shchik-primery.html#:~:text
 ##### Task 123123 1e ать
 
 {set:объяснение}
-– оканчивается на "ать", значит [I-е спряжение](https://russkiiyazyk.ru/chasti-rechi/glagol/spryazhenie-glagola.html#i-2), пишется "е". 
+– суффикс начальной формы глагола "ать", значит [I-е спряжение](https://russkiiyazyk.ru/chasti-rechi/glagol/spryazhenie-glagola.html#i-2), пишется "е". [Схема](http://localhost:3000/diagrams/ru/06/1spr.png)
 {/set}
 
 ? Самолёт взлета(ет|ит)
@@ -9321,7 +9321,7 @@ https://russkiiyazyk.ru/sostav-slova/suffiks/suffiks-shchik-primery.html#:~:text
 ##### Task 123123 1e ять
 
 {set:объяснение}
-– оканчивается на "ять", значит [I-е спряжение](https://russkiiyazyk.ru/chasti-rechi/glagol/spryazhenie-glagola.html#i-2), пишется "е".
+– суффикс начальной формы глагола "ять", значит [I-е спряжение](https://russkiiyazyk.ru/chasti-rechi/glagol/spryazhenie-glagola.html#i-2), пишется "е". [Схема](http://localhost:3000/diagrams/ru/06/1spr.png)
 {/set}
 
 ? Лучник стреля(ет|ит) очень метко
@@ -9346,7 +9346,7 @@ https://russkiiyazyk.ru/sostav-slova/suffiks/suffiks-shchik-primery.html#:~:text
 ! отчаяться {объяснение}
 
 ? Пока(ет|ит)ся в грехах
-! покаятся {объяснение}
+! покаяться {объяснение}
 
 ? Он наде(ет|ит)ся на лучшее
 ! надеяться {объяснение}
@@ -9357,13 +9357,13 @@ https://russkiiyazyk.ru/sostav-slova/suffiks/suffiks-shchik-primery.html#:~:text
 ##### Task 123123 1e оть
 
 {set:объяснение}
-– оканчивается на "оть", значит [I-е спряжение](https://russkiiyazyk.ru/chasti-rechi/glagol/spryazhenie-glagola.html#i-2), пишется "е".
+– суффикс начальной формы глагола "оть", значит [I-е спряжение](https://russkiiyazyk.ru/chasti-rechi/glagol/spryazhenie-glagola.html#i-2), пишется "е". [Схема](http://localhost:3000/diagrams/ru/06/1spr.png)
 {/set}
 
 ? Вы накол(ете|ите) дрова к вечеру?
 ! колоть {объяснение}
 
-? Швьея вспор(ет|ит) шов
+? Швея вспор(ет|ит) шов
 ! вспороть {объяснение}
 
 ? Намел(ешь|ишь) кофе?
@@ -9393,7 +9393,7 @@ https://russkiiyazyk.ru/sostav-slova/suffiks/suffiks-shchik-primery.html#:~:text
 ##### Task 123123 1e еть
 
 {set:объяснение}
-– оканчивается на "еть", значит [I-е спряжение](https://russkiiyazyk.ru/chasti-rechi/glagol/spryazhenie-glagola.html#i-2), пишется "е".
+– суффикс начальной формы глагола "еть", значит [I-е спряжение](https://russkiiyazyk.ru/chasti-rechi/glagol/spryazhenie-glagola.html#i-2), пишется "е". [Схема](http://localhost:3000/diagrams/ru/06/1spr.png)
 {/set}
 
 ? Эльфу опротив(ел|ил) этот мир.
@@ -9405,7 +9405,7 @@ https://russkiiyazyk.ru/sostav-slova/suffiks/suffiks-shchik-primery.html#:~:text
 ? Государство не обедне(ет|ит)
 ! обеднеть {объяснение}
 
-? Метведь заматере(ет|ит)
+? Медведь заматере(ет|ит)
 ! заматереть {объяснение}
 
 ? Вден(ешь|ишь) нитку в игольное ушко
@@ -9429,7 +9429,7 @@ https://russkiiyazyk.ru/sostav-slova/suffiks/suffiks-shchik-primery.html#:~:text
 ##### Task 123123 1мн 
 
 {set:объяснение}
-стоит в множественном числе, значит [I-е спряжение](https://russkiiyazyk.ru/chasti-rechi/glagol/spryazhenie-glagola.html#i-2), пишем "ут" или "ют". 
+значит [I-е спряжение](https://russkiiyazyk.ru/chasti-rechi/glagol/spryazhenie-glagola.html#i-2), пишем "ут" или "ют". [Схема](http://localhost:3000/diagrams/ru/06/1spr.png)
 {/set}
 
 ? Орлы в полете не маш(ут|ат) крыльями.
@@ -9462,10 +9462,22 @@ https://russkiiyazyk.ru/sostav-slova/suffiks/suffiks-shchik-primery.html#:~:text
 ? Дверь откро(ют|ят)
 ! открыть – оканчивается на "ыть", {объяснение}
 
+##### Task 123123 1 искл []
+
+{set:объяснение}
+несмотря на наличия суффикса -"ить" у начальной формы глагола, пишется "е", так как исключение (*брить, стелить*) и относится к [I-му спряжению](https://russkiiyazyk.ru/chasti-rechi/glagol/spryazhenie-glagola.html#i-2). [Схема](http://localhost:3000/diagrams/ru/06/1spr.png)
+{/set}
+
+? Бре(е|и)тся опасной бритвой
+! от "бриться": {объяснение}
+
+? Он застел(е|и)т кровать
+! от "стелить": {объяснение}
+
 ##### Task 123123 2 ить
 
 {set:объяснение}
-– оканчивается на "ить", значит [II-е спряжение](https://russkiiyazyk.ru/chasti-rechi/glagol/spryazhenie-glagola.html#i-3), пишется "и". [Правило](https://russkiiyazyk.ru/chasti-rechi/glagol/spryazhenie-glagola.html#:~:text=%D0%86%20%D1%81%D0%BF%D1%80%D1%8F%C2%AD%D0%B6%D0%B5%C2%AD%D0%BD%D0%B8%D0%B5-,%D0%86%D0%86%20%D1%81%D0%BF%D1%80%D1%8F%C2%AD%D0%B6%D0%B5%C2%AD%D0%BD%D0%B8%D0%B5,-%D0%9E%D0%BA%D0%BE%D0%BD%D1%87%D0%B0%D0%BD%D0%B8%D1%8F)
+– суффикс начальной формы "ить", значит [II-е спряжение](https://russkiiyazyk.ru/chasti-rechi/glagol/spryazhenie-glagola.html#i-3), пишется "и". [Правило](https://russkiiyazyk.ru/chasti-rechi/glagol/spryazhenie-glagola.html#:~:text=%D0%86%20%D1%81%D0%BF%D1%80%D1%8F%C2%AD%D0%B6%D0%B5%C2%AD%D0%BD%D0%B8%D0%B5-,%D0%86%D0%86%20%D1%81%D0%BF%D1%80%D1%8F%C2%AD%D0%B6%D0%B5%C2%AD%D0%BD%D0%B8%D0%B5,-%D0%9E%D0%BA%D0%BE%D0%BD%D1%87%D0%B0%D0%BD%D0%B8%D1%8F). [Схема](http://localhost:3000/diagrams/ru/06/2spr.png)
 {/set}
 
 ? Вы люб(ите|ете) творчество Кафки?
@@ -9501,7 +9513,7 @@ https://russkiiyazyk.ru/sostav-slova/suffiks/suffiks-shchik-primery.html#:~:text
 ##### Task 123123 2мн
 
 {set:объяснение}
-– оканчивается на "-ить", стоит в множественном числе, значит [II-е спряжение](https://russkiiyazyk.ru/chasti-rechi/glagol/spryazhenie-glagola.html#i-3), пишем "ат" или "ят". [Правило](https://russkiiyazyk.ru/chasti-rechi/glagol/spryazhenie-glagola.html#:~:text=%D0%86%20%D1%81%D0%BF%D1%80%D1%8F%C2%AD%D0%B6%D0%B5%C2%AD%D0%BD%D0%B8%D0%B5-,%D0%86%D0%86%20%D1%81%D0%BF%D1%80%D1%8F%C2%AD%D0%B6%D0%B5%C2%AD%D0%BD%D0%B8%D0%B5,-%D0%9E%D0%BA%D0%BE%D0%BD%D1%87%D0%B0%D0%BD%D0%B8%D1%8F)
+– суффикс начальной формы "-ить", стоит в множественном числе, значит [II-е спряжение](https://russkiiyazyk.ru/chasti-rechi/glagol/spryazhenie-glagola.html#i-3), пишем "ат" или "ят". [Правило](https://russkiiyazyk.ru/chasti-rechi/glagol/spryazhenie-glagola.html#:~:text=%D0%86%20%D1%81%D0%BF%D1%80%D1%8F%C2%AD%D0%B6%D0%B5%C2%AD%D0%BD%D0%B8%D0%B5-,%D0%86%D0%86%20%D1%81%D0%BF%D1%80%D1%8F%C2%AD%D0%B6%D0%B5%C2%AD%D0%BD%D0%B8%D0%B5,-%D0%9E%D0%BA%D0%BE%D0%BD%D1%87%D0%B0%D0%BD%D0%B8%D1%8F). [Схема](http://localhost:3000/diagrams/ru/06/2spr.png)
 {/set}
 
 
@@ -9535,32 +9547,62 @@ https://russkiiyazyk.ru/sostav-slova/suffiks/suffiks-shchik-primery.html#:~:text
 ? Дрова волоком тащ(ат|ут) по земле.
 ! тащить {объяснение}
 
-##### Task 123123 трудные
+##### Task 123123 2 искл
 
 {set:объяснение}
-– оканчивается на "ить", значит [II-е спряжение](https://russkiiyazyk.ru/chasti-rechi/glagol/spryazhenie-glagola.html#i-3) (нужно запомнить), пишется "и". [Правило](https://russkiiyazyk.ru/chasti-rechi/glagol/kak-opredelit-spryazhenie-glagola-kleit.html#:~:text=%D0%9F%D1%80%D0%B5%D0%B4%D0%BB%D0%B0%D0%B3%D0%B0%D1%8E%20%D0%B7%D0%B0%D0%BF%D0%BE%D0%BC%C2%AD%D0%BD%D0%B8%D1%82%D1%8C)
+– несмотря на то, что суффикс начальной формы не "-ить", это глагол [II-го спряжения](https://russkiiyazyk.ru/chasti-rechi/glagol/spryazhenie-glagola.html#i-3), [исключение](https://talk-on.ru/materials/spetsproekty/Bez_pravki_Gnat_derzhat_smotret_i_videt_A_chto_bylo_dalshe/#:~:text=%D0%98%D1%81%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D1%8F%3A-,%D0%B3%D0%BD%D0%B0%D1%82%D1%8C%2C%20%D0%B4%D0%B5%D1%80%D0%B6%D0%B0%D1%82%D1%8C,-%2C%20%D1%81%D0%BC%D0%BE%D1%82%D1%80%D0%B5%D1%82%D1%8C%20%D0%B8%20%D0%B2%D0%B8%D0%B4%D0%B5%D1%82%D1%8C) (*гнать, держать, смотреть, видеть, дышать, слышать, ненавидеть, зависеть, вертеть, обидеть, терпеть*), пишется "и" ("а"/"я" в мн. числе). [Правило](https://russkiiyazyk.ru/chasti-rechi/glagol/spryazhenie-glagola.html#:~:text=%D0%86%20%D1%81%D0%BF%D1%80%D1%8F%C2%AD%D0%B6%D0%B5%C2%AD%D0%BD%D0%B8%D0%B5-,%D0%86%D0%86%20%D1%81%D0%BF%D1%80%D1%8F%C2%AD%D0%B6%D0%B5%C2%AD%D0%BD%D0%B8%D0%B5,-%D0%9E%D0%BA%D0%BE%D0%BD%D1%87%D0%B0%D0%BD%D0%B8%D1%8F). [Схема](http://localhost:3000/diagrams/ru/06/2spr.png)
 {/set}
 
-? В комнате накле(или|ели|яли) новые обои.
-! клеить {объяснение}
+?  Ветер гон(и|е)т волны.
+! гнать {объяснение}
 
-? Дети муч(или|ели|али) котенка.
-! мучить {объяснение}
+? Балкон держ(а|у)т четыре колонны.
+! держать {объяснение}
 
-? Дочка мер(ила|ела|яла) платье.
-! мерить {объяснение}
+? Ощущение, что смотр(и|е)шь на открытку.
+! смотреть {объяснение}
 
-? Близ(ил|ел)ось утро.
-! близиться {объяснение}
+? Ясно вид(и|е)шь собственными глазами.
+! видеть {объяснение}
 
-? Бор(ете|ите)сь на ринге.
-! бороться {объяснение}
+? Они очень неровно дыш(а|у)т к роскоши.
+! дышать {объяснение}
 
-? Брезж(ит|ет) рассвет.
-! брезжить {объяснение}
+? Лена слыш(и|е)т только себя.
+! слышать {объяснение}
 
-? Пол(ешь|ишь) грядки.
-! полоть {объяснение}
+? Почему ты так сильно его ненавид(и|е)шь?
+! ненавидеть {объяснение}
+
+? В подготовке ты не завис(и|е)шь ни от кого, кроме себя.
+! зависеть {объяснение}
+
+? Или ты верт(и|е)шь законом так, как тебе выгодно?
+! вертеть {объяснение}
+
+? Никто тебя не обид(и|е)т и не сделает ничего против твоей воли.
+! обидеть {объяснение}
+
+? Бумага всё терп(и|е)т
+! терпеть {объяснение}
+
+##### Task 123123 разноспряг []
+
+{set:объяснение}
+разноспрягаемый (*хотеть, бежать, дать, есть, [брезжить](https://orfogrammka.ru/OGL02/81920136.html#:~:text=%C2%A0%D0%B8%D0%BC%D0%B5%D0%B5%D1%82%20%D1%80%D0%B0%D0%B7%D0%BD%D0%BE%D1%81%D0%BF%D1%80%D1%8F%D0%B3%D0%B0%D0%B5%D0%BC%D1%8B%D0%B5%20%D1%84%D0%BE%D1%80%D0%BC%D1%8B%C2%A0), [чтить](https://gramota.ru/biblioteka/spravochniki/russkij-yazyk-kratkij-teoreticheskij-kurs-dlya-shkolnikov-4/spryazhenie#:~:text=%D0%93%D0%BB%D0%B0%D0%B3%D0%BE%D0%BB%C2%A0%D1%87%D1%82%D0%B8%D1%82%D1%8C%C2%A0%D0%BC%D0%BE%D0%B6%D0%B5%D1%82%20%D0%BB%D0%B8%D0%B1%D0%BE%20%D0%B1%D1%8B%D1%82%D1%8C%20%D1%80%D0%B0%D0%B7%D0%BD%D0%BE%D1%81%D0%BF%D1%80%D1%8F%D0%B3%D0%B0%D0%B5%D0%BC%D1%8B%D0%BC)*), имеет личные окончания как первого, так и второго спряжения), которые необходимо запомнить. [Правило](https://maximumtest.ru/uchebnik/6-klass/russky-yazyk/raznospryagayemye-glagoly).  [Схема](http://localhost:3000/diagrams/ru/06/raznospryag.png)
+{/set}
+
+? Он хоч(е|и)т все и сразу!
+! {объяснение}
+
+? Гляжу, — у портного сквозь ставни брезж(и|е)т свет.
+! {объяснение}
+
+? Слабо брезж(у|а)т звёзды на небе.
+! {объяснение}
+
+? Выбеж(и|е)шь на улицу - нет там никого.
+! {объяснение}
 
 #### Rule: Правописание мягкого знака на конце глаголов [debug]
 
