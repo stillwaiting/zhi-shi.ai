@@ -72,7 +72,9 @@ export default class TaskSuggester {
     constructor(rawMdData: string) {
         const tree = mdParse(rawMdData, []);
 
-        tree.forEach(node => {
+        tree.errors.forEach(console.log);
+
+        tree.parsedNodes.forEach(node => {
             this.parseMarkdown(node);
         });
 

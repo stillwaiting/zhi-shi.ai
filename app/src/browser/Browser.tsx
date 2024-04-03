@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Browser.scss';
 import BodyComponent from './../body/BodyComponent';
 import TopicsTreeComponent from './TopicsTreeComponent';
-import parse from './../md/MarkdownParser';
+import parse, { ParseResult } from './../md/MarkdownParser';
 import { isMarkdownBodyChunkList, isMarkdownBodyChunkTable, isMarkdownBodyChunkTextParagraph, MarkdownBody, MarkdownNode } from './../md/types';
 import NodeHeaderComponent from './NodeHeaderComponent';
 import { BrowserRouter as Router, Route, Link, useHistory, useLocation } from "react-router-dom";
@@ -75,26 +75,6 @@ declare global {
   }
 }
 
-function indexNodeByTitle(node: MarkdownNode, indexedNodes: {[key: string]: Array<MarkdownNode>}) {
-  if (indexedNodes[node.title]) {
-    indexedNodes[node.title].push(node);
-  } else {
-    indexedNodes[node.title] = [node];
-  }
-  node.children.forEach(child => {
-    indexNodeByTitle(child, indexedNodes);
-  });
-}
-
-function indexNodesByTitle(nodes: Array<MarkdownNode>) {
-  const indexedNodes: {[key: string]: Array<MarkdownNode>} = {};
-
-  nodes.forEach(node => {
-    indexNodeByTitle(node, indexedNodes);
-  });
-
-  return indexedNodes;
-}
 
 function doesBodyContainAnchor(body: MarkdownBody, anchor: string): boolean {
   for (let chunkIdx = 0; chunkIdx < body.content.length; chunkIdx ++) {
@@ -125,8 +105,8 @@ function doesBodyContainAnchor(body: MarkdownBody, anchor: string): boolean {
   return false;
 }
 
-function isValidNodeLink(nodesByTitle: {[key: string]: Array<MarkdownNode>}, currentNodeTitle: string, link: string): boolean {
-  const currentNode = nodesByTitle[currentNodeTitle][0];
+function isValidNodeLink(nodesByTitle: {[key: string]: MarkdownNode}, currentNodeTitle: string, link: string): boolean {
+  const currentNode = nodesByTitle[currentNodeTitle];
   if (link === '..') {
     return currentNode.path.length > 1;
   }
@@ -134,19 +114,19 @@ function isValidNodeLink(nodesByTitle: {[key: string]: Array<MarkdownNode>}, cur
     if (currentNode.path.length <= 1) {
       return false;
     }
-    return doesBodyContainAnchor(nodesByTitle[currentNode.path[currentNode.path.length - 2]][0].body, link.substr(3));
+    return doesBodyContainAnchor(nodesByTitle[currentNode.path[currentNode.path.length - 2]].body, link.substr(3));
   }
   if (link.startsWith('#')) {
     return doesBodyContainAnchor(currentNode.body, link.substr(1));
   }
   if (link.indexOf('#') >= 0) {
     const split = link.split('#');
-    if (!nodesByTitle[split[0]] || nodesByTitle[split[0]].length == 0) {
+    if (!nodesByTitle[split[0]]) {
       return false;
     }
-    return doesBodyContainAnchor(nodesByTitle[split[0]][0].body, split[1]);
+    return doesBodyContainAnchor(nodesByTitle[split[0]].body, split[1]);
   }
-  return nodesByTitle[link] && nodesByTitle[link].length > 0;
+  return !!nodesByTitle[link];
 }
 
 function saveTreeWidth(topicsWidth: number) {
@@ -167,8 +147,11 @@ function getSavedTopicWidth() {
 
 function Browser(props: { providedData: string | undefined }) {
   const [unsubmittedData, setUnsubmittedData] = useState<string>(props.providedData || '');
-  const [nodes, setNodes] = useState<MarkdownNode[]>([]);
-  const [nodesByTitle, setNodesByTitle] = useState<{[key: string]: Array<MarkdownNode>}>({});
+  const [nodes, setNodes] = useState<ParseResult>({
+    parsedNodes: [],
+    errors: [],
+    indexedNodes: {}
+  });
   const [topicsWidth, setTopicsWidth] = useState<number>(getSavedTopicWidth());
   const [expandQuestions, setExpandQuestions] = useState<boolean>(false);
 
@@ -186,7 +169,6 @@ function Browser(props: { providedData: string | undefined }) {
         if (window.externalText && window.externalText !== externalText) {
           const nodes = parse(window.externalText, []);
           setNodes(nodes);
-          setNodesByTitle(indexNodesByTitle(nodes));
           setExternalText(window.externalText);
           // For some reason, sometimes in tests setState doesn't 
           // trigger update, and when the 2nd time setInterval is exeuted
@@ -198,7 +180,7 @@ function Browser(props: { providedData: string | undefined }) {
 
         // must handle externalNodeLine === 0, therefore "!== undefined"
         if (window.externalNodeLine !== undefined && window.externalNodeTitle && window.externalNodeLine !== externalNodeLine) {
-          const node = nodesByTitle[window.externalNodeTitle] ? nodesByTitle[window.externalNodeTitle][0] : undefined;
+          const node = nodes.indexedNodes[window.externalNodeTitle] ? nodes.indexedNodes[window.externalNodeTitle] : undefined;
           if (node) {
             history.push(nodeLinkToHttpPath(node.title, []));
           }
@@ -237,7 +219,6 @@ function Browser(props: { providedData: string | undefined }) {
   const onSubmitClicked = () => {
     const nodes = parse(unsubmittedData, []);
     setNodes(nodes);
-    setNodesByTitle(indexNodesByTitle(nodes));
   }
 
   const onIncreseWidthClick = () => {
@@ -250,7 +231,7 @@ function Browser(props: { providedData: string | undefined }) {
     saveTreeWidth(topicsWidth - 50);
   }
 
-  const currentNode = nodesByTitle[currentNodeTitle] ? nodesByTitle[currentNodeTitle][0] : undefined;
+  const currentNode = nodes.indexedNodes[currentNodeTitle] ? nodes.indexedNodes[currentNodeTitle] : undefined;
 
   const COPY_REFIX = "copy:";
   const COPY_IMAGE_SRC = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAYCAYAAAAYl8YPAAAACXBIWXMAAACwAAAAsAEUaqtpAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAAp0RVh0VGl0bGUAQ29weUaQl90AAAAQdEVYdEF1dGhvcgBtaWdodHltYW7DdcowAAAAIXRFWHRDcmVhdGlvbiBUaW1lADIwMTAtMDQtMDdUMTk6MTk6MDOeH3TcAAAAPXRFWHRTb3VyY2UAaHR0cHM6Ly9vcGVuY2xpcGFydC5vcmcvZGV0YWlsLzM4ODgxL2NvcHktYnktbWlnaHR5bWFuQIt9qQAAAFh0RVh0Q29weXJpZ2h0AENDMCBQdWJsaWMgRG9tYWluIERlZGljYXRpb24gaHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvcHVibGljZG9tYWluL3plcm8vMS4wL8bjvfkAAAMLSURBVDiNhZTPa1xVFMc/580LM0nzQ0yoNsEaJN0oopJSwUQpaBe6cSHiqq5U1H/AhRSCC8GtO8WNiKA0KxeiIEVQKFhBK6WL2jZircU00yT6fsy8d885XcxLMpPMjA/u4r177+d9zvcerrzzra1P1UlDApaAphASCCnkd6iv/ymX/AYvnj0vOf/zxLMTtN9cLOf7Tf7ya8TnX8bF2i1WT877S9//Ia1hsEiTwZMeoJwj2n6ZR1Q4exJvDIWF1AdOagnXN+HCDHMbp+yxcKi9+jy/1webpUPMCuevbfz+WyqTU2Fu/MlyMRkf+WKRn0f6rY/DEJgGmD/nI43Jci3SFnHRQsey5bhertDk3QMwy+UA5OpmRDOD8BC89akeCa0aZWuMUI6xfXuCc5+tn1pZ8jMrK2K9ZomLuyOyB/3pZsTxI4aMgNXBg+BBwMBn6/zw9dEnLp7nI/A3QHZDjzUTHOj2c4WFe43ooDTuzvQ9Um49Xnv6uRt88t1lf20HGFmfVtQcGHTIImSJy6VHWVh7iqWlCT4GF4BIExfft1GH9Lo75P86V5vuciwsyPH2M0uj/3zYKTOVnrzUIWSDxcydfAuZvWwys6EyPV4e0xkdX9642I417yyIpJOduhOywWbmzvIJqZ1Iii2tt/EH2+jRsnHhm9Yrsaa+qxXcCQ6aDc4sjiJef8/jwmS6sDrBG7SKCa79djONzAvMqvKsAg7JzKrhAohg4qiAkRO5paLegah3oGXqWB8z8yoGpxpeSThILnGrndWuXKmh5hSmBHXSO1OY93afd8ewA6mAwRyTTOLm38nqB6fXR50EyDFSJh949gV89HC3Vc/mHisoDMwzib+6/vDb+8t59T77Ua043Avai6Fj0/vNKCTqG3KKWxVad3k7EN1nGNQB+sOKBLzKa/fv5j1latdhlD4EhueoeW+79Jzk3olqZYsIcV8YibTDIeIAhULhRqlO6VAalOYUVr2ro2XnWusLy/M0e//05m2THCfHyMUtRyUX80wMxat7J/+vVQPYuNZs3AWFKDbDNon58AAAAABJRU5ErkJggg==";
@@ -269,7 +250,7 @@ function Browser(props: { providedData: string | undefined }) {
           const linkHtml = '<a href=\'' + link.split('"').join('&quot;') + '\' target="_blank">' + text + '</a>';
           if (link.trim().startsWith("http")) {
             return linkHtml + " <sup><a href='" + COPY_REFIX + link + "' data-testid='copy'><img class='copy' src='" + COPY_IMAGE_SRC + "' height=10 /></a></sup>";
-          } if (isValidNodeLink(nodesByTitle, currentNodeTitle, link)) {
+          } if (isValidNodeLink(nodes.indexedNodes, currentNodeTitle, link)) {
             return linkHtml;
           } else {
             return linkHtml + ' <span class="error">invalid link!</span>';
@@ -305,7 +286,7 @@ function Browser(props: { providedData: string | undefined }) {
           </div>
           
           <div className="topics cell scrollable" style={{width: topicsWidth + 'px' }} data-testid='menu-container'>
-            <TopicsTreeComponent nodes={nodes} onNodeClicked={(node) => {
+            <TopicsTreeComponent nodes={nodes.parsedNodes} onNodeClicked={(node) => {
               history.push(nodeLinkToHttpPath(node.title, []));
             }} />
 
@@ -336,9 +317,9 @@ function Browser(props: { providedData: string | undefined }) {
                 /> expand questions
               </div>
 
-              {Object.entries(nodesByTitle).filter(entity => entity[1].length > 1).map(badNodeEntity => 
-                  <div className='error' key={badNodeEntity[0]} data-testid='error'>
-                    {badNodeEntity[0]} has {badNodeEntity[1].length} nodes!
+              {nodes.errors.map((error, idx) =>
+                  <div className='error' key={`key_error_${idx}`} data-testid='error'>
+                    {error}
                   </div>
               )}
 

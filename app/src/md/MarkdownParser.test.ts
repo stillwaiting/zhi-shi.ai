@@ -17,11 +17,19 @@ function generateBody(line: string): MarkdownBody {
 
 describe('MarkdownParser', () => {
     test('parses empty string', () => {
-        expect(mdParse("", [])).toHaveLength(0);
+        expect(mdParse("", [])).toStrictEqual({
+          parsedNodes: [],
+          indexedNodes: {},
+          errors: [],
+        });
     });
 
     test('trims whitespaces', () => {
-        expect(mdParse("   ", [])).toHaveLength(0);
+        expect(mdParse("   ", [])).toStrictEqual({
+          parsedNodes: [],
+          indexedNodes: {},
+          errors: [],
+        });
     });
 
     test('throws an exception if not starting with #', () => {
@@ -29,7 +37,11 @@ describe('MarkdownParser', () => {
     })
 
     test('parses empty title', () => {
-        expect(mdParse('#', [])).toStrictEqual([]);
+        expect(mdParse('#', [])).toStrictEqual({
+          parsedNodes: [],
+          indexedNodes: {},
+          errors: [],
+        });
     });
 
     test('parses empty title only', () => {
@@ -41,7 +53,11 @@ describe('MarkdownParser', () => {
             children: [],
             childrenByTitleIndex: {}
         };
-        expect(mdParse('# hello world!', [])).toStrictEqual([expected]);
+        expect(mdParse('# hello world!', [])).toStrictEqual({
+          parsedNodes: [expected],
+          indexedNodes: {['hello world!']: expected},
+          errors: [],
+        });
     });
 
     test('adds parent path', () => {
@@ -53,7 +69,11 @@ describe('MarkdownParser', () => {
             children: [],
             childrenByTitleIndex: {}
         };
-        expect(mdParse('# hello world!', ['parent'])).toStrictEqual([expected]);
+        expect(mdParse('# hello world!', ['parent'])).toStrictEqual({
+          parsedNodes: [expected],
+          indexedNodes: {['hello world!']: expected},
+          errors: [],
+        });
     });
 
     test('parses title and body only', () => {
@@ -69,7 +89,7 @@ describe('MarkdownParser', () => {
 `# hello world!
 
 this is my shiny body
-`, [])).toStrictEqual([expected]);
+`, []).parsedNodes).toStrictEqual([expected]);
     });
 
     test('parses title and multiline body', () => {
@@ -86,7 +106,7 @@ this is my shiny body
 
 this is my shiny body
 multiline!
-`, [])).toStrictEqual([expected]);
+`, []).parsedNodes).toStrictEqual([expected]);
     });
 
     test('parses two titles without bodies', () => {
@@ -94,7 +114,7 @@ multiline!
 `# hello world!
 
 # and the second one
-`, [])).toStrictEqual([{
+`, []).parsedNodes).toStrictEqual([{
             title: 'hello world!',
             path: ['hello world!'],
             body: EMPTY_BODY,
@@ -123,7 +143,7 @@ second body
 multiline   
 
 # and the third one without body
-`, [])).toStrictEqual([{
+`, []).parsedNodes).toStrictEqual([{
             title: 'hello world!',
             path: ['hello world!'],
             body: generateBody("first body"),
@@ -165,7 +185,7 @@ multiline
 ## third child without body
 
 # another top level item
-`, [])).toStrictEqual([{
+`, []).parsedNodes).toStrictEqual([{
             title: 'hello world!',
             path: ['hello world!'],
             body: generateBody("first body"),
@@ -234,7 +254,7 @@ multiline
   {hello-2}
   {world|first|second}
   `, []);
-        expect(parsedBody).toStrictEqual([
+        expect(parsedBody.parsedNodes).toStrictEqual([
             {
               "title": "hello",
               "path": [
@@ -294,7 +314,7 @@ multiline
 
   {world}
   `, []);
-        expect(parsedBody).toStrictEqual([
+        expect(parsedBody.parsedNodes).toStrictEqual([
           {
             "title": "hello",
             "path": [
@@ -328,7 +348,7 @@ multiline
   \\{hello}
   world
   `, []);
-        expect(parsedBody).toStrictEqual([
+        expect(parsedBody.parsedNodes).toStrictEqual([
           {
             "title": "hello",
             "path": [
@@ -361,7 +381,7 @@ multiline
 https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/chto-takoe-imya-suschestvitelnoe.html#i-4
 `;
         const result = mdParse(content, []);
-        expect(result).toStrictEqual([
+        expect(result.parsedNodes).toStrictEqual([
             {
               "body": {
                 "content": []

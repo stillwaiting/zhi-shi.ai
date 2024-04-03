@@ -136,7 +136,7 @@ describe('TopicsTreeComponent', () => {
 
 `, []
         )
-        const component = render(<TopicsTreeComponent nodes={nodes} onNodeClicked={() => {}} />);
+        const component = render(<TopicsTreeComponent nodes={nodes.parsedNodes} onNodeClicked={() => {}} />);
         fireEvent.click(component.getByText('++'));
         expect(component.getByText('Task (1)')).toBeDefined();
         expect(component.getByText('Task another (0)')).toBeDefined();

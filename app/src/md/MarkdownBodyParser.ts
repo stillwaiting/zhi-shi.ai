@@ -1,4 +1,4 @@
-import { MarkdownBody, MarkdownBodyChunkList, MarkdownBodyChunkQuestionAnswers, MarkdownBodyChunkTable, MarkdownBodyChunkTextParagraph } from "./types"
+import { MarkdownBody, MarkdownBodyChunkConnection, MarkdownBodyChunkList, MarkdownBodyChunkQuestionAnswers, MarkdownBodyChunkTable, MarkdownBodyChunkTextParagraph } from "./types"
 
 // @ts-ignore
 import matchAll from 'string.prototype.matchall'
@@ -91,7 +91,7 @@ function parseTable(lines: Array<string>, currLine: number, lineAfterTable: numb
 }
 
 function isBeginningOfParagraph(line: string) {
-    return (line.trim().length > 0 && !isBeginningOfList(line) && !isBeginningOfTable(line)) && !isBeginningOfQuestionAnswers(line);
+    return (line.trim().length > 0 && !isBeginningOfList(line) && !isBeginningOfTable(line)) && !isBeginningOfQuestionAnswers(line) && !isBeginningOfConnection(line);
 }
 
 function findEndOfParagraph(lines: Array<string>, fromLineIdx: number) {
@@ -140,6 +140,19 @@ function isOrderedList(line: string): boolean {
 function isUnorderedList(line: string) {
     const trimmedLine = line.trim();
     return trimmedLine.startsWith('- ');
+}
+
+function isBeginningOfConnection(line: string) {
+    const trimmedLine = line.trim();
+    return trimmedLine.startsWith("{connected:") && trimmedLine.endsWith('}');
+}
+
+const CONNECTION_OFFSET = "{connected:".length;
+function parseConnection(line: string): MarkdownBodyChunkConnection {
+    const trimmedLine = line.trim();
+    return {
+        connectedNodeTitle: trimmedLine.substring(CONNECTION_OFFSET, trimmedLine.length - 1)
+    };
 }
 
 function isBeginningOfList(line: string) {
@@ -284,6 +297,12 @@ function parseBody(markdownRawBody: string): MarkdownBody {
             const lineAfterParagraph = findEndOfParagraph(lines, currLine);
             parsedBody.content.push(parseParagraph(lines, currLine, lineAfterParagraph));
             currLine = lineAfterParagraph;
+            continue;
+        }
+
+        if (isBeginningOfConnection(lines[currLine])) {
+            parsedBody.content.push(parseConnection(lines[currLine]));
+            currLine ++;
             continue;
         }
 

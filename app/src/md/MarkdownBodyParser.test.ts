@@ -419,5 +419,17 @@ next text
       
     });
 
+    test('parses connections', () => {
+      const parsedBody = parseBody(`
+
+{connected:blah: blah}
+`);
+      expect(parsedBody).toStrictEqual(
+        {"content": [{
+          connectedNodeTitle: 'blah: blah'
+        }]} 
+      );
+      
+    });
     
 });

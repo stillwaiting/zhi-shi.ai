@@ -48,6 +48,14 @@ export const isMarkdownBodyChunkQuestionAnswers = (obj: any): obj is MarkdownBod
     return !!castObj && obj.question !== undefined;
 }
 
+export interface MarkdownBodyChunkConnection extends MarkdownBodyChunk {
+    connectedNodeTitle: string;
+}
+
+export const isMarkdownBodyChunkConnection = (obj: any): obj is MarkdownBodyChunkConnection => {
+    const castObj = isMarkdownBodyChunk(obj) ? obj : null;
+    return !!castObj && obj.connectedNodeTitle !== undefined;
+}
 
 export interface MarkdownBody {
     content: Array<MarkdownBodyChunk>;

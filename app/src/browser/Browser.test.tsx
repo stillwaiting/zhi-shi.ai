@@ -340,7 +340,7 @@ blah content
         `;
         act(() => { jest.advanceTimersByTime(1500)} );
 
-        expect(component.getByText('hello has 2 nodes!')).toBeDefined();
+        expect(component.getByText('Node with duplicated title: hello')).toBeDefined();
         expect(component.getAllByTestId('error')).toHaveLength(1);
     });
 

@@ -156,14 +156,35 @@ function removeComments(s: string): string {
       return s.replaceAll(/\/\*(.|\n)*?\*\//g, '');
     }
     return s;
-}  
+}
+
+export interface ParseResult {
+    parsedNodes: Array<MarkdownNode>;
+    indexedNodes: Record<string, MarkdownNode>;
+    errors: Array<string>;
+}
+  
+function indexNodesByTitle(nodes: Array<MarkdownNode>, result: Record<string, MarkdownNode>, errors: Array<string>) {
+    nodes.forEach(node => {
+        if (result[node.title]) {
+            errors.push("Node with duplicated title: " + node.title);
+        } else {
+            result[node.title] = node;
+        }
+        indexNodesByTitle(node.children, result, errors);
+    });
+}
 
 
-export default (mdString: string, parentPath: Array<String>): Array<MarkdownNode> => {
+export default (mdString: string, parentPath: Array<String>): ParseResult => {
     mdString = removeComments(mdString.trim());
 
     if (mdString.length == 0) {
-        return [];
+        return {
+            parsedNodes: [],
+            errors: [],
+            indexedNodes: {}
+        }
     }
 
     if (mdString[0] != '#') {
@@ -175,5 +196,16 @@ export default (mdString: string, parentPath: Array<String>): Array<MarkdownNode
     const chunks = ("\n" + mdString).split("\n" + separator + " ");
     chunks.shift();
 
-    return chunks.map(chunk => parseChunk(chunk, parentPath))
+    const indexedNodes: Record<string, MarkdownNode> = {};
+    const errors: Array<string> = [];
+    const parsedNodes = chunks.map(chunk => parseChunk(chunk, parentPath));
+
+    indexNodesByTitle(parsedNodes, indexedNodes, errors);
+
+    return {
+        parsedNodes,
+        errors,
+        indexedNodes
+    };
+
 }

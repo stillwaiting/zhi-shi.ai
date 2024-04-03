@@ -27,7 +27,7 @@ function toHtml(text: string, selectedAnchor: string, selectedText: string, link
     // Extract all links before substution to avoid corrupting the links
     let links: { [key: string] : string} = {};
     htmlText = htmlText.replaceAll(/\[([^\]]*?)\]\((.*?)\)/g, (a1, a2, a3, a4) => {
-        const key = "" + Math.random() + "" + new Date().getTime();
+        const key = "" + Math.random() + "" + Date.now();
         links[key] = linkRenderer(a3, a2);
         return key;
     });
