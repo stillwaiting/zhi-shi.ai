@@ -301,6 +301,32 @@ multiline
           ]);
       });
 
+      test('indexes by node title', () => {
+        const parsedBody = mdParse(`
+# hello
+helloBody
+# hello2
+helloBody2
+## child
+childBody
+  `, []);
+        expect(parsedBody.indexedNodes['hello']).toStrictEqual(parsedBody.parsedNodes[0]);
+        expect(parsedBody.indexedNodes['hello2']).toStrictEqual(parsedBody.parsedNodes[1]);
+        expect(parsedBody.indexedNodes['child']).toStrictEqual(parsedBody.parsedNodes[1].children[0]);
+      });
+
+      test('errors out when duplicate nodes', () => {
+        const parsedBody = mdParse(`
+# hello
+helloBody
+# hello2
+helloBody2
+## hello
+childBody
+  `, []);
+        expect(parsedBody.errors).toStrictEqual(["Node with duplicated title: hello"]);
+      });
+
       test('supports nested templates', () => {
         const parsedBody = mdParse(`
 # hello
