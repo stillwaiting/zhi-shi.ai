@@ -1,5 +1,5 @@
 import { getNodeText } from '@testing-library/dom';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, ReactNode } from 'react';
 import './BodyTextParagraphComponent.scss';
 
 import { isMarkdownBodyChunkTextParagraph, MarkdownBody, MarkdownBodyChunkTextParagraph, MarkdownNode } from '../md/types';
@@ -132,7 +132,7 @@ export const Context = React.createContext<ContextType>({
         }
         return `<a href="${link.split('"').join('&quot;')}" target="_blank">${text}</a>`; 
     },
-    onLinkClicked: (link) => {},
+    onLinkClicked: (link) => {}
 });
 
 export default ( { data, inline }: BodyTextParagraphComponent ) => {

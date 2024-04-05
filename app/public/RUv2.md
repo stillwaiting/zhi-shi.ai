@@ -992,6 +992,9 @@ https://russkiiyazyk.ru/chasti-rechi/sushhestvitelnoe/tipyi-skloneniya-imen-sush
 
 #### Rule: Различение отглагольных прилательных и причастий.
 
+{connected:Rule: Правописание "н" и "нн" прилагательных}
+{connected:Rule: Правописание "н" и "нн" в причастиях}
+
 ##### Task: Отгагольное прилагат. без прист. несов вид
 
 {set:выбор}

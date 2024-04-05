@@ -475,5 +475,25 @@ blah content
         expect(component.container.innerHTML).toContain('the answer');
     });
 
+    test('renders connection link', async () => {
+        (reactDom.useLocation as jest.Mock).mockReturnValue({
+            pathname: '/world'
+        });
+        let component = await createApp();
+
+        window.externalText = `
+# hello
+{connected: world}
+
+## world
+
+? (1|2)
+! the answer
+        `;
+        act(() => { jest.advanceTimersByTime(1500)} );
+
+        expect(component.container.innerHTML).toContain("<a href=\"hello\" target=\"_blank\">hello</a> autogen</span>");
+    });
+
 
 });
