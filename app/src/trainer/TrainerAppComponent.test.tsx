@@ -46,7 +46,6 @@ Some text that should be ignored.
 
 ? 7 (hello|world)
 ! answer 1
-
             `;
     const taskSuggester = new TaskSuggester(data);
     const hasher = new Hasher();
@@ -190,6 +189,50 @@ Some text that should be ignored.
         console.log("at 3");
 
         expect(component.getByText('answer 0')).toBeDefined();
+    });
+
+    test('renders adjacent nodes if exist', async () => {
+        fetchMock.resetMocks();
+        fetchMock.mockResponse(`
+# Root
+
+## Rule blah
+
+{connected:Rule blah2}
+
+### Task node 3
+
+Some text that should be ignored.
+
+? 6 (foo|bar)
+! answer 0
+
+## Rule blah2
+
+### Task node 4
+
+? 7 (hello|world)
+! answer 1
+                    `);
+        const component = await renderAndWaitForData();
+
+        fireEvent.click(component.getByText('goto 0'));
+
+        answerCorrectly(component);
+        fireEvent.click(component.getByText('Check'));
+
+        expect(component.container.innerHTML).toContain('Adjacent topics');
+    });
+
+    test('does not render adjacent nodes if not exist', async () => {
+        const component = await renderAndWaitForData();
+
+        fireEvent.click(component.getByText('goto 0'));
+
+        answerCorrectly(component);
+        fireEvent.click(component.getByText('Check'));
+
+        expect(component.container.innerHTML).not.toContain('Adjacent topics');
     });
 
     test('going back resets the task answer', async () => {

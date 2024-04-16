@@ -98,11 +98,16 @@ export function TrainerAppComponent({ lang, taskSuggester, darkModeManager }: { 
     }
 
     function getFilterHighlightedRuleIdx(): number {
+        if (window.location.hash && window.location.hash.length >=2) {
+            return parseInt(window.location.hash.substring(1));
+        }
         if (currentTask) {
             return currentTask.ruleIdx;
         }
         return -1;
     }
+
+    const currentRule = taskSuggester.getTopics()[currentTask.topicIdx].rules.find(rule => rule.ruleIdx == currentTask.ruleIdx);
 
     return <Context.Provider value={{
         expandQuestionAnswer: false,
@@ -216,10 +221,7 @@ export function TrainerAppComponent({ lang, taskSuggester, darkModeManager }: { 
                             }}>{lang.NEXT_BUTTON}</button>
                             
                             <div className="linkToRule">
-                            {
-                                    taskSuggester!.getTopics()[currentTask.topicIdx].rules.find(rule => rule.ruleIdx == currentTask.ruleIdx)?.nodeTitle.replace("Rule:", "")
-                                    }
-                                (<a href={new PathBuilder('', hasher).populate(path).setScreen('filter').buildPath()}
+                                <a href={new PathBuilder('', hasher).populate(path).setScreen('filter').buildPath()}
                                     onClick={
                                         (e) => {
                                             e.preventDefault();
@@ -227,7 +229,36 @@ export function TrainerAppComponent({ lang, taskSuggester, darkModeManager }: { 
                                             history.push(newPath.buildPath());
                                         }
                                     }
-                                >{lang.SHOW_IN_TREE}</a>)
+                                >{
+                                    currentRule?.nodeTitle.replace("Rule:", "")
+                                    }</a> <br />
+
+                            {currentRule?.connectedRuleTitles.length
+                                ? <div>
+                                    {lang.ADJACENT_TOPICS}: <br />
+                                    {
+                                        currentRule?.connectedRuleTitles.map((connectedRuleTitle: string) => {
+                                            return <div><a href={new PathBuilder('', hasher).setScreen('filter').buildPath()}
+                                                    onClick={
+                                                        (e) => {
+                                                            e.preventDefault();
+                                                            const newPath = new PathBuilder('', hasher).populate(path).setScreen('filter');
+                                                            
+                                                            history.push(newPath.buildPath() + "#" + hasher.ruleTitleToRuleIdx(connectedRuleTitle));
+                                                        }
+                                                    }
+                                                >{
+                                                    connectedRuleTitle.replace("Rule:", "")
+                                                    }</a>
+                                                    </div>;
+                                                })
+                                    }
+                                </div>
+                                : null
+                            }
+
+                            
+
                         </div>
 
                             </div>

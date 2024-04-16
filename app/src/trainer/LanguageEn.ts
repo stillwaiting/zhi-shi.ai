@@ -23,6 +23,7 @@ const LANGUAGE_EN: Language = {
     CORRECT_LABEL: "correct",
     MODE_LIGHT: '🌞 Light mode',
     MODE_DARK: '🌔 Dark mode',
+    ADJACENT_TOPICS: 'Adjacent topics'
 }
 
 export default LANGUAGE_EN;

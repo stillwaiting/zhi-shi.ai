@@ -26,6 +26,11 @@ export default class Hasher {
         return this._hashToRuleIdx[hash];
     }
 
+    public ruleTitleToRuleIdx(ruleTitle: string) {
+        let hash = this.calculateHash(ruleTitle);
+        return this._hashToRuleIdx[hash];
+    }
+
     public addTask(task: TaskType) {
         let hash = this.calculateHash(task.bodyChunk.question.text + task.nodeTitle);
         while (this._hashToTaskIdx[hash]) {

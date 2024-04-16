@@ -21,4 +21,5 @@ export interface Language {
     SHOW_IN_TREE: string,
     MODE_LIGHT: string,
     MODE_DARK: string,
+    ADJACENT_TOPICS: string
 }

@@ -154,6 +154,7 @@ Some text that should be ignored.
                   1
                 ],
                 "lastAnsweredNodeTitles": new Set<string>(),
+                "connectedRuleTitles": [],
                 "lastAnsweredTaskIdxs": {}
               },
               {
@@ -172,6 +173,7 @@ Some text that should be ignored.
                   5
                 ],
                 "lastAnsweredNodeTitles": new Set<string>(),
+                "connectedRuleTitles": [],
                 "lastAnsweredTaskIdxs": {}
               }
             ]
@@ -199,6 +201,7 @@ Some text that should be ignored.
                   7
                 ],
                 "lastAnsweredNodeTitles": new Set<string>(),
+                "connectedRuleTitles": [],
                 "lastAnsweredTaskIdxs": {}
               }
             ]

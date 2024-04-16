@@ -22,7 +22,8 @@ const LANGUAGE_RU: Language = {
     SHOW_IN_TREE: 'показать в дереве',
     CORRECT_LABEL: "правильно",
     MODE_DARK: '🌔 Темная гамма',
-    MODE_LIGHT: '🌞 Светлая гамма'
+    MODE_LIGHT: '🌞 Светлая гамма',
+    ADJACENT_TOPICS: 'Смежные темы'
 }
 
 export default LANGUAGE_RU;

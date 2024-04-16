@@ -1,6 +1,6 @@
 import mdParse from '../md/MarkdownParser';
 import * as _ from "lodash";
-import { isMarkdownBodyChunkQuestionAnswers, MarkdownBodyChunkQuestionAnswers, MarkdownNode } from '../md/types';
+import { isMarkdownBodyChunkConnection, isMarkdownBodyChunkQuestionAnswers, MarkdownBodyChunkConnection, MarkdownBodyChunkQuestionAnswers, MarkdownNode } from '../md/types';
 
 // Keep TaskType flat to avoid circular dependencies
 export type TaskType = {
@@ -29,6 +29,7 @@ export type RuleType = {
     taskIdxs: Array<number>;
 
     stats: StatsType;
+    connectedRuleTitles: Array<string>;
 
     lastAnsweredTaskIdxs: {[taskNodeTitle: string]: Set<number>}; // purged when full for each nodeTitle
     lastAnsweredNodeTitles: Set<string>; // purged when full
@@ -484,7 +485,9 @@ export default class TaskSuggester {
             },
             taskIdxs: [],
             lastAnsweredNodeTitles: new Set<string>(),
-            lastAnsweredTaskIdxs: {}
+            lastAnsweredTaskIdxs: {},
+            connectedRuleTitles: ruleNode.body.content.filter(content => isMarkdownBodyChunkConnection(content))
+                .map(content => content as MarkdownBodyChunkConnection).map(content => content.connectedNodeTitle)
         };
         if (ruleNode.children.find(child => child.title.indexOf("Task") == 0)) {
             this.rules.push(rule);
