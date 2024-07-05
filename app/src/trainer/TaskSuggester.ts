@@ -17,7 +17,7 @@ export type StatsType = {
     incorrectlyAnsweredTaskIdxs: Set<number>;
 }
 
-const ERROR_BUFFER_SIZE = 10; // the number of correct answers that must be given to "unstick" from a particual rule 
+const ERROR_BUFFER_SIZE = 10; // the number of correct answers that must be given to "unstick" from a particual rule
                              // (when a error was made)
 
 // Keep RuleType flat to avoid circular dependencies
@@ -46,7 +46,7 @@ export type TopicType = {
 
 export default class TaskSuggester {
 
-    
+
 
     // Each RuleType object has 2 references: one from the topic, another one from the
     // array (with index = RuleType.ruleIdx)
@@ -79,8 +79,20 @@ export default class TaskSuggester {
             this.parseMarkdown(node);
         });
 
+        function padWithZero(number: string | number) {
+            return number < 10 ? '0' + number : '' + number;
+        }
 
-        console.log(this.calculateStats());
+        try {
+            const stats = this.calculateStats();
+            console.log(`--------
+Статистика по задачам на ${padWithZero(new Date().getDay())}.${padWithZero(new Date().getMonth())}.${new Date().getFullYear()}:
+- для тренировки доступно ${stats.totalRules} правила и ${stats.totalTasks} упражнений;
+- в текущей разработке ${stats.totalDebugRules} правил и ${stats.totalDebugTasks} упражнения.            
+-------`)
+        } catch (ex) {
+            console.error(ex);
+        }
     }
 
     setSelectedRuleIdxs(ruleIdxs: Set<number>) {
@@ -94,7 +106,7 @@ export default class TaskSuggester {
         if (ruleIdxs.size > 0 && this.stickyRuleIdx >= 0 && !ruleIdxs.has(this.stickyRuleIdx)) {
             this.stickyRuleIdx = -1;
             this.stickyRuleIdxCount = 0;
-            
+
             this.stickyTaskNodeTitle = '';
             this.stickyTaskNodeTitleCount = 0;
         }
@@ -125,7 +137,7 @@ export default class TaskSuggester {
         const topic = this.topics[task.topicIdx];
 
         this.recordAnswerStats(task, rule, topic, isCorrect);
-        
+
         this.recordLastAnsweredRoundRobin(rule, task);
 
         this.reversedHistoryTaskIdxLog[taskIdx] = new Date().getTime();
@@ -162,7 +174,7 @@ export default class TaskSuggester {
     }
 
     /**
-     * 
+     *
      * Purging of the last* counters are happening here, on record,
      * therefore no need to worry about it that "suggest" would have some
      * overflown counter
@@ -209,7 +221,7 @@ export default class TaskSuggester {
             topic.stats.correctlyAnsweredTaskIdxs.delete(task.taskIdx);
 
             rule.stats.incorrectlyAnsweredTaskIdxs.add(task.taskIdx);
-            topic.stats.incorrectlyAnsweredTaskIdxs.add(task.taskIdx);; 
+            topic.stats.incorrectlyAnsweredTaskIdxs.add(task.taskIdx);;
         }
     }
 
@@ -272,7 +284,7 @@ export default class TaskSuggester {
             totalDebugRules
         };
     }
-    
+
     suggestNextTask(): TaskType {
         if (Math.random() < 0.33) {
             let suggestedRuleIdxs: Set<number> | undefined;
@@ -321,7 +333,7 @@ export default class TaskSuggester {
 
     doSuggestNextTaskUnanswered(suggestedRuleIdxs: Set<number>): TaskType | undefined {
         const suggestedTaskIdxs: Array<number> = [];
-        suggestedRuleIdxs.forEach(ruleIdx => suggestedTaskIdxs.push(...this.rules[ruleIdx].taskIdxs.filter(taskIdx => 
+        suggestedRuleIdxs.forEach(ruleIdx => suggestedTaskIdxs.push(...this.rules[ruleIdx].taskIdxs.filter(taskIdx =>
             !(this.rules[ruleIdx].stats.correctlyAnsweredTaskIdxs.has(taskIdx) ||
             this.rules[ruleIdx].stats.incorrectlyAnsweredTaskIdxs.has(taskIdx))
         )));
@@ -334,15 +346,15 @@ export default class TaskSuggester {
     }
 
     /**
-     * 
+     *
      * Suggests the next task in a round robin fashion:
-     * 
+     *
      *  - sticky rules/tasks node titles have priorities
-     *  - going in round-robin with rules 
+     *  - going in round-robin with rules
      */
     private doSuggestNextTaskRoundRobin(): TaskType {
         this._debugLog("------------");
-        
+
         const suggestedRule = this.suggestNextRuleRoundRobin();
         this._debugLog("suggester: picked rule " + suggestedRule.ruleIdx + " " + suggestedRule.nodeTitle + " tasks " + suggestedRule.taskIdxs.length);
 
@@ -358,20 +370,20 @@ export default class TaskSuggester {
         this._debugLog("suggester: found " + notAnsweredTitleTaskIdxs.size + "  non answered tasks");
 
         const candidates = Array.from(notAnsweredTitleTaskIdxs);
-        const taskIdx = candidates[Math.floor(Math.random() * candidates.length)]; 
+        const taskIdx = candidates[Math.floor(Math.random() * candidates.length)];
 
         this._debugLog("------------");
         return _.cloneDeep(this.tasks[taskIdx]);
     }
 
     /**
-     * 
+     *
      * Sticky rule has a top priority.
-     * 
+     *
      * Recently answered rules are excluded from consideration.
-     * 
+     *
      * Returns a random rule if not sticky and not recently answered.
-     * 
+     *
      */
     private suggestNextRuleRoundRobin(): RuleType {
         const ruleIdxs: Array<number> = [];
@@ -382,7 +394,7 @@ export default class TaskSuggester {
         } else  {
             ruleIdxs.push(...this.getSuitableRuleIdxs());
         }
-        
+
         if (ruleIdxs.length < 10) {
             this._debugLog("DSNT: selected " + JSON.stringify(ruleIdxs));
         } else {
@@ -394,11 +406,11 @@ export default class TaskSuggester {
     }
 
     /**
-     * 
+     *
      * Sticky node title has priority.
-     * 
+     *
      * Returns a node title that wasn't recently answered.
-     *  
+     *
      */
     private suggestRuleTaskNodeTitle(suggestedRule: RuleType): string {
         if (this.stickyTaskNodeTitle && this.stickyTaskNodeTitleCount > 0) {
@@ -446,7 +458,7 @@ export default class TaskSuggester {
         if (this.isIgnored(node.title)) {
             return;
         }
-        
+
         if (node.children[0].title.indexOf("Rule") == 0) {
             let topic: TopicType = {
                 topicIdx: this.topics.length,
@@ -473,7 +485,7 @@ export default class TaskSuggester {
         if (this.isIgnored(ruleNode.title)) {
             return;
         }
-        
+
         let rule: RuleType = {
             ruleIdx: this.rules.length,
             topicIdx: topic.topicIdx,
@@ -487,7 +499,9 @@ export default class TaskSuggester {
             lastAnsweredNodeTitles: new Set<string>(),
             lastAnsweredTaskIdxs: {},
             connectedRuleTitles: ruleNode.body.content.filter(content => isMarkdownBodyChunkConnection(content))
-                .map(content => content as MarkdownBodyChunkConnection).map(content => content.connectedNodeTitle)
+                .map(content => content as MarkdownBodyChunkConnection)
+                .map(content => content.connectedNodeTitle)
+                .filter(title => !this.isIgnored(title))
         };
         if (ruleNode.children.find(child => child.title.indexOf("Task") == 0)) {
             this.rules.push(rule);
@@ -538,6 +552,6 @@ export default class TaskSuggester {
             }
         }
     }
-    
+
 }
 

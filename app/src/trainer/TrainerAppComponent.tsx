@@ -55,7 +55,7 @@ export function TrainerAppComponent({ lang, taskSuggester, darkModeManager }: { 
         console.log("useEffect", location.pathname, "pathTaskIdx=", newPath.getTaskIdx());
         console.log("currentTask", currentTask.taskIdx);
         if (newPath.getTaskIdx() == -1 || newPath.getTaskIdx() != currentTask.taskIdx) {
-            
+
             newPath.setTaskIdx(currentTask.taskIdx);
             setAnsweredIndices(undefined);
             setCurrentlyAnsweredTaskIdx(undefined);
@@ -68,7 +68,7 @@ export function TrainerAppComponent({ lang, taskSuggester, darkModeManager }: { 
 
         if (!taskSuggester.isTaskInSelectedRules(newPath.getTaskIdx())) {
             const newTask = taskSuggester.suggestNextTask();
-            
+
             newPath.setTaskIdx(newTask.taskIdx);
             setAnsweredIndices(undefined);
             setCurrentlyAnsweredTaskIdx(undefined);
@@ -117,9 +117,9 @@ export function TrainerAppComponent({ lang, taskSuggester, darkModeManager }: { 
     }}>
         <div className="TrainerAppComponent">
                 <div className="menu">
-                    <FilterLinkComponent 
-                        selectedRuleIdxs={path.getRules()} 
-                        topics={taskSuggester.getTopics()} 
+                    <FilterLinkComponent
+                        selectedRuleIdxs={path.getRules()}
+                        topics={taskSuggester.getTopics()}
                         isActive={isFilterScreen()}
                         key={(answeredIndices ? 'answered' : '')}
                         lang={lang}
@@ -131,11 +131,11 @@ export function TrainerAppComponent({ lang, taskSuggester, darkModeManager }: { 
                 </div>
 
             {isFilterScreen()
-                ? 
+                ?
                 <div className="FilterEditorComponentContainer">
-                        <FilterEditorComponent 
-                            topics={taskSuggester!.getTopics()} 
-                            selectedRuleIdxs={path.getRules()} 
+                        <FilterEditorComponent
+                            topics={taskSuggester!.getTopics()}
+                            selectedRuleIdxs={path.getRules()}
                             highlightedTopicIdx={getFilterHighlightedTopicIdx()}
                             highlightedRuleIdx={getFilterHighlightedRuleIdx()}
 
@@ -147,16 +147,16 @@ export function TrainerAppComponent({ lang, taskSuggester, darkModeManager }: { 
                                     newPath.setScreen(undefined);
                                 }
                                 history.push(newPath.buildPath())
-                            }} 
-                            
+                            }}
+
                             onClose = {() => {
                                 const newPath = new PathBuilder('', hasher).populate(path).setScreen(undefined);
                                 history.push(newPath.buildPath());
-                            }} 
+                            }}
                         />
 
                     <div className="resetStats">
-                        {path.getRules().size == 0 ? null : 
+                        {path.getRules().size == 0 ? null :
                             <div>
                                 <a href='#' onClick={
                                     (e) => {
@@ -170,7 +170,7 @@ export function TrainerAppComponent({ lang, taskSuggester, darkModeManager }: { 
                                 }>{lang.RESET_STATS_LINK.replace('%','' + path.getRules().size)}</a> <br /><br />
                             </div>
                         }
-                    
+
                         <a href='#' onClick={
                             (e) => {
                                 e.preventDefault();
@@ -185,7 +185,7 @@ export function TrainerAppComponent({ lang, taskSuggester, darkModeManager }: { 
 
                 </div>
 
-               
+
                 : null
             }
 
@@ -205,7 +205,7 @@ export function TrainerAppComponent({ lang, taskSuggester, darkModeManager }: { 
                                         }, 3000);
                                     }
                                 }
-                            } 
+                            }
                             answerIndices={answeredIndices}
                         />
 
@@ -219,7 +219,7 @@ export function TrainerAppComponent({ lang, taskSuggester, darkModeManager }: { 
                                 setCurrentlyAnsweredTaskIdx(undefined);
                                 history.push(newPath.buildPath());
                             }}>{lang.NEXT_BUTTON}</button>
-                            
+
                             <div className="linkToRule">
                                 <a href={new PathBuilder('', hasher).populate(path).setScreen('filter').buildPath()}
                                     onClick={
@@ -243,7 +243,7 @@ export function TrainerAppComponent({ lang, taskSuggester, darkModeManager }: { 
                                                         (e) => {
                                                             e.preventDefault();
                                                             const newPath = new PathBuilder('', hasher).populate(path).setScreen('filter');
-                                                            
+
                                                             history.push(newPath.buildPath() + "#" + hasher.ruleTitleToRuleIdx(connectedRuleTitle));
                                                         }
                                                     }
@@ -257,20 +257,19 @@ export function TrainerAppComponent({ lang, taskSuggester, darkModeManager }: { 
                                 : null
                             }
 
-                            
+
 
                         </div>
 
                             </div>
                             : null
                         }
-                        
+
                     </div>
                 : null
             }
 
-<div className='foundError'>
-                <a href='https://github.com/stillwaiting/zhi-shi.ai/issues/new' target='_blank'>{lang.FOUND_ERROR}</a>
+<div className='foundError' dangerouslySetInnerHTML={{ __html: lang.FOUND_ERROR}}>
             </div>
 
     </div>
@@ -308,15 +307,15 @@ export default function({ url, lang }: { url:string, lang: Language }) {
             {taskSuggester ? <TrainerAppComponent lang={lang} taskSuggester={taskSuggester} darkModeManager={darkModeManager} /> : null}
 
 
-            
-            
+
+
 
 
 {/* <Link data-testid='goto1' to='/1'>goto 1</Link>
             <Link data-testid='goto0' to='/0'>goto 0</Link>
             <Link data-testid='gotofilter' to='/filter'>goto filter</Link>
             <Link data-testid='goto' to='/'>goto root</Link> */}
-            
+
     </div> ;
 }
 
@@ -330,7 +329,7 @@ function addAnswerToLocalStorage(taskIdx: number, hasher: Hasher, isCorrect: boo
     if (answers.length > 1000) {
         answers.shift();
     }
-    window.localStorage.setItem(LOCAL_STORAGE_KEY_ANSWERS, JSON.stringify(answers.map(answer => 
+    window.localStorage.setItem(LOCAL_STORAGE_KEY_ANSWERS, JSON.stringify(answers.map(answer =>
         [hasher.taskIdxToHash(answer[0]), answer[1]]
     )));
 }
@@ -343,7 +342,7 @@ function clearAnswersInLocalStorageForRules(rules: Set<number>, hasher: Hasher, 
         const ruleIdx = taskSuggester.getTaskRuleIdx(answer[0]);
         return !rules.has(ruleIdx);
     });
-    window.localStorage.setItem(LOCAL_STORAGE_KEY_ANSWERS, JSON.stringify(answers.map(answer => 
+    window.localStorage.setItem(LOCAL_STORAGE_KEY_ANSWERS, JSON.stringify(answers.map(answer =>
         [hasher.taskIdxToHash(answer[0]), answer[1]]
     )));
 }
@@ -353,7 +352,7 @@ function getAnswersFromLocalStorage(hasher: Hasher): Array<[number, boolean]> {
         // @ts-ignore
         return JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_KEY_ANSWERS) || '[]')
             .filter((answer: Array<any>) => !!hasher.hashToTaskIdx(answer[0]))
-            .map((answer: Array<any>) => 
+            .map((answer: Array<any>) =>
                 [hasher.hashToTaskIdx(answer[0]), answer[1]]
             );
     }

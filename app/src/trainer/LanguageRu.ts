@@ -18,7 +18,10 @@ const LANGUAGE_RU: Language = {
     CONFIRM: 'Вы уверены?',
     ALL: 'все',
     TOTAL: 'всего',
-    FOUND_ERROR: 'Нашли ошибку?',
+    FOUND_ERROR: "Новости и обратная связь: " +
+        "<a href='https://vk.com/zhishiai' target='_blank' style='text-decoration: none; border: 0'><img src='/vk.svg' width='24' style='vertical-align:middle' /></a> &nbsp; " +
+        "<a href='https://t.me/zhishiai' target='_blank'  style='text-decoration: none; border: 0'><img src='/Telegram_logo.svg' width='24' style='vertical-align:middle' /></a> "
+    ,
     SHOW_IN_TREE: 'показать в дереве',
     CORRECT_LABEL: "правильно",
     MODE_DARK: '🌔 Темная гамма',
