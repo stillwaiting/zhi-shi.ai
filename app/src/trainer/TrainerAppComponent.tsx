@@ -13,7 +13,11 @@ import { Language } from './LanguageType';
 import Hasher from "./Hasher";
 import { DarkModeManager } from "./DarkModeManager";
 
-export function TrainerAppComponent({ lang, taskSuggester, darkModeManager }: { lang: Language, taskSuggester: TaskSuggester, darkModeManager: DarkModeManager }) {
+export interface AnalyticsManager {
+    onTaskAnswered: (isCorrect: boolean, ruleTitle: string | undefined, taskTitle: string) => void;
+}
+
+export function TrainerAppComponent({ lang, taskSuggester, darkModeManager, analyticsManager }: { lang: Language, taskSuggester: TaskSuggester, darkModeManager: DarkModeManager, analyticsManager: AnalyticsManager | undefined }) {
     const location = useLocation();
 
     const [answeredIndices, setAnsweredIndices] = useState<Array<number>|undefined>(undefined);
@@ -194,6 +198,7 @@ export function TrainerAppComponent({ lang, taskSuggester, darkModeManager }: { 
                         <BodyQuestionAnswerComponent data = {currentTask.bodyChunk} onAnswered={
                                 (indices) => {
                                     const isCorrect = indices.filter(index => index == 0).length == indices.length;
+                                    analyticsManager?.onTaskAnswered(isCorrect, currentRule?.nodeTitle, currentTask.bodyChunk.question.text);
                                     taskSuggester.recordAnswer(currentTask.taskIdx, isCorrect);
                                     addAnswerToLocalStorage(currentTask.taskIdx, hasher, isCorrect);
                                     setAnsweredIndices(indices);
@@ -286,7 +291,7 @@ export function TrainerAppComponent({ lang, taskSuggester, darkModeManager }: { 
 }
 
 
-export default function({ url, lang }: { url:string, lang: Language }) {
+export default function({ url, lang, analyticsManager }: { url:string, lang: Language, analyticsManager: AnalyticsManager | undefined }) {
     const [taskSuggester, setTaskSuggester] = useState<TaskSuggester | null>(null);
     const darkModeManager = new DarkModeManager();
 
@@ -304,7 +309,9 @@ export default function({ url, lang }: { url:string, lang: Language }) {
             }}
             />
 
-            {taskSuggester ? <TrainerAppComponent lang={lang} taskSuggester={taskSuggester} darkModeManager={darkModeManager} /> : null}
+            {taskSuggester ? <TrainerAppComponent
+                lang={lang} taskSuggester={taskSuggester} darkModeManager={darkModeManager} analyticsManager={analyticsManager}
+            /> : null}
 
 
 

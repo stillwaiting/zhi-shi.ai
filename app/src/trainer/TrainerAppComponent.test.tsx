@@ -57,12 +57,12 @@ Some text that should be ignored.
             })
         });
     });
-    
+
 
     async function renderAndWaitForData(): Promise<RenderResult> {
-        const component = render(<MemoryRouter initialEntries={[currentPath]}> 
-            <TrainerAppComponent url='/foo' lang={lang} />
-    
+        const view = render(<MemoryRouter initialEntries={[currentPath]}>
+            <TrainerAppComponent url='/foo' lang={lang} analyticsManager={undefined} />
+
             <Route
                 path="*"
                 render={({ history, location }) => {
@@ -74,10 +74,10 @@ Some text that should be ignored.
             <Link data-testid='goto1' to={`/rules/${hasher.ruleIdxToHash(1)}/task/${hasher.taskIdxToHash(1)}`}>goto 1</Link>
             <Link data-testid='goto0' to={`/rules/${hasher.ruleIdxToHash(0)}/task/${hasher.taskIdxToHash(0)}`}>goto 0</Link>
             <Link data-testid='goto' to='/'>goto root</Link>
-            
+
             </MemoryRouter>)
         await act(async () => { await sleep(1); });
-        return component;
+        return view;
     }
 
 
@@ -85,7 +85,7 @@ Some text that should be ignored.
         currentPath = '/'
         clearAnswersInLocalStorage();
         fetchMock.enableMocks();
-        
+
         fetchMock.mockResponse(data);
     });
 
@@ -95,24 +95,24 @@ Some text that should be ignored.
     });
 
     test('shows browser warning', async () => {
-        const component = await renderAndWaitForData();
-        expect(component.getByTestId('BrowserWarning')).toBeDefined();
+        const view = await renderAndWaitForData();
+        expect(view.getByTestId('BrowserWarning')).toBeDefined();
     });
 
 
     test('downloads data and then shows the task', async () => {
-        const component = await renderAndWaitForData();
+        const view = await renderAndWaitForData();
 
-        if (component.container.innerHTML.indexOf('hello') >= 0) {
-            expect(component.getByText('hello')).toBeDefined();
+        if (view.container.innerHTML.indexOf('hello') >= 0) {
+            expect(view.getByText('hello')).toBeDefined();
         } else {
-            expect(component.getByText('foo')).toBeDefined();
+            expect(view.getByText('foo')).toBeDefined();
         }
     });
 
     test('gets selected rules from path', async() => {
         currentPath = '/rules/' + hasher.ruleIdxToHash(1);
-        
+
         const component = await renderAndWaitForData();
 
         for (let idx = 0; idx < 100; idx++) {
@@ -138,9 +138,9 @@ Some text that should be ignored.
         const component = await renderAndWaitForData();
 
         const hasWorld1 = component.container.innerHTML.indexOf('world') >= 0;
-        
+
         fireEvent.click(component.getByTestId(hasWorld1 ? 'goto0' : 'goto1'));
-        
+
         const hasWorld2 = component.container.innerHTML.indexOf('world') >= 0;
         expect(new Set<boolean>([hasWorld1, hasWorld2])).toStrictEqual(new Set<boolean>([true, false]));
     });
@@ -154,7 +154,7 @@ Some text that should be ignored.
         fireEvent.click(component.getByText('Check'));
 
         fireEvent.click(component.getByText('goto 1'));
-        
+
         expect(component.queryByText('Next task')).toBeNull();
     });
 
