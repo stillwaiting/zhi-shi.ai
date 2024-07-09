@@ -1,24 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<%
+
+FAVICON = process.env.PUBLIC_URL + '/favicon.ico';
+DESCRIPTION = "Web site created using create-react-app";
+TITLE = "title";
+LOGO = process.env.PUBLIC_URL + '/logo192.png';
+MANIFEST = process.env.PUBLIC_URL + '/manifest.json';
+if (process.env.REACT_APP_LANG == 'ru') {
+  FAVICON = process.env.PUBLIC_URL + '/favicon_ru.ico';
+  DESCRIPTION = "Учим русский язык.";
+  TITLE = "Тренажер русского языка."
+  LOGO = process.env.PUBLIC_URL + '/logo192_ru.png';
+  MANIFEST = process.env.PUBLIC_URL + '/manifest_ru.json';
+}
+LANG = process.env.REACT_APP_LANG;
+
+%>
+<html lang="<%= LANG %>" class="notranslate" translate="no">
   <head>
     <meta charset="utf-8" />
-
-    <%
-
-    FAVICON = process.env.PUBLIC_URL + '/favicon.ico';
-    DESCRIPTION = "Web site created using create-react-app";
-    TITLE = "title";
-    LOGO = process.env.PUBLIC_URL + '/logo192.png';
-    MANIFEST = process.env.PUBLIC_URL + '/manifest.json';
-    if (process.env.REACT_APP_LANG == 'ru') {
-      FAVICON = process.env.PUBLIC_URL + '/favicon_ru.ico';
-      DESCRIPTION = "Учим русский язык.";
-      TITLE = "Тренажер русского языка."
-      LOGO = process.env.PUBLIC_URL + '/logo192_ru.png';
-      MANIFEST = process.env.PUBLIC_URL + '/manifest_ru.json';
-    }
-
-    %>
+    <meta name="google" content="notranslate" />
 
     <link rel="icon" href="<%= FAVICON %>" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
