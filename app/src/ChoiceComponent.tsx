@@ -3,6 +3,8 @@ import Browser from "./browser/Browser";
 import TrainerAppComponent from './trainer/TrainerAppComponent';
 import LANGUAGE_RU from './trainer/LanguageRu';
 
+const sessionId = ('' + Math.random()).split('.').join('');
+
 const choices: { [name: string]: ReactElement} = {
     'browser-ru': <Browser url={'/RUv2.md'}/>,
     'trainer-app-ru': <TrainerAppComponent url={'/RUv2.md'}  lang={LANGUAGE_RU} analyticsManager={{
@@ -10,7 +12,7 @@ const choices: { [name: string]: ReactElement} = {
             // create img component to send analytics event
             // const host = 'puzzle25.com';
             const host = window.location.hostname === 'localhost' ? 'localhost' : 'puzzle25.com';
-            const analyticsUrl = `http://${host}:8000/?isCorrect=` + isCorrect + '&ruleTitle=' + encodeURIComponent(ruleTitle || '') + '&nodeTitle=' + encodeURIComponent(nodeTitle);
+            const analyticsUrl = `http://${host}:8000/?isCorrect=` + isCorrect + '&ruleTitle=' + encodeURIComponent(ruleTitle || '') + '&nodeTitle=' + encodeURIComponent(nodeTitle) + '&sessionId=' + sessionId;
             const img = new Image();
             if (host === 'localhost') {
                 img.src = analyticsUrl;
