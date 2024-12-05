@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Length</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <h1>URL L</h1>
+    <p id="url-length"></p>
+<a href='/'>main page</a>
+    <script>
+        // Get the full URL
+        const fullURL = window.location.href;
+
+        // Get the length of the URL
+        const urlLength = fullURL.length;
+
+        document.getElementById('url-length').textContent = fullURL;
+
+        // Display the length of the URL
+        // document.getElementById('url-length').textContent = `The length of the URL is: ${urlLength} characters`;
+
+        // window.localStorage.setItem('counter',
+        //     window.localStorage.getItem('counter')
+        //         ? parseInt(window.localStorage.getItem('counter')) + 1
+        // : 1);
+        //
+        // document.getElementById('url-length').textContent = `Count: ${window.localStorage.getItem('counter')}`;
+
+        try {
+            const app = window.Telegram.WebApp;
+
+// Call as soon as your page is ready for the user to see
+            app.ready();
+
+
+// Expand your web app to full screen
+            app.expand();
+            // document.getElementById('url-length').textContent = 'at2';
+            //
+            // // app.sendData(JSON.stringify({a: 1}));
+            // app.switchInlineQuery('test');
+            // document.getElementById('url-length').textContent = 'at3';
+        } catch (ex) {
+            document.getElementById('url-length').textContent = 'at4';
+            document.getElementById('url-length').textContent = JSON.stringify(ex.message);
+        }
+
+</script>
+</body>
+</html>
+
