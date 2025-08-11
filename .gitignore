@@ -7,3 +7,4 @@ vscode-ext/zhishimd/out/**
 ghpersonal
 ghpersonal.pub
 .gitconfig
+app/.yarn/**
