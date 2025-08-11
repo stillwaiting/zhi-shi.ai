@@ -1,5 +1,5 @@
 import React from "react";
-import * as Bowser from "bowser"; 
+import Bowser from "bowser"; 
 import { useState } from "react";
 import './BrowserWarningComponent.scss';
 
